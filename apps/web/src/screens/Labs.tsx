@@ -1,8 +1,8 @@
 /**
  * ①′ 연구소 고르기(설계 §1.4) — 로그인 · 가입 뒤 두 파이프라인 가운데 하나를 골라 들어가요.
  *
- * - 쪽 제목(`h1`) · 눈썹 줄 · 랩 이름 · 단계 칩 · 진행 칩 · 들어가기만 둬요. 설명 덩어리(랩 한 줄 설명 ·
- *   '결과의 성격' 줄 · 단계 칩 성격 배지)는 두지 않아요.
+ * - 쪽 제목(`h1`) · 눈썹 줄 · 랩 이름 · 진행 칩 · 들어가기만 둬요. 단계 칩 · 설명 덩어리(랩 한 줄 설명 ·
+ *   '결과의 성격' 줄)는 두지 않아요.
  * - 고른 랩은 **주소(?lab=)에 둬요.** `sessionStorage` 는 보조 캐시예요. 둘 다 비어 있으면 저분자로 조용히 넘기지 않고
  *   이 화면으로 되돌려요(§1.1 · `App.tsx` 의 `pickedLab`).
  * - 문구는 전부 `antibody/terms.ts` 에 모아 둬요 — 이 파일은 마크업과 상태만 들고 있어요.
@@ -67,13 +67,6 @@ export function Labs({ nav, pickLab }: { nav: Nav; pickLab: (track: TrackId) => 
                     </a>
                   )}
                 </h2>
-                <ul className="ab-lab-steps" aria-label={`${card.title} ${LABS_COPY.stepsLabel}`}>
-                  {card.steps.map((step) => (
-                    <li key={step.id} className="chip">
-                      <b className="mono">{step.id}</b> {step.short}
-                    </li>
-                  ))}
-                </ul>
 
                 {/* 진행 칩 — 값이 없으면 숨기고 자리는 비워 둬요(§1.4). */}
                 <p className="ab-lab-prog">
