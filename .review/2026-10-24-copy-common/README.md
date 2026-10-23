@@ -97,7 +97,7 @@
 | 보류 · 재도전 이름 | `4.1.viz.706.title`('실패 후 갈림길' → '보류 뒤 갈림길') · `4.1.viz.706.read`, `4.2.receipt.failNote`('보류(실패)' → '보류'), `board.holdKind.operational` · `board.holdKind.both` |
 | 모둠 · 스타트업 | `3.1.doc.inventors.guide` · `3.1.rule.inventorNotMember`, `3.2.ethics.retry`, `4.2.brand.tip1` · `brand.sameAsCompany` · `board.privacyNote` |
 | 기업가치 | `board.rank.label` · `rank.finalLabel` · `drawer.rank` · `news.rankLeader` · `news.finalNotice` · `color.green` · `val.band.zero` · `final.twoAxisHint`, `4.2.tabs.resultDesc` · `stock.title` |
-| 크리스타 | 돈 자리표시자 줄(2.1-2.2 · 4줄, 3.2 · 3줄, 4.1 · 8줄, 4.2 · 6줄 + '{fee}을(를)' → '{fee}를' 2줄), `4.2.receipt.head` 는 'CRISTA 연구비 영수증' 그대로(브랜드 · 사용자 확인 대기) |
+| 크리스타 | 돈 자리표시자 줄(2.1-2.2 · 4줄, 3.2 · 3줄, 4.1 · 8줄, 4.2 · 6줄 + '{fee}을(를)' → '{fee}를' 2줄), `4.2.receipt.head` 는 '연구비 영수증'(사용자 결정 2026-10-24) |
 | AI 표시 | `3.2.protocol.review.summaryHead`, `3.3.revise.itemHeader` · `feedbackHeader` · `pendingNotice` · `overview.summary3`, `4.2.review.feedbackTitle` · `submit.aiReviewerBadge` · `submit.aiNotice`, `learn.result.aiNote` |
 | 시간 | `3.2.animal.progress` · `animal.runInfo`, `4.1.recruit.backupWait` · `running.status` · `recruit.curve.desc`, `learn.drawer.path.stipend` · `stipend.help` · `stipend.paused` |
 | 풀이 말 | IND: `3.2.ethics.card.why.body` · `protocol.section.purpose.guide` · `protocol.checklist`, `3.3.overview.oneLine`, `4.1.intro.locked`, `board.val.band.ind`, `learn.pitch.b.locked`. 프로토콜: `4.2.pack.provisional` · `board.final.encouragement` |
@@ -130,7 +130,7 @@
 6. **키 꼴**: 키 조각을 camelCase 로 바꾸고, 밑줄은 코드 값과 같은 이름에만 남겼습니다(4.1절). 4.1 의 '밑줄 허용' 질문은 이것으로 풀립니다. 이 규칙으로 확정할까요?
 7. **AI 배지**: 4.2 배지에서 '식약처 · FDA 신약 심사관 역할'을 떼고 'AI 심사'만 남겼습니다. 역할은 안내 문장('AI 심사관(Claude)이 신약 허가 심사관 역할로 서류를 읽어요')으로 옮겼습니다. 모델 이름은 화면마다 안내 한 줄에서만 '(Claude)'로 밝힙니다. 이렇게 갈까요?
 8. **전광판 소식 주인**: 겹친 소식 줄은 기능 단계 키를 주인으로 정했습니다. 그래서 전광판 문구가 'IND 승인 — … 첫 사람 시험 준비'(지금 코드 '첫 임상 준비')와 '투자 유치'('성공' 뺌)로 바뀌었습니다. 괜찮을까요?
-9. **영수증 머리**: `4.2.receipt.head` 'CRISTA 연구비 영수증'은 워드마크(브랜드)로 보고 그대로 두었습니다(AGENTS.md '화폐' 절 — 워드마크는 예외). '연구비 영수증'만 남길지는 사용자 확인 대기입니다(crista-web-58 세션이 질문함).
+9. ~~**영수증 머리**~~ → **확정(사용자 결정 2026-10-24)**: `4.2.receipt.head` 는 '연구비 영수증'이에요('CRISTA' 를 붙이지 않음). 코드(`approval.ts`)는 8b 가 화폐 점검 때 바꿔요.
 10. **4.2 `rule.phase3Fail`**: '같은 프로토콜로 4.1 임상 3상을 먼저 통과해야'의 '같은 프로토콜로'가 재도전 경로 이름('같은 프로토콜로 다시')과 헷갈립니다. 빼도 될까요?
 
 ### 6.1 1.2 화합물 스크리닝(9)

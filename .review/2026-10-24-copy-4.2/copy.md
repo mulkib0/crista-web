@@ -188,7 +188,7 @@
 | `4.2.resultPack.lead` | ② 포장 꾸미기에서 고른 {shapeLabel} 포장이에요. 허가받은 브랜드 이름 「{brand}」과(와) 허가 정보를 인쇄한 완성본이에요. | `{shapeLabel}`, `{brand}` | `F42`, `§5.15-5`, `시안 8.06` (Claude 수정) |
 | `4.2.resultPack.printLines` | 「{brand}」 · {code} · {dose} mg · {company} ({ticker}) · {formLabel} · 품목 허가 D+{day} | `{brand}`, `{code}(새)`, `{dose}(새)`, `{company}(새)`, `{ticker}`, `{formLabel}`, `{day}` | `규칙-허가증`, `시안 8.06` |
 | `4.2.receipt.title` | 연구비 영수증 | — | `COPY.result.receiptTitle`, `시안 8.08` (Claude 수정) |
-| `4.2.receipt.head` | CRISTA 연구비 영수증 | — | `COPY.result.receiptHead`, `시안 8.08` — 워드마크 'CRISTA'(브랜드)로 보고 그대로 둠. 바꿀지는 사용자 확인 대기(crista-web-58 세션이 질문함) |
+| `4.2.receipt.head` | 연구비 영수증 | — | `COPY.result.receiptHead`, `시안 8.08` — 사용자 결정(2026-10-24): 'CRISTA' 를 붙이지 않음 |
 | `4.2.receipt.sub` | {company} ({ticker}) · {code} 「{brand}」 | `{company}(새)`, `{ticker}`, `{code}(새)`, `{brand}` | `시안 8.08` (Claude 보충) |
 | `4.2.receipt.preview` | 아직 허가 전이에요. 지금까지 쓴 돈으로 미리 본 영수증이에요. | — | `COPY.result.notYet` (Claude 보충) |
 | `4.2.receipt.spentTitle` | 쓴 돈 | — | `COPY.receipt.spentTitle`, `규칙-영수증` (Claude 수정) |
