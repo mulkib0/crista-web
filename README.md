@@ -6,8 +6,10 @@
 **③ 전광판 01 + 작업 화면**(위 띠에 스타트업 이름 · LED 흐르는 띠에 다른 모둠 소식 · 왼쪽 사이드바 **1. 발견 → 2. 최적화 → 3. 개발 · 규제 → 4. 임상 · 허가**(하위 1.1~4.2) · 오른쪽 작업 영역).
 
 - 설계: [`docs/2026-10-23-crista-web-design.md`](docs/2026-10-23-crista-web-design.md)
+- 학습 연구비 제안(개념 · 중급 · 심화 문항 → LLM 루브릭 채점 → 연구비 · 모둠 전원 출근 가속): [`docs/2026-10-23-learning-grant-design.md`](docs/2026-10-23-learning-grant-design.md) — 결정 전.
 - 화면 시안: [`design/pipeline-lab-30-variants.html`](design/pipeline-lab-30-variants.html) — 고른 시안은 **05 '4단계 로드맵'**([게시본 #v05](https://claude.ai/artifact/TPg2WfjBjjHSEDCuCD2Ekc)).
 - 전광판 시안 30종(05 바탕): [`design/pipeline-board-30-variants.html`](design/pipeline-board-30-variants.html)([게시본](https://claude.ai/artifact/GETqFjoHDn8sYqkoqaWA7a)) — **01 'LED 흐르는 띠'** 선택.
+- **1.2 화합물 스크리닝 미리보기(하나의 파이프라인)**: [`design/screening-pipeline.html`](design/screening-pipeline.html)([게시본](https://claude.ai/artifact/RvRQiUELeMJYWDyaFB8hA9)) — ① 미션 브리핑 → ② 모둠 기준 회의(6개 안건을 제안 · 근거 · 투표로 합의) → ③ 합의 기준으로 스크리닝 실행 → ④ 통과 분자 쇼핑(찜 = `claimedBy`) → ⑤ 연구 노트 · 2.1 로 넘기기. 앞선 시안: 학습 활동 30종 [`design/screening-learn-30.html`](design/screening-learn-30.html)(게시본 2판) · 그림 30종 [`design/screening-30-variants.html`](design/screening-30-variants.html)(게시본 1판).
 - 사옥 지구 그림: crista 06 픽셀 에셋 사본 [`assets/crista/`](assets/crista/SOURCE.md).
 - 계산: [crista](https://github.com/mulkib0/crista) 의 bio-worker(Open Targets · ChEMBL · AutoDock Vina · PLIP · ADMET-AI · RDKit)를 HTTP 로 쓴다.
 - 규칙: `packages/shared-types` · `packages/game-rules` — crista 사본([`packages/SOURCE.md`](packages/SOURCE.md)).

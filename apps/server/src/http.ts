@@ -3,21 +3,23 @@
  */
 import { createHash, timingSafeEqual } from 'node:crypto';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { ApiErrorBody, ErrorCode, TeamView } from '@crista-web/web-contract';
+import type { ApiErrorBody, ErrorCode, NoteView, TeamView } from '@crista-web/web-contract';
 
 export class ApiError extends Error {
   readonly status: number;
   readonly code: ErrorCode;
   readonly retryAfterSec: number | undefined;
   readonly team: TeamView | undefined;
+  readonly note: NoteView | undefined;
 
-  constructor(status: number, code: ErrorCode, message: string, extra: { retryAfterSec?: number; team?: TeamView } = {}) {
+  constructor(status: number, code: ErrorCode, message: string, extra: { retryAfterSec?: number; team?: TeamView; note?: NoteView } = {}) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.code = code;
     this.retryAfterSec = extra.retryAfterSec;
     this.team = extra.team;
+    this.note = extra.note;
   }
 
   toBody(): ApiErrorBody {
@@ -27,6 +29,7 @@ export class ApiError extends Error {
         message: this.message,
         ...(this.retryAfterSec !== undefined ? { retryAfterSec: this.retryAfterSec } : {}),
         ...(this.team ? { team: this.team } : {}),
+        ...(this.note ? { note: this.note } : {}),
       },
     };
   }

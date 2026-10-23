@@ -1,0 +1,358 @@
+<title>Crista 단계 시각화</title>
+<meta name="description" content="전광판 01 화면의 8단계(1.1~4.2)마다 학생 이해를 돕는 시각화 시안 10종씩, 모두 80종.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;700&display=swap">
+<style>
+  /* 레이아웃: 전광판 01 화면(위 띠 · LED 띠 · 왼쪽 4묶음 사이드바 1.1~4.2) 그대로, 오른쪽 작업 영역에 '그 단계의 시각화 시안'을 띄운다.
+     아래 검은 띠는 시안 고르기 도구. 색은 Crista 브랜드(잉크 · 페이퍼 · 라임) + 05 박막 간섭색, 모서리는 각지게.
+     01 화면이 밝은 박막 톤 하나로 정해져 있어 이 시안집도 그 한 가지 모습으로 고정한다(어두운 곳은 LED 띠와 도구 띠뿐). */
+  :root {
+    --paper: #f1f1e9; --surface: #f8f8f2; --raise: #e7e8de; --ink: #080b09; --muted: #5b6358;
+    --line: rgba(8, 11, 9, 0.13); --line-strong: rgba(8, 11, 9, 0.32);
+    --hi: #c6ff4a; --led: #ffb21a; --led-r: #ff5a3c; --led-g: #8dff5a; --night: #0b0d0a; --night-2: #151a14; --night-fg: #f1f1e9; --night-muted: #9da59a;
+    --good: #2f6f2a; --good-bg: rgba(47, 111, 42, 0.12); --warn: #8a5a00; --warn-bg: rgba(176, 120, 0, 0.14); --bad: #b2361b; --bad-bg: rgba(178, 54, 27, 0.11);
+    --me: #183080; --seum: #007868; --daon: #a048c8; --mirp: #d88828;
+    --film: linear-gradient(115deg, #ffd3ea 0%, #cdeaff 28%, #e4ffc0 52%, #ffe2c2 76%, #e6d4ff 100%);
+    --film-1: #ffd3ea; --film-2: #cdeaff; --film-3: #e4ffc0; --film-4: #ffe2c2; --film-5: #e6d4ff;
+    --sans: "IBM Plex Sans KR", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
+    --side-w: 272px;
+    color-scheme: light;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--hi); color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+
+  .ui-page { height: 100%; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; }
+
+  /* ── 위 띠 ── */
+  .ui-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--line-strong); background: var(--paper); }
+  .ui-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: -0.03em; font-size: 17px; }
+  .ui-brand svg { width: 20px; height: 20px; }
+  .ui-brand small { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .ui-co { display: flex; align-items: center; gap: 8px; padding-left: 14px; border-left: 1px solid var(--line); font-weight: 600; }
+  .ui-co .ui-tick { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; padding: 2px 6px; border: 1px solid var(--line-strong); font-weight: 500; }
+  .top-r { margin-left: auto; display: flex; gap: 18px; align-items: center; }
+  .ui-kv { display: grid; line-height: 1.2; }
+  .ui-kv span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .ui-kv b { font-family: var(--mono); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ── LED 흐르는 띠(전광판 01) ── */
+  .ui-board { display: flex; align-items: stretch; background: var(--night); color: var(--night-fg); border-bottom: 1px solid var(--line-strong); min-width: 0; }
+  .ui-bd-in { flex: 1; min-width: 0; padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
+  .ui-mq-track { display: flex; width: max-content; animation: mq 46s linear infinite; }
+  .ui-board:hover .ui-mq-track { animation-play-state: paused; }
+  .ui-mq-seg { display: flex; align-items: center; gap: 34px; padding-right: 34px; }
+  .ui-led { font-family: var(--mono); font-weight: 600; letter-spacing: 0.06em; font-size: 19px; white-space: nowrap; color: var(--led); text-shadow: 0 0 8px rgba(255, 178, 26, 0.55);
+    -webkit-mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); -webkit-mask-size: 3px 3px; mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); mask-size: 3px 3px; }
+  .ui-led.r { color: var(--led-r); text-shadow: 0 0 8px rgba(255, 90, 60, 0.55); }
+  .ui-led.g { color: var(--led-g); text-shadow: 0 0 8px rgba(141, 255, 90, 0.5); }
+  .ui-bd-ctl { flex: none; display: flex; align-items: center; gap: 6px; padding-block: 6px; padding-left: 12px; padding-right: max(16px, env(safe-area-inset-right, 0px)); border-left: 1px solid rgba(241, 241, 233, 0.16); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--night-muted); text-transform: uppercase; }
+  .ui-bd-ctl i { width: 7px; height: 7px; background: var(--led-r); border-radius: 50%; animation: blink 1.4s steps(2) infinite; }
+  @keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes blink { 50% { opacity: 0.2; } }
+
+  /* ── 본문: 사이드바 + 작업 영역 ── */
+  .ui-shell { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 0; }
+  .ui-side { overflow: auto; border-right: 1px solid var(--line-strong); padding-block: 18px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: 14px; display: flex; flex-direction: column; gap: 4px; }
+  .ui-side-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  .ui-grp { display: grid; gap: 2px; padding-bottom: 12px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .ui-grp:last-of-type { border-bottom: 0; }
+  .ui-grp-h { display: flex; align-items: baseline; gap: 8px; margin: 0 0 4px; font-size: 15.5px; font-weight: 700; letter-spacing: -0.02em; }
+  .ui-grp-h b { font-family: var(--mono); font-size: 0.9em; }
+  .ui-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .ui-st { appearance: none; width: 100%; text-align: left; border: 0; background: transparent; color: inherit; border-radius: 0; display: grid; grid-template-columns: 38px minmax(0, 1fr); column-gap: 8px; padding: 8px 8px 8px 14px; }
+  .ui-st:hover { background: rgba(128, 128, 128, 0.1); }
+  .ui-st-n { font-family: var(--mono); font-weight: 600; font-size: 12px; grid-row: span 2; line-height: 1.6; }
+  .ui-st-t { font-weight: 600; line-height: 1.35; }
+  .ui-st-s { font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+  .ui-st[aria-current="step"] { background: var(--film); }
+  .ui-side-foot { margin-top: auto; padding-top: 16px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); display: grid; gap: 6px; }
+  .ui-side-foot b { color: var(--ink); font-weight: 600; }
+
+  .ui-main { overflow: auto; min-width: 0; }
+  .ui-wrap { max-width: 1240px; padding-block: 24px 48px; padding-left: 30px; padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 18px; }
+  .ui-sh { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; align-items: start; }
+  .ui-sh-n { font-size: 64px; font-weight: 700; letter-spacing: -0.06em; line-height: 0.82; grid-row: span 3; padding-top: 4px; background: var(--film); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px var(--ink); }
+  .ui-eyebrow { margin: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .ui-sh h1 { margin: 0; font-size: 28px; line-height: 1.15; letter-spacing: -0.035em; text-wrap: balance; }
+  .ui-q { margin: 2px 0 0; font-family: var(--serif); font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+
+  /* 시안 고르기 탭 01~10 */
+  .ui-vtabs { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 0; border: 1px solid var(--line-strong); background: var(--surface); }
+  .ui-vt { appearance: none; border: 0; box-shadow: inset -1px -1px 0 var(--line); background: transparent; border-radius: 0; padding: 8px 10px; display: grid; gap: 1px; text-align: left; min-width: 0; }
+  .ui-vt span { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.06em; }
+  .ui-vt b { font-size: 12.5px; font-weight: 600; line-height: 1.3; word-break: keep-all; }
+  .ui-vt:hover { background: rgba(128, 128, 128, 0.08); }
+  .ui-vt[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .ui-vt[aria-pressed="true"] span { color: var(--hi); }
+  .ui-vt.ui-all { box-shadow: inset 1px 0 0 var(--line-strong), inset 0 -1px 0 var(--line); }
+
+  /* 시안 한 장 */
+  .ui-card { border: 1px solid var(--line-strong); background: var(--surface); min-width: 0; display: grid; }
+  .ui-card-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .ui-card-h .ui-no { font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 1px 6px; background: var(--ink); color: var(--hi); }
+  .ui-card-h h2 { margin: 0; font-size: 17px; letter-spacing: -0.02em; }
+  .ui-card-h .ui-kind { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .ui-card-h .ui-idea { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 13px; max-width: 80ch; }
+  .ui-card-b { padding: 18px 16px; min-width: 0; overflow-x: auto; }
+  .ui-card-f { display: flex; gap: 10px; align-items: baseline; padding: 10px 16px; border-top: 1px dashed var(--line-strong); font-size: 13px; }
+  .ui-card-f b { flex: none; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; background: var(--hi); }
+  .ui-grid-all { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
+  .ui-grid-all .ui-card-h { cursor: pointer; }
+  .ui-grid-all .ui-card-h:hover h2 { text-decoration: underline; text-underline-offset: 3px; }
+  .ui-grid-all .ui-card-b { padding: 14px 12px; }
+  .ui-err { color: var(--bad); font-family: var(--mono); font-size: 12px; }
+
+  /* ── 시안이 함께 쓰는 부품 ── */
+  .vz { display: grid; gap: 14px; min-width: 0; font-size: 13px; }
+  .vz-svg { display: block; width: 100%; height: auto; max-width: 100%; overflow: visible; font-family: var(--sans); }
+  .vz-svg text { fill: var(--ink); }
+  .vz-svg .t-m { font-family: var(--mono); }
+  .vz-svg .t-mu { fill: var(--muted); }
+  .vz-lab { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .vz-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .vz-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .vz-note { font-size: 12.5px; color: var(--muted); margin: 0; max-width: 72ch; }
+  .vz-chip { display: inline-block; font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border: 1px solid var(--line-strong); white-space: nowrap; }
+  .vz-sig { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 7px; white-space: nowrap; }
+  .vz-sig.good { color: var(--good); background: var(--good-bg); }
+  .vz-sig.warn { color: var(--warn); background: var(--warn-bg); }
+  .vz-sig.bad { color: var(--bad); background: var(--bad-bg); }
+  .vz-btn { appearance: none; border: 1px solid var(--line-strong); background: var(--paper); border-radius: 0; padding: 6px 12px; font-size: 12.5px; font-weight: 600; }
+  .vz-btn:hover { border-color: var(--ink); }
+  .vz-btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .vz-rng { width: 100%; accent-color: var(--ink); }
+  .molbox { width: 100%; max-width: 100%; border: 1px solid var(--line); background: var(--paper); display: grid; place-items: center; overflow: hidden; }
+  .molbox .mol { display: block; width: 100%; height: 100%; }
+  .molbox .fallback { font-family: var(--mono); font-size: 10.5px; color: var(--muted); padding: 8px; word-break: break-all; }
+
+  /* ── 아래 도구 띠 ── */
+  .ui-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: var(--night); color: var(--night-fg); border-top: 1px solid rgba(241, 241, 233, 0.32);
+    padding-top: 9px; padding-bottom: calc(9px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); font-family: var(--mono); font-size: 11px; }
+  .ui-tool-btn { background: transparent; color: var(--night-fg); border: 1px solid rgba(241, 241, 233, 0.32); padding: 6px 11px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; white-space: nowrap; border-radius: 0; }
+  .ui-tool-btn:hover { border-color: var(--night-fg); }
+  .ui-tools :focus-visible { outline-color: var(--hi); }
+  .ui-pick-w { position: relative; flex: 0 1 300px; min-width: 0; }
+  .ui-pick-w::after { content: "▾"; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--night-muted); pointer-events: none; }
+  #vpick { appearance: none; -webkit-appearance: none; width: 100%; padding: 6px 28px 6px 10px; border: 1px solid rgba(241, 241, 233, 0.32); border-radius: 0; background: transparent; color: var(--night-fg); font-family: var(--mono); font-size: 12px; text-overflow: ellipsis; }
+  #vpick option, #vpick optgroup { background: var(--night-2); color: var(--night-fg); }
+  .ui-vcount { color: var(--night-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ui-keys { margin-left: auto; display: flex; gap: 12px; color: var(--night-muted); font-size: 10px; white-space: nowrap; }
+  .ui-keys kbd { font-family: var(--mono); font-size: 10px; color: var(--night-fg); border: 1px solid rgba(241, 241, 233, 0.32); padding: 1px 5px; margin-right: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-mq-track, .ui-bd-ctl i { animation: none !important; }
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  }
+  @media (max-width: 1100px) { .ui-grid-all { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 860px) {
+    .ui-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+    .ui-side { border-right: 0; border-bottom: 1px solid var(--line-strong); flex-direction: row; overflow-x: auto; padding-block: 8px; gap: 6px; }
+    .ui-side-h, .ui-side-foot, .ui-grp-h, .ui-st-s { display: none; }
+    .ui-grp { display: contents; }
+    .ui-steps { display: flex; gap: 6px; }
+    .ui-st { grid-template-columns: auto auto; white-space: nowrap; padding: 6px 10px; border: 1px solid var(--line); column-gap: 6px; }
+    .ui-st-n { grid-row: auto; }
+    .ui-wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-block: 16px 32px; }
+    .ui-sh-n { font-size: 44px; }
+    .ui-sh h1 { font-size: 22px; }
+    .ui-q { font-size: 15px; }
+    .top-r .ui-kv:not(.ui-cash) { display: none; }
+    .ui-led { font-size: 16px; }
+    .ui-keys { display: none; }
+    .ui-vtabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    #sprev, #snext, #vall { display: none; }
+    .ui-pick-w { flex: 1 1 160px; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 40 40">
+      <path d="M31.5 7.5A15.5 15.5 0 1 0 31.5 32.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M27.2 12.2A10.7 10.7 0 1 0 27.2 27.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M22.8 16.8A6 6 0 1 0 22.8 23.2" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="ui-page">
+  <header class="ui-top">
+    <div class="ui-brand"><svg aria-hidden="true"><use href="#mark"></use></svg>CRISTA <small>파이프라인 랩</small></div>
+    <div class="ui-co"><span id="co-name">크리스타바이오</span><span class="ui-tick">CRX</span></div>
+    <div class="top-r">
+      <div class="ui-kv"><span>예시 표적</span><b id="kv-t">ACHE · 4EY7</b></div>
+      <div class="ui-kv"><span>게임 날짜</span><b id="kv-d">D+0</b></div>
+      <div class="ui-kv ui-cash"><span>연구비</span><b id="kv-c">$6.000M</b></div>
+    </div>
+  </header>
+  <section class="ui-board" aria-label="학급 전광판 · 다른 모둠 소식">
+    <div class="ui-bd-in"><div class="ui-mq-track" id="mq"></div></div>
+    <div class="ui-bd-ctl"><i aria-hidden="true"></i>LIVE</div>
+  </section>
+  <div class="ui-shell">
+    <aside class="ui-side" id="side" aria-label="파이프라인 단계"></aside>
+    <main class="ui-main" id="main"><div class="ui-wrap" id="wrap"></div></main>
+  </div>
+  <div class="ui-tools">
+    <button type="button" class="ui-tool-btn" id="sprev" aria-label="이전 단계">↑ 단계</button>
+    <button type="button" class="ui-tool-btn" id="snext" aria-label="다음 단계">↓ 단계</button>
+    <button type="button" class="ui-tool-btn" id="vprev" aria-label="이전 시안">← 시안</button>
+    <button type="button" class="ui-tool-btn" id="vnext" aria-label="다음 시안">시안 →</button>
+    <div class="ui-pick-w"><label class="sr" for="vpick">시안 고르기</label><select id="vpick"></select></div>
+    <span class="ui-vcount" id="vcount" aria-live="polite"></span>
+    <button type="button" class="ui-tool-btn" id="vall" aria-pressed="false">10종 모아 보기</button>
+    <span class="ui-keys" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd>단계</span><span><kbd>←</kbd><kbd>→</kbd>시안</span><span><kbd>A</kbd>모아 보기</span></span>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
+<script src="core.js"></script>
+<script src="viz-1.js"></script>
+<script src="viz-2.js"></script>
+<script src="viz-3.js"></script>
+<script src="viz-4.js"></script>
+<script src="viz-5.js"></script>
+<script src="viz-6.js"></script>
+<script src="viz-7.js"></script>
+<script src="viz-8.js"></script>
+<script>
+(() => {
+  "use strict";
+  const CV = window.CV, { esc, pad, STEPS, PHASES, EX, MX } = CV;
+  const $ = (id) => document.getElementById(id);
+  const list = (n) => (window.VIZ[n] || []);
+
+  /* 상태: 단계 n(1~8) · 시안 v(0~9) · 모아 보기 */
+  let n = 3, v = 0, all = false, cleanups = [];
+  const fromHash = () => {
+    const m = /^#s([1-8])(?:v(\d{1,2})|(all))?$/.exec(location.hash || "");
+    if (!m) return;
+    n = +m[1]; v = m[2] ? Math.max(0, Math.min(9, +m[2] - 1)) : 0; all = !!m[3];
+  };
+  fromHash();
+  try { if (!location.hash) { const r = JSON.parse(localStorage.getItem("crista-step-viz") || "null"); if (r) { n = r.n; v = r.v; all = r.all; } } } catch (e) {}
+  const save = () => { try { localStorage.setItem("crista-step-viz", JSON.stringify({ n, v, all })); } catch (e) {} };
+
+  /* 예시 실행에서 단계까지 걸린 날짜 · 남은 연구비(위 띠) */
+  const dayAt = { 1: 0, 2: 0, 3: 2, 4: 4, 5: EX.program.day, 6: EX.ind ? EX.ind.day : 0, 7: EX.trials.length ? EX.trials[EX.trials.length - 1].day : 0, 8: EX.approval.day };
+  const spentAt = (k) => {
+    const c = CV.R.cost; let s = 0;
+    if (k >= 2) s += c.htvs; if (k >= 3) s += c.docking; if (k >= 4) s += c.admet; if (k >= 5) s += c.patent; if (k >= 6) s += c.ind;
+    if (k >= 7) s += EX.trials.reduce((a, t) => a + t.cost, 0); if (k >= 8) s += c.final; return s;
+  };
+
+  /* LED 띠: 다른 모둠 소식(정적 예시) */
+  const NEWS = [
+    ["세움제약 SEU-904 임상 2상 통과", "g", "▲ 8.0%"], ["다온테라퓨틱스 도킹 신기록 -10.90 kcal/mol", "", "▲ 6.4%"],
+    ["미르파마 MIR-810 임상 보류", "r", "▼ 4.0%"], ["세움제약 연구 설비 건설", "", "▲ 2.0%"], ["미르파마 유상증자 공시", "r", "▼ 3.0%"],
+    ["시가총액 1위 바뀜 — 세움제약", "", ""]
+  ];
+  const seg = () => `<div class="ui-mq-seg">${NEWS.map(([t, c, d]) => `<span class="ui-led ${c}">${esc(t)}${d ? "  " + d : ""}</span>`).join("")}</div>`;
+  $("mq").innerHTML = seg() + seg();
+
+  function renderSide() {
+    $("side").innerHTML = `<p class="ui-side-h">신약 개발 파이프라인 · 8단계</p>` + PHASES.map((p) => {
+      const items = STEPS.filter((s) => s.ph === p.n);
+      return `<div class="ui-grp"><p class="ui-grp-h"><b>${p.n}.</b>${esc(p.t)}</p><ol class="ui-steps">${items.map((s) =>
+        `<li><button type="button" class="ui-st" data-step="${s.n}" ${s.n === n ? 'aria-current="step"' : ""} aria-label="${s.code} ${esc(s.t)}">
+          <span class="ui-st-n">${s.code}</span><span class="ui-st-t">${esc(s.t)}</span><span class="ui-st-s">${esc(s.sub)} · 시안 ${list(s.n).length}</span></button></li>`).join("")}</ol></div>`;
+    }).join("") + `<div class="ui-side-foot"><span>예시 실행 <b>알츠하이머 → ACHE</b></span><span>리드 <b>${esc(EX.lead ? EX.lead.name : "—")}</b></span><span>모든 시안이 같은 값을 그립니다</span></div>`;
+  }
+
+  function cardHTML(it, i, compact) {
+    let body;
+    try { body = it.render(); } catch (e) { body = `<p class="ui-err">그리기 오류: ${esc(e.message)}</p>`; console.error(e); }
+    return `<article class="ui-card" data-i="${i}">
+      <header class="ui-card-h" ${compact ? `data-open="${i}" role="button" tabindex="0" aria-label="${pad(i + 1)} ${esc(it.name)} 크게 보기"` : ""}>
+        <span class="ui-no">${n}.${pad(i + 1)}</span><h2>${esc(it.name)}</h2><span class="ui-kind">${esc(it.kind || "")}</span>
+        <p class="ui-idea">${esc(it.idea || "")}</p></header>
+      <div class="ui-card-b"><div class="vz" data-vz="${i}">${body}</div></div>
+      <footer class="ui-card-f"><b>배우는 것</b><span>${esc(it.learn || "")}</span></footer></article>`;
+  }
+
+  function mountAll() {
+    for (const c of cleanups) { try { c && c(); } catch (e) {} }
+    cleanups = [];
+    for (const el of document.querySelectorAll("[data-vz]")) {
+      const it = list(n)[+el.dataset.vz];
+      if (it && it.mount) { try { cleanups.push(it.mount(el)); } catch (e) { console.error(e); } }
+    }
+    CV.drawMols($("wrap"));
+  }
+
+  function renderMain() {
+    const st = STEPS[n - 1], L = list(n);
+    v = Math.max(0, Math.min(L.length - 1, v));
+    const head = `<header class="ui-sh"><div class="ui-sh-n" aria-hidden="true">${st.code}</div>
+      <p class="ui-eyebrow">${esc(PHASES[st.ph - 1].n + ". " + PHASES[st.ph - 1].t)} · ${esc(st.sub)} · ${st.cost ? MX(st.cost) : "무료"}</p>
+      <h1>${esc(st.t)}</h1><p class="ui-q">${esc(st.q)}</p></header>`;
+    const tabs = `<nav class="ui-vtabs" aria-label="${st.code} 시각화 시안">${L.map((it, i) =>
+      `<button type="button" class="ui-vt" data-v="${i}" aria-pressed="${!all && i === v}"><span>${n}.${pad(i + 1)}</span><b>${esc(it.name)}</b></button>`).join("")}
+      <button type="button" class="ui-vt ui-all" data-all="1" aria-pressed="${all}"><span>ALL</span><b>10종 모아 보기</b></button></nav>`;
+    const body = !L.length ? `<p class="ui-err">이 단계의 시안 파일을 불러오지 못했습니다.</p>`
+      : all ? `<div class="ui-grid-all">${L.map((it, i) => cardHTML(it, i, true)).join("")}</div>` : cardHTML(L[v], v, false);
+    $("wrap").innerHTML = head + tabs + body;
+    mountAll();
+    $("kv-d").textContent = "D+" + dayAt[n];
+    $("kv-c").textContent = MX(CV.R.startCash - spentAt(n));
+  }
+
+  function renderTools() {
+    $("vpick").innerHTML = STEPS.map((s) => `<optgroup label="${s.code} ${esc(s.t)}">${list(s.n).map((it, i) =>
+      `<option value="${s.n}:${i}" ${s.n === n && i === v ? "selected" : ""}>${s.n}.${pad(i + 1)} ${esc(it.name)}</option>`).join("")}</optgroup>`).join("");
+    $("vcount").textContent = all ? `${STEPS[n - 1].code} · 10종 모아 보기` : `${STEPS[n - 1].code} · ${pad(v + 1)} / ${pad(list(n).length)}`;
+    $("vall").setAttribute("aria-pressed", String(all));
+  }
+
+  function go(nn, vv, aa, keepScroll) {
+    n = Math.max(1, Math.min(8, nn)); v = vv; all = aa;
+    const h = `#s${n}${all ? "all" : "v" + pad(v + 1)}`;
+    try { if (location.hash !== h) history.replaceState(null, "", h); } catch (e) {}
+    save(); renderSide(); renderMain(); renderTools();
+    if (!keepScroll) $("main").scrollTop = 0;
+  }
+
+  document.addEventListener("click", (e) => {
+    const s = e.target.closest("[data-step]"); if (s) return go(+s.dataset.step, 0, all);
+    const t = e.target.closest(".ui-vt[data-v]"); if (t) return go(n, +t.dataset.v, false);
+    if (e.target.closest(".ui-vt[data-all]")) return go(n, v, !all);
+    const o = e.target.closest("[data-open]"); if (o) return go(n, +o.dataset.open, false);
+  });
+  document.addEventListener("keydown", (e) => {
+    const o = e.target.closest && e.target.closest("[data-open]");
+    if (o && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); return go(n, +o.dataset.open, false); }
+  });
+  $("sprev").onclick = () => go(n - 1, 0, all);
+  $("snext").onclick = () => go(n + 1, 0, all);
+  $("vprev").onclick = () => go(n, (v + 9) % 10, false);
+  $("vnext").onclick = () => go(n, (v + 1) % 10, false);
+  $("vall").onclick = () => go(n, v, !all);
+  $("vpick").onchange = (e) => { const [a, b] = e.target.value.split(":").map(Number); go(a, b, false); };
+  addEventListener("keydown", (e) => {
+    if (e.target.closest && e.target.closest("input, select, textarea")) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "ArrowRight") { e.preventDefault(); go(n, (v + 1) % 10, false); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); go(n, (v + 9) % 10, false); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); go(n + 1, 0, all); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); go(n - 1, 0, all); }
+    else if (e.key === "a" || e.key === "A") go(n, v, !all);
+  });
+  addEventListener("hashchange", () => { fromHash(); go(n, v, all, true); });
+
+  go(n, v, all, true);
+})();
+</script>

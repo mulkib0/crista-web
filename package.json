@@ -21,6 +21,7 @@
     "dev:server": "node tools/with-local-env.mjs npm run dev -w @crista-web/server",
     "teacher:create": "node tools/with-local-env.mjs npm run teacher:create -w @crista-web/server --",
     "e2e:w1": "node tools/with-local-env.mjs node apps/server/scripts/e2e-w1.ts",
+    "e2e:parallel": "node tools/with-local-env.mjs node apps/server/scripts/e2e-parallel.ts",
     "dev:web": "npm run dev -w @crista-web/web",
     "build:web": "npm run build -w @crista-web/web",
     "db:status:hosted": "node tools/with-hosted-env.mjs node db/migrate.mjs --status",

@@ -58,6 +58,8 @@ interface Prepared {
   params: Record<string, string | number | boolean>;
   summary: string;
   targetId: string;
+  /** 입력을 확인한 표적 버전 — 접수 트랜잭션에서 그 사이 표적이 바뀌지 않았는지 다시 본다. */
+  revisionId: string;
   smiles: string | null;
   label: string | null;
   parentJobId: string | null;
@@ -80,19 +82,23 @@ export async function startJob(deps: Deps, account: AccountView, raw: unknown): 
   const jobId = await withTx(deps.db, async (tx) => {
     await tx.query('select id from web.teams where id = $1 for update', [who.teamId]);
     await ensureTeamRows(tx, who.teamId);
+    // 표적 바꾸기(programs for update)와 줄 세운다 — 입력을 확인한 뒤 표적 버전이 바뀌었으면 접수하지 않는다.
+    await tx.query('select 1 from web.programs where team_id = $1 for share', [who.teamId]);
     const dup = await tx.query<{ id: string }>('select id from web.jobs where team_id = $1 and request_id = $2', [who.teamId, requestId]);
     if (dup.rows[0]) return { id: dup.rows[0].id, created: false };
+    const current = await loadProgramRow(tx, who.teamId);
+    if (current.revision_id !== prepared.revisionId) throw new ApiError(409, 'stale', '그 사이 모둠 표적이 바뀌었어요. 화면을 새로 고쳐 다시 해 주세요.');
     const active = await tx.query<{ n: number }>(`select count(*)::int as n from web.jobs where team_id = $1 and status in ('queued', 'running')`, [who.teamId]);
     if (active.rows[0]!.n >= TEAM_ACTIVE_MAX) throw new ApiError(429, 'too_many_jobs', `모둠에서 동시에 돌릴 수 있는 작업은 ${TEAM_ACTIVE_MAX}개예요. 하나가 끝나면 다시 해 주세요.`, { retryAfterSec: 10 });
     const balance = await balanceOf(tx, who.teamId);
     if (balance < cost) throw new ApiError(402, 'insufficient_funds', '연구비가 모자라요.');
     const { stage, facility } = STAGE[step];
     const inserted = await tx.query<{ id: string }>(
-      `insert into web.jobs (team_id, class_id, created_by, request_id, step, stage, facility, params, input_summary, target_id, smiles, label, parent_job_id, cost_cents, timeout_at)
-       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, now() + make_interval(mins => $15))
+      `insert into web.jobs (team_id, class_id, created_by, request_id, step, stage, facility, params, input_summary, target_id, program_revision_id, smiles, label, parent_job_id, cost_cents, timeout_at)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, now() + make_interval(mins => $16))
        returning id`,
       [who.teamId, who.classId, account.userId, requestId, step, stage, facility, JSON.stringify(prepared.params), prepared.summary,
-        prepared.targetId, prepared.smiles, prepared.label, prepared.parentJobId, cost, JOB_DEADLINE_MIN],
+        prepared.targetId, prepared.revisionId, prepared.smiles, prepared.label, prepared.parentJobId, cost, JOB_DEADLINE_MIN],
     );
     const id = inserted.rows[0]!.id;
     if (cost > 0) {
@@ -128,16 +134,19 @@ async function loadJob(db: Pool, id: string): Promise<JobRow | null> {
 async function prepare(deps: Deps, teamId: string, step: JobStep, params: Record<string, unknown>): Promise<Prepared> {
   const program = await loadProgramRow(deps.db, teamId);
   const targetId = program.target_id;
-  if (!targetId) throw new ApiError(409, 'step_locked', '1.1 에서 표적을 먼저 정해 주세요.');
+  const revisionId = program.revision_id;
+  if (!targetId || !revisionId) throw new ApiError(409, 'step_locked', '1.1 에서 표적을 먼저 정해 주세요.');
 
+  // 선행 단계 · 부모 작업은 지금 표적 버전 것만 — 표적을 바꿨다 돌아와도 옛 버전의 결과는 근거가 아니다.
   const succeeded = async (s: JobStep) =>
-    (await deps.db.query(`select 1 from web.jobs where team_id = $1 and step = $2 and target_id = $3 and status = 'succeeded' limit 1`, [teamId, s, targetId])).rowCount! > 0;
+    (await deps.db.query(`select 1 from web.jobs where team_id = $1 and step = $2 and program_revision_id = $3 and status = 'succeeded' limit 1`, [teamId, s, revisionId])).rowCount! > 0;
 
   if (step === '1.2') {
     const p = checkScreenParams(params);
     return {
       step,
       targetId,
+      revisionId,
       smiles: null,
       label: null,
       parentJobId: null,
@@ -162,8 +171,9 @@ async function prepare(deps: Deps, teamId: string, step: JobStep, params: Record
     let parentJobId: string | null = null;
     if (typeof params.parentJobId === 'string' && params.parentJobId) {
       if (!UUID.test(params.parentJobId)) throw badRequest('부모 작업 id 가 형식에 맞지 않아요.');
-      const parent = await deps.db.query('select 1 from web.jobs where id = $1 and team_id = $2', [params.parentJobId, teamId]);
-      if (!parent.rowCount) throw badRequest('부모 분자는 우리 모둠의 작업이어야 해요.');
+      const parent = await deps.db.query<{ program_revision_id: string | null }>('select program_revision_id from web.jobs where id = $1 and team_id = $2', [params.parentJobId, teamId]);
+      if (!parent.rows[0]) throw badRequest('부모 분자는 우리 모둠의 작업이어야 해요.');
+      if (parent.rows[0].program_revision_id !== revisionId) throw new ApiError(409, 'step_locked', '부모 분자는 지금 표적으로 낸 작업이어야 해요.');
       parentJobId = params.parentJobId;
     }
     // 과금 전에 워커 RDKit 로 확인 — 계산할 수 없는 분자는 여기서 거절하고 정규 SMILES 로 바꿔 보낸다.
@@ -179,6 +189,7 @@ async function prepare(deps: Deps, teamId: string, step: JobStep, params: Record
     return {
       step,
       targetId,
+      revisionId,
       smiles: canonical,
       label,
       parentJobId,
@@ -191,16 +202,17 @@ async function prepare(deps: Deps, teamId: string, step: JobStep, params: Record
   if (!(await succeeded('2.1'))) throw new ApiError(409, 'step_locked', '2.1 도킹을 먼저 한 번 끝내 주세요.');
   const dockingJobId = typeof params.dockingJobId === 'string' ? params.dockingJobId : '';
   if (!UUID.test(dockingJobId)) throw badRequest('ADMET 로 볼 도킹 결과를 골라 주세요.');
-  const dock = await deps.db.query<{ status: string; target_id: string | null; canonical_smiles: string | null; smiles: string | null; label: string | null }>(
-    `select status, target_id, canonical_smiles, smiles, label from web.jobs where id = $1 and team_id = $2 and step = '2.1'`,
+  const dock = await deps.db.query<{ status: string; program_revision_id: string | null; canonical_smiles: string | null; smiles: string | null; label: string | null }>(
+    `select status, program_revision_id, canonical_smiles, smiles, label from web.jobs where id = $1 and team_id = $2 and step = '2.1'`,
     [dockingJobId, teamId],
   );
   const d = dock.rows[0];
-  if (!d || d.status !== 'succeeded' || d.target_id !== targetId) throw new ApiError(409, 'step_locked', '지금 표적으로 끝난 우리 모둠의 도킹 결과만 ADMET 로 볼 수 있어요.');
+  if (!d || d.status !== 'succeeded' || d.program_revision_id !== revisionId) throw new ApiError(409, 'step_locked', '지금 표적으로 끝난 우리 모둠의 도킹 결과만 ADMET 로 볼 수 있어요.');
   const smiles = d.canonical_smiles ?? d.smiles!;
   return {
     step,
     targetId,
+    revisionId,
     smiles,
     label: d.label,
     parentJobId: dockingJobId,

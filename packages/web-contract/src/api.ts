@@ -2,6 +2,7 @@
  * REST 규격 — 경로 · 요청 · 응답 모양(서버 `apps/server/src/routes.ts` 가 이 모양을 지킨다).
  * 모든 오류 응답은 `ApiErrorBody` 다. 세션은 HttpOnly 쿠키(`SESSION_COOKIE`)라 화면 스크립트는 토큰을 모른다.
  */
+import type { NoteView } from './pipeline.ts';
 import type { Assignment, Avatar } from './rules.ts';
 
 export const SESSION_COOKIE = 'crista_web_sid';
@@ -38,10 +39,13 @@ export type ErrorCode =
   | 'invalid_input'
   | 'worker_unavailable'
   | 'too_many_jobs'
-  | 'claimed';
+  | 'claimed'
+  // 모둠 동시 조작(0003) — 화면이 읽은 버전이 낡았다(리드 · 노트 · 표적 바뀜).
+  | 'stale';
 
 export interface ApiErrorBody {
-  error: { code: ErrorCode; message: string; retryAfterSec?: number; team?: TeamView };
+  /** `note` — 노트 칸 409 `stale` 때 지금 칸(상대 본문 · 버전). 칸이 아직 없으면 생략. */
+  error: { code: ErrorCode; message: string; retryAfterSec?: number; team?: TeamView; note?: NoteView };
 }
 
 // ── 모양 ──

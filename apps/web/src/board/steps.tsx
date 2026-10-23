@@ -106,7 +106,8 @@ function useAction() {
 }
 
 const currentTarget = (board: BoardResponse) => board.diseases.find((d) => d.targetId === board.program.targetId) ?? null;
-const jobsOf = (board: BoardResponse, step: '1.2' | '2.1' | '2.2') => board.jobs.filter((j) => j.step === step && j.targetId === board.program.targetId);
+/** 지금 표적 버전의 작업만 — 표적을 바꿨다 돌아와도 옛 버전의 결과는 섞지 않는다. */
+const jobsOf = (board: BoardResponse, step: '1.2' | '2.1' | '2.2') => board.jobs.filter((j) => j.step === step && j.revisionId === board.program.revisionId);
 
 function Next({ step, goStep, label }: { step: StepView; goStep: (id: StepId) => void; label: StepId }) {
   return (
@@ -590,7 +591,7 @@ export function Step22({ board, step, bench, setBench, reload, goStep }: StepPro
             </div>
             <div className="acts" style={{ marginTop: 12 }}>
               <button className="btn film" type="button" disabled={!lead || act.busy} onClick={() => void act.run(async () => {
-                await api.put(API.lead, { leadJobId: lead, backupJobId: backup || null });
+                await api.put(API.lead, { leadJobId: lead, backupJobId: backup || null, expectedVersion: board.program.leadVersion });
                 reload();
               })}>주력 리드 · 백업 지정</button>
               {board.program.lead && <span className="note">지금 리드: <b>{board.program.lead.label ?? board.program.lead.smiles.slice(0, 20)}</b>{board.program.backup ? ` · 백업 ${board.program.backup.label ?? ''}` : ''}</span>}
