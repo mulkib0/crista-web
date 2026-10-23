@@ -1,43 +1,71 @@
 /**
- * 교사 화면(설계 §9) — W2 범위: 학급 만들기(이름 · 모둠 수 N · 배정 방식 · 정원) · 학급 코드(다시 만들기 · 닫기 · 열기) ·
- * 명단 · 모둠 배정 · 모둠 등기 현황. 시계 · 판정 정정 · Series 승인은 W4 · W5.
+ * 교사 화면(설계 §9 · learning-grant §5 교사 화면) — 학생 ③ 화면과 같은 '둥근 섬' 틀: 위 띠 · 전광판 01 LED 띠 · 사이드바 섬(4묶음 칸) ·
+ * 머리 섬(칸 제목 + ① 학급 게임 시계) · 본문 섬.
+ *
+ * 칸(apps/web/src/teacher/):
+ *   ① 모둠 진행(지금 단계 · 막힌 이유 · 연구 노트) · 학급 · 명단(만들기 · 학생 받기 · 배정)
+ *   ③ 서류 심사(대기 · 플래그 · 수동 판정 · 정정) · ④ 임상 판정(다시 시뮬레이션 · 직접 판정 · 참고 판정)
+ *   ⑤ 학습 연구비(현황 · 이의 · 정정 · 면제) · ⑥ 3.2 동물 수(윤리 토론)
+ *   ⑦ 전광판 · 마감(FMARKET `TeacherMarket` — 마감 시각 · 지금 마감 · 최종 순위 · 공지) · ⑧ AI 사용량
+ * 위 띠의 [프로젝터 보기]는 FMARKET 의 큰 글자 전광판 + 순위를 바로 연다.
+ * 교사 WS `teacher.alert`(교사 채널)가 오면 알림 줄에 띄우고, 각 칸의 목록을 다시 읽는다(hooks.ts `classNews`).
  */
-import { useCallback, useEffect, useState, type FormEvent } from 'react';
-import {
-  API,
-  checkClassInput,
-  DEFAULT_ASSIGNMENT,
-  DEFAULT_MAX_STUDENTS,
-  type Assignment,
-  type ServerMessage,
-  type TeacherClassDetail,
-  type TeacherClassView,
-} from '@crista-web/web-contract';
+import { useCallback, useEffect, useState } from 'react';
+import { API, type ServerMessage, type TeacherClassDetail, type TeacherClassView } from '@crista-web/web-contract';
 import type { Nav } from '../App.tsx';
 import { api, message } from '../api.ts';
-import { ink } from '../ink.ts';
+import { LedBand } from '../board/market/LedBand.tsx';
+import { Projector, TeacherMarket } from '../board/market/TeacherMarket.tsx';
+import { useLocalTab } from '../board/ui/index.ts';
+import { ClassAdmin } from '../teacher/ClassAdmin.tsx';
+import { ClinicalView } from '../teacher/ClinicalView.tsx';
+import { ClockControl } from '../teacher/ClockControl.tsx';
+import { EthicsView } from '../teacher/EthicsView.tsx';
+import { ago, useTeacherAlerts, type TeacherAlert } from '../teacher/hooks.ts';
+import { LearnView } from '../teacher/LearnView.tsx';
+import { LlmUsageView } from '../teacher/LlmUsageView.tsx';
+import { NAV_GROUPS, SECTION_META, SECTIONS, type TeacherSection } from '../teacher/nav.ts';
+import { ProgressView, useProgress } from '../teacher/ProgressView.tsx';
+import { ReviewsView } from '../teacher/ReviewsView.tsx';
+import { teamLookup } from '../teacher/TeamTag.tsx';
+import '../teacher/teacher.css';
 import { socket } from '../ws.ts';
+
+const DETAIL_NEWS = new Set<ServerMessage['type']>(['team.joined', 'team.registered', 'team.updated', 'member.assigned', 'member.enrolled']);
+
+/** 알림 → 그 일을 처리하는 칸. 임상 판정 대기도 'review_manual' 로 오므로 글로 가른다. */
+const alertSection = (a: TeacherAlert): TeacherSection =>
+  a.kind === 'appeal' || a.kind === 'learn_flagged' ? 'learn' : a.message.includes('임상') ? 'clinical' : 'reviews';
 
 export function Teacher({ nav }: { nav: Nav }) {
   const [classes, setClasses] = useState<TeacherClassView[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [detail, setDetail] = useState<TeacherClassDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: '', teamCount: 4, assignment: DEFAULT_ASSIGNMENT as Assignment, maxStudents: DEFAULT_MAX_STUDENTS });
+  const [section, setSection] = useLocalTab<TeacherSection>('teacher:section', SECTIONS, 'progress');
+  const [projector, setProjector] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const classId = detail?.id ?? null;
+  const progress = useProgress(classId);
+  const { alerts, clear } = useTeacherAlerts(classId);
 
   const loadList = useCallback(async () => {
     try {
       const res = await api.get<{ classes: TeacherClassView[] }>(API.classes);
       setClasses(res.classes);
+      setError(null);
       setSelected((cur) => cur ?? res.classes[0]?.id ?? null);
     } catch (err) {
       setError(message(err));
+    } finally {
+      setLoaded(true);
     }
   }, []);
 
   const loadDetail = useCallback(async (id: string) => {
     try {
       setDetail(await api.get<TeacherClassDetail>(API.classDetail(id)));
+      setError(null);
     } catch (err) {
       setError(message(err));
     }
@@ -50,130 +78,146 @@ export function Teacher({ nav }: { nav: Nav }) {
   useEffect(
     () =>
       socket.on((msg: ServerMessage) => {
-        if ('classId' in msg && msg.classId === selected && selected) void loadDetail(selected);
+        if (selected && DETAIL_NEWS.has(msg.type) && 'classId' in msg && msg.classId === selected) void loadDetail(selected);
       }),
     [selected, loadDetail],
   );
+  // 학급이 없으면 학급 칸부터.
+  useEffect(() => {
+    if (loaded && !classes.length && section !== 'class') setSection('class');
+  }, [loaded, classes.length, section, setSection]);
 
-  async function create(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    const checked = checkClassInput(form);
-    if (!checked.ok) return setError(checked.message);
-    try {
-      const created = await api.post<TeacherClassDetail>(API.classes, checked.value);
-      // 새 학급 채널은 다시 붙어야 받는다.
-      socket.disconnect();
-      socket.connect();
-      await loadList();
-      setSelected(created.id);
-      setDetail(created);
-      setForm((f) => ({ ...f, name: '' }));
-    } catch (err) {
-      setError(message(err));
-    }
+  async function created(next: TeacherClassDetail) {
+    // 새 학급 채널(학급 · 교사)은 다시 붙어야 받는다.
+    socket.disconnect();
+    socket.connect();
+    await loadList();
+    setSelected(next.id);
+    setDetail(next);
   }
 
-  async function code(action: 'regenerate' | 'close' | 'open') {
-    if (!detail) return;
-    try {
-      await api.post(API.classCode(detail.id), { action });
-      await loadDetail(detail.id);
-      await loadList();
-    } catch (err) {
-      setError(message(err));
-    }
-  }
-
-  async function assign(userId: string, teamId: string) {
-    if (!detail) return;
-    try {
-      setDetail(await api.put<TeacherClassDetail>(API.assignTeam(detail.id, userId), { teamId: teamId || null }));
-    } catch (err) {
-      setError(message(err));
-    }
-  }
+  const teams = teamLookup(detail);
+  const counts = countWaiting(progress.data?.teams ?? []);
+  const meta = SECTION_META[section];
 
   return (
-    <div className="teacher">
-      <header className="row" style={{ justifyContent: 'space-between' }}>
-        <div className="brand">◇ CRISTA <small>교사 · {nav.me.account.displayName}</small></div>
-        <button className="btn sm" type="button" onClick={() => void nav.logout()}>나가기</button>
-      </header>
-      {error && <p className="err" role="alert">{error}</p>}
-      <div className="split">
-        <section className="panel">
-          <h2 className="ptitle">학급 만들기</h2>
-          <form onSubmit={create} noValidate>
-            <div className="fld"><label className="lab" htmlFor="cn">학급 이름</label><input id="cn" className="txt" value={form.name} maxLength={40} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="예: 3학년 2반 생명과학" /></div>
-            <div className="fld"><label className="lab" htmlFor="tc">모둠 수 N(2~8)</label><input id="tc" className="txt" type="number" min={2} max={8} value={form.teamCount} onChange={(e) => setForm({ ...form, teamCount: Number(e.target.value) })} /></div>
-            <div className="fld"><label className="lab" htmlFor="ms">학급 정원</label><input id="ms" className="txt" type="number" min={1} max={200} value={form.maxStudents} onChange={(e) => setForm({ ...form, maxStudents: Number(e.target.value) })} /></div>
-            <div className="fld">
-              <span className="lab">모둠 배정</span>
-              <label className="chk"><input type="radio" name="as" checked={form.assignment === 'walk-in'} onChange={() => setForm({ ...form, assignment: 'walk-in' })} /> walk-in — 학생이 처음 문을 연 사옥이 그 모둠</label>
-              <label className="chk"><input type="radio" name="as" checked={form.assignment === 'assigned'} onChange={() => setForm({ ...form, assignment: 'assigned' })} /> assigned — 교사가 명단에서 배정</label>
-            </div>
-            <div className="acts" style={{ marginTop: 12 }}><button className="btn pri" type="submit">학급 만들기</button></div>
-          </form>
-          {classes.length > 0 && (
-            <div className="fld" style={{ marginTop: 18 }}>
-              <label className="lab" htmlFor="sel">내 학급</label>
-              <select id="sel" className="txt" value={selected ?? ''} onChange={(e) => setSelected(e.target.value)}>
+    <div className="shell tc">
+      <header className="top">
+        <div className="brand">
+          <svg className="mark" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M31.5 7.5A15.5 15.5 0 1 0 31.5 32.5M27.2 12.2A10.7 10.7 0 1 0 27.2 27.8M22.8 16.8A6 6 0 1 0 22.8 23.2" />
+          </svg>
+          CRISTA <small>교사</small>
+        </div>
+        <div className="co">
+          {classes.length > 0 ? (
+            <>
+              <label className="sr" htmlFor="tc-class">내 학급</label>
+              <select id="tc-class" className="tc-class" value={selected ?? ''} onChange={(e) => setSelected(e.target.value)}>
                 {classes.map((c) => <option key={c.id} value={c.id}>{c.name} · 학생 {c.studentCount}/{c.maxStudents}</option>)}
               </select>
+            </>
+          ) : <b className="muted">학급 없음</b>}
+        </div>
+        <div className="top-r">
+          {(counts.total > 0 || alerts.length > 0) && (
+            <button type="button" className="tb-btn tc-wait" onClick={() => setSection(counts.reviews ? 'reviews' : counts.clinical ? 'clinical' : counts.learn ? 'learn' : 'progress')}>
+              <span className="tb-k">선생님 확인</span>
+              <b>대기 {counts.total}건{alerts.length ? ` · 새 알림 ${alerts.length}` : ''}</b>
+            </button>
+          )}
+          <span className="kv"><span>교사</span><b className="tc-me">{nav.me.account.displayName}</b></span>
+          {detail && <button type="button" className="btn sm pri" onClick={() => setProjector(true)}>프로젝터 보기</button>}
+          <button className="btn sm ghost" type="button" onClick={() => void nav.logout()}>나가기</button>
+        </div>
+      </header>
+
+      {detail && <LedBand classId={detail.id} />}
+
+      <div className="tc-body">
+        <nav className="isl side tc-side" aria-label="교사 화면 칸">
+          <div className="side-name">
+            <b>{detail?.name ?? '학급을 만들어 주세요'}</b>
+            {detail && <span className="mini muted">학생 {detail.roster.length}명 · 모둠 {detail.teamCount}개 · {detail.codeOpen ? '학생 받는 중' : '학생 받기 닫힘'}</span>}
+          </div>
+          <div className="side-groups">
+            {NAV_GROUPS.map((grp) => (
+              <div key={grp.g} className="grp" data-g={grp.g} data-gs="run">
+                <h2 className="grp-h">{grp.title}</h2>
+                <ul className="steps">
+                  {grp.items.map((it) => {
+                    const n = it.id === 'reviews' ? counts.reviews : it.id === 'clinical' ? counts.clinical : it.id === 'learn' ? counts.learn : 0;
+                    const disabled = !detail && it.id !== 'class';
+                    return (
+                      <li key={it.id}>
+                        <button type="button" className="st" aria-current={section === it.id ? 'page' : undefined} disabled={disabled} onClick={() => setSection(it.id)}>
+                          <span className="st-n">{it.no}</span>
+                          <span className="st-t">{it.label}</span>
+                          <span className="st-k">{n ? <span className="tc-badge" aria-label={`대기 ${n}건`}>{n}</span> : ''}</span>
+                          <span className="st-s">{it.sub}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+          {alerts.length > 0 && (
+            <div className="tc-alerts" aria-label="새 알림">
+              <div className="row" style={{ justifyContent: 'space-between' }}>
+                <span className="side-h">새 알림 {alerts.length}</span>
+                <button type="button" className="btn sm ghost" onClick={clear}>지우기</button>
+              </div>
+              <ul>
+                {alerts.slice(0, 5).map((a) => (
+                  <li key={`${a.refId}-${a.at}`}>
+                    <button type="button" onClick={() => setSection(alertSection(a))}>
+                      <span>{a.message}</span>
+                      <small className="mono">{teams.get(a.teamId ?? '')?.ticker ?? ''} · {ago(new Date(a.at).toISOString())}</small>
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
+        </nav>
+
+        <section className="isl isl-head tc-head" aria-labelledby="tc-h">
+          <div className="tc-head-l">
+            <h1 id="tc-h"><span className="hd-n">{meta.no}</span> {meta.label}</h1>
+            <p className="lede">{meta.lede}</p>
+          </div>
+          {detail && <ClockControl classId={detail.id} />}
         </section>
-        {detail ? (
-          <section className="panel">
-            <h2 className="ptitle">{detail.name} <small>{detail.assignment} · 모둠 {detail.teamCount}개 · 모둠 정원 {detail.teamCapacity}</small></h2>
-            <p className="lab">학급 코드 — 학생에게 알려 주세요</p>
-            <p className="code-big" style={{ margin: '0 0 8px', opacity: detail.codeOpen ? 1 : 0.4 }}>{detail.code}</p>
-            <div className="acts">
-              <button className="btn sm" type="button" onClick={() => void code('regenerate')}>새 코드</button>
-              {detail.codeOpen ? <button className="btn sm" type="button" onClick={() => void code('close')}>코드 닫기</button> : <button className="btn sm" type="button" onClick={() => void code('open')}>코드 열기</button>}
-              <span className="note">가입 주소: {location.origin}{import.meta.env.BASE_URL}</span>
+
+        <main className="tc-main">
+          {error && <p className="err" role="alert">{error} <button type="button" className="btn sm ghost" onClick={() => { setError(null); void loadList(); }}>다시 읽기</button></p>}
+          {section === 'class' || !detail ? (
+            <ClassAdmin detail={detail} onCreated={created} onChanged={async (next) => { if (next) setDetail(next); else if (detail) await loadDetail(detail.id); await loadList(); }} />
+          ) : section === 'market' ? (
+            <div className="isl tc-isl tc-market"><TeacherMarket classId={detail.id} /></div>
+          ) : (
+            <div className="isl tc-isl">
+              {section === 'progress' && <ProgressView live={progress} go={setSection} />}
+              {section === 'reviews' && <ReviewsView classId={detail.id} teams={teams} onChanged={progress.reload} />}
+              {section === 'clinical' && <ClinicalView classId={detail.id} teams={teams} onChanged={progress.reload} />}
+              {section === 'learn' && <LearnView classId={detail.id} teams={teams} onChanged={progress.reload} />}
+              {section === 'ethics' && <EthicsView classId={detail.id} />}
+              {section === 'llm' && <LlmUsageView classId={detail.id} />}
             </div>
-            <h3 className="ptitle" style={{ marginTop: 18 }}>모둠</h3>
-            <div className="tbl-w"><table>
-              <thead><tr><th>부지</th><th>스타트업</th><th className="num">인원</th><th>등기</th></tr></thead>
-              <tbody>
-                {detail.teams.map((t) => (
-                  <tr key={t.id}>
-                    <td><i className="inkd" style={{ background: ink(t.ink).base }} /> {t.plot}모둠</td>
-                    <td>{t.startupName ? <><b>{t.startupName}</b> <span className="mono mini">{t.ticker}</span></> : <span className="muted">등기 전</span>}</td>
-                    <td className="num">{t.memberCount}/{t.capacity}</td>
-                    <td className="mini">{t.registeredByName ?? ''}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table></div>
-            <h3 className="ptitle" style={{ marginTop: 18 }}>명단 <small>{detail.roster.length}명</small></h3>
-            {detail.roster.length === 0 ? <p className="empty">아직 가입한 학생이 없어요.</p> : (
-              <div className="tbl-w"><table>
-                <thead><tr><th>이름</th><th>아이디</th><th>캐릭터</th><th>모둠</th></tr></thead>
-                <tbody>
-                  {detail.roster.map((r) => (
-                    <tr key={r.userId}>
-                      <td>{r.displayName}</td>
-                      <td className="mono mini">{r.loginId}</td>
-                      <td className="mono mini">{r.avatar?.toUpperCase() ?? '—'}</td>
-                      <td>
-                        <select className="txt" value={r.teamId ?? ''} onChange={(e) => void assign(r.userId, e.target.value)} aria-label={`${r.displayName} 모둠`}>
-                          <option value="">— 없음 —</option>
-                          {detail.teams.map((t) => <option key={t.id} value={t.id}>{t.plot}모둠{t.startupName ? ` · ${t.startupName}` : ''}</option>)}
-                        </select>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table></div>
-            )}
-          </section>
-        ) : (
-          <section className="empty">학급을 만들면 학급 코드가 나와요.</section>
-        )}
+          )}
+        </main>
       </div>
+      {projector && detail && <Projector classId={detail.id} onClose={() => setProjector(false)} />}
     </div>
   );
+}
+
+function countWaiting(teams: Array<{ stuck: Array<{ kind: string; teacher: boolean; count?: number }> }>) {
+  const sum = (kind: string) => teams.reduce((n, t) => n + t.stuck.filter((s) => s.teacher && s.kind === kind).reduce((m, s) => m + (s.count ?? 1), 0), 0);
+  const reviews = sum('review');
+  const clinical = sum('trial');
+  const learn = sum('appeal');
+  return { reviews, clinical, learn, total: reviews + clinical + learn };
 }

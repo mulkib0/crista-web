@@ -3,7 +3,7 @@
  */
 import { createHash, timingSafeEqual } from 'node:crypto';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { ApiErrorBody, ErrorCode, NoteView, TeamView } from '@crista-web/web-contract';
+import type { ApiErrorBody, DocSectionView, ErrorCode, NoteView, TeamView } from '@crista-web/web-contract';
 
 export class ApiError extends Error {
   readonly status: number;
@@ -11,8 +11,9 @@ export class ApiError extends Error {
   readonly retryAfterSec: number | undefined;
   readonly team: TeamView | undefined;
   readonly note: NoteView | undefined;
+  readonly section: DocSectionView | undefined;
 
-  constructor(status: number, code: ErrorCode, message: string, extra: { retryAfterSec?: number; team?: TeamView; note?: NoteView } = {}) {
+  constructor(status: number, code: ErrorCode, message: string, extra: { retryAfterSec?: number; team?: TeamView; note?: NoteView; section?: DocSectionView } = {}) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -20,6 +21,7 @@ export class ApiError extends Error {
     this.retryAfterSec = extra.retryAfterSec;
     this.team = extra.team;
     this.note = extra.note;
+    this.section = extra.section;
   }
 
   toBody(): ApiErrorBody {
@@ -30,6 +32,7 @@ export class ApiError extends Error {
         ...(this.retryAfterSec !== undefined ? { retryAfterSec: this.retryAfterSec } : {}),
         ...(this.team ? { team: this.team } : {}),
         ...(this.note ? { note: this.note } : {}),
+        ...(this.section ? { section: this.section } : {}),
       },
     };
   }

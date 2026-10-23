@@ -36,6 +36,15 @@ if (!local) {
 const client = new pg.Client({ connectionString, ssl, application_name: 'crista-web-check' });
 await client.connect();
 
+/** 0005~0007 이 만든 표(설계 §7.3 · learning-grant-design §6.1). */
+const BASE_TABLES = [
+  'screen_briefing', 'screen_agendas', 'screen_proposals', 'screen_votes',
+  'dock_picks', 'lead_candidates', 'patent_applications', 'patent_sections', 'ethics_training', 'iacuc_protocols', 'iacuc_sections',
+  'patents', 'iacuc_protocol_patents', 'ind_applications', 'ind_sections', 'doc_reviews', 'llm_calls',
+  'board_events', 'valuations', 'learn_items', 'learn_gradings', 'learn_assignments', 'learn_answers', 'learn_note_evals',
+  'learn_step_activity', 'learn_pitch_rounds', 'learn_shields', 'learn_exemptions', 'learn_appeals',
+];
+
 /** [설명, SQL, 되어야 하나] */
 const probes = [
   ['역할 이름', 'select current_user = \'crista_web\' as ok', true],
@@ -50,6 +59,14 @@ const probes = [
   ['supabase_migrations 읽기', 'select count(*) from supabase_migrations.schema_migrations', false],
   ['새 스키마 만들기', 'create schema _web_boundary_probe', false],
   ['public 의 표 권한 0건', `select count(*) = 0 as ok from information_schema.role_table_grants where grantee = current_user and table_schema <> 'web'`, true],
+  ['public 에 함수 만들기', 'create function public._web_boundary_probe() returns int language sql as $$ select 1 $$', false],
+  // 3판 기반(0005~0007)의 표가 모두 web 스키마에만 있다 — 같은 이름이 다른 스키마에 생기지 않았다.
+  [
+    `3판 기반 표 ${BASE_TABLES.length}개가 web 에만`,
+    `select count(*) filter (where table_schema = 'web') = ${BASE_TABLES.length} and count(*) filter (where table_schema <> 'web') = 0 as ok
+       from information_schema.tables where table_name = any(array[${BASE_TABLES.map((t) => `'${t}'`).join(', ')}])`,
+    true,
+  ],
 ];
 
 let bad = 0;

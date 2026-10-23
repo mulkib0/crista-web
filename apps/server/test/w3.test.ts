@@ -72,27 +72,34 @@ describe('워커 id · 결과', () => {
   });
 });
 
-describe('단계 상태', () => {
+describe('단계 상태(9단계 — 3판)', () => {
   const none = new Map();
-  test('표적 전 — 1.1 할 수 있음, 나머지 잠김, 3.x 이후 W4 잠김', () => {
-    const steps = computeSteps({ targetId: null, leadForTarget: false, facts: none, balanceCents: 600_000_000 });
-    assert.deepEqual(steps.map((s) => s.state), ['ready', 'locked', 'locked', 'locked', 'locked', 'locked', 'locked', 'locked']);
+  test('표적 전 — 1.1 할 수 있음, 나머지 잠김(4.1 은 3.3 IND 승인 뒤 — F41)', () => {
+    const steps = computeSteps({ targetId: null, facts: none, balanceCents: 600_000_000 });
+    assert.deepEqual(steps.map((s) => s.id), ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '3.3', '4.1', '4.2']);
+    assert.deepEqual(steps.map((s) => s.state), ['ready', 'locked', 'locked', 'locked', 'locked', 'locked', 'locked', 'locked', 'locked']);
     assert.equal(steps[1]!.unlockBy, '1.1');
+    assert.equal(steps[7]!.unlockBy, '3.3');
+    assert.deepEqual(steps.map((s) => s.index), [1, 2, 1, 2, 1, 2, 3, 1, 2]);
   });
   test('스크리닝 진행 중 · 연구비 부족 · 완료', () => {
     const facts = new Map([['1.2', { step: '1.2', done: false, active: true, progress: 0.4, by_name: '가온' }]]);
-    const running = computeSteps({ targetId: 'ache-4ey7', leadForTarget: false, facts: facts as never, balanceCents: 600_000_000 });
+    const running = computeSteps({ targetId: 'ache-4ey7', facts: facts as never, balanceCents: 600_000_000 });
     assert.equal(running[0]!.state, 'done');
     assert.equal(running[1]!.state, 'running');
     assert.equal(running[1]!.progressPct, 40);
-    const broke = computeSteps({ targetId: 'ache-4ey7', leadForTarget: false, facts: none, balanceCents: COSTS['1.2'] - 1 });
+    const broke = computeSteps({ targetId: 'ache-4ey7', facts: none, balanceCents: COSTS['1.2'] - 1 });
     assert.equal(broke[1]!.state, 'blocked');
     const done = new Map([
       ['1.2', { step: '1.2', done: true, active: false, progress: null, by_name: null }],
       ['2.1', { step: '2.1', done: true, active: false, progress: null, by_name: null }],
     ]);
-    const all = computeSteps({ targetId: 'ache-4ey7', leadForTarget: true, facts: done as never, balanceCents: 0 });
+    // 2.2 완료 = 특허 후보 1개 이상(앞 판의 '리드 지정'이 아니다).
+    const noCandidate = computeSteps({ targetId: 'ache-4ey7', facts: done as never, balanceCents: 0 });
+    assert.equal(noCandidate[3]!.state, 'blocked');
+    const all = computeSteps({ targetId: 'ache-4ey7', facts: done as never, balanceCents: 0, stage: { leadCandidates: 1 } });
     assert.deepEqual(all.slice(0, 4).map((s) => s.state), ['done', 'done', 'done', 'done']);
+    assert.equal(all[4]!.state, 'blocked');
   });
 });
 

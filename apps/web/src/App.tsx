@@ -1,12 +1,13 @@
 /**
- * 화면 흐름(설계 §2): ⓪ 첫 화면 → ① 로그인 · 가입 → (모둠 · 이름 전) ② 사옥 지구 → (등기 뒤) ③ 전광판 + 작업 화면. 다시 로그인하면 ③ 으로 바로.
- * 교사는 교사 화면. 주소는 /crista/ · /crista/login · /crista/district · /crista/board · /crista/teacher(History API).
+ * 화면 흐름(설계 §2): ⓪ 첫 화면 → ① 로그인 · 가입 → (학급이 없으면) 학급 고르기 → (모둠 · 이름 전) ② 사옥 지구 → (등기 뒤) ③ 전광판 + 작업 화면. 다시 로그인하면 ③ 으로 바로.
+ * 교사는 교사 화면. 주소는 /crista/ · /crista/login · /crista/enroll · /crista/district · /crista/board · /crista/teacher(History API).
  */
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { API, type MeResponse, type NextScreen } from '@crista-web/web-contract';
 import { api, ApiFailure, BASE } from './api.ts';
 import { socket } from './ws.ts';
 import { Landing } from './screens/Landing.tsx';
+import { Enroll } from './screens/Enroll.tsx';
 import { Login } from './screens/Login.tsx';
 import { Board } from './screens/Board.tsx';
 import { Teacher } from './screens/Teacher.tsx';
@@ -16,7 +17,7 @@ const District = lazy(() => import('./screens/District.tsx').then((m) => ({ defa
 
 export type Route = 'landing' | 'login' | NextScreen;
 
-const PATHS: Record<Route, string> = { landing: '/', login: '/login', district: '/district', board: '/board', teacher: '/teacher' };
+const PATHS: Record<Route, string> = { landing: '/', login: '/login', enroll: '/enroll', district: '/district', board: '/board', teacher: '/teacher' };
 
 function routeFromLocation(): Route {
   const path = location.pathname.slice(BASE.length).replace(/\/+$/, '') || '/';
@@ -57,7 +58,12 @@ export function App() {
         setMe(found);
         const current = routeFromLocation();
         if (current === 'landing') return;
-        if (current === 'login' || (found.next === 'teacher') !== (current === 'teacher') || (current === 'board' && found.next === 'district')) go(found.next, true);
+        const wrong =
+          current === 'login' ||
+          (found.next === 'teacher') !== (current === 'teacher') ||
+          (found.next === 'enroll') !== (current === 'enroll') ||
+          (current === 'board' && found.next === 'district');
+        if (wrong) go(found.next, true);
       })
       .catch((error) => {
         if (!(error instanceof ApiFailure) || error.status !== 401) console.error(error);
@@ -74,7 +80,7 @@ export function App() {
   // 화면 제목 — 등기 뒤에는 스타트업 이름(설계 §5.2 브라우저 탭).
   useEffect(() => {
     const name = me?.team?.startupName;
-    document.title = name ? `${name} — Crista 파이프라인 랩` : 'Crista 파이프라인 랩';
+    document.title = name ? `${name} — Crista: AI를 활용한 신약개발 교육 도구` : 'Crista: AI를 활용한 신약개발 교육 도구';
   }, [me]);
 
   const logout = useCallback(async () => {
@@ -98,6 +104,8 @@ export function App() {
   }
   const nav: Nav = { go, me, setMe, logout };
   if (me.account.kind === 'teacher') return <Teacher nav={nav} />;
+  // 학급이 없는 학생은 주소와 상관없이 학급부터 고른다(지구 · 전광판은 학급이 있어야 열린다).
+  if (me.next === 'enroll') return <Enroll nav={nav} />;
   if (route === 'board') return <Board nav={nav} />;
   return (
     <Suspense fallback={<div className="empty" style={{ margin: 40 }}>사옥 지구를 여는 중…</div>}>

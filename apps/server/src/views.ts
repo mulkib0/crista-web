@@ -67,6 +67,8 @@ export interface ClassRow {
   assignment: Assignment;
   max_students: number;
   team_capacity: number | null;
+  /** 0006 — 모둠당 특허 상한 · 게임 시계 칸(시계는 clock.ts 가 읽는다). */
+  max_patents_per_team: number;
   created_at: Date;
   student_count: number;
 }

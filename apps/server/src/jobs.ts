@@ -12,7 +12,7 @@ import { randomUUID } from 'node:crypto';
 import { SMILES_MAX_LENGTH, type ExperimentResult, type WorkerJobState } from '@crista/shared-types';
 import { teamChannel, type AccountView, type JobStep, type StartJobResponse } from '@crista-web/web-contract';
 import type { Deps } from './context.ts';
-import { withTx, type Pool } from './db.ts';
+import { withTx, type Pool, type Queryable } from './db.ts';
 import { ApiError, badRequest } from './http.ts';
 import type { Hub } from './hub.ts';
 import {
@@ -39,7 +39,10 @@ const JOB_DEADLINE_MIN = 20;
 const MAX_SUBMIT_ATTEMPTS = 5;
 const POLL_MS = 1_500;
 
-const STAGE: Record<JobStep, { stage: 2 | 3 | 4; facility: 'htvs' | 'docking' | 'admet' }> = {
+/** 워커가 계산하는 단계 — 3.2(대체 시험 · 동물실험)는 서버 내부 작업이라 이 경로로 받지 않는다(기능 F32 · 게임 시계로 끝남). */
+type WorkerStep = Exclude<JobStep, '3.2'>;
+
+const STAGE: Record<WorkerStep, { stage: 2 | 3 | 4; facility: 'htvs' | 'docking' | 'admet' }> = {
   '1.2': { stage: 2, facility: 'htvs' },
   '2.1': { stage: 3, facility: 'docking' },
   '2.2': { stage: 4, facility: 'admet' },
@@ -53,8 +56,8 @@ export function affinityOf(result: ExperimentResult | undefined | null): number 
   return Number.isFinite(value) ? value : null;
 }
 
-interface Prepared {
-  step: JobStep;
+export interface Prepared {
+  step: WorkerStep;
   params: Record<string, string | number | boolean>;
   summary: string;
   targetId: string;
@@ -63,20 +66,91 @@ interface Prepared {
   smiles: string | null;
   label: string | null;
   parentJobId: string | null;
+  /** 실행 때의 기준 스냅숏(예: 1.2 합의값) — 워커에는 보내지 않고, 성공하면 `result.snapshot` 으로 붙는다(설계 §7.3 '1.2 실행 기록'). */
+  snapshot?: Record<string, unknown> | null;
 }
+
+// ── 기능별 접수 고리 — F12(1.2) · FSEL(2.2)이 이 파일을 고치지 않고 자기 features/*.ts 의 register() 에서 단다 ──
+
+export interface JobPrepareContext {
+  teamId: string;
+  classId: string;
+  userId: string;
+  targetId: string;
+  revisionId: string;
+  /** 요청 본문의 params(아직 검사 전). */
+  params: Record<string, unknown>;
+}
+
+/** 고리가 돌려주면 그 단계의 기본 입력 확인을 **대신**한다. 돌려주지 않으면(void) 기본 확인이 이어서 돈다(검사만 더할 때). */
+export interface JobPrepareOverride {
+  params: Record<string, string | number | boolean>;
+  summary: string;
+  smiles?: string | null;
+  label?: string | null;
+  parentJobId?: string | null;
+  snapshot?: Record<string, unknown> | null;
+}
+
+export type JobPrepareHook = (deps: Deps, ctx: JobPrepareContext) => Promise<JobPrepareOverride | void>;
+
+/**
+ * 접수 트랜잭션 안(모둠 줄 FOR UPDATE · 같은 표적 버전 확인 뒤, 작업 줄 · 과금 전)에서 도는 검사 — 던지면 접수하지 않는다.
+ * 예: F12 ⑦ '그 버전에 queued · running 인 1.2 가 있으면 409' · FSEL '그 도킹 작업이 지금 2.2 대기열(dock_picks)에 있나'.
+ */
+export type JobAdmitHook = (tx: Queryable, ctx: Omit<JobPrepareContext, 'params'> & { requestId: string; prepared: Readonly<Prepared> }) => Promise<void>;
+
+const prepareHooks = new Map<WorkerStep, JobPrepareHook>();
+const admitHooks = new Map<WorkerStep, JobAdmitHook>();
+
+/** 단계마다 하나(다시 달면 바꾼다). F12: `onJobPrepare('1.2', …)` · FSEL: `onJobPrepare('2.2', …)`. */
+export function onJobPrepare(step: WorkerStep, hook: JobPrepareHook): void {
+  prepareHooks.set(step, hook);
+}
+
+/** 단계마다 하나(다시 달면 바꾼다). */
+export function onJobAdmit(step: WorkerStep, hook: JobAdmitHook): void {
+  admitHooks.set(step, hook);
+}
+
+/** 끝난 작업(성공) — 커밋 뒤 부른다. FMARKET: 2.1 도킹 학급 신기록 소식(§5.3 'docking'). 던져도 작업 상태는 그대로(기록만). */
+export interface SucceededJob {
+  id: string;
+  step: JobStep;
+  teamId: string;
+  classId: string;
+  revisionId: string | null;
+  targetId: string | null;
+  createdBy: string | null;
+  /** 2.1 만 — 최적 ΔG(kcal/mol). */
+  affinityKcal: number | null;
+}
+export type JobSucceededHook = (deps: Deps, job: SucceededJob) => Promise<void>;
+const succeededHooks = new Map<string, JobSucceededHook>();
+
+/** 이름마다 하나(다시 달면 바꾼다). 워커 작업(1.2 · 2.1 · 2.2)만 — 3.2 서버 내부 작업은 F32 처리기가 직접 끝낸다. */
+export function onJobSucceeded(name: string, hook: JobSucceededHook): void {
+  succeededHooks.set(name, hook);
+}
+
+/** 워커에 보내는 입력 — 스냅숏은 서버 기록이라 뺀다. */
+const workerParams = (params: Record<string, unknown>): Record<string, string | number | boolean> => {
+  const { snapshot: _snapshot, ...rest } = params;
+  return rest as Record<string, string | number | boolean>;
+};
 
 export async function startJob(deps: Deps, account: AccountView, raw: unknown): Promise<StartJobResponse> {
   const who = await teamMember(deps.db, account);
   const body = (raw ?? {}) as Record<string, unknown>;
   const requestId = typeof body.requestId === 'string' ? body.requestId : '';
   if (!REQUEST_ID.test(requestId)) throw badRequest('requestId 가 형식에 맞지 않아요.');
-  const step = body.step as JobStep;
-  if (!(step in STAGE)) throw badRequest('작업 단계는 1.2 · 2.1 · 2.2 중 하나예요.');
+  const step = body.step as WorkerStep;
+  if (typeof step !== 'string' || !Object.hasOwn(STAGE, step)) throw badRequest('작업 단계는 1.2 · 2.1 · 2.2 중 하나예요.');
 
   const again = await findByRequest(deps.db, who.teamId, requestId);
   if (again) return { job: jobView(again), created: false };
 
-  const prepared = await prepare(deps, who.teamId, step, (body.params ?? {}) as Record<string, unknown>);
+  const prepared = await prepare(deps, { teamId: who.teamId, classId: who.classId, userId: account.userId }, step, (body.params ?? {}) as Record<string, unknown>);
   const cost = COSTS[step];
 
   const jobId = await withTx(deps.db, async (tx) => {
@@ -88,7 +162,16 @@ export async function startJob(deps: Deps, account: AccountView, raw: unknown): 
     if (dup.rows[0]) return { id: dup.rows[0].id, created: false };
     const current = await loadProgramRow(tx, who.teamId);
     if (current.revision_id !== prepared.revisionId) throw new ApiError(409, 'stale', '그 사이 모둠 표적이 바뀌었어요. 화면을 새로 고쳐 다시 해 주세요.');
-    const active = await tx.query<{ n: number }>(`select count(*)::int as n from web.jobs where team_id = $1 and status in ('queued', 'running')`, [who.teamId]);
+    await admitHooks.get(step)?.(tx, {
+      teamId: who.teamId,
+      classId: who.classId,
+      userId: account.userId,
+      targetId: prepared.targetId,
+      revisionId: prepared.revisionId,
+      requestId,
+      prepared,
+    });
+    const active = await tx.query<{ n: number }>(`select count(*)::int as n from web.jobs where team_id = $1 and status in ('queued', 'running') and ends_game_day is null`, [who.teamId]);
     if (active.rows[0]!.n >= TEAM_ACTIVE_MAX) throw new ApiError(429, 'too_many_jobs', `모둠에서 동시에 돌릴 수 있는 작업은 ${TEAM_ACTIVE_MAX}개예요. 하나가 끝나면 다시 해 주세요.`, { retryAfterSec: 10 });
     const balance = await balanceOf(tx, who.teamId);
     if (balance < cost) throw new ApiError(402, 'insufficient_funds', '연구비가 모자라요.');
@@ -97,7 +180,8 @@ export async function startJob(deps: Deps, account: AccountView, raw: unknown): 
       `insert into web.jobs (team_id, class_id, created_by, request_id, step, stage, facility, params, input_summary, target_id, program_revision_id, smiles, label, parent_job_id, cost_cents, timeout_at)
        values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, now() + make_interval(mins => $16))
        returning id`,
-      [who.teamId, who.classId, account.userId, requestId, step, stage, facility, JSON.stringify(prepared.params), prepared.summary,
+      [who.teamId, who.classId, account.userId, requestId, step, stage, facility,
+        JSON.stringify(prepared.snapshot ? { ...prepared.params, snapshot: prepared.snapshot } : prepared.params), prepared.summary,
         prepared.targetId, prepared.revisionId, prepared.smiles, prepared.label, prepared.parentJobId, cost, JOB_DEADLINE_MIN],
     );
     const id = inserted.rows[0]!.id;
@@ -130,12 +214,31 @@ async function loadJob(db: Pool, id: string): Promise<JobRow | null> {
   return result.rows[0] ?? null;
 }
 
-/** 단계별 입력 확인 · 워커 입력 만들기 — 과금 전에 끝낸다. */
-async function prepare(deps: Deps, teamId: string, step: JobStep, params: Record<string, unknown>): Promise<Prepared> {
+/** 단계별 입력 확인 · 워커 입력 만들기 — 과금 전에 끝낸다. 기능 고리(`onJobPrepare`)가 있으면 먼저 돈다. */
+async function prepare(deps: Deps, who: { teamId: string; classId: string; userId: string }, step: WorkerStep, params: Record<string, unknown>): Promise<Prepared> {
+  const { teamId } = who;
   const program = await loadProgramRow(deps.db, teamId);
   const targetId = program.target_id;
   const revisionId = program.revision_id;
   if (!targetId || !revisionId) throw new ApiError(409, 'step_locked', '1.1 에서 표적을 먼저 정해 주세요.');
+
+  const hook = prepareHooks.get(step);
+  if (hook) {
+    const override = await hook(deps, { ...who, targetId, revisionId, params });
+    if (override) {
+      return {
+        step,
+        targetId,
+        revisionId,
+        params: override.params,
+        summary: override.summary,
+        smiles: override.smiles ?? null,
+        label: override.label ?? null,
+        parentJobId: override.parentJobId ?? null,
+        snapshot: override.snapshot ?? null,
+      };
+    }
+  }
 
   // 선행 단계 · 부모 작업은 지금 표적 버전 것만 — 표적을 바꿨다 돌아와도 옛 버전의 결과는 근거가 아니다.
   const succeeded = async (s: JobStep) =>
@@ -227,6 +330,8 @@ export class JobRunner {
   private readonly db: Pool;
   private readonly worker: BioWorker;
   private readonly hub: Hub;
+  /** `onJobSucceeded` 처리기에 넘길 전체 의존성 — index.ts 가 deps 를 만든 뒤 `bindDeps` 로 단다(없으면 처리기를 부르지 않는다). */
+  private deps: Deps | null = null;
   private timer: NodeJS.Timeout | null = null;
   private healthTimer: NodeJS.Timeout | null = null;
   private ticking = false;
@@ -238,6 +343,10 @@ export class JobRunner {
     this.db = db;
     this.worker = worker;
     this.hub = hub;
+  }
+
+  bindDeps(deps: Deps): void {
+    this.deps = deps;
   }
 
   start(): void {
@@ -278,7 +387,7 @@ export class JobRunner {
         generation: 1,
         stage: row.stage as 2 | 3 | 4,
         facility: row.facility as 'htvs' | 'docking' | 'admet',
-        params: row.params,
+        params: workerParams(row.params),
         cLevel: row.by_avatar ? (row.by_avatar.toUpperCase() as 'CEO' | 'CSO' | 'CTO' | 'CMO') : null,
       });
       if (outcome.kind === 'rejected') {
@@ -333,7 +442,8 @@ export class JobRunner {
     if (this.ticking) return;
     this.ticking = true;
     try {
-      const active = await this.db.query<JobRow>(`${JOB_SELECT} where j.status in ('queued', 'running') order by j.created_at limit 40`);
+      // 워커 작업만 — 게임 시계로 끝나는 서버 내부 작업(3.2, ends_game_day)은 그 기능의 onGameDay 처리기가 끝낸다.
+      const active = await this.db.query<JobRow>(`${JOB_SELECT} where j.status in ('queued', 'running') and j.ends_game_day is null order by j.created_at limit 40`);
       for (const row of active.rows) {
         try {
           await this.step(row);
@@ -379,11 +489,30 @@ export class JobRunner {
       const canonical = state.artifacts?.canonicalSmiles ?? result?.provenance?.canonicalSmiles ?? row.smiles;
       const updated = await this.db.query(
         `update web.jobs set status = 'succeeded', progress = 1, phase = $2, queue_position = null, source = $3, test = $4,
-                result = $5, canonical_smiles = $6, affinity_kcal = $7, finished_at = now(), updated_at = now()
+                result = case when params ? 'snapshot' and jsonb_typeof($5::jsonb) = 'object' then $5::jsonb || jsonb_build_object('snapshot', params -> 'snapshot') else $5::jsonb end,
+                canonical_smiles = $6, affinity_kcal = $7, finished_at = now(), updated_at = now()
           where id = $1 and status in ('queued', 'running')`,
         [row.id, state.phase ?? null, state.source, state.test, JSON.stringify(result), canonical, row.step === '2.1' ? affinityOf(result) : null],
       );
-      if (updated.rowCount) this.notify(row.team_id, `job.succeeded:${row.step}`);
+      if (updated.rowCount) {
+        this.notify(row.team_id, `job.succeeded:${row.step}`);
+        const deps = this.deps;
+        if (deps && succeededHooks.size > 0) {
+          const job: SucceededJob = {
+            id: row.id,
+            step: row.step,
+            teamId: row.team_id,
+            classId: row.class_id,
+            revisionId: row.program_revision_id,
+            targetId: row.target_id,
+            createdBy: row.created_by,
+            affinityKcal: row.step === '2.1' ? affinityOf(result) : null,
+          };
+          for (const [name, hook] of succeededHooks) {
+            hook(deps, job).catch((error: Error) => console.error(`[jobs] 성공 처리기 ${name} 실패:`, error.message));
+          }
+        }
+      }
       return;
     }
     if (state.status === 'failed') {

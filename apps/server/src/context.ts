@@ -3,6 +3,7 @@ import type { Pool } from './db.ts';
 import type { AuthClient } from './gotrue.ts';
 import type { Hub } from './hub.ts';
 import type { JobRunner } from './jobs.ts';
+import type { LlmClient } from './llm.ts';
 import { LoginLockout, WindowLimiter } from './rate-limit.ts';
 import type { BioWorker } from './worker.ts';
 
@@ -35,4 +36,6 @@ export interface Deps {
   limits: Limits;
   worker: BioWorker;
   jobs: JobRunner;
+  /** 파이프라인 LLM(설계 §5.13) — 키가 없거나 꺼져 있으면 `available` false(호출하면 'unavailable'). */
+  llm: LlmClient;
 }
