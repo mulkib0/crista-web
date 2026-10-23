@@ -68,12 +68,6 @@ export interface AntibodyStepMeta {
   group: 1 | 2 | 3 | 4;
   index: 1 | 2;
   title: string;
-  /** 머리 섬 질문. */
-  question: string;
-  /** 완료 조건 한 줄(§2.2). */
-  doneWhen: string;
-  /** 출처 노트북 자리(31셀 · 보평고 김태영 · v2026.09.15). */
-  notebookPart: string;
   evidence: AntibodySource[];
   costCents: number;
 }
@@ -101,9 +95,6 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 1,
     index: 1,
     title: '표적 항원 · 원본 항체',
-    question: '우리는 어떤 항원을 노리고, 어떤 항체를 본뜰까요?',
-    doneWhen: '모둠 과반이 추천 카드를 올리고 제안이 과반 찬성으로 통과하면 끝나요',
-    notebookPart: 'Part0 · 셀 3 · 5 · 7',
     evidence: ['lookup'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A1),
   },
@@ -114,9 +105,6 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     // '보존도' 대신 '레퍼토리 다양성'으로 불러요 — 항체 V 도메인의 MSA 는 진화적 보존이 아니라
     // 같은 계열 항체들 사이의 다양성을 보여 주기 때문이에요(§2.3 · §3.2 · §10 S18).
     title: '구조 읽기 · 레퍼토리 다양성',
-    question: '이 항체에서 건드려도 되는 자리는 어디일까요?',
-    doneWhen: '과반이 고정할 자리 후보를 올리고 고정 위치를 합의하면 끝나요',
-    notebookPart: 'Part1 · 셀 12 · 13 · 14',
     evidence: ['lookup', 'precomputed', 'edu-approx'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A2),
   },
@@ -125,9 +113,6 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 2,
     index: 1,
     title: '변이 설계',
-    question: 'CDR 의 어느 글자를 바꾸면 더 잘 붙을까요?',
-    doneWhen: '모둠에 변이체가 1개 이상 올라오면 끝나요',
-    notebookPart: 'Part2 · 셀 10 · 15 · 16 · 17 · 18',
     evidence: ['server-calc', 'edu-approx'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A3),
   },
@@ -136,9 +121,6 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 3,
     index: 1,
     title: '접힘 예측',
-    question: '설계한 가변영역이 제대로 접힐까요?',
-    doneWhen: '접힘 예측이 1건 이상 성공하면 끝나요',
-    notebookPart: 'Part3 · 셀 21 · 23 · 24',
     evidence: ['ai-predict'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A4),
   },
@@ -147,10 +129,6 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 3,
     index: 2,
     title: '복합체 평가',
-    // 노트북 셀 29 의 원문을 그대로 인용해요(§2.4) — 이 랩의 학습 목표를 가장 잘 요약한 한 줄이에요.
-    question: 'CDR 영역이 타겟과 접촉하는지 확인하세요',
-    doneWhen: '원본 비교군을 포함한 복합체 평가가 1건 이상이면 끝나요',
-    notebookPart: 'Part4 · 셀 26 · 27 · 28 · 29',
     evidence: ['edu-approx', 'ai-predict'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A5),
   },
@@ -159,9 +137,6 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 4,
     index: 1,
     title: '보고서 · 상장 평가',
-    question: '왜 이 설계를 대표로 내보낼까요?',
-    doneWhen: '대표 후보를 1건 제출하면 끝나요',
-    notebookPart: '보고서 · 셀 30',
     evidence: ['server-calc', 'edu-approx'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A6),
   },
@@ -531,6 +506,10 @@ export interface AntibodyValuationView {
   marketCapCents: number;
   /** 직전 대비 변동률(%). */
   changePct: number;
+  /**
+   * 학급 안 순위 — 화면 이름은 **'기업가치 순위'** 하나로 써요(2026-10-24 사용자 결정 · §11.4.2).
+   * '시가총액 순위'는 쓰지 않아요. 칸 이름은 공용 `market.ts` 계약과 맞추려고 그대로 둬요.
+   */
   rankMarketCap: number;
   of: number;
   lastEvent?: { headline: string; changePct?: number; at: string };
@@ -702,6 +681,17 @@ export interface AntibodyTeacherSettings {
   thresholds: { scoreMargin: number; confidenceMin: number };
   openTracks: LabTrack[];
   version: number;
+}
+
+/**
+ * 교사 큐 보기(§5.5 · §8.1) — 수업 운영용이에요. 선생님 화면 항체 탭이 이 꼴로 읽어요.
+ * `step` · `status` · `domain` 은 서버 안쪽 이름이라 글자로 받아요(계약이 서버 열거형을 따라가지 않게).
+ */
+export interface AntibodyTeacherQueue {
+  classId: string;
+  byStep: Array<{ step: string; status: string; count: number }>;
+  domains: Array<{ domain: string; running: number; waiting: number; limit: number; peak: number }>;
+  dataMode: AntibodyDataMode;
 }
 
 // ── 한계 · 상한 ──────────────────────────────────────────────────────────────

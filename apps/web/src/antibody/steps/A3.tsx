@@ -13,7 +13,6 @@ import {
   AMINO_ACIDS,
   ANTIBODY_BOLDNESS,
   DESIGN_SLOTS_PER_PERSON,
-  PREVIEW_PER_MIN_PER_TEAM,
   type AbChain,
   type AntibodyBoldness,
   type AntibodyMutation,
@@ -23,11 +22,10 @@ import {
 import { Panel, Tabs, useBenchState, useLocalTab } from '../../board/ui/index.ts';
 import { By } from '../../board/parts.tsx';
 import { AbHead, AbIslands, AbLocked, AbNext, AbNotes } from '../AbShell.tsx';
-import { Badge, Badges } from '../Badge.tsx';
 import { DataTable } from '../DataTable.tsx';
 import { SeqEditor } from '../SeqEditor.tsx';
 import { applyMutations } from '../mock.ts';
-import { termName, uiApprox } from '../terms.ts';
+import { termName } from '../terms.ts';
 import type { AbStepProps } from './index.ts';
 
 const BOLDNESS_WORD: Record<AntibodyBoldness, string> = { conservative: '보수적', normal: '보통', bold: '과감' };
@@ -148,15 +146,13 @@ export function A3({ board, step, me, actions, goStep, mock }: AbStepProps) {
         <AbHead
           id="A3"
           chips={
-            <>
-              <span className="chip">서버가 센 값</span>
-              <span className="chip">교육용 근사 — 규칙 기반 제안</span>
-              <span className="chip">미리보기 무료 · 모둠당 분당 {PREVIEW_PER_MIN_PER_TEAM}회</span>
-              {mock && <span className="chip test">연습용 고정 자료</span>}
-              {!diversity && <span className="chip test">A2 를 아직 돌리지 않았어요</span>}
-            </>
+            mock || !diversity ? (
+              <>
+                {mock && <span className="chip test">연습용 고정 자료</span>}
+                {!diversity && <span className="chip test">A2 를 아직 돌리지 않았어요</span>}
+              </>
+            ) : null
           }
-          extra={<p className="lede">실제 산업에서는 — 고리의 글자를 조금씩 바꿔 보며 더 잘 붙고, 만들기 쉬운 쪽을 찾아요. 뼈대를 사람 유전자로 되돌리기도 해요.</p>}
         />
       }
       mine={
@@ -233,7 +229,6 @@ export function A3({ board, step, me, actions, goStep, mock }: AbStepProps) {
                   </button>
                   <span className="note">뼈대 자리를 되돌리면 사람 유전자에 더 가까워져요.</span>
                 </div>
-                <div style={{ marginTop: 8 }}><Badge provenance={uiApprox('치환 후보 점수', '성질 · 약점 모티프 · 구간만 보고 매긴 순서예요')} /></div>
               </Panel>
             )}
 
@@ -263,7 +258,6 @@ export function A3({ board, step, me, actions, goStep, mock }: AbStepProps) {
                         </button>
                       </div>
                       <p className="mini mono" style={{ margin: 0 }}>{s.mutations.map((m) => `${m.chain}${m.pos} ${m.wt}→${m.mut}`).join(' · ') || '바꾼 자리 없음'}</p>
-                      <Badge provenance={s.provenance} context={s.label} />
                     </div>
                   ))}
                 </div>
@@ -271,7 +265,7 @@ export function A3({ board, step, me, actions, goStep, mock }: AbStepProps) {
             </Panel>
 
             {preview && (
-              <Panel title="무료 미리보기" sub="바꿀 때마다 바로 보여요">
+              <Panel title="미리보기" sub="바꿀 때마다 바로 보여요">
                 <dl className="ab-kv">
                   <div><dt>{termName('liability')}</dt><dd>{preview.liabilities.length}<small>개</small></dd></div>
                   <div><dt>중쇄 순전하</dt><dd>{preview.chargeVh}</dd></div>
@@ -293,7 +287,6 @@ export function A3({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 {preview.riskFlags.filter((r) => r.level !== 'ok').map((r) => (
                   <p key={r.metric} className={`hint${r.level === 'alert' ? ' bad' : ''}`}>{r.level === 'alert' ? '✕' : '!'} {r.note}</p>
                 ))}
-                <div style={{ marginTop: 8 }}><Badges list={preview.provenance} /></div>
               </Panel>
             )}
 

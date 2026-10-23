@@ -12,12 +12,11 @@ import { useMemo, useState } from 'react';
 import { CDR_SCHEMES, DIVERSITY_LOCK_PERCENTILE, type AbChain, type CdrScheme } from '@crista-web/web-contract';
 import { Panel, useBenchState } from '../../board/ui/index.ts';
 import { AbHead, AbIslands, AbLocked, AbNext, AbNotes } from '../AbShell.tsx';
-import { Badge } from '../Badge.tsx';
 import { ConsensusPanel } from '../ConsensusPanel.tsx';
 import { DataTable } from '../DataTable.tsx';
 import { MolPanel } from '../Mol3D.tsx';
 
-import { DIVERSITY_LEGEND, MSA_CAVEAT, MSA_QUOTE, NUMBERING_WORD, termName } from '../terms.ts';
+import { DIVERSITY_LEGEND, NUMBERING_WORD, termName } from '../terms.ts';
 import type { AbStepProps } from './index.ts';
 
 const SCHEME_WORD: Record<CdrScheme, string> = { imgt: 'IMGT', kabat: 'Kabat', chothia: 'Chothia', abm: 'AbM', contact: 'Contact' };
@@ -116,7 +115,6 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
           id="A2"
           chips={
             <>
-              <span className="chip">자료 조회</span>
               <span className="chip">{termName('diversity')}</span>
               <span className="chip">번호축 {SCHEME_WORD[scheme]}</span>
               {mock ? (
@@ -129,13 +127,9 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
             </>
           }
           extra={
-            <>
-              <p className="lede">실제 산업에서는 — 비슷한 항체 수천 개를 모아 자리마다 얼마나 갈리는지 보고, '건드려도 되는 자리'를 가려요.</p>
-              <p className="hint">{MSA_QUOTE} {MSA_CAVEAT}</p>
-              {diversity?.numberingSource === 'regex-fallback' && (
-                <p className="hint bad">번호 매김이 규칙으로 내려앉았어요 — {NUMBERING_WORD['regex-fallback']}</p>
-              )}
-            </>
+            diversity?.numberingSource === 'regex-fallback' ? (
+              <p className="hint bad">번호 매김이 규칙으로 내려앉았어요 — {NUMBERING_WORD['regex-fallback']}</p>
+            ) : null
           }
         />
       }
@@ -194,7 +188,6 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
                   <p className="mini muted" style={{ margin: '8px 0 0' }}>칩 안의 숫자가 등급이에요 — 색에만 기대지 않아요.</p>
                 </>
               )}
-              {diversity && <div style={{ marginTop: 8 }}><Badge provenance={diversity.provenance} /></div>}
             </Panel>
           </>
         )

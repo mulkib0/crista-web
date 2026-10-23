@@ -295,41 +295,36 @@ export function AbNext({ step, goStep }: { step: AntibodyStepView; goStep: (id: 
   );
 }
 
-/** 잠긴 단계 — 무엇을 배우나 · 무엇이 필요한가 + 노트 초안(§2.2). */
+/** 잠긴 단계 — 무엇이 필요한가 + 노트 초안(§2.2). */
 export function AbLocked({ step }: { step: AntibodyStepView }) {
   const meta = ANTIBODY_STEP_META[step.id];
   return (
     <div className="panel lock-box">
       <b>🔒 잠긴 단계 — {meta.title}</b>
-      <p className="mini" style={{ margin: 0 }}>무엇을 배우나 · {meta.question}</p>
       <p className="mini" style={{ margin: 0 }}>무엇이 필요한가 · {step.reason ?? `${step.unlockBy ?? '앞 단계'} 를 먼저 끝내요`}</p>
       <p className="mini muted" style={{ margin: 0 }}>잠긴 단계도 연구 노트 초안은 미리 쓸 수 있어요(유료 실행 · 단계 확정만 막혀 있어요).</p>
     </div>
   );
 }
 
-/** 머리 섬 안쪽 — 큰 단계 번호 · 눈썹 줄(묶음 · 출처 · 비용) · 제목 · 질문(명조) · 결과의 성격 칩. `.sh` 모양을 그대로 써요. */
+/**
+ * 머리 섬 안쪽 — 큰 단계 번호 · 눈썹 줄(묶음 · 비용) · 제목 + 조작에 필요한 칩. `.sh` 모양을 그대로 써요.
+ * 설명 덩어리(질문 줄 · 완료 조건 · 출처 배지 · 수업 자료 자리)는 두지 않아요 — 칩도 `extra` 도 줄 것이 없으면
+ * `.sh-m` 껍데기째 그리지 않아서 머리 섬에 빈 간격이 남지 않아요.
+ */
 export function AbHead({ id, cost, chips, extra }: { id: AntibodyStepId; cost?: string; chips?: ReactNode; extra?: ReactNode }) {
   const meta = ANTIBODY_STEP_META[id];
   return (
     <div className="sh">
       <div className="sh-n" aria-hidden="true">{id}</div>
-      {/* 눈썹 줄에는 **묶음 이름만** 둬요 — 노트북 쪽 말('PART0 · 셀 3 · 5 · 7')은 학생에게 뜻이 없어서
-          아래 접히는 상세로 내렸어요(§6.6 — 원어 · 원전 표기는 배지 상세와 '점수 계산 방법'에만 · §12). */}
       <p className="eyebrow">{meta.group}. {ANTIBODY_GROUP_TITLE[meta.group]}{cost ? ` · ${cost}` : ''}</p>
       <h1><span className="sr">{id} </span>{meta.title}</h1>
-      <p className="sh-q">{meta.question}</p>
-      <div className="sh-m">
-        <div className="chips">
-          <span className="chip">완료 조건 · {meta.doneWhen}</span>
-          {chips}
+      {(chips || extra) && (
+        <div className="sh-m">
+          {chips && <div className="chips">{chips}</div>}
+          {extra}
         </div>
-        {extra}
-        <details className="ab-head-x">
-          <summary>수업 자료에서 어디인가요</summary>
-          <p className="mini muted" style={{ margin: '4px 0 0' }}>선생님용 노트북 자리 · {meta.notebookPart}</p>
-        </details>
-      </div>
+      )}
     </div>
   );
 }

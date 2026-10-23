@@ -29,42 +29,53 @@
 }
 
 /* ── 연구소 고르기(§1.4) ─────────────────────────────────────────────── */
-.ab-labs-h { text-align: center; max-width: 560px; }
-.ab-labs-h h1 { margin: 0; font-size: 30px; letter-spacing: -0.03em; }
-.ab-labs-h .lede { margin: 6px 0 0; }
-.ab-labs-h .mini { margin: 4px 0 0; }
-.ab-lab-s { margin: 6px 0 0; font-size: 12.5px; color: var(--muted); }
-.ab-labs { min-height: 100%; background: var(--raise); padding: 32px max(16px, env(safe-area-inset-left, 0px)) 48px; display: grid; gap: 18px; align-content: start; justify-items: center; }
-.ab-labs-in { width: min(1040px, 100%); display: grid; gap: 12px; }
-.ab-labs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.ab-lab { position: relative; display: grid; gap: 14px; align-content: start; justify-items: center; text-align: center; padding: 32px; }
-.ab-lab h2 { margin: 0; font-size: 34px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.15; }
-.ab-lab .ab-big { font-size: 96px; }
-/* 카드에 남은 조작은 이것 하나 — 손가락으로도 쉽게 누르게 크게 둬요. */
-.ab-lab .acts { margin-top: 10px; width: 100%; }
-.ab-labs-in > .acts { justify-content: center; }
-.ab-lab .ab-enter { width: 100%; min-height: 64px; font-size: 20px; font-weight: 700; }
+/* 바탕 --raise · 섬 --surface(26px) · 섬 안 판 --raise. 섬 두 개를 한 줄로 두고 960px 이하에서 쌓아요.
+   카드 안에 조작 요소는 **제목 링크 하나**뿐이에요 — 겹침 레이어가 클릭 영역만 카드 전체로 넓혀요(접근성 · §1.4). */
+.ab-labs { min-height: 100%; background: var(--raise); padding: 32px max(16px, env(safe-area-inset-left, 0px)) 48px; display: grid; gap: 16px; align-content: start; justify-items: center; }
+.ab-labs-in { width: min(1040px, 100%); display: grid; gap: 14px; justify-items: center; }
+.ab-labs-h { text-align: center; max-width: 620px; display: grid; gap: 6px; }
+.ab-labs-h .lab { margin: 0; }
+.ab-labs-h h1 { margin: 0; font-size: 28px; letter-spacing: -0.03em; line-height: 1.15; }
+.ab-labs-band { width: 100%; max-width: 620px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
+
+.ab-labs-grid { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+/* 섬 안은 세로 흐름 — [들어가기] 안내는 늘 섬 바닥에 붙여 두 섬의 키가 달라도 줄이 맞아요. */
+.ab-lab { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 10px; padding: 28px; }
+.ab-lab h2 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; }
 .ab-lab h2 a { text-decoration: none; }
-/* 카드 전체를 누르게 — 제목 링크의 클릭 영역을 겹침 레이어로 넓혀요(§1.4 접근성). 카드 안에 다른 조작 요소를 넣지 않아요. */
+/* 카드 전체를 누르게 — 제목 링크의 클릭 영역을 겹침 레이어로 넓혀요. 카드 안에 다른 조작 요소를 넣지 않아요(§1.4 접근성). */
 .ab-lab h2 a::after { content: ''; position: absolute; inset: 0; border-radius: 26px; }
 .ab-lab:hover { background: var(--bg); }
-/* 겹침 레이어 위로 올려서 [들어가기] 단추가 그대로 눌리게 해요(레이어가 클릭을 가로채지 않게). */
-.ab-lab .acts { position: relative; z-index: 1; }
 .ab-lab:has(a:focus-visible) { outline: 2px solid var(--fg); outline-offset: 2px; }
 .ab-lab[data-closed='1'] { opacity: 0.55; }
-.ab-lab[data-closed='1'] h2 a::after { display: none; }
 .ab-big { margin: 0; font-size: 52px; font-weight: 700; letter-spacing: -0.06em; line-height: 0.84;
   background: var(--film); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px var(--fg); }
-.ab-labs .panel { border: 0; background: var(--bg); border-radius: 18px; }
+
+/* 단계 칩 — 트랙 1 은 1.1~4.2 · 항체는 A1~A6. */
+.ab-lab-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+.ab-lab-steps .chip { display: inline-flex; align-items: center; gap: 5px; font-family: var(--sans); font-size: 11.5px; letter-spacing: 0; padding: 3px 5px 3px 7px; border-radius: 999px; }
+.ab-lab-steps .chip b { font-size: 10.5px; font-weight: 600; color: var(--muted); }
+
+/* 진행 칩 — 값이 없으면 숨기지만 자리는 비워 둬서 섬 높이가 흔들리지 않아요(§1.4). */
+.ab-lab-prog { margin: 0; min-height: 22px; }
+.ab-lab-prog .chip { border-radius: 999px; }
+
+/* [들어가기] 는 **누를 수 없는 안내 글**이에요 — 클릭은 위에 깔린 제목 링크의 겹침 레이어가 받아요. */
+.ab-lab-go { margin: auto 0 0; align-self: start; pointer-events: none; display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; background: var(--acc); color: var(--acc-fg); font-size: 15px; font-weight: 700; }
+.ab-lab:hover .ab-lab-go { box-shadow: inset 0 0 0 999px rgba(128, 128, 128, 0.16); }
+.ab-lab .hint { margin: auto 0 0; }
+
+.ab-labs-in > .acts { justify-content: center; }
 .ab-labs .btn, .ab-labs .chip, .ab-labs .badge { border-radius: 999px; }
+
 @media (max-width: 960px) {
   .ab-labs { padding-top: 20px; }
   .ab-labs-grid { grid-template-columns: minmax(0, 1fr); }
   .ab-labs .isl { border-radius: 20px; padding: 16px; }
+  .ab-lab h2 a::after { border-radius: 20px; }
   .ab-big { font-size: 40px; }
-  .ab-lab .ab-big { font-size: 64px; }
-  .ab-lab h2 { font-size: 26px; }
-  .ab-lab .ab-enter { min-height: 56px; font-size: 18px; }
+  .ab-lab h2 { font-size: 23px; }
+  .ab-labs-h h1 { font-size: 25px; }
 }
 
 /* ── 랩 소식(공용 LED 띠는 학급 등기 소식이라 항체 소식은 여기 줄에 적어요) ── */
@@ -75,13 +86,6 @@
 @media (max-width: 960px) {
   .ab-news span { white-space: normal; }
 }
-
-/* ── 출처 배지(§3.5) ─────────────────────────────────────────────────── */
-.ab-badge { appearance: none; border: 0; cursor: pointer; }
-.ab-badge[data-approx='1'] { background: var(--film); color: var(--film-ink); box-shadow: inset 0 0 0 1px var(--line-strong); }
-.ab-badge[data-approx='0'] { background: var(--fg); color: var(--bg); }
-.ab-badge-d { margin: 6px 0 0; padding: 8px 12px; border-radius: 12px; background: var(--bg); font-size: 12px; color: var(--muted); }
-.ab-badges { display: flex; flex-wrap: wrap; gap: 6px; }
 
 /* ── 등급 · 다양성 칩 — 색 + 이름 + 기호를 늘 함께(§6.5). 글자색은 항상 잉크예요. ── */
 .ab-grade { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 2px 10px; font-size: 11.5px; font-weight: 600; color: var(--fg); white-space: nowrap; }
@@ -140,7 +144,7 @@
   .ab-body .isl .panel.ab-seq-panel { padding-left: 0; padding-right: 0; }
 }
 
-/* 폰에서 단계 머리 칩이 섬 폭을 넘어 잘리지 않게 글을 접어요(§12 — 완료 조건은 잘리면 안 돼요). */
+/* 폰에서 단계 머리 칩이 섬 폭을 넘어 잘리지 않게 글을 접어요(§12). */
 @media (max-width: 960px) {
   .ab-body .sh-m .chips { flex-wrap: wrap; }
   .ab-body .sh-m .chip { white-space: normal; max-width: 100%; text-align: left; }
@@ -154,10 +158,6 @@
 
 /* 짧은 상태 글자는 폰에서만 보여요(넓은 화면은 `.st-s` 가 길게 알려 줘요). */
 .ab-body .st-p { display: none; }
-
-/* 단계 머리의 접히는 상세(수업 자료 자리) — 학생 머리줄에서 노트북 쪽 말을 빼고 여기에 뒀어요. */
-.ab-head-x { margin-top: 6px; }
-.ab-head-x > summary { font-size: 11.5px; color: var(--muted); cursor: pointer; }
 
 /* ── 점수 카드 ── */
 .ab-score { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }

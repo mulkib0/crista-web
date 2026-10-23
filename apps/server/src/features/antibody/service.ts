@@ -823,7 +823,7 @@ export function computeAntibodySteps(facts: StepFacts): { steps: AntibodyStepVie
       group: meta.group,
       index: meta.index,
       state,
-      ...(blockedBy ? { unlockBy: blockedBy, reason: `${blockedBy} 를 먼저 끝내요 — ${ANTIBODY_STEP_META[blockedBy].doneWhen}` } : {}),
+      ...(blockedBy ? { unlockBy: blockedBy, reason: `${blockedBy} ${ANTIBODY_STEP_META[blockedBy].title} 을 먼저 끝내요` } : {}),
       ...(run ? { progressPct: Math.round(run.progress * 100), ...(run.byName ? { byName: run.byName } : {}) } : {}),
       evidence: meta.evidence,
       // 계약의 `AntibodyStepMeta.costCents` 는 이미 센트다(크리스타가 아니다) — 다시 환산하지 않는다.

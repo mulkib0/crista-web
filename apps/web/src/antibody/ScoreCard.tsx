@@ -1,10 +1,9 @@
 /**
- * A6 점수 카드(설계 §6.3) — 0~100 큰 숫자 + 5항 분해 막대 + 원본 · 문턱 눈금 + 감점 목록 + 위험 표시 + 한계 문구 + 출처 배지.
+ * A6 점수 카드(설계 §6.3) — 0~100 큰 숫자 + 5항 분해 막대 + 원본 · 문턱 눈금 + 감점 목록 + 위험 표시 + 한계 문구.
  * '점수 계산 방법'은 묶음 6 이 따로 만들어요 — 여기서는 §6.6 대응표(이름 · 뜻 · 단위 · 좋은 방향)를 펼쳐 보여요.
  */
 import { ANTIBODY_WEIGHT_KEYS, type AntibodyScoreWeights, type ScoreView } from '@crista-web/web-contract';
 import { HBars, Panel } from '../board/ui/index.ts';
-import { Badges } from './Badge.tsx';
 import { TERMS, THRESHOLD_NOTE } from './terms.ts';
 
 const PART_WORD: Record<keyof AntibodyScoreWeights, string> = {
@@ -87,7 +86,6 @@ export function ScoreCard({ score }: { score: ScoreView }) {
         </div>
       </details>
 
-      <div style={{ marginTop: 10 }}><Badges list={score.provenance} /></div>
     </Panel>
   );
 }

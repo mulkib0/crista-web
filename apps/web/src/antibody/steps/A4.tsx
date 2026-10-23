@@ -10,7 +10,6 @@ import { useState } from 'react';
 import { CONFIDENCE_MIN_FOR_COMPLEX, ESMFOLD_MAX_RESIDUES, SCFV_LINKER, type FoldShape, type FoldView } from '@crista-web/web-contract';
 import { Confirm, HBars, Panel, useBenchState } from '../../board/ui/index.ts';
 import { AbHead, AbIslands, AbLocked, AbNext, AbNotes } from '../AbShell.tsx';
-import { Badge } from '../Badge.tsx';
 import { DataTable } from '../DataTable.tsx';
 import { MolPanel } from '../Mol3D.tsx';
 import { termName } from '../terms.ts';
@@ -64,15 +63,12 @@ export function A4({ board, step, me, actions, goStep, mock }: AbStepProps) {
       head={
         <AbHead
           id="A4"
-          cost="무료"
           chips={
             <>
-              <span className="chip src">실제 AI 예측</span>
               <span className="chip">{termName('confidence')} — 모델의 자기 확신 점수예요</span>
               {mock && <span className="chip test">화면 개발용 고정 자료</span>}
             </>
           }
-          extra={<p className="lede">실제 산업에서는 — 설계한 사슬이 제대로 접히는지 먼저 봐요. 접히지 않으면 아무리 잘 붙게 설계해도 쓸 수 없어요.</p>}
         />
       }
       mine={
@@ -133,20 +129,12 @@ export function A4({ board, step, me, actions, goStep, mock }: AbStepProps) {
               onCancel={() => setAsk(false)}
             >
               <p>{design?.label} · {shape === 'scfv' ? '링커로 이어 한 번에' : '사슬을 따로'} · {residues}잔기</p>
-              <p className="mini muted">이 단계는 무료예요 — 변이체 사이 차이가 작아서 과금하지 않아요.</p>
             </Confirm>
           </>
         )
       }
       team={
         <>
-          <Panel title="먼저 읽어요" tone="warn">
-            <p style={{ margin: 0 }}>
-              이 모델은 서열 하나만 보기 때문에 고리 한두 자리를 바꾼 변이체들 사이에 평균 확신도 차이가 거의 없어요 — 그래서 이 단계는
-              무료이고, 가장 긴 고리 구간({termName('cdr')}-H3)의 확신도를 봐요.
-            </p>
-          </Panel>
-
           {board.folds.length === 0 ? (
             <p className="empty">아직 접힘 결과가 없어요 — 모둠원이 각자 하나씩 접어 봐요.</p>
           ) : (
@@ -174,7 +162,6 @@ export function A4({ board, step, me, actions, goStep, mock }: AbStepProps) {
                     ]}
                   />
                   <p className="mini muted" style={{ margin: '6px 0 0' }}>기준선 90 · {CONFIDENCE_MIN_FOR_COMPLEX} — {CONFIDENCE_MIN_FOR_COMPLEX} 밑이면 A5 복합체 평가에서 빠져요.</p>
-                  <div style={{ marginTop: 8 }}><Badge provenance={fold.provenance} /></div>
                 </Panel>
               );
             })

@@ -4,20 +4,11 @@
  * 정직성(§3.5)
  * - 이 파일에도, 다른 화면 파일에도 **원전 지표 이름을 적지 않아요**. 근사값에 원전 이름을 붙이면 학생이 '실제로 그 지표를 쟀다'고
  *   오해하고, 묶음 6 의 정직성 감사(grep)도 걸려요. 원어 대조는 묶음 6 의 '점수 계산 방법' 페이지가 출처 표와 함께 맡아요.
- * - 지표 카드는 반드시 `Badge`(출처 · 근사 여부)를 하나씩 달아요 — 배지 없는 카드는 금지예요(묶음 5 완료 조건).
+ * - 단계 화면 카드에는 출처 배지를 두지 않아요 — 어디가 근사인지는 '점수 계산 방법' 페이지 한 곳에서만 말해요.
+ *   서버 응답의 출처 칸(`provenance`)은 그대로 들어와요(화면에만 그리지 않아요).
  */
-import type { AntibodyDataMode, AntibodySource, NumberingSource, Provenance } from '@crista-web/web-contract';
-
-/**
- * **화면에서** 규칙으로 만든 값의 출처 배지예요(§3.5) — 서버 계산도, 고정 자료도 아니에요.
- * 지금은 A3 치환 후보 순서 하나뿐이에요. 과학값을 화면에서 새로 만들지 않는다는 규칙의 예외 목록이기도 해요.
- */
-export const uiApprox = (label: string, detail: string): Provenance => ({
-  source: 'edu-approx',
-  label,
-  detail: `${detail} · 화면에서 규칙으로 매긴 값이에요 — 서버 계산이 아니에요.`,
-  approx: true,
-});
+import type { AntibodyDataMode, AntibodyStepId, LabTrack, NumberingSource, StepId } from '@crista-web/web-contract';
+import { ANTIBODY_STEP_IDS, STEP_IDS } from '@crista-web/web-contract';
 
 export interface Term {
   /** 화면 안에서 쓰는 열쇠 — 코드에서만 써요. */
@@ -60,15 +51,6 @@ export const termName = (key: string): string => term(key).name;
 export const THRESHOLD_NOTE =
   '설계 점수 문턱(원본보다 잘했는지) · 적합도 등급 60 · 80(얼마나 잘 붙는지) · AI 확신도 70(구조 예측을 믿을 수 있는지) — 재는 것이 달라서 기준이 달라요.';
 
-/** 결과의 성격 배지 글(§3.5). */
-export const SOURCE_WORD: Record<AntibodySource, string> = {
-  lookup: '자료 조회',
-  'server-calc': '서버가 센 값',
-  'ai-predict': '실제 AI 예측',
-  'edu-approx': '교육용 근사',
-  precomputed: '미리 계산해 둔 값',
-};
-
 /** 외부 자료를 지금 쓸 수 있는지 — 사이드바 섬에 늘 보여요. */
 export const DATA_MODE_WORD: Record<AntibodyDataMode, string> = {
   live: '실시간 조회',
@@ -92,9 +74,80 @@ export const DIVERSITY_LEGEND: readonly { grade: string; text: string }[] = [
   { grade: '1–4', text: '항체마다 많이 달라요 — 마음껏 바꿔도 돼요' },
 ];
 
-/** 노트북에서 그대로 인용하는 교육 문구 + 항체에서 달라지는 한 줄(§2.4). */
-export const MSA_QUOTE = '진화적 보존 패턴이 3D 구조의 단서가 된다.';
-export const MSA_CAVEAT = '다만 항체에서는 그 패턴이 레퍼토리 다양성과 섞여요 — 비슷한 항체들끼리 비교한 값이에요.';
-
 /** 사슬 이름. */
 export const CHAIN_WORD = { H: '중쇄(H)', L: '경쇄(L)' } as const;
+
+// ── '연구소 고르기' 화면 문구(설계 §1.4) ──────────────────────────────────────
+//
+// 화면 문구를 이 파일 한 곳에 둬요 — `Labs.tsx` 는 마크업만 들고 있어요.
+// 설명 덩어리(랩 한 줄 설명 · '결과의 성격' 줄 · 단계 칩 성격 배지)는 두지 않아요 — 이름 · 단계 · 진행만 보여요.
+// 용어(§11.4.2): 모둠 · 스타트업 · 연구비 · 선생님 · 해요체 · 화면 문구에 백틱을 쓰지 않아요.
+
+export interface LabStepChip {
+  /** 단계 번호 — 트랙 1 은 1.1~4.2 · 항체는 A1~A6. */
+  id: string;
+  /** 칩에 넣는 짧은 이름(섬 두 개가 한 화면에 들어가야 해서 제목을 줄여요). */
+  short: string;
+}
+
+export interface LabCardCopy {
+  track: LabTrack;
+  /** 큰 번호 자리. */
+  no: string;
+  title: string;
+  steps: readonly LabStepChip[];
+}
+
+/** 저분자 랩 단계 칩의 짧은 이름 — 긴 제목(`STEP_META.title`)은 그 랩 사이드바가 보여 줘요. */
+const SMALL_STEP_SHORT: Record<StepId, string> = {
+  '1.1': '표적',
+  '1.2': '스크리닝',
+  '2.1': '도킹',
+  '2.2': 'ADMET',
+  '3.1': '물질특허',
+  '3.2': '전임상',
+  '3.3': 'IND 신청',
+  '4.1': '임상',
+  '4.2': '최종 허가',
+};
+
+/** 항체 랩 단계 칩의 짧은 이름. */
+const ANTIBODY_STEP_SHORT: Record<AntibodyStepId, string> = {
+  A1: '표적 항체',
+  A2: '다양성',
+  A3: '변이 설계',
+  A4: '접힘',
+  A5: '복합체',
+  A6: '보고서',
+};
+
+export const LAB_CARDS: readonly LabCardCopy[] = [
+  {
+    track: 'small',
+    no: '01',
+    title: '저분자 신약 랩',
+    steps: STEP_IDS.map((id) => ({ id, short: SMALL_STEP_SHORT[id] })),
+  },
+  {
+    track: 'antibody',
+    no: '02',
+    title: '항체 설계 랩',
+    steps: ANTIBODY_STEP_IDS.map((id) => ({ id, short: ANTIBODY_STEP_SHORT[id] })),
+  },
+];
+
+/** 화면에 올리는 글 — 설계 §1.4 표 그대로예요. */
+export const LABS_COPY = {
+  eyebrow: 'CRISTA 파이프라인 랩',
+  title: '연구소 고르기',
+  stepsLabel: '단계',
+  enter: '들어가기',
+  closed: '이번 차시에는 선생님이 이 랩을 닫아 뒀어요.',
+  notRegistered: '먼저 사옥 지구에서 회사를 등기해야 해요.',
+  toDistrict: '사옥 지구로',
+  district: '사옥 지구',
+  logout: '로그아웃',
+  running: '진행 중',
+  /** 진행 칩 — `MeResponse.labs` 가 없으면 아예 그리지 않아요(§1.3 · §1.4). */
+  progress: (done: number, total: number) => `${done}/${total} 단계`,
+} as const;

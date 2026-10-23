@@ -44,14 +44,7 @@ export function A6({ board, step, me, actions, mock }: AbStepProps) {
         <AbHead
           id="A6"
           cost={formatCentsAsCrista(cost)}
-          chips={
-            <>
-              <span className="chip">서버가 센 값</span>
-              <span className="chip">교육용 근사</span>
-              {mock && <span className="chip test">화면 개발용 고정 자료</span>}
-            </>
-          }
-          extra={<p className="lede">실제 산업에서는 — 후보 하나를 정해 근거와 한계를 문서로 남기고, 그 문서로 투자와 다음 단계를 설득해요.</p>}
+          chips={mock ? <span className="chip test">화면 개발용 고정 자료</span> : null}
         />
       }
       mine={

@@ -15,6 +15,7 @@ import {
   scoreWeightsOk,
   type AccountView,
   type AntibodyScoreWeights,
+  type AntibodyTeacherQueue,
   type AntibodyTeacherSettings,
   type LabTrack,
   type ScoreView,
@@ -134,7 +135,7 @@ export async function correctScore(deps: Deps, account: AccountView, raw: unknow
 }
 
 /** 학급 큐 — 수업 운영용(§8 위험 1). 도메인별 대기 · 예상 대기. */
-export async function teacherQueue(deps: Deps, account: AccountView, classId: string | null) {
+export async function teacherQueue(deps: Deps, account: AccountView, classId: string | null): Promise<AntibodyTeacherQueue> {
   const id = await pickClass(deps.db, account, classId);
   const rows = await deps.db.query<{ step: string; status: string; n: number }>(
     `select step, status, count(*)::int as n from web.antibody_jobs where class_id = $1 and status in ('queued', 'running') group by step, status`,

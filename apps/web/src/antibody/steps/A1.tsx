@@ -17,10 +17,9 @@ import {
 } from '@crista-web/web-contract';
 import { useBenchState, useLive, Panel } from '../../board/ui/index.ts';
 import { AbHead, AbIslands, AbLocked, AbNext, AbNotes } from '../AbShell.tsx';
-import { Badge } from '../Badge.tsx';
 import { ConsensusPanel } from '../ConsensusPanel.tsx';
 import { DataTable } from '../DataTable.tsx';
-import { MOCK_CATALOG_TARGETS, fx } from '../mock.ts';
+import { MOCK_CATALOG_TARGETS } from '../mock.ts';
 import type { AbStepProps } from './index.ts';
 
 const REASONS = [
@@ -85,11 +84,6 @@ export function A1({ board, step, me, actions, goStep, mock }: AbStepProps) {
       .finally(() => setBusy(false));
   };
 
-  // 배지는 **서버가 준 출처**를 그대로 써요 — 고정 자료일 때만 근사 배지를 붙여요.
-  const source = mock
-    ? fx('표적 · 원본 항체 목록', '연습용 고정 자료예요')
-    : (picked?.provenance ?? null);
-
   // 서버 계약 그대로 보내요(§5.5 `AntibodyProgramRequest`) — 열쇠 이름이 다르면 400 이에요.
   const pickValue =
     picked && parent && roleSet
@@ -108,7 +102,6 @@ export function A1({ board, step, me, actions, goStep, mock }: AbStepProps) {
           id="A1"
           chips={
             <>
-              <span className="chip">자료 조회</span>
               {mock ? (
                 <span className="chip test">연습용 고정 자료</span>
               ) : (
@@ -116,7 +109,6 @@ export function A1({ board, step, me, actions, goStep, mock }: AbStepProps) {
               )}
             </>
           }
-          extra={<p className="lede">실제 산업에서는 — 표적을 정하고, 이미 쓰이는 치료항체 가운데 본뜰 것을 고르고, 항원이 함께 들어 있는 결정구조를 찾아요.</p>}
         />
       }
       mine={
@@ -206,7 +198,6 @@ export function A1({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 empty={live.loading ? '구조 후보를 받는 중이에요.' : '구조 후보를 받지 못했어요.'}
                 summary="항원이 함께 들어 있는 구조만 둬요 — 항체만 들어 있는 구조로는 A5 에서 계면을 볼 수 없어요. 계면은 첫 체인 조로 읽어요."
               />
-              {source && <div style={{ marginTop: 8 }}><Badge provenance={source} /></div>}
             </Panel>
           </>
         )

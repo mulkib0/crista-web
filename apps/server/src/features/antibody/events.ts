@@ -127,7 +127,7 @@ const floorUsd = (usd: number): number => Math.max(PRICE_FLOOR_USD, Math.round(u
 /** F ← F × (1 + Δ), 하한 $0.10 — game-rules `applyFundamentalChange` 와 같은 식(사본을 고치지 않으려고 여기 둔다). */
 export const applyChange = (fundamentalUsd: number, changePct: number): number => floorUsd(fundamentalUsd * (1 + changePct / 100));
 
-/** 시가총액(센트) — $1 = 100 센트 · 1,000,000주. */
+/** 기업가치(센트) — $1 = 100 센트 · 1,000,000주. 학생에게 보이는 이름은 '기업가치 · 기업가치 순위'다(§11.4.2 사용자 결정). 칸 이름(`market_cap_*`)은 공용 계약 것이라 그대로 둔다. */
 export const marketCapCentsOf = (priceUsd: number): number => Math.round(priceUsd * SHARES_OUTSTANDING * 100);
 
 /** 지금 기업가치(달러) — `web.valuations` 의 마지막 줄, 없으면 상장가. */

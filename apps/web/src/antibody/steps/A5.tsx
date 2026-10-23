@@ -14,7 +14,6 @@ import {
 } from '@crista-web/web-contract';
 import { Confirm, HBars, Panel, useBenchState } from '../../board/ui/index.ts';
 import { AbHead, AbIslands, AbLocked, AbNext, AbNotes } from '../AbShell.tsx';
-import { Badges } from '../Badge.tsx';
 import { DataTable } from '../DataTable.tsx';
 import { MolPanel } from '../Mol3D.tsx';
 import { termName } from '../terms.ts';
@@ -76,13 +75,10 @@ export function A5({ board, step, me, actions, goStep, mock }: AbStepProps) {
           cost={formatCentsAsCrista(cost)}
           chips={
             <>
-              <span className="chip">교육용 근사 — 접촉 통계로 센 점수예요</span>
               <span className="chip">{termName('bindScore')} · 무단위</span>
-              {board.optional.boltz && <span className="chip src">실제 복합체 예측을 쓸 수 있어요</span>}
               {mock && <span className="chip test">화면 개발용 고정 자료</span>}
             </>
           }
-          extra={<p className="lede">실제 산업에서는 — 항체와 항원을 함께 접어 계면을 보고, 원본보다 잘 붙는 후보만 남겨요.</p>}
         />
       }
       mine={
@@ -148,7 +144,6 @@ export function A5({ board, step, me, actions, goStep, mock }: AbStepProps) {
               onCancel={() => setAsk(false)}
             >
               <p>{target?.label} · 원본 비교군이 함께 들어가요.</p>
-              <p className="mini muted">결과는 접촉 통계로 센 교육용 근사예요 — 실험으로 잰 결합력이 아니에요.</p>
             </Confirm>
           </>
         )
@@ -219,8 +214,6 @@ export function A5({ board, step, me, actions, goStep, mock }: AbStepProps) {
                     } : null}
                   />
                 </div>
-                {/* 배지는 **모두** 그려요 — 근사 배지를 실제 예측 배지로 갈아치우면 근사 표시가 사라져요(§3.5 · §12). */}
-                <div style={{ marginTop: 8 }}><Badges list={c.provenance} /></div>
               </Panel>
             );
           })}

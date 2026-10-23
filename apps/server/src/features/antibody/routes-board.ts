@@ -133,8 +133,6 @@ export function registerBoardRoutes(router: Router<RequestContext>, account: (ct
       steps: ANTIBODY_STEP_IDS.map((id) => ({
         id,
         title: ANTIBODY_STEP_META[id].title,
-        question: ANTIBODY_STEP_META[id].question,
-        doneWhen: ANTIBODY_STEP_META[id].doneWhen,
         evidence: ANTIBODY_STEP_META[id].evidence,
         costCrista: ANTIBODY_STEP_COST_CRISTA[id],
       })),

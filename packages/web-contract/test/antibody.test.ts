@@ -170,8 +170,7 @@ describe('단계 메타', () => {
     for (const id of ANTIBODY_STEP_IDS) {
       const meta = ANTIBODY_STEP_META[id];
       assert.equal(meta.id, id);
-      assert.ok(meta.title.length > 0 && meta.question.length > 0 && meta.doneWhen.length > 0, id);
-      assert.ok(meta.notebookPart.length > 0, id);
+      assert.ok(meta.title.length > 0, id);
       assert.ok(meta.evidence.length > 0, `${id} 에 결과의 성격이 없어요`);
       for (const source_ of meta.evidence) assert.ok(ANTIBODY_SOURCES.includes(source_), `${id}: ${source_}`);
       assert.ok(Number.isSafeInteger(meta.costCents) && meta.costCents >= 0, id);
