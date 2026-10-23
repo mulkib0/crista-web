@@ -108,9 +108,9 @@ export const LABS_COPY = {
   title: '연구소 고르기',
   enter: '들어가기',
   closed: '이번 차시에는 선생님이 이 랩을 닫아 뒀어요.',
-  notRegistered: '먼저 사옥 지구에서 회사를 등기해야 해요.',
+  notRegistered: '제약회사 스타트업을 먼저 설립해주세요',
   toDistrict: '사옥 지구로',
-  district: '제약회사 스타트업을 먼저 설립해주세요',
+  district: '제약회사 설립',
   logout: '로그아웃',
   running: '진행 중',
   /** 진행 칩 — `MeResponse.labs` 가 없으면 아예 그리지 않아요(§1.3 · §1.4). */
