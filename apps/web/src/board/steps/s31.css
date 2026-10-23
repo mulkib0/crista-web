@@ -1,0 +1,105 @@
+/* 3.1 물질특허 화면 전용 모양(F31) — 공용 부품 · 섬 모양은 styles.css(바꾸지 말 것). 선택자는 .s31 아래로 묶는다.
+   시안: design/step-viz/viz-5.js 5.01 출원서 해부 · 5.02 코드명 해부도 · 5.04 학급 특허 원장 · 5.06 구조 지문. */
+.s31 {
+  --s31-n: #2a5bd7; --s31-o: #c2410c; --s31-x: #7c3aed;
+  display: grid; gap: 14px; min-width: 0;
+}
+.s31 .panel + .panel { margin-top: 0; }
+.s31 .mono { font-family: var(--mono); }
+
+/* ① 후보 카드 · 구조 지문 5.06 */
+.s31-cand { display: grid; gap: 10px; min-width: 0; }
+.s31-cand > p { margin: 0; }
+.s31-fp { margin: 0; display: grid; gap: 6px; min-width: 0; }
+.s31-fp svg { width: 100%; height: auto; display: block; background: var(--surface); border-radius: 12px; }
+.s31-fp .fp-name { font-size: 11px; font-weight: 600; fill: var(--fg); }
+.s31-fp .fp-ch { font-family: var(--mono); font-size: 9.5px; fill: var(--muted); }
+.s31-fp .fp-mk { font-size: 9px; fill: var(--fg); }
+.s31-fp .fp-hit { fill: var(--hi); }
+.s31-fp .fp-b { fill: var(--line-strong); }
+.s31-fp .fp-c { fill: var(--fg); }
+.s31-fp .fp-n { fill: var(--s31-n); }
+.s31-fp .fp-o { fill: var(--s31-o); }
+.s31-fp .fp-x { fill: var(--s31-x); }
+.s31-leg i { font-style: normal; font-weight: 600; }
+.s31-leg .k-n { color: var(--s31-n); }
+.s31-leg .k-o { color: var(--s31-o); }
+.s31-leg .k-x { color: var(--s31-x); }
+
+/* 모둠 출원 칸 n / 상한 */
+.s31-slots { list-style: none; margin: 0 0 6px; padding: 0; display: flex; gap: 8px; font-size: 26px; line-height: 1; }
+.s31-slots li { color: var(--muted); }
+.s31-slots li.on { color: var(--fg); }
+.s31-apps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.s31-apps li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px; background: var(--surface); }
+.s31-apps li.on { box-shadow: inset 0 0 0 2px var(--fg); }
+.s31-apps li .btn { margin-left: auto; }
+
+/* ② 코드명 해부도 5.02 */
+.s31-anat { width: 100%; height: auto; max-height: 190px; display: block; }
+.s31-anat .an-big { font-family: var(--mono); font-size: 60px; font-weight: 600; fill: var(--fg); }
+.s31-anat .an-empty { fill: var(--muted); }
+.s31-anat .an-bad { fill: var(--bad); }
+.s31-anat .an-br { fill: none; stroke: var(--fg); stroke-width: 2; }
+.s31-anat .an-br.thin { stroke: var(--muted); stroke-width: 1.5; }
+.s31-anat .an-br.bad { stroke: var(--bad); stroke-dasharray: 5 3; }
+.s31-anat .an-l { font-size: 14px; font-weight: 600; fill: var(--fg); }
+.s31-anat .an-l.bad { fill: var(--bad); }
+.s31-anat .an-s { font-size: 12px; fill: var(--muted); }
+.s31-code { display: grid; gap: 6px; margin-top: 8px; }
+.s31-code .row { flex-wrap: nowrap; }
+.s31-code input { width: 6.5em; font-size: 16px; }
+.s31-code input[aria-invalid="true"] { border-color: var(--bad); }
+.s31-tick { font-size: 16px; font-weight: 600; white-space: nowrap; }
+.s31-codeline { margin: 0 0 10px; font-size: 15px; }
+
+/* ③ 출원서 해부 5.01 */
+.s31-dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 7px 14px; margin: 0 0 10px; }
+.s31-dl dt { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.s31-dl dd { margin: 0; font-size: 13px; min-width: 0; overflow-wrap: anywhere; }
+.s31-ev { display: inline-grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: var(--hi); color: var(--hi-fg); font-family: var(--mono); font-size: 11px; font-weight: 600; margin-right: 6px; }
+.s31-smi { overflow-wrap: anywhere; word-break: break-all; font-size: 12px; }
+
+/* ④ 심사 결과 */
+.s31-find { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; font-size: 13px; }
+.s31-find li { display: flex; gap: 8px; align-items: baseline; padding: 6px 10px; border-radius: 10px; background: var(--surface); }
+.s31-find li > b { font-family: var(--mono); flex: none; }
+.s31-find li.ok > b { color: var(--good); }
+.s31-find li.bad { background: var(--warn-bg); }
+.s31-find li.bad > b { color: var(--warn); }
+.s31-find li.rej { background: var(--bad-bg); }
+.s31-find li.rej > b { color: var(--bad); }
+.s31-find .muted { color: var(--muted); }
+.s31-fb { margin: 10px 0 0; font-size: 13px; line-height: 1.6; }
+
+/* ⑤ 학급 특허 원장 5.04 */
+.s31-led table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.s31-led td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.s31-led tr.me td { background: var(--hi); color: var(--hi-fg); font-weight: 600; }
+.s31-led tr.rej td { background: var(--bad-bg); border-top: 1px dashed var(--bad); }
+.s31-led td.s31-smi { max-width: 260px; }
+.s31-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+
+/* 폰 — 원장 표를 카드로(가로 스크롤 없게) */
+@media (max-width: 1100px) {
+  .s31-led thead { display: none; }
+  .s31-led table, .s31-led tbody, .s31-led tr, .s31-led td { display: block; width: 100%; }
+  .s31-led tr { border-radius: 14px; padding: 8px 10px; margin-bottom: 8px; background: var(--surface); }
+  .s31-led td { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 8px; border: 0; padding: 3px 0; }
+  .s31-led td::before { content: attr(data-l); color: var(--muted); font-family: var(--sans); font-size: 11px; font-weight: 400; }
+  .s31-led tr.me { background: var(--hi); }
+  .s31-led tr.me td, .s31-led tr.rej td { background: transparent; }
+  .s31-led tr.rej { background: var(--bad-bg); border: 1px dashed var(--bad); }
+  .s31-led td.s31-smi { max-width: none; }
+  .s31-led tr.rej td { border: 0; }
+  .s31-led td > .sig { justify-self: start; }
+}
+@media (max-width: 480px) {
+  .s31-dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .s31-dl dd { margin-bottom: 6px; }
+}
+
+/* 문구 반영(2026-10-24) — 상한 근거 접기 · 해부도 조각 풀이 · 고른 기전 풀이 */
+.s31 .s31-why { margin-top: 8px; }
+.s31 .s31-why summary { cursor: pointer; font-weight: 600; }
+.s31 .s31-why ul, .s31 .s31-pieces, .s31 .s31-desc { margin: 6px 0; padding-left: 18px; display: grid; gap: 4px; overflow-wrap: anywhere; }
