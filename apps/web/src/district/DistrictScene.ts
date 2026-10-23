@@ -3,11 +3,12 @@
  *
  * - 걷기는 화면 경험이다(서버 판정 없음 — 설계 §2). 내 캐릭터는 바로 움직이고, 위치는 초당 5회까지 서버로 보내 같은 학급에 중계된다.
  * - 이동: WASD · 화살표 + 바닥 클릭(4방향 A*). 속도 150 px/s(crista `MOVE.speed`).
- * - 문 앞(매트)에 서면 `E 들어가기` — React 쪽(District.tsx)이 사옥 패널을 연다. 사옥을 누르면 그 문 앞까지 걸어가 연다.
+ * - 문 앞(매트)에 서면 `E 들어가기` — React 쪽(District.tsx)이 사옥 대사 창을 연다. 사옥을 누르면 그 문 앞까지 걸어가 연다.
+ * - Z · E · 스페이스 · 엔터 = 조사(쯔꾸르 결정 키). 바라보는 쪽 바로 앞에 친구가 있으면 문보다 먼저 말을 건다.
  * - 사옥 그림은 tools/gen-campus-assets.mjs 의 외관 8종 × 3단계 + 모둠 잉크(깃발 · 간판 테두리)를 여기서 덧그린다.
  */
 import * as Phaser from 'phaser';
-import type { Avatar, Direction, DistrictPeer, DistrictResponse } from '@crista-web/web-contract';
+import type { Avatar, Direction, DistrictLight, DistrictPeer, DistrictResponse } from '@crista-web/web-contract';
 import { ink } from '../ink.ts';
 import {
   buildBlocked,
@@ -39,8 +40,10 @@ const hex = (css: string): number => Number.parseInt(css.slice(1), 16);
 export interface DistrictHooks {
   /** 문 앞에 섰다 · 떠났다. */
   onNear(plot: number | null): void;
-  /** E · 스페이스 · 사옥 누르기. */
+  /** Z · E · 스페이스 · 엔터 · 사옥 누르기. */
   onInteract(plot: number): void;
+  /** 바라보는 쪽 바로 앞의 친구에게 Z(결정 키). */
+  onTalk(peer: DistrictPeer): void;
   onMove(x: number, y: number, dir: Direction, moving: boolean): void;
   onReady(): void;
 }
@@ -54,6 +57,8 @@ interface Actor {
   moving: boolean;
   tx: number;
   ty: number;
+  /** 다른 학생이면 마지막으로 받은 위치 정보. */
+  peer?: DistrictPeer;
 }
 
 type Team = DistrictResponse['teams'][number];
@@ -73,10 +78,17 @@ export class DistrictScene extends Phaser.Scene {
   private myTeamId: string | null = null;
   /** 사옥 그림 · 간판 · 깃발 — 모둠이 바뀌면 지우고 다시 그린다(컨테이너는 깊이 정렬을 깨서 쓰지 않는다). */
   private plotObjects: Phaser.GameObjects.GameObject[] = [];
+  /** 사옥 창문 불빛(FLEARN — 학습 연구비 단계 가동) — 켜진 창 수만. 사옥을 다시 그리면 같이 다시 그린다. */
+  private hqLights: DistrictLight[] = [];
+  private lightObjects: Phaser.GameObjects.GameObject[] = [];
   private ledText: Phaser.GameObjects.Text | null = null;
+  /** 광장 LED 소식(FMARKET — ③ 전광판과 같은 최근 소식). 비면 등기 소식만. */
+  private plazaNews: string | null = null;
   private arrow: Phaser.GameObjects.Triangle | null = null;
   private ready = false;
   private inputEnabled = true;
+  /** 대사 창을 닫은 키가 Phaser 입력 줄에 남아 창을 바로 다시 여는 것을 막는다. */
+  private enabledAt = 0;
 
   constructor(hooks: DistrictHooks) {
     super('district');
@@ -99,8 +111,7 @@ export class DistrictScene extends Phaser.Scene {
     const kb = this.input.keyboard;
     if (kb) {
       this.keys = kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT') as Record<string, Phaser.Input.Keyboard.Key>;
-      kb.on('keydown-E', () => this.interact());
-      kb.on('keydown-SPACE', () => this.interact());
+      for (const key of ['Z', 'E', 'SPACE', 'ENTER']) kb.on(`keydown-${key}`, (e: KeyboardEvent) => !e.repeat && this.interact());
       // 입력 칸에 글을 쓸 때 WASD 가 캐릭터를 움직이지 않게 — 캔버스 밖 입력은 Phaser 가 가로채지 않는다.
       kb.disableGlobalCapture();
     }
@@ -112,14 +123,13 @@ export class DistrictScene extends Phaser.Scene {
   }
 
   /**
-   * 화면이 크면 정수배로 키운다(픽셀 그림이 흐려지지 않게). 지구가 화면보다 작으면 가운데 두고(경계를 넓혀),
-   * 크면 내 캐릭터를 따라간다.
+   * 쯔꾸르처럼 가까이(시안 district-rpg-10 · 01) — 화면 높이 600px 이상이면 2배로 내 캐릭터를 따라가고, 작으면 1배.
+   * 정수배라 픽셀 그림이 흐려지지 않는다. 지구가 화면보다 작으면 가운데 두고(경계를 넓혀) 크면 따라간다.
    */
   private fitZoom(): void {
     const { width, height } = this.scale.gameSize;
-    const fit = Math.min(width / WIDTH, height / HEIGHT);
     const cover = Math.max(width / WIDTH, height / HEIGHT);
-    const zoom = fit >= 2 ? 2 : cover >= 1 ? 1 : cover >= 0.75 ? 0.75 : 0.5;
+    const zoom = height >= 600 && width >= 560 ? 2 : cover >= 1 || height >= 360 ? 1 : cover >= 0.75 ? 0.75 : 0.5;
     const cam = this.cameras.main;
     cam.setZoom(zoom);
     const viewW = width / zoom;
@@ -175,6 +185,7 @@ export class DistrictScene extends Phaser.Scene {
   }
 
   setInputEnabled(enabled: boolean): void {
+    if (enabled && !this.inputEnabled) this.enabledAt = performance.now();
     this.inputEnabled = enabled;
     if (!enabled) this.path = [];
     // 장면이 아직 만들어지기 전(React 효과가 먼저 돌 때)에는 input 이 없다.
@@ -203,11 +214,18 @@ export class DistrictScene extends Phaser.Scene {
     this.myTeamId = myTeamId;
     this.blocked = buildBlocked(teams.length);
     this.drawPlots();
+    this.drawLights();
     const news = teams
       .filter((t) => t.startupName && t.ticker)
       .map((t) => `◆ ${t.ticker} 「${t.startupName}」 설립 등기`)
       .join('     ');
-    this.ledText?.setText(news || '◆ 사옥에 들어가 스타트업 이름을 등기하면 이 띠에 소식이 흘러요');
+    this.ledText?.setText(this.plazaNews || news || '◆ 사옥에 들어가 스타트업 이름을 등기하면 이 띠에 소식이 흘러요');
+  }
+
+  /** 광장 LED 기둥 글(설계 §4.1 — ③ 의 전광판과 같은 소식, FMARKET). */
+  setPlazaNews(text: string | null): void {
+    this.plazaNews = text;
+    if (text) this.ledText?.setText(text);
   }
 
   upsertPeer(peer: DistrictPeer): void {
@@ -217,6 +235,7 @@ export class DistrictScene extends Phaser.Scene {
       this.others.set(peer.userId, actor);
     }
     this.setLook(actor, peer.avatar ?? 'ceo', peer.displayName, peer.ink);
+    actor.peer = peer;
     actor.tx = peer.x;
     actor.ty = peer.y;
     actor.dir = peer.dir;
@@ -238,6 +257,47 @@ export class DistrictScene extends Phaser.Scene {
   }
 
   // ── 그리기 ──
+
+  /** 사옥 창문 불빛 — 모둠원 수만큼 창(최대 4), 지금 단계에서 가동 도장을 찍은 수만큼 켠다. 전원이면 '전원 야근' 빛, 5단계 연속이면 옥상 깃발. */
+  setLights(lights: DistrictLight[]): void {
+    this.hqLights = lights;
+    this.drawLights();
+  }
+
+  private drawLights(): void {
+    for (const obj of this.lightObjects) obj.destroy();
+    this.lightObjects = [];
+    if (!this.ready) return;
+    for (const light of this.hqLights) {
+      const team = this.teams.find((t) => t.id === light.teamId);
+      const slot = team ? PLOTS[team.plot - 1] : undefined;
+      if (!team || !slot || !team.startupName) continue;
+      const x = slot.col0 * TILE;
+      const bottom = slot.row0 * TILE + 3 * TILE;
+      const depth = 1000 + bottom + 3;
+      const w = 9;
+      const gap = 4;
+      const n = Math.max(1, Math.min(4, light.windows));
+      const left = x + 48 - (n * w + (n - 1) * gap) / 2;
+      const top = bottom - 34;
+      const g = this.add.graphics().setDepth(depth);
+      if (light.allOn) g.fillStyle(0xffe066, 0.28).fillRoundedRect(left - 5, top - 5, n * w + (n - 1) * gap + 10, w + 13, 4);
+      for (let i = 0; i < n; i++) {
+        const on = i < light.lit;
+        g.fillStyle(on ? 0xffd23f : 0x2a3340).fillRect(left + i * (w + gap), top, w, w + 3);
+        g.lineStyle(1, 0x282828).strokeRect(left + i * (w + gap), top, w, w + 3);
+      }
+      this.lightObjects.push(g);
+      if (light.flag) {
+        const f = this.add.graphics().setDepth(depth + 1);
+        const fx = x + 10;
+        const fy = slot.row0 * TILE - 10;
+        f.lineStyle(2, 0x282828).lineBetween(fx, fy, fx, fy + 26);
+        f.fillStyle(0xc6ff4a).fillTriangle(fx + 1, fy, fx + 15, fy + 5, fx + 1, fy + 10).lineStyle(1, 0x282828).strokeTriangle(fx + 1, fy, fx + 15, fy + 5, fx + 1, fy + 10);
+        this.lightObjects.push(f);
+      }
+    }
+  }
 
   private drawPlots(): void {
     for (const obj of this.plotObjects) obj.destroy();
@@ -357,7 +417,27 @@ export class DistrictScene extends Phaser.Scene {
   }
 
   private interact(): void {
-    if (this.nearPlot !== null && this.inputEnabled) this.hooks.onInteract(this.nearPlot);
+    if (!this.inputEnabled || performance.now() - this.enabledAt < 250) return;
+    const peer = this.facingPeer();
+    if (peer) this.hooks.onTalk(peer);
+    else if (this.nearPlot !== null) this.hooks.onInteract(this.nearPlot);
+  }
+
+  /** 바라보는 쪽 한 칸(약 44px) 안, 옆으로 24px 안에 선 친구 — 가장 가까운 한 명. */
+  private facingPeer(): DistrictPeer | null {
+    const me = this.me;
+    if (!me) return null;
+    const [fx, fy] = ({ north: [0, -1], south: [0, 1], east: [1, 0], west: [-1, 0] } as const)[me.dir];
+    let best: { peer: DistrictPeer; d: number } | null = null;
+    for (const actor of this.others.values()) {
+      if (!actor.peer) continue;
+      const dx = actor.sprite.x - me.sprite.x;
+      const dy = actor.sprite.y - me.sprite.y;
+      const ahead = dx * fx + dy * fy;
+      const side = Math.abs(dx * fy - dy * fx);
+      if (ahead > 0 && ahead < 44 && side < 24 && (!best || ahead < best.d)) best = { peer: actor.peer, d: ahead };
+    }
+    return best?.peer ?? null;
   }
 
   update(time: number, delta: number): void {
