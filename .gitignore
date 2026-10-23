@@ -21,3 +21,7 @@ apps/web/dist/
 
 # wrangler 로컬 상태(deploy/gateway)
 .wrangler/
+
+# 슬라이드 빌드 부산물 — 파이썬 캐시 · 빌드 때 내려받은 의존성
+__pycache__/
+.deps/
