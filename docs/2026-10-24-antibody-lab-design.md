@@ -1467,6 +1467,9 @@ export interface AntibodyBoardResponse {
 | `apps/web/src/App.tsx` | 라우트 `lab` · `antibody` · `pickedLab()` · 렌더 분기 |
 | `apps/web/src/screens/District.tsx` | 등기 뒤 이동에 `?lab=` 전달(3곳) |
 | `apps/web/src/screens/Board.tsx` | 위 띠 [랩 고르기] **한 줄** |
+| `apps/web/src/screens/Teacher.tsx` · `apps/web/src/teacher/nav.ts` | 선생님 화면 칸 ⑨ '항체 설계 랩' 등록(내용은 `antibody/TeacherPanel.tsx`) — 기반이 탭에서 사이드바 칸 구조로 바뀌어 `nav.ts` 말고 등록할 자리가 없다. 트랙 1 세션 승인(2026-10-24) |
+| `packages/web-contract/src/track.ts` | 기반이 비워 둔 `ANTIBODY_TRACK` 을 A1~A6 으로 채움(그 파일 주석이 '항체가 채울 자리'로 적어 둔 곳) |
+| `apps/server/test/track.test.ts` | `ANTIBODY_TRACK.steps.length === 0` 단정을 새 사실로 바로잡음. 트랙 1 세션 승인 |
 | `apps/web/package.json` | `3dmol@2.5.5` |
 | `.env.example` | 항체 랩 선택 환경값 **5줄**(`WEB_ANTIBODY_OFFLINE` · `WEB_ANTIBODY_USER_AGENT` · `WEB_ANTIBODY_SEED_MAX_BYTES` · `WEB_ANTIBODY_SEED_TIMEOUT_MS` + 머리 주석) — **덧붙이기만** 한다(2026-10-24 추가 · §12) |
 | `package.json`(저장소 뿌리) | 스크립트 **2줄**(`e2e:antibody` · `antibody:seed`) — **덧붙이기만** 한다(2026-10-24 추가 · §12) |
@@ -1481,7 +1484,7 @@ export interface AntibodyBoardResponse {
 | 항목 | 쓰는 것 |
 | --- | --- |
 | 결과 평가 | `postBoardEvent` → `onBoardEvent('market')` 이 밴드 안에서 변동률을 정한다(§11.3) |
-| **과정 평가** | **`postProcessScore(tx, deps, { classId, teamId, stepId, components, revisionId?, gameDay? })` → `{ created, score, changePct, after }`**. `stepId` 는 **`antibody_A1` ~ `antibody_A6`**(FMARKET 이 `antibody_<단계>` 접두를 받는다). (모둠, 단계)마다 **한 번**(PK) · 0~100 점 · 변동 **0 ~ +3%** · **감점 없음**(`PROCESS_PCT_MAX = 3` · `PROCESS_NEUTRAL_BELOW = 30` · `processScoreOf` · `processChangePct`) |
+| **과정 평가** | **`postProcessScore(tx, deps, { classId, teamId, stepId, components, revisionId?, gameDay? })` → `{ created, score, changePct, after }`**. `stepId` 는 **`antibody_a1` ~ `antibody_a6`**(소문자 — 0016 의 `process_scores.step_id` check 가 `^antibody_[a-z0-9_]{1,40}$` 로 소문자만 받는다. 대문자로 넣으면 23514 로 조용히 버려진다. 트랙 1 세션이 2026-10-24 에 '소식 kind 와 같은 규칙으로 소문자 유지'로 확정했다)(FMARKET 이 `antibody_<단계>` 접두를 받는다). (모둠, 단계)마다 **한 번**(PK) · 0~100 점 · 변동 **0 ~ +3%** · **감점 없음**(`PROCESS_PCT_MAX = 3` · `PROCESS_NEUTRAL_BELOW = 30` · `processScoreOf` · `processChangePct`) |
 | 최종 순위 | `computeFinalStandings(db, classId)` · `freezeStandings(deps, classId, reason, by?)` · `web.class_standings` · `classes.ends_at` — **항체 랩이 할 일이 없다**. 같은 `board_events` · `valuations` · 과정 점수에 쌓이므로 결과 점수 · 과정 점수 · 도달 단계가 함께 집계된다. 마감 뒤 소식은 흐르지만 기업가치는 움직이지 않는다 |
 | 공개 범위 | 과정 점수 **숫자만** 공개(`processByStep`), 신호 내역은 그 모둠 · 선생님만 |
 
