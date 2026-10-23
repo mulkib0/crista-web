@@ -1,0 +1,141 @@
+/* 학습 연구비(FLEARN) 전용 모양 — 공용 부품 · 섬 모양은 styles.css(바꾸지 말 것). 선택자는 .ln 아래로 묶는다.
+   시안 21 '둥근 섬': 섬 안 판 16~20px · 칩 · 작은 단추 알약. 상태는 색 + 기호 · 글자(○ △ × · ✓ · ⏳ · ●). */
+.ln { display: grid; gap: 12px; min-width: 0; }
+.ln .panel + .panel { margin-top: 0; }
+.ln p { margin: 0; }
+.ln .mono, .ln-drawer .mono, .ln-pitch .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.ln-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: 0 0 8px; font-size: 15px; letter-spacing: -0.01em; }
+.ln-h small { font-weight: 400; color: var(--muted); font-size: 12px; }
+
+/* 노트 평가 */
+.ln-note { display: grid; gap: 10px; }
+.ln-note .acts { gap: 8px; }
+.ln-eval { display: grid; gap: 8px; padding: 10px 12px; border-radius: 14px; background: var(--surface); }
+.ln-eval-h { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; }
+.ln-score { font-family: var(--mono); font-weight: 700; font-size: 18px; }
+.ln-paid { font-family: var(--mono); font-weight: 600; color: var(--good); }
+.ln-pend { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12.5px; }
+.ln-pend i { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); animation: ln-blink 1.2s ease-in-out infinite; }
+@keyframes ln-blink { 50% { opacity: 0.25; } }
+
+/* 루브릭 ○ △ × */
+.ln-rub { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12.5px; }
+.ln-rub li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 6px; align-items: start; }
+.ln-rub .mk { font-weight: 700; text-align: center; border-radius: 999px; line-height: 20px; height: 20px; }
+.ln-rub .full .mk { background: var(--good-bg); color: var(--good); }
+.ln-rub .half .mk { background: var(--warn-bg); color: var(--warn); }
+.ln-rub .none .mk { background: var(--bad-bg); color: var(--bad); }
+.ln-rub small { display: block; color: var(--muted); }
+.ln-fb { font-size: 12.5px; padding: 8px 10px; border-radius: 12px; background: var(--bg); }
+
+/* 문항 아코디언 */
+.ln-cap { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+.ln-bar { height: 6px; border-radius: 999px; background: var(--raise); overflow: hidden; }
+.ln-bar i { display: block; height: 100%; background: var(--fg); border-radius: 999px; }
+.ln-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ln-q { border-radius: 14px; background: var(--surface); min-width: 0; }
+.ln-q > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 10px 12px; border-radius: 14px; }
+.ln-q > summary::-webkit-details-marker { display: none; }
+.ln-q > summary:hover { background: var(--raise); }
+.ln-q[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.ln-q .ln-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.ln-q .ln-st { font-family: var(--mono); font-size: 11.5px; white-space: nowrap; }
+.ln-tier { font-family: var(--mono); font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.ln-tier.concept { background: var(--raise); }
+.ln-tier.intermediate { background: var(--hi); color: var(--hi-fg); }
+.ln-tier.advanced { background: var(--fg); color: var(--bg); }
+.ln-qb { display: grid; gap: 10px; padding: 4px 12px 12px; min-width: 0; }
+.ln-prompt { font-size: 13.5px; line-height: 1.6; }
+.ln-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.ln-tbl th, .ln-tbl td { padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--line); }
+.ln-tbl th { font-family: var(--mono); font-size: 10.5px; color: var(--muted); font-weight: 500; }
+.ln-choices { display: grid; gap: 6px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.ln-choices legend { padding: 0; font-size: 12px; color: var(--muted); }
+.ln-choice { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; align-items: start; padding: 7px 10px; border-radius: 12px; background: var(--bg); font-size: 13px; cursor: pointer; }
+.ln-choice input { margin: 3px 0 0; accent-color: var(--fg); }
+.ln-choice:has(input:checked) { box-shadow: inset 0 0 0 2px var(--fg); }
+.ln-num { display: flex; align-items: center; gap: 8px; }
+.ln-num input { width: 140px; }
+.ln-ta { display: grid; gap: 4px; }
+.ln-ta textarea { min-height: 110px; border-radius: 12px; }
+.ln-ta .cnt { font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: right; }
+.ln-ta .cnt.bad { color: var(--bad); }
+.ln-att { display: grid; gap: 6px; padding: 10px 12px; border-radius: 12px; background: var(--bg); font-size: 12.5px; }
+.ln-att-h { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.ln-ok { color: var(--good); font-weight: 700; }
+.ln-no { color: var(--bad); font-weight: 700; }
+.ln-flag { color: var(--bad); }
+.ln-exp { color: var(--fg); }
+.ln-appeal { display: grid; gap: 6px; }
+.ln-appeal textarea { min-height: 54px; border-radius: 12px; }
+.ln-link { appearance: none; border: 0; background: none; padding: 0; color: var(--muted); text-decoration: underline; font-size: 12px; justify-self: start; }
+.ln-link:hover { color: var(--fg); }
+
+/* 위 띠 칩 · 서랍 */
+.tb-chip.grant[data-full="true"] { box-shadow: inset 0 0 0 2px var(--fg); }
+.ln-drawer-back { position: fixed; inset: 0; z-index: 40; background: rgba(8,11,9,0.35); display: flex; justify-content: flex-end; }
+.ln-drawer {
+  width: min(440px, 100%); height: 100%; overflow-y: auto; background: var(--bg); padding: 20px max(18px, env(safe-area-inset-right)) 40px 20px;
+  display: grid; gap: 14px; align-content: start; box-shadow: -30px 0 60px -40px rgba(8,11,9,0.6); border-radius: 26px 0 0 26px;
+}
+.ln-drawer h2 { margin: 0; font-size: 20px; letter-spacing: -0.03em; }
+.ln-drawer .close { position: absolute; right: 18px; top: 16px; }
+.ln-drawer-in { position: relative; display: grid; gap: 14px; }
+.ln-card { border-radius: 18px; background: var(--surface); padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.ln-card h3 { margin: 0; font-size: 13px; font-family: var(--mono); letter-spacing: 0.04em; color: var(--muted); font-weight: 500; }
+.ln-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.ln-stat { border-radius: 14px; background: var(--bg); padding: 10px; display: grid; gap: 2px; min-width: 0; }
+.ln-stat b { font-family: var(--mono); font-size: 20px; letter-spacing: -0.02em; }
+.ln-stat span { font-size: 11.5px; color: var(--muted); }
+.ln-members { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.ln-members li { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; background: var(--bg); font-size: 12.5px; }
+.ln-members li.on { background: var(--hi); color: var(--hi-fg); font-weight: 600; }
+.ln-members li.ex { color: var(--muted); text-decoration: line-through; }
+.ln-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.ln-steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 12px; }
+.ln-steps li.cur { font-weight: 600; }
+.ln-steps .sid { font-family: var(--mono); }
+.ln-steps .meta { font-family: var(--mono); color: var(--muted); white-space: nowrap; font-size: 11px; }
+.ln-shields { letter-spacing: 2px; }
+
+/* 투자 유치 */
+.ln-pitch-back { position: fixed; inset: 0; z-index: 40; background: rgba(8,11,9,0.45); display: grid; place-items: center; padding: 16px; }
+.ln-pitch { width: min(640px, 100%); max-height: calc(100% - 32px); overflow: auto; background: var(--bg); border-radius: 22px; padding: 20px 22px; position: relative; display: grid; gap: 14px; }
+.ln-pitch h2 { margin: 0; font-size: 20px; letter-spacing: -0.03em; }
+.ln-pitch .close { position: absolute; right: 14px; top: 12px; }
+.ln-gauge svg { width: 100%; height: auto; display: block; }
+.ln-gauge .g-bg { fill: var(--raise); }
+.ln-gauge .g-q { fill: var(--fg); }
+.ln-gauge .g-q2 { fill: #3f4a40; }
+.ln-gauge .g-qual { fill: none; stroke: var(--fg); stroke-dasharray: 4 3; stroke-width: 1.5; }
+.ln-gauge .g-qual-on { fill: var(--hi); }
+.ln-gauge .g-floor { stroke: var(--bad); stroke-width: 2; }
+.ln-gauge text { font-family: var(--mono); font-size: 10px; fill: var(--muted); }
+.ln-parts { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12.5px; }
+.ln-parts li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.ln-parts small { grid-column: 1 / -1; color: var(--muted); }
+.ln-cands { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.ln-cands th, .ln-cands td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.ln-cands th { font-family: var(--mono); font-size: 10.5px; color: var(--muted); font-weight: 500; }
+.ln-cands .role { font-family: var(--mono); font-size: 10.5px; padding: 1px 7px; border-radius: 999px; background: var(--raise); }
+.ln-cands .role.lead { background: var(--fg); color: var(--bg); }
+.ln-cands .role.backup { background: var(--hi); color: var(--hi-fg); }
+/* 후보 · 누가 · ΔG 칸은 줄을 바꾸지 않는다(신호 칸이 남는 너비를 쓴다) — '주력' 칩 · 이름이 글자마다 꺾이지 않게. */
+.ln-cands td:not(.sig-col), .ln-cands th:not(.sig-col) { white-space: nowrap; }
+
+@media (max-width: 560px) {
+  .ln-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ln-stat b { font-size: 17px; }
+  .ln-drawer { border-radius: 0; padding: 18px 16px 40px; }
+  .ln-pitch { padding: 18px 16px; border-radius: 20px; }
+  .ln-cands .sig-col { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .ln-pend i { animation: none; } }
+.ln-q[open] > summary .ln-t { visibility: hidden; }
+.ln-qb > .btn, .ln-qb .acts .btn { justify-self: start; }
+.ln-drawer p, .ln-pitch p { margin: 0; }
+/* 폰(≤ 860px) — 위 띠 오른쪽 줄은 가로로 넘기는 칸이라 칩이 화면 밖(오른쪽)으로 밀려 보이지 않았다. 칩만 줄 맨 앞으로 당긴다(공유 배치는 그대로). */
+@media (max-width: 860px) { .top-r > .tb-chip.grant { order: -1; } }
+
+/* 받은 학습 연구비 막대 — 투자 유치(수천만 크리스타) 숫자가 공용 값 칸(56px)을 넘지 않게 값 칸을 글 너비에 맞춘다. */
+.ln-drawer .hb-r { grid-template-columns: var(--hb-l, 128px) minmax(0, 1fr) auto; }
