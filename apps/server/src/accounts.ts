@@ -7,12 +7,14 @@
  * DB 쓰기가 실패하면 이번에 새로 만든 GoTrue 사용자를 지운다.
  */
 import {
+  AVATARS,
   checkClassCode,
   checkDisplayName,
   checkLoginId,
   checkPassword,
   loginIdToEmail,
   type AccountView,
+  type Avatar,
   type MeResponse,
 } from '@crista-web/web-contract';
 import type { Deps } from './context.ts';
@@ -120,7 +122,7 @@ export async function login(deps: Deps, raw: unknown, ip: string): Promise<{ acc
 
   let userId: string;
   try {
-    userId = await deps.auth.verifyPassword(loginIdToEmail(loginId), password);
+    userId = await deps.auth.verifyPassword(loginIdToEmail(loginId), password, ip);
   } catch (error) {
     if (error instanceof AuthRejectedError) throw failed();
     if (error instanceof AuthUnavailableError) throw authUnavailable(error);
@@ -135,20 +137,31 @@ export async function login(deps: Deps, raw: unknown, ip: string): Promise<{ acc
 /** 내 정보 · 다음 화면(설계 §2): 모둠이 없거나 이름 전이면 사옥 지구, 등기 뒤면 전광판. */
 export async function me(db: Pool, account: AccountView): Promise<MeResponse> {
   if (account.kind === 'teacher') return { account, next: 'teacher' };
-  const member = await db.query<{ team_id: string | null; class_id: string }>(
-    `select team_id, class_id from web.members where user_id = $1 and role = 'student'`,
+  const member = await db.query<{ team_id: string | null; class_id: string; avatar: Avatar | null }>(
+    `select team_id, class_id, avatar from web.members where user_id = $1 and role = 'student'`,
     [account.userId],
   );
   const row = member.rows[0];
-  if (!row) return { account, next: 'district', team: null };
+  if (!row) return { account, next: 'district', team: null, avatar: null };
   const cls = await db.query<ClassRow>(`${CLASS_SELECT} where c.id = $1`, [row.class_id]);
   const team = row.team_id ? await loadTeam(db, row.team_id) : null;
   return {
     account,
     next: team?.registeredAt ? 'board' : 'district',
+    avatar: row.avatar,
     class: classSummary(cls.rows[0]!),
     team,
   };
+}
+
+/** 사옥 지구 캐릭터(직책 배지) — 능력치 · 잠금은 없고 비교표 · 노트 · 접속 표시에 쓴다(설계 §4.2). */
+export async function setAvatar(db: Pool, account: AccountView, raw: unknown): Promise<MeResponse> {
+  if (account.kind !== 'student') throw new ApiError(403, 'forbidden', '학생 계정으로 해 주세요.');
+  const avatar = ((raw ?? {}) as Record<string, unknown>).avatar;
+  if (!AVATARS.includes(avatar as Avatar)) throw badRequest('캐릭터는 ceo · cso · cto · cmo 중 하나예요.');
+  const updated = await db.query(`update web.members set avatar = $2 where user_id = $1 and role = 'student'`, [account.userId, avatar]);
+  if (!updated.rowCount) throw new ApiError(403, 'forbidden', '학급에 가입한 학생이 아니에요.');
+  return me(db, account);
 }
 
 /** 교사 계정 발급(관리 스크립트 전용 — 공개 가입 없음). */

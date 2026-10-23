@@ -12,3 +12,8 @@ dist/
 
 # graft 그래프 캐시 — 다시 만들 수 있다
 /graft/
+
+# 화면 산출물(apps/web/scripts/prepare-assets.mjs · vite build)
+apps/web/public/assets/
+apps/web/public/campus/
+apps/web/dist/

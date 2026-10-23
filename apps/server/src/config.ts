@@ -27,6 +27,18 @@ export interface Config {
   secureCookies: boolean;
   /** 앞단 프록시(Railway)의 X-Forwarded-For 를 믿는가. */
   trustProxy: boolean;
+  /**
+   * 공개 경로 접두(기본 `/crista` — https://mulk.codes/crista). 요청 경로에서 떼어 낸 뒤 `/api` · `/ws` 를 본다(접두 없는 경로도 받는다).
+   * 쿠키 Path 도 이 값이다 — 같은 호스트(mulk.codes)의 다른 서비스로 세션 쿠키가 가지 않게.
+   */
+  basePath: string;
+  /**
+   * 앞단 게이트웨이(Cloudflare Worker, deploy/gateway)와 나눠 가진 비밀 — 있으면 `/api` · `/ws` 는 이 값을 실은 요청만 받고,
+   * 사용자 IP 는 게이트웨이가 넣은 `x-crista-client-ip` 를 쓴다. 로컬은 비운다.
+   */
+  gatewaySecret: string | null;
+  /** crista bio-worker — 로컬 8790 · Railway 내부망 `http://bio-worker.railway.internal:8787`. */
+  bioWorkerUrl: string;
 }
 
 const LOOPBACK = new Set(['127.0.0.1', 'localhost', '::1', '[::1]']);
@@ -76,6 +88,17 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   // 브라우저는 같은 출처 POST 에도 Origin 을 싣는다 — 호스팅에서 목록이 비면 모든 쓰기가 거절된다.
   if (target === 'hosted' && listed.length === 0) throw new ConfigError('hosted 는 WEB_ALLOWED_ORIGINS(공개 주소, 쉼표 구분)가 필요합니다.');
 
+  const basePath = (env.WEB_BASE_PATH ?? '/crista').trim().replace(/\/+$/, '');
+  if (basePath !== '' && !/^\/[a-z0-9-]+$/.test(basePath)) throw new ConfigError('WEB_BASE_PATH 는 `/crista` 같은 한 단계 경로이거나 빈 값이어야 합니다.');
+
+  const gatewaySecret = env.WEB_GATEWAY_SECRET?.trim() || null;
+  if (gatewaySecret !== null && gatewaySecret.length < 32) throw new ConfigError('WEB_GATEWAY_SECRET 은 32자 이상이어야 합니다.');
+  // 호스팅은 공개 주소(Railway 도메인)로 게이트웨이를 건너뛰는 요청을 받지 않는다.
+  if (target === 'hosted' && gatewaySecret === null) throw new ConfigError('hosted 는 WEB_GATEWAY_SECRET(게이트웨이와 나눠 가진 비밀)이 필요합니다.');
+
+  const bioWorkerUrl = (env.BIO_WORKER_URL?.trim() || 'http://127.0.0.1:8790').replace(/\/+$/, '');
+  if (target === 'local' && !LOOPBACK.has(new URL(bioWorkerUrl).hostname)) throw new ConfigError('WEB_TARGET=local 인데 BIO_WORKER_URL 이 로컬이 아닙니다.');
+
   return {
     target,
     // 로컬은 같은 기계에서만 — crista 쪽 포트처럼 0.0.0.0 에 묶지 않는다.
@@ -91,5 +114,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     allowedOrigins: target === 'local' ? [...localOrigins, ...listed] : listed,
     secureCookies: target === 'hosted',
     trustProxy: target === 'hosted' || env.WEB_TRUST_PROXY === '1',
+    basePath,
+    gatewaySecret,
+    bioWorkerUrl,
   };
 }

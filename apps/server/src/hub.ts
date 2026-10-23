@@ -1,11 +1,26 @@
 /**
  * WebSocket 허브 — `/ws` 를 로그인 쿠키로 인증하고 채널(학급 · 모둠)로 나눠 보낸다(설계 §8).
  * 채널은 서버가 DB 에서 정한다(화면이 고르지 않는다). 입사 · 배정으로 모둠이 바뀌면 그 사용자의 채널을 다시 정한다.
+ *
+ * 사옥 지구(W2): 학생이 `district.enter` 를 보내면 같은 학급의 지금 위치 목록을 받고, 이후 `district.move` 를 같은 학급에 중계한다.
+ * 위치는 서버 메모리에만 있다(저장 · 판정 없음 — 설계 §4.1). 초당 5회를 넘는 이동은 버리고, 좌표는 지구 안으로 자른다.
  */
 import type { IncomingMessage } from 'node:http';
 import type { Duplex } from 'node:stream';
 import { WebSocketServer, type WebSocket } from 'ws';
-import { classChannel, SESSION_COOKIE, teamChannel, type ServerMessage } from '@crista-web/web-contract';
+import {
+  classChannel,
+  DIRECTIONS,
+  DISTRICT_MAP,
+  DISTRICT_MOVE_PER_SEC,
+  SESSION_COOKIE,
+  teamChannel,
+  type AccountView,
+  type Avatar,
+  type Direction,
+  type DistrictPeer,
+  type ServerMessage,
+} from '@crista-web/web-contract';
 import type { Pool } from './db.ts';
 import { isCrossSite, parseCookies } from './http.ts';
 import { lookupSession } from './sessions.ts';
@@ -14,10 +29,17 @@ const HEARTBEAT_MS = 30_000;
 
 interface Peer {
   ws: WebSocket;
-  userId: string;
+  account: AccountView;
   tokenHash: Buffer;
   channels: Set<string>;
   alive: boolean;
+  /** 학생의 학급(교사는 null). */
+  classId: string | null;
+  /** 사옥 지구에 있으면 그 위치. */
+  district: DistrictPeer | null;
+  /** 이동 중계 토큰 통(초당 5개). */
+  moveTokens: number;
+  moveRefillAt: number;
 }
 
 export async function channelsFor(db: Pool, userId: string, kind: 'teacher' | 'student'): Promise<string[]> {
@@ -33,6 +55,11 @@ export async function channelsFor(db: Pool, userId: string, kind: 'teacher' | 's
   if (!row) return [];
   return row.team_id ? [classChannel(row.class_id), teamChannel(row.team_id)] : [classChannel(row.class_id)];
 }
+
+const MAX_X = DISTRICT_MAP.cols * DISTRICT_MAP.tile;
+const MAX_Y = DISTRICT_MAP.rows * DISTRICT_MAP.tile;
+const clampCoord = (v: unknown, max: number): number | null => (typeof v === 'number' && Number.isFinite(v) ? Math.round(Math.max(0, Math.min(max, v))) : null);
+const isDir = (v: unknown): v is Direction => DIRECTIONS.includes(v as Direction);
 
 export class Hub {
   private readonly wss = new WebSocketServer({ noServer: true, maxPayload: 4 * 1024 });
@@ -73,7 +100,7 @@ export class Hub {
         if (!session) return reject('401 Unauthorized');
         const channels = await channelsFor(this.db, session.account.userId, session.account.kind);
         socket.removeListener('error', onError);
-        this.wss.handleUpgrade(req, socket, head, (ws) => this.accept(ws, session.account.userId, session.tokenHash, channels));
+        this.wss.handleUpgrade(req, socket, head, (ws) => this.accept(ws, session.account, session.tokenHash, channels));
       })
       .catch((error: unknown) => {
         console.error('[ws] 인증 중 오류:', (error as Error).message);
@@ -81,24 +108,98 @@ export class Hub {
       });
   }
 
-  private accept(ws: WebSocket, userId: string, tokenHash: Buffer, channels: string[]): void {
-    const peer: Peer = { ws, userId, tokenHash, channels: new Set(channels), alive: true };
+  private accept(ws: WebSocket, account: AccountView, tokenHash: Buffer, channels: string[]): void {
+    const classId = account.kind === 'student' ? (channels.find((c) => c.startsWith('class:'))?.slice('class:'.length) ?? null) : null;
+    const peer: Peer = { ws, account, tokenHash, channels: new Set(channels), alive: true, classId, district: null, moveTokens: DISTRICT_MOVE_PER_SEC, moveRefillAt: Date.now() };
     this.peers.add(peer);
     ws.on('pong', () => {
       peer.alive = true;
     });
     ws.on('error', () => ws.terminate());
-    ws.on('close', () => this.peers.delete(peer));
-    ws.on('message', (data) => {
-      // W1 은 ping 만 받는다. 나머지는 버린다.
-      try {
-        const msg = JSON.parse(String(data)) as { type?: unknown };
-        if (msg.type === 'ping') this.send(peer, { type: 'pong' });
-      } catch {
-        // 무시
-      }
+    ws.on('close', () => {
+      this.peers.delete(peer);
+      this.leaveDistrict(peer);
     });
-    this.send(peer, { type: 'hello', userId, channels: [...peer.channels] });
+    ws.on('message', (data) => {
+      let msg: Record<string, unknown>;
+      try {
+        msg = JSON.parse(String(data)) as Record<string, unknown>;
+      } catch {
+        return;
+      }
+      if (msg.type === 'ping') this.send(peer, { type: 'pong' });
+      else if (msg.type === 'district.enter') void this.enterDistrict(peer, msg).catch((error: Error) => console.error('[ws] 지구 입장 오류:', error.message));
+      else if (msg.type === 'district.move') this.moveInDistrict(peer, msg);
+      else if (msg.type === 'district.exit') this.leaveDistrict(peer);
+    });
+    this.send(peer, { type: 'hello', userId: account.userId, channels: [...peer.channels] });
+  }
+
+  // ── 사옥 지구 ──
+
+  private async lookFor(userId: string): Promise<{ avatar: Avatar | null; ink: number | null }> {
+    const result = await this.db.query<{ avatar: Avatar | null; ink: number | null }>(
+      `select m.avatar, t.ink from web.members m left join web.teams t on t.id = m.team_id where m.user_id = $1 and m.role = 'student'`,
+      [userId],
+    );
+    return result.rows[0] ?? { avatar: null, ink: null };
+  }
+
+  private async enterDistrict(peer: Peer, msg: Record<string, unknown>): Promise<void> {
+    if (!peer.classId) return;
+    const look = await this.lookFor(peer.account.userId);
+    const x = clampCoord(msg.x, MAX_X) ?? MAX_X / 2;
+    const y = clampCoord(msg.y, MAX_Y) ?? MAX_Y / 2;
+    peer.district = {
+      userId: peer.account.userId,
+      displayName: peer.account.displayName,
+      avatar: look.avatar,
+      ink: look.ink,
+      x,
+      y,
+      dir: isDir(msg.dir) ? msg.dir : 'south',
+      moving: false,
+    };
+    const others = new Map<string, DistrictPeer>();
+    for (const other of this.peers) {
+      if (other !== peer && other.classId === peer.classId && other.district && other.account.userId !== peer.account.userId) {
+        others.set(other.account.userId, other.district);
+      }
+    }
+    this.send(peer, { type: 'district.snapshot', peers: [...others.values()] });
+    this.broadcastDistrict(peer, { type: 'district.peer', peer: peer.district });
+  }
+
+  private moveInDistrict(peer: Peer, msg: Record<string, unknown>): void {
+    if (!peer.district) return;
+    const now = Date.now();
+    peer.moveTokens = Math.min(DISTRICT_MOVE_PER_SEC, peer.moveTokens + ((now - peer.moveRefillAt) / 1000) * DISTRICT_MOVE_PER_SEC);
+    peer.moveRefillAt = now;
+    if (peer.moveTokens < 1) return;
+    peer.moveTokens -= 1;
+    const x = clampCoord(msg.x, MAX_X);
+    const y = clampCoord(msg.y, MAX_Y);
+    if (x === null || y === null) return;
+    peer.district = { ...peer.district, x, y, dir: isDir(msg.dir) ? msg.dir : peer.district.dir, moving: msg.moving === true };
+    this.broadcastDistrict(peer, { type: 'district.peer', peer: peer.district });
+  }
+
+  private leaveDistrict(peer: Peer): void {
+    if (!peer.district) return;
+    peer.district = null;
+    // 같은 사람이 다른 탭으로 지구에 남아 있으면 떠났다고 알리지 않는다.
+    const stillThere = [...this.peers].some((p) => p.account.userId === peer.account.userId && p.district);
+    if (!stillThere) this.broadcastDistrict(peer, { type: 'district.leave', userId: peer.account.userId });
+  }
+
+  /** 같은 학급의 다른 연결(본인 탭 제외)에 보낸다. */
+  private broadcastDistrict(from: Peer, message: ServerMessage): void {
+    if (!from.classId) return;
+    const channel = classChannel(from.classId);
+    for (const peer of this.peers) {
+      if (peer === from || peer.account.userId === from.account.userId) continue;
+      if (peer.channels.has(channel)) this.send(peer, message);
+    }
   }
 
   private send(peer: Peer, message: ServerMessage): void {
@@ -109,12 +210,19 @@ export class Hub {
     for (const peer of this.peers) if (peer.channels.has(channel)) this.send(peer, message);
   }
 
-  /** 모둠이 바뀐 사용자의 채널을 DB 에서 다시 정한다. */
+  /** 모둠이 바뀐 사용자의 채널을 DB 에서 다시 정하고, 지구에 있으면 잉크를 바꿔 알린다. */
   async refreshUser(userId: string, kind: 'teacher' | 'student'): Promise<void> {
-    const targets = [...this.peers].filter((peer) => peer.userId === userId);
+    const targets = [...this.peers].filter((peer) => peer.account.userId === userId);
     if (targets.length === 0) return;
     const channels = await channelsFor(this.db, userId, kind);
-    for (const peer of targets) peer.channels = new Set(channels);
+    const look = kind === 'student' ? await this.lookFor(userId) : null;
+    for (const peer of targets) {
+      peer.channels = new Set(channels);
+      if (peer.district && look) {
+        peer.district = { ...peer.district, avatar: look.avatar, ink: look.ink };
+        this.broadcastDistrict(peer, { type: 'district.peer', peer: peer.district });
+      }
+    }
   }
 
   /** 로그아웃한 세션의 연결을 닫는다. */

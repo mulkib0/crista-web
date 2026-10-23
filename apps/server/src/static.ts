@@ -1,6 +1,7 @@
 /**
- * 정적 파일 — 화면 빌드(apps/web/dist, W2)를 같은 서버가 낸다(설계 §8: 서버 하나로 정적 · API · WebSocket).
- * 확장자 없는 경로는 index.html(화면 라우팅). 폴더 밖으로 나가는 경로는 막는다.
+ * 정적 파일 — 화면 빌드(apps/web/dist)를 같은 서버가 낼 수 있다(로컬 · 게이트웨이 없이 Railway 하나로 띄울 때).
+ * 공개 배포는 Vercel 이 화면을 낸다(deploy/README.md). 빌드는 `dist/crista/…` 모양이라 요청 경로 그대로 찾는다.
+ * 확장자 없는 경로는 그 접두의 index.html(화면 라우팅). 폴더 밖으로 나가는 경로는 막는다.
  */
 import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
@@ -48,7 +49,7 @@ async function fileAt(path: string): Promise<{ path: string; size: number } | nu
   return null;
 }
 
-export async function serveStatic(root: string, req: IncomingMessage, res: ServerResponse, urlPath: string): Promise<void> {
+export async function serveStatic(root: string, req: IncomingMessage, res: ServerResponse, urlPath: string, basePath = ''): Promise<void> {
   const notFound = () => {
     res.writeHead(404, { ...SECURITY_HEADERS, 'content-type': 'text/plain; charset=utf-8' });
     res.end('찾을 수 없습니다.');
@@ -56,7 +57,14 @@ export async function serveStatic(root: string, req: IncomingMessage, res: Serve
   const resolved = resolveStaticPath(root, urlPath);
   if (!resolved) return notFound();
   let file = await fileAt(resolved);
-  if (!file && extname(urlPath) === '') file = await fileAt(join(root, 'index.html'));
+  if (!file && extname(urlPath) === '') {
+    const inBase = basePath && (urlPath === basePath || urlPath.startsWith(`${basePath}/`));
+    if (inBase) file = await fileAt(join(root, basePath, 'index.html'));
+    else if (basePath && urlPath === '/') {
+      res.writeHead(302, { ...SECURITY_HEADERS, location: `${basePath}/` });
+      return void res.end();
+    } else if (!basePath) file = await fileAt(join(root, 'index.html'));
+  }
   if (!file) return notFound();
   const type = TYPES[extname(file.path).toLowerCase()] ?? 'application/octet-stream';
   const hashed = /\/assets\/.+-[A-Za-z0-9_-]{8,}\.\w+$/.test(file.path);

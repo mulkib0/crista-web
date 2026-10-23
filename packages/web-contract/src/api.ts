@@ -30,7 +30,15 @@ export type ErrorCode =
   | 'not_registered'
   | 'name_taken'
   | 'ticker_taken'
-  | 'name_locked';
+  | 'name_locked'
+  // 파이프라인(W3)
+  | 'not_registered_team'
+  | 'step_locked'
+  | 'insufficient_funds'
+  | 'invalid_input'
+  | 'worker_unavailable'
+  | 'too_many_jobs'
+  | 'claimed';
 
 export interface ApiErrorBody {
   error: { code: ErrorCode; message: string; retryAfterSec?: number; team?: TeamView };
@@ -106,6 +114,8 @@ export type NextScreen = 'district' | 'board' | 'teacher';
 export interface MeResponse {
   account: AccountView;
   next: NextScreen;
+  /** 학생만 — 사옥 지구에서 고른 캐릭터(처음엔 null). */
+  avatar?: Avatar | null;
   /** 학생만. */
   class?: ClassSummary;
   team?: TeamView | null;
@@ -163,6 +173,10 @@ export interface RegistrationResponse {
   team: TeamView;
 }
 
+export interface AvatarRequest {
+  avatar: Avatar;
+}
+
 /** 경로 목록 — 화면 · 테스트가 문자열을 흩뿌리지 않게. */
 export const API = {
   health: '/api/health',
@@ -177,5 +191,18 @@ export const API = {
   assignTeam: (classId: string, userId: string) => `/api/classes/${classId}/members/${userId}/team`,
   join: (teamId: string) => `/api/teams/${teamId}/join`,
   registration: (teamId: string) => `/api/teams/${teamId}/registration`,
+  avatar: '/api/me/avatar',
+  // 화면 ③(W3) — 모둠은 세션에서 정한다(경로에 모둠 id 를 싣지 않는다).
+  board: '/api/board',
+  diseaseTargets: (diseaseId: string) => `/api/datasets/targets?disease=${encodeURIComponent(diseaseId)}`,
+  funnel: '/api/datasets/funnel',
+  properties: '/api/molecule/properties',
+  picks: '/api/program/picks',
+  target: '/api/program/target',
+  lead: '/api/program/lead',
+  jobs: '/api/jobs',
+  claims: '/api/claims',
+  claim: (compoundId: string) => `/api/claims/${encodeURIComponent(compoundId)}`,
+  note: (stepId: string, section: string) => `/api/notes/${stepId}/${section}`,
   ws: '/ws',
 } as const;

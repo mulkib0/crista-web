@@ -1,6 +1,7 @@
 /**
  * 작은 HTTP 도구 — 경로표 · JSON 본문 · 쿠키 · 오류 응답. 프레임워크 없이 node:http 위에서.
  */
+import { createHash, timingSafeEqual } from 'node:crypto';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { ApiErrorBody, ErrorCode, TeamView } from '@crista-web/web-contract';
 
@@ -104,16 +105,38 @@ export function parseCookies(header: string | undefined): Record<string, string>
 export interface CookieOptions {
   maxAgeSec: number;
   secure: boolean;
+  /** 기본 `/`. 공개 접두(`/crista`) 아래로만 보내려면 그 값. */
+  path?: string;
 }
 
 export function serializeCookie(name: string, value: string, options: CookieOptions): string {
-  const parts = [`${name}=${encodeURIComponent(value)}`, 'Path=/', 'HttpOnly', 'SameSite=Lax', `Max-Age=${options.maxAgeSec}`];
+  const parts = [`${name}=${encodeURIComponent(value)}`, `Path=${options.path || '/'}`, 'HttpOnly', 'SameSite=Lax', `Max-Age=${options.maxAgeSec}`];
   if (options.secure) parts.push('Secure');
   return parts.join('; ');
 }
 
-/** 요청한 쪽 IP — 프록시를 믿을 때만 X-Forwarded-For 의 첫 값. */
-export function clientIp(req: IncomingMessage, trustProxy: boolean): string {
+export const GATEWAY_SECRET_HEADER = 'x-crista-gateway';
+export const GATEWAY_CLIENT_IP_HEADER = 'x-crista-client-ip';
+
+const digest = (text: string): Buffer => createHash('sha256').update(text).digest();
+
+/** 게이트웨이 비밀이 맞나(길이가 달라도 시간 차이가 나지 않게 해시끼리 비교). */
+export function fromGateway(req: IncomingMessage, secret: string | null): boolean {
+  if (secret === null) return true;
+  const sent = req.headers[GATEWAY_SECRET_HEADER];
+  if (typeof sent !== 'string' || sent.length === 0) return false;
+  return timingSafeEqual(digest(sent), digest(secret));
+}
+
+/**
+ * 요청한 쪽 IP — 게이트웨이를 거쳤으면 게이트웨이가 넣은 값(Cloudflare 가 본 사용자 IP),
+ * 아니면 프록시를 믿을 때만 X-Forwarded-For 의 첫 값.
+ */
+export function clientIp(req: IncomingMessage, trustProxy: boolean, gatewaySecret: string | null = null): string {
+  if (gatewaySecret !== null && fromGateway(req, gatewaySecret)) {
+    const viaGateway = req.headers[GATEWAY_CLIENT_IP_HEADER];
+    if (typeof viaGateway === 'string' && /^[0-9a-fA-F:.]{2,45}$/.test(viaGateway)) return viaGateway;
+  }
   if (trustProxy) {
     const forwarded = req.headers['x-forwarded-for'];
     const first = (Array.isArray(forwarded) ? forwarded[0] : forwarded)?.split(',')[0]?.trim();
@@ -172,7 +195,8 @@ export class Router<C> {
             ok = false;
             break;
           }
-          params[part.slice(1)] = value.toLowerCase();
+          // UUID 인자만 소문자로 맞춘다(후보 id `CHEMBL502` 같은 값은 그대로).
+          params[part.slice(1)] = part.endsWith('Id') ? value.toLowerCase() : value;
         } else if (part !== seg) {
           ok = false;
           break;

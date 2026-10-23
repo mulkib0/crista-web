@@ -1,0 +1,28 @@
+{
+  "name": "@crista-web/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "crista-web 화면 — ① 로그인 · 가입 ② 사옥 지구(Phaser 3) ③ 전광판 01 + 작업 화면 · 교사 화면",
+  "scripts": {
+    "predev": "node scripts/prepare-assets.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/prepare-assets.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@crista-web/web-contract": "*",
+    "phaser": "^3.90.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4"
+  }
+}

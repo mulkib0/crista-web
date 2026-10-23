@@ -1,8 +1,10 @@
 /**
  * Supabase Auth(GoTrue) REST — crista `auth/gotrue.ts` · `auth/account-admin.ts` 를 옮겼다(`@supabase/supabase-js` 없이 fetch).
  *
- * - 비밀번호 확인: `POST /auth/v1/token?grant_type=password` (publishable 키). 받은 GoTrue 토큰은 저장하지 않고 바로 로그아웃한다 —
- *   이 서버는 자기 세션(web.sessions)을 쓴다.
+ * - 비밀번호 확인: `POST /auth/v1/token?grant_type=password`. 받은 GoTrue 토큰은 저장하지 않고 바로 로그아웃한다 —
+ *   이 서버는 자기 세션(web.sessions)을 쓴다. 모든 로그인이 이 서버 IP 하나에서 나가므로 secret 키 + `Sb-Forwarded-For`(학생 IP)를
+ *   싣는다 — 프로젝트의 'IP Address Forwarding' 이 켜져 있으면 GoTrue 가 IP 당 상한을 학생 IP 로 센다(꺼져 있으면 무시된다.
+ *   그 설정은 게임과 같은 프로젝트 설정이라 이 저장소가 바꾸지 않는다).
  * - 계정 발급: `POST /auth/v1/admin/users` (secret 키, `email_confirm: true`). 프로젝트의 공개 가입 설정은 건드리지 않는다.
  * - **웹 도메인(`@web.crista.test`) 이메일만** 다룬다 — 다른 이메일이 오면 부르기 전에 멈춘다(게임 계정 보호).
  * 키 · 토큰 · 비밀번호는 로그에 찍지 않는다.
@@ -30,8 +32,8 @@ export class AuthRejectedError extends Error {
 }
 
 export interface AuthClient {
-  /** 비밀번호가 맞으면 사용자 id. */
-  verifyPassword(email: string, password: string): Promise<string>;
+  /** 비밀번호가 맞으면 사용자 id. `clientIp` 는 GoTrue 상한을 학생 IP 로 세게 넘긴다. */
+  verifyPassword(email: string, password: string, clientIp?: string): Promise<string>;
   /** 새로 만들거나, 같은 이메일의 사용자가 이미 있으면(지난 가입에서 DB 쓰기만 실패한 고아) 비밀번호를 맞춰 이어 붙인다. */
   createOrAttach(input: { email: string; password: string; metadata: Record<string, unknown> }): Promise<{ userId: string; created: boolean }>;
   setPassword(userId: string, password: string): Promise<void>;
@@ -58,9 +60,16 @@ export class GoTrueClient implements AuthClient {
     this.secretKey = options.secretKey;
   }
 
-  async verifyPassword(email: string, password: string): Promise<string> {
+  async verifyPassword(email: string, password: string, clientIp?: string): Promise<string> {
     assertWebEmail(email);
-    const res = await this.call('/token?grant_type=password', { method: 'POST', body: JSON.stringify({ email, password }) }, this.publishableKey);
+    const forwarded = clientIp && /^[0-9a-fA-F:.]{2,45}$/.test(clientIp) ? { 'sb-forwarded-for': clientIp } : undefined;
+    const res = await this.call(
+      '/token?grant_type=password',
+      { method: 'POST', body: JSON.stringify({ email, password }) },
+      forwarded ? this.secretKey : this.publishableKey,
+      undefined,
+      forwarded,
+    );
     if (res.status === 429) throw new AuthUnavailableError('로그인 요청이 몰렸습니다. 잠시 뒤 다시 시도하세요.');
     if (res.status >= 400) throw new AuthRejectedError(res.status);
     const body = (res.body ?? {}) as { access_token?: unknown; user?: { id?: unknown } };
@@ -132,13 +141,13 @@ export class GoTrueClient implements AuthClient {
     return this.call(path, init, this.secretKey, this.secretKey);
   }
 
-  private async call(path: string, init: RequestInit, apikey: string, bearer?: string): Promise<CallResult> {
+  private async call(path: string, init: RequestInit, apikey: string, bearer?: string, extraHeaders?: Record<string, string>): Promise<CallResult> {
     let response: Response;
     try {
       response = await fetch(`${this.url}/auth/v1${path}`, {
         ...init,
         signal: AbortSignal.timeout(TIMEOUT_MS),
-        headers: { apikey, 'content-type': 'application/json', ...(bearer ? { authorization: `Bearer ${bearer}` } : {}) },
+        headers: { apikey, 'content-type': 'application/json', ...(bearer ? { authorization: `Bearer ${bearer}` } : {}), ...extraHeaders },
       });
     } catch (error) {
       throw new AuthUnavailableError(undefined, { cause: error });

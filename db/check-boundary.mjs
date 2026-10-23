@@ -3,10 +3,14 @@
  * crista_web 경계 점검(설계 §7.1) — 서버 역할이 web 스키마 밖을 읽거나 쓰거나 만들 수 없는지 실제로 시도해 본다.
  *
  *   npm run db:check:local     (tools/with-local-env.mjs 가 WEB_DATABASE_URL 을 싣는다)
+ *   npm run db:check:hosted    (tools/with-hosted-env.mjs — 세션 풀러, CA 로 verify-full)
  *
  * 쓰기 시도는 트랜잭션 안에서 하고 항상 되돌린다(거절이 기대값이라 실제로 바뀌는 것은 없다).
  * 하나라도 기대와 다르면 종료 코드 1.
  */
+import { readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 
 const url = process.env.WEB_DATABASE_URL;
@@ -15,7 +19,21 @@ if (!url) {
   process.exit(1);
 }
 const local = process.env.WEB_TARGET === 'local';
-const client = new pg.Client({ connectionString: url, ssl: local ? false : undefined, application_name: 'crista-web-check' });
+let ssl = false;
+let connectionString = url;
+if (!local) {
+  // 호스팅 — 연결 문자열의 sslmode 는 빼고 CA 로 verify-full(실행기와 같은 방식).
+  const u = new URL(url);
+  for (const key of ['sslmode', 'sslrootcert', 'sslcert', 'sslkey']) u.searchParams.delete(key);
+  connectionString = u.toString();
+  const caPath = process.env.WEB_PGSSLROOTCERT;
+  if (!caPath) {
+    console.error('hosted 는 WEB_PGSSLROOTCERT 가 필요합니다.');
+    process.exit(1);
+  }
+  ssl = { ca: readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), '..', caPath), 'utf8'), rejectUnauthorized: true };
+}
+const client = new pg.Client({ connectionString, ssl, application_name: 'crista-web-check' });
 await client.connect();
 
 /** [설명, SQL, 되어야 하나] */
