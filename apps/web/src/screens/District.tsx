@@ -25,7 +25,7 @@ import {
   type RegistrationResponse,
   type ServerMessage,
 } from '@crista-web/web-contract';
-import type { Nav } from '../App.tsx';
+import { pickedLab, type Nav } from '../App.tsx';
 import { api, ApiFailure, message } from '../api.ts';
 import { plazaText } from '../board/market/LedBand.tsx';
 import { useMarket } from '../board/market/store.ts';
@@ -78,6 +78,18 @@ function CharSprite({ id, frames, scale = 2 }: { id: Avatar; frames: AtlasFrames
     />
   );
 }
+
+/**
+ * 등기 뒤 갈 곳 — **고른 랩**으로 돌려보내요(주소 `?lab=` 우선 · 저장소 보조 · 항체 설계 §1.1).
+ * 저분자를 골랐으면 저분자 작업 화면으로, 항체를 골랐으면 항체 설계 랩으로 가요.
+ * 주소 · 저장소가 둘 다 비면 저분자로 조용히 넘기지 않고 연구소 고르기로 되돌려요(§1.1 · §1.3).
+ */
+const afterRegister = (): 'antibody' | 'board' | 'lab' => {
+  const picked = pickedLab();
+  if (picked === 'antibody') return 'antibody';
+  if (picked === 'drug') return 'board';
+  return 'lab';
+};
 
 export function District({ nav }: { nav: Nav }) {
   const { me, setMe, go } = nav;
@@ -231,7 +243,7 @@ export function District({ nav }: { nav: Nav }) {
         // 내가 낸 등기는 도장을 보이고 넘어간다 — 같은 모둠의 다른 사람에게만 알린다.
         if (msg.team.id === district?.myTeamId && msg.byName !== me.account.displayName) {
           setToast(`${msg.byName} 님이 「${msg.team.startupName}」으로 등기했어요. 곧 작업 화면으로 가요.`);
-          setTimeout(() => void refreshMe().then(() => go('board')), 2500);
+          setTimeout(() => void refreshMe().then(() => go(afterRegister())), 2500);
         }
       }
     });
@@ -259,7 +271,7 @@ export function District({ nav }: { nav: Nav }) {
 
   const toBoard = useCallback(async () => {
     await refreshMe();
-    go('board');
+    go(afterRegister());
   }, [refreshMe, go]);
 
   /** 사옥 문 — 설계 §4.2 의 네 갈래를 대사 + 선택지로. */
@@ -355,7 +367,7 @@ export function District({ nav }: { nav: Nav }) {
         )}
         <button className="btn sm" type="button" onClick={() => setPickAvatar(true)}>캐릭터</button>
         {me.next === 'board' && (
-          <button className="btn sm pri" type="button" onClick={() => go('board')}>작업 화면으로</button>
+          <button className="btn sm pri" type="button" onClick={() => go(afterRegister())}>랩으로</button>
         )}
         <button className="btn sm" type="button" onClick={() => void nav.logout()}>나가기</button>
       </header>

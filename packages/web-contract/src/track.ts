@@ -4,9 +4,10 @@
  * - 화면(Board.tsx)은 단계 목록 · 단계 화면을 고정으로 들지 않고 `StepRegistry`(apps/web/src/board/registry.ts)를 받는다.
  *   그 등록표의 단계 줄 모양이 여기 `TrackStep` 이다 — `{ id, group, index, title, sub }`.
  * - 서버는 `computeSteps({ track, … })`(apps/server/src/pipeline.ts)가 트랙별 규칙 표 `TRACK_STEP_RULES` 로 나눠 센다.
- * - 지금 구현된 트랙은 `drug` 하나다. `antibody` 는 빈 등록표 — 항체 랩이 자기 단계 줄 · 화면 · 규칙을 꽂을 자리다.
- *   항체 단계 id 는 소분자 9단계(`StepId`)와 겹치지 않게 `ab.` 접두 등 자기 꼴을 쓴다(전광판 소식 kind 는 FMARKET 의 `antibody_*`).
+ * - 트랙은 `drug`(9단계) · `antibody`(A1~A6 — 항체 랩이 `antibody.ts` 의 `ANTIBODY_STEP_META` 로 채웠다) 둘이다.
+ *   항체 단계 id 는 소분자 9단계(`StepId`)와 겹치지 않게 자기 꼴('A1'~'A6')을 쓴다(전광판 소식 kind 는 FMARKET 의 `antibody_*`).
  */
+import { ANTIBODY_GROUP_TITLE, ANTIBODY_STEP_IDS, ANTIBODY_STEP_META } from './antibody.ts';
 import { GROUP_TITLE, STEP_IDS, STEP_META } from './pipeline.ts';
 
 export type TrackId = 'drug' | 'antibody';
@@ -40,7 +41,18 @@ export const DRUG_TRACK: TrackManifest = {
   steps: STEP_IDS.map((id) => ({ id, group: STEP_META[id].group, index: STEP_META[id].index, title: STEP_META[id].title, sub: STEP_META[id].sub })),
 };
 
-/** 항체 랩이 채울 자리 — 지금은 비어 있다(단계 0개). */
-export const ANTIBODY_TRACK: TrackManifest = { track: 'antibody', label: '항체', groups: {}, steps: [] };
+/** 항체 랩이 채운 자리 — A1~A6(항체 설계 §11.7 '이 저장소가 할 일'). 줄 · 묶음 제목은 `antibody.ts` 가 주인이다. */
+export const ANTIBODY_TRACK: TrackManifest = {
+  track: 'antibody',
+  label: '항체 설계',
+  groups: ANTIBODY_GROUP_TITLE,
+  steps: ANTIBODY_STEP_IDS.map((id) => ({
+    id,
+    group: ANTIBODY_STEP_META[id].group,
+    index: ANTIBODY_STEP_META[id].index,
+    title: ANTIBODY_STEP_META[id].title,
+    sub: ANTIBODY_STEP_META[id].sub,
+  })),
+};
 
 export const TRACKS: Readonly<Record<TrackId, TrackManifest>> = { drug: DRUG_TRACK, antibody: ANTIBODY_TRACK };

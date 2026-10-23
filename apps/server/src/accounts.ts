@@ -10,7 +10,10 @@
  * 로그인은 web.password_verifiers(0004)로 이 서버 안에서 확인한다 — GoTrue 의 IP 당 로그인 상한에 걸리지 않게(passwords.ts).
  */
 import {
+  ANTIBODY_STEP_IDS,
   AVATARS,
+  STEP_IDS,
+  TRACK_IDS,
   checkClassCode,
   checkDisplayName,
   checkLoginId,
@@ -19,7 +22,9 @@ import {
   loginIdToEmail,
   type AccountView,
   type Avatar,
+  type LabProgress,
   type MeResponse,
+  type TrackId,
   type OpenClassesResponse,
   type Role,
 } from '@crista-web/web-contract';
@@ -230,13 +235,65 @@ export async function me(db: Pool, account: AccountView): Promise<MeResponse> {
   if (!row) return { account, next: 'enroll', team: null, avatar: null };
   const cls = await db.query<ClassRow>(`${CLASS_SELECT} where c.id = $1`, [row.class_id]);
   const team = row.team_id ? await loadTeam(db, row.team_id) : null;
+  const labs = row.team_id ? await loadLabProgress(db, row.team_id) : undefined;
   return {
     account,
     next: team?.registeredAt ? 'board' : 'district',
     avatar: row.avatar,
     class: classSummary(cls.rows[0]!),
     team,
+    ...(labs ? { labs } : {}),
+    openTracks: await loadOpenTracks(db, row.class_id),
   };
+}
+
+/**
+ * '연구소 고르기' 화면의 진행 칩(항체 설계 §1.3 · §1.4) — 두 랩의 진행.
+ * 저분자 `total` 은 **`STEP_IDS.length`**(박아 두면 단계가 늘 때 진행 칩이 멈춘다).
+ */
+async function loadLabProgress(db: Pool, teamId: string): Promise<{ drug: LabProgress; antibody: LabProgress }> {
+  // 저분자 '진행 중' — **빈 `web.programs` 줄만으로는 켜지 않는다.** 항체 랩이 `ensureTeamRows` 로 그 줄을 미리 만들어 두기
+  // 때문에(§5.7), 줄의 있고 없음으로 재면 **항체만 연 모둠의 저분자 섬까지 '진행 중'으로 보인다**. 실제로 손댄 자취
+  // (표적 확정 · 내 추천 표적 카드 · 작업)로 잰다.
+  const drug = await db.query<{ done: number; opened: boolean }>(
+    `select count(distinct j.step)::int as done,
+            (exists (select 1 from web.programs p where p.team_id = $1 and p.target_id is not null)
+             or exists (select 1 from web.target_picks k where k.team_id = $1)
+             or exists (select 1 from web.jobs x where x.team_id = $1)) as opened
+       from web.jobs j where j.team_id = $1 and j.status = 'succeeded'`,
+    [teamId],
+  );
+  const ab = await db.query<{ opened: boolean; steps: number; submitted: number }>(
+    `select exists (select 1 from web.antibody_programs p where p.team_id = $1) as opened,
+            (select count(distinct j.step)::int from web.antibody_jobs j where j.team_id = $1 and j.status = 'succeeded') as steps,
+            (select count(*)::int from web.antibody_scores s where s.team_id = $1) as submitted`,
+    [teamId],
+  );
+  const abRow = ab.rows[0];
+  const confirmed = await db.query<{ n: number }>(
+    'select count(*)::int as n from web.antibody_programs where team_id = $1 and antigen_target is not null and parent_vh is not null',
+    [teamId],
+  );
+  // 끝난 항체 단계 — A1(확정) + 성공한 작업 단계 수 + A3(설계 1건 이상) + A6(제출 1건 이상).
+  const designs = await db.query<{ n: number }>(`select count(*)::int as n from web.antibody_designs where team_id = $1 and origin = 'student'`, [teamId]);
+  const abDone =
+    (confirmed.rows[0]!.n > 0 ? 1 : 0) + (abRow?.steps ?? 0) + (designs.rows[0]!.n > 0 ? 1 : 0) + ((abRow?.submitted ?? 0) > 0 ? 1 : 0);
+  return {
+    drug: { opened: drug.rows[0]?.opened ?? false, doneCount: drug.rows[0]?.done ?? 0, total: STEP_IDS.length },
+    antibody: { opened: abRow?.opened ?? false, doneCount: Math.min(ANTIBODY_STEP_IDS.length, abDone), total: ANTIBODY_STEP_IDS.length },
+  };
+}
+
+/**
+ * 교사가 열어 둔 트랙 — 없는 트랙의 섬은 흐림 + 이유 문구로 그린다(항체 설계 §1.4).
+ * 저장 값은 0020 check 가 정한 `{small,antibody}` 라서 여기서 기반 축(`TrackId` — `drug`)으로 옮긴다.
+ */
+async function loadOpenTracks(db: Pool, classId: string): Promise<TrackId[]> {
+  const rows = await db.query<{ open_tracks: string[] }>('select open_tracks from web.antibody_class_settings where class_id = $1', [classId]);
+  const tracks = rows.rows[0]?.open_tracks;
+  if (!tracks) return [...TRACK_IDS];
+  const mapped = tracks.map((t) => (t === 'small' ? 'drug' : t));
+  return TRACK_IDS.filter((t) => mapped.includes(t));
 }
 
 /** 사옥 지구 캐릭터(직책 배지) — 능력치 · 잠금은 없고 비교표 · 노트 · 접속 표시에 쓴다(설계 §4.2). */

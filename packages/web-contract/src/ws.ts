@@ -5,6 +5,7 @@
  * 3판 기반: 서류 심사 · 학습 채점 · 1.2 회의는 모둠 채널, 전광판 소식 · 게임 시계 · 특허 원장은 학급 채널, 심사 플래그는 교사 채널.
  * 메시지는 '무엇이 바뀌었다'만 싣고 상세는 화면이 그 기능의 GET 을 다시 읽는다(비공개 값을 채널에 싣지 않는다).
  */
+import type { AntibodyProposalTopic } from './antibody.ts';
 import type { TeamView } from './api.ts';
 import type { FeedItemView } from './feed.ts';
 import type { ClassClockView } from './clock.ts';
@@ -13,6 +14,7 @@ import type { BoardEventView } from './market.ts';
 import type { DocKind, DocReviewVerdict } from './review.ts';
 import type { Avatar } from './rules.ts';
 import type { ScreenAgenda } from './screen.ts';
+import type { TrackId } from './track.ts';
 
 export type Direction = 'north' | 'south' | 'east' | 'west';
 export const DIRECTIONS: readonly Direction[] = ['north', 'south', 'east', 'west'];
@@ -82,6 +84,14 @@ export type ServerMessage =
   | { type: 'feed.presence'; teamId: string; online: string[] }
   /** 모둠 채널 — 누가 입력 중(본인 연결에는 보내지 않는다). 받는 쪽은 FEED_TYPING_MS 뒤 지운다. */
   | { type: 'feed.typing'; teamId: string; userId: string; displayName: string; stepId: string | null }
+  /** 모둠 채널 — 항체 랩 데이터가 바뀌었다(화면은 `GET /api/antibody/board` 를 다시 읽는다. 저분자 화면은 다시 읽지 않는다). */
+  | { type: 'antibody.changed'; teamId: string; reason: string; byName?: string }
+  /** 모둠 채널 — 항체 작업의 진행률만(결과는 끝난 뒤 `antibody.changed`). */
+  | { type: 'antibody.progress'; teamId: string; jobId: string; status: 'queued' | 'running'; progress: number; phase?: string }
+  /** 학급 채널 — 항체 소식 한 줄(공개 정보만 · 점수 숫자를 싣지 않는다 · 항체 설계 §4.3 · §4.5). */
+  | { type: 'antibody.news'; classId: string; teamId: string; ticker: string; headline: string; changePct?: number; tone: string; track: TrackId }
+  /** 모둠 채널 — A1 · A2 제안의 찬반 투표 현황. */
+  | { type: 'antibody.consensus'; teamId: string; topic: AntibodyProposalTopic; yes: number; no: number; quorum: number; status: string }
   | { type: 'pong' };
 
 export type ClientMessage =

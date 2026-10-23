@@ -1,0 +1,1 @@
+Sequence is only allowed to have {'S', 'M', 'R', 'I', 'B', 'A', 'G', 'J', 'W', 'Q', 'H', 'N', 'K', 'C', 'P', 'V', 'Z', 'F', 'L', 'E', 'T', 'Y', 'X', 'D'} tokens.

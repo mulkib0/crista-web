@@ -8,8 +8,14 @@ export type Pool = pg.Pool;
 export type Tx = pg.PoolClient;
 export type Queryable = Pick<pg.Pool, 'query'> | Pick<pg.PoolClient, 'query'>;
 
-/** 서버가 요구하는 마지막 마이그레이션. */
+/** 서버가 요구하는 마지막 마이그레이션(가장 큰 번호 비교용). */
 export const REQUIRED_MIGRATION = '0007';
+
+/**
+ * 번호로 하나씩 확인하는 마이그레이션(항체 설계 §5.1 · §10 F7) — '가장 큰 번호 ≥ 필요 번호' 검사만으로는
+ * 공유 로컬 DB 에 더 큰 번호(0040)가 들어갔을 때 그 사이 번호의 미적용을 가려 버린다. 새 기능은 여기에 번호 한 줄을 더한다.
+ */
+export const REQUIRED_MIGRATIONS = ['0020'] as const;
 
 export function createPool(config: Pick<Config, 'databaseUrl' | 'databaseCa'>): Pool {
   const pool = new pg.Pool({
@@ -46,9 +52,12 @@ export async function withTx<T>(pool: Pool, fn: (tx: Tx) => Promise<T>): Promise
 export async function assertDatabase(pool: Pool): Promise<void> {
   const who = await pool.query<{ u: string }>('select current_user as u');
   if (who.rows[0]?.u !== 'crista_web') throw new Error(`DB 역할이 crista_web 이 아닙니다(${who.rows[0]?.u}).`);
-  const applied = await pool.query<{ version: string }>('select version from web.schema_migrations order by version desc limit 1');
-  const latest = applied.rows[0]?.version ?? '';
+  const applied = await pool.query<{ version: string }>('select version from web.schema_migrations');
+  const have = new Set(applied.rows.map((r) => r.version));
+  const latest = [...have].sort().at(-1) ?? '';
   if (latest < REQUIRED_MIGRATION) throw new Error(`web 마이그레이션 ${REQUIRED_MIGRATION} 이 필요합니다(지금 ${latest || '없음'}). \`npm run db:migrate:local\``);
+  const missing = REQUIRED_MIGRATIONS.filter((v) => !have.has(v));
+  if (missing.length) throw new Error(`web 마이그레이션 ${missing.join(' · ')} 이 필요합니다. \`npm run db:migrate:local\``);
 }
 
 export const isUniqueViolation = (error: unknown, constraint?: string): boolean =>

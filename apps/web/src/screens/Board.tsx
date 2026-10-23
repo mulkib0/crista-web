@@ -182,6 +182,7 @@ export function Board({ nav, registry }: { nav: Nav; registry?: StepRegistry }) 
           <GrantChip board={board} />
           <GameDay board={board} />
           <PitchButton board={board} />
+          <button className="btn sm" type="button" onClick={() => go('lab')}>랩 고르기</button>
           <button className="btn sm" type="button" onClick={() => go('district')}>사옥 지구</button>
           <button className="btn sm ghost" type="button" onClick={() => void nav.logout()}>나가기</button>
         </div>

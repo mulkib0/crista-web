@@ -2,9 +2,11 @@
  * REST 규격 — 경로 · 요청 · 응답 모양(서버 `apps/server/src/routes.ts` 가 이 모양을 지킨다).
  * 모든 오류 응답은 `ApiErrorBody` 다. 세션은 HttpOnly 쿠키(`SESSION_COOKIE`)라 화면 스크립트는 토큰을 모른다.
  */
+import type { AntibodyNoteView } from './antibody.ts';
 import type { NoteView } from './pipeline.ts';
 import type { DocSectionView } from './review.ts';
 import type { Assignment, Avatar } from './rules.ts';
+import type { TrackId } from './track.ts';
 
 export const SESSION_COOKIE = 'crista_web_sid';
 
@@ -48,11 +50,26 @@ export type ErrorCode =
   | 'limit_reached'
   | 'reason_blocked'
   | 'already_exists'
-  | 'llm_unavailable';
+  | 'llm_unavailable'
+  // 항체 설계 랩 — 서열이 접힘 예측 상한(400 잔기)을 넘음 · 1인 설계 칸을 이미 씀 · 사람별 작업 상한에 닿음(항체 설계 §5.5).
+  | 'sequence_too_long'
+  | 'slot_taken'
+  | 'my_quota_used';
 
 export interface ApiErrorBody {
-  /** `note` — 노트 칸 409 `stale` 때 지금 칸(상대 본문 · 버전). 칸이 아직 없으면 생략. `section` — 서류 칸(3판)도 같다. */
-  error: { code: ErrorCode; message: string; retryAfterSec?: number; team?: TeamView; note?: NoteView; section?: DocSectionView };
+  /**
+   * `note` — 노트 칸 409 `stale` 때 지금 칸(상대 본문 · 버전). 칸이 아직 없으면 생략. `section` — 서류 칸(3판)도 같다.
+   * `abNote` — 항체 랩 노트 칸의 409 `stale`(`AntibodyNoteView` 는 `stepId` 축이 달라 `note` 에 담을 수 없다).
+   */
+  error: {
+    code: ErrorCode;
+    message: string;
+    retryAfterSec?: number;
+    team?: TeamView;
+    note?: NoteView;
+    section?: DocSectionView;
+    abNote?: AntibodyNoteView;
+  };
 }
 
 // ── 모양 ──
@@ -119,8 +136,19 @@ export interface TeacherClassDetail extends TeacherClassView {
   roster: RosterEntry[];
 }
 
-/** 로그인 뒤 어디로 가나(설계 §2): 학급 고르기(아직 학급이 없는 학생) · 사옥 지구 ② · 전광판 ③ · 교사 화면. */
+/**
+ * 로그인 뒤 어디로 가나(설계 §2): 학급 고르기(아직 학급이 없는 학생) · 사옥 지구 ② · 전광판 ③ · 교사 화면.
+ * `NextScreen` 은 늘리지 않고 화면이 'lab'(연구소 고르기)으로 감싼다(항체 설계 §1.3).
+ */
 export type NextScreen = 'enroll' | 'district' | 'board' | 'teacher';
+
+/** 랩 하나의 진행 — '연구소 고르기' 화면의 진행 칩이 쓴다(항체 설계 §1.3). `total` 은 그 랩의 단계 수(저분자 `STEP_IDS.length` · 항체 6). */
+export interface LabProgress {
+  opened: boolean;
+  doneCount: number;
+  total: number;
+  stepId?: string;
+}
 
 export interface MeResponse {
   account: AccountView;
@@ -130,6 +158,10 @@ export interface MeResponse {
   /** 학생만. */
   class?: ClassSummary;
   team?: TeamView | null;
+  /** 선택 — 두 랩의 진행. 없으면 고르기 화면은 진행 칩을 **그리지 않는다**(없는 값을 추측해 그리지 않는다 · 항체 설계 §1.4). */
+  labs?: { drug: LabProgress; antibody: LabProgress };
+  /** 선택 — 교사가 열어 둔 트랙. 없는 트랙의 섬은 흐림 + 이유 문구로 그린다(항체 설계 §1.4). */
+  openTracks?: TrackId[];
 }
 
 /** 학생이 가입 뒤 고르는 학급 — 교사가 '학생 받기'를 연 학급만. */

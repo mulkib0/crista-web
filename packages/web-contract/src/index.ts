@@ -22,3 +22,5 @@ export * from './clinical.ts';
 export * from './feed.ts';
 // 교사 화면(설계 §9) — 모둠 진행 · 교사 심사 목록 모양.
 export * from './teacher.ts';
+// 두 번째 파이프라인 — 항체 설계 랩(트랙 2 · 항체 설계 §5.4).
+export * from './antibody.ts';

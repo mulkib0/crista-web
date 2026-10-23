@@ -1,0 +1,126 @@
+{
+  "query_id" : "6dbf6e6b-af14-4e2d-9ce0-3cfeda31e673",
+  "result_type" : "entry",
+  "total_count" : 40,
+  "result_set" : [ {
+    "identifier" : "1YY8",
+    "score" : 1.0014177590477753
+  }, {
+    "identifier" : "5ESQ",
+    "score" : 0.999938747209951
+  }, {
+    "identifier" : "5HYQ",
+    "score" : 0.9897875695927121
+  }, {
+    "identifier" : "5ETU",
+    "score" : 0.9855511492447117
+  }, {
+    "identifier" : "5I2I",
+    "score" : 0.9855511492447117
+  }, {
+    "identifier" : "5ICZ",
+    "score" : 0.9855511492447117
+  }, {
+    "identifier" : "5IOP",
+    "score" : 0.9855511492447117
+  }, {
+    "identifier" : "5ITF",
+    "score" : 0.9855511492447117
+  }, {
+    "identifier" : "5ICY",
+    "score" : 0.9841333901969362
+  }, {
+    "identifier" : "5IV2",
+    "score" : 0.9841333901969362
+  }, {
+    "identifier" : "5IVZ",
+    "score" : 0.9841333901969362
+  }, {
+    "identifier" : "5TH2",
+    "score" : 0.9841333901969362
+  }, {
+    "identifier" : "5T1K",
+    "score" : 0.9814153771590091
+  }, {
+    "identifier" : "5T1L",
+    "score" : 0.9775777754990187
+  }, {
+    "identifier" : "5ICX",
+    "score" : 0.96792780673646
+  }, {
+    "identifier" : "5EUK",
+    "score" : 0.9641820769986942
+  }, {
+    "identifier" : "5FF6",
+    "score" : 0.9641820769986942
+  }, {
+    "identifier" : "5HPM",
+    "score" : 0.9641820769986942
+  }, {
+    "identifier" : "5ID1",
+    "score" : 0.9641820769986942
+  }, {
+    "identifier" : "5T1M",
+    "score" : 0.9641820769986942
+  }, {
+    "identifier" : "5F88",
+    "score" : 0.9627643179509187
+  }, {
+    "identifier" : "5ID0",
+    "score" : 0.9627643179509187
+  }, {
+    "identifier" : "5IR1",
+    "score" : 0.9627643179509187
+  }, {
+    "identifier" : "5GZ0",
+    "score" : 0.9552807398939486
+  }, {
+    "identifier" : "6ARP",
+    "score" : 0.9399848654095836
+  }, {
+    "identifier" : "6AXP",
+    "score" : 0.9209108609276727
+  }, {
+    "identifier" : "6AU5",
+    "score" : 0.9194931018798973
+  }, {
+    "identifier" : "6AYN",
+    "score" : 0.9194931018798973
+  }, {
+    "identifier" : "6AZK",
+    "score" : 0.9194931018798973
+  }, {
+    "identifier" : "6AZL",
+    "score" : 0.9194931018798973
+  }, {
+    "identifier" : "5I76",
+    "score" : 0.8748644570269639
+  }, {
+    "identifier" : "4GW5",
+    "score" : 0.8567675886947729
+  }, {
+    "identifier" : "1YY9",
+    "score" : 0.8029148840572099
+  }, {
+    "identifier" : "6ARU",
+    "score" : 0.766059991496145
+  }, {
+    "identifier" : "4GW1",
+    "score" : 0.760735573577511
+  }, {
+    "identifier" : "4KRO",
+    "score" : 0.7459238172541338
+  }, {
+    "identifier" : "4KRP",
+    "score" : 0.7459238172541338
+  }, {
+    "identifier" : "6B3S",
+    "score" : 0.6919112385035762
+  }, {
+    "identifier" : "5SX4",
+    "score" : 0.6690887904602728
+  }, {
+    "identifier" : "5SX5",
+    "score" : 0.6690887904602728
+  } ]
+}
