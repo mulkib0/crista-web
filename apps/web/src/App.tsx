@@ -183,7 +183,11 @@ export function App() {
     rememberLab(track);
     go(me.next === 'district' ? 'district' : track === 'antibody' ? 'antibody' : 'board', false, track);
   };
-  if (route === 'lab') return <Labs nav={nav} pickLab={pickLab} />;
+  // 선생님이 닫아 둔 랩은 **주소로도 들어가지 못한다** — 고르기 화면이 흐리게만 그리면 `?lab=` 을 들고 있는 탭 ·
+  // 북마크로 그대로 들어가진다(교사 화면 ⑨ '열린 랩 — 학생이 들어갈 수 있는 곳'). 고르기 화면으로 되돌려 이유를 읽게 한다.
+  const closed = (track: TrackId) => me.openTracks !== undefined && !me.openTracks.includes(track);
+  const shut = (route === 'antibody' && closed('antibody')) || (route === 'board' && closed('drug'));
+  if (route === 'lab' || shut) return <Labs nav={nav} pickLab={pickLab} />;
   if (route === 'antibody') {
     return (
       <Suspense fallback={<div className="empty" style={{ margin: 40 }}>항체 설계 랩을 여는 중…</div>}>

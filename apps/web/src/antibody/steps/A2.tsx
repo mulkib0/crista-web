@@ -42,6 +42,8 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
   // 서버가 A2 작업에서 만든 값만 써요 — 없으면 '아직 돌리지 않았어요'를 보여 줘요(§12).
   const diversity = board.diversity.find((d) => d.chain === chain) ?? null;
   const seq = (chain === 'H' ? board.program.parentVh : board.program.parentVl) ?? '';
+  // 큐에 들어간 A2 작업 — 돌리는 동안 단추를 막아요(끝나면 `antibody.changed` 로 화면이 다시 읽어요).
+  const running = (board.jobs ?? []).some((j) => j.step === 'A2' && (j.status === 'queued' || j.status === 'running'));
   const span = diversity?.cdrs.find((c) => c.cdr === cdrNo);
   // 3D 는 **A4 접힘 결과**만 써요. 접힘 구조는 중쇄를 앞에서부터 1번 자리로 번호 매기므로(scFv 도 앞부분이 중쇄예요)
   // 중쇄 다양성을 그 구조에 그대로 칠할 수 있어요. 복합체 구조는 번호축이 레퍼런스 PDB 것이라 칠하면 자리가 어긋나서 쓰지 않아요.
@@ -147,6 +149,19 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 </p>
               </Panel>
             )}
+            {/* 분석 작업 돌리기 — A2 는 설계 없이 모둠에 한 번 돌리는 작업이에요(`POST /api/antibody/jobs` 는 A2 에만 designId 를 받지 않아요). */}
+            <Panel title={termName('diversity')} sub={running ? '돌리는 중' : diversity ? '읽었어요' : '안 돌렸어요'}>
+              <div className="acts">
+                <button type="button" className="btn pri" disabled={busy || running} onClick={() => run(() => actions.runJob('A2', ''))}>
+                  {diversity ? '다시 읽기' : '다양성 읽기'} <span className="cost">무료</span>
+                </button>
+                <span className="note">
+                  {running
+                    ? '큐에 들어갔어요 — 끝나면 자리마다 등급이 채워져요.'
+                    : '모둠에 한 번만 돌리면 돼요 — 모둠원 모두가 같은 값을 봐요.'}
+                </span>
+              </div>
+            </Panel>
             <Panel title="읽는 방법 고르기">
               <div className="fld">
                 <label className="lab" htmlFor="a2-scheme">{termName('cdr')} 구간을 정하는 번호축</label>
