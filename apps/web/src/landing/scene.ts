@@ -2,6 +2,7 @@
  * 첫 화면 장면 — 히어로 변주판 20.02 '박막 무지개'(유리 리본 갈래 2번)를 값 그대로 옮겼다.
  * 페이퍼 바탕 위 투명 리본(접힌 단백질 사슬)의 가장자리에 박막 간섭색이 흐르고, 포인터를 따라 기울며 끌면 돈다.
  * 변주판은 three r149 의 색 처리(색 관리 없음)로 그렸다 — 같은 색이 나오도록 색 관리를 끈다.
+ * ① 로그인(시안 02 '유리 카드')도 같은 장면을 구도(SceneView)만 바꿔 쓴다.
  */
 import {
   BackSide,
@@ -230,10 +231,24 @@ function shadow(y: number, size: number, alpha: number) {
 }
 
 /**
- * stage 안에 캔버스를 깔고 장면을 돌린다. 돌려받은 함수로 멈추고 치운다.
- * 글자(워드마크 · 버튼)가 오른쪽에 있으므로 넓은 화면에서는 리본을 왼쪽으로, 좁은 화면에서는 위로 비켜 그린다.
+ * 구도 — 화면 폭 · 높이에 대한 시점 밀기(+ox 면 리본이 왼쪽으로)와 확대, 바닥 그림자 진하기.
+ * 넓은 화면(가로/세로 > 1.15)과 좁은 화면을 따로 정한다. 기본값은 첫 화면: 글자(워드마크 · 버튼)가 오른쪽에 있으므로
+ * 넓은 화면에서는 리본을 왼쪽으로, 좁은 화면에서는 위로 비켜 그린다.
  */
-export function startScene(stage: HTMLElement): () => void {
+export interface SceneView {
+  ox: number;
+  oy: number;
+  zoom: number;
+  narrowOx: number;
+  narrowOy: number;
+  narrowZoom: number;
+  shadow: number;
+}
+const LANDING_VIEW: SceneView = { ox: 0.21, oy: 0.05, zoom: 0.86, narrowOx: 0, narrowOy: 0.2, narrowZoom: 0.62, shadow: 0.16 };
+
+/** stage 안에 캔버스를 깔고 장면을 돌린다. 돌려받은 함수로 멈추고 치운다. */
+export function startScene(stage: HTMLElement, view: Partial<SceneView> = {}): () => void {
+  const v: SceneView = { ...LANDING_VIEW, ...view };
   ColorManagement.enabled = false;
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -255,14 +270,14 @@ export function startScene(stage: HTMLElement): () => void {
   scene.add(root);
   root.add(spin);
   spin.add(glassPair(ribbon(fold(102), 1.32), uTime));
-  scene.add(shadow(-1.15, 2.6, 0.16));
+  scene.add(shadow(-1.15, 2.6, v.shadow));
 
   const mq = matchMedia('(prefers-reduced-motion: reduce)');
   let reduce = mq.matches;
   const onMotion = (e: MediaQueryListEvent) => (reduce = e.matches);
   mq.addEventListener('change', onMotion);
 
-  /* 포인터 시차와 드래그 회전. 버튼 · 링크를 누를 때는 포인터를 붙잡지 않아야 클릭이 닿는다 */
+  /* 포인터 시차와 드래그 회전. 버튼 · 링크 · 입력칸을 누를 때는 포인터를 붙잡지 않아야 클릭 · 입력이 닿는다 */
   let tx = 0, ty = 0, px = 0, py = 0, yaw = 0, yawVel = 0, dragX: number | null = null;
   const onMove = (e: PointerEvent) => {
     const r = stage.getBoundingClientRect();
@@ -274,7 +289,7 @@ export function startScene(stage: HTMLElement): () => void {
     }
   };
   const onDown = (e: PointerEvent) => {
-    if ((e.target as Element).closest('a, button')) return;
+    if ((e.target as Element).closest('a, button, input, label, select, textarea, form')) return;
     dragX = e.clientX;
     stage.setPointerCapture(e.pointerId);
   };
@@ -319,11 +334,11 @@ export function startScene(stage: HTMLElement): () => void {
 
     camera.aspect = w / h;
     if (w / h > 1.15) {
-      camera.zoom = 0.86;
-      camera.setViewOffset(w, h, w * 0.21, h * 0.05, w, h);
+      camera.zoom = v.zoom;
+      camera.setViewOffset(w, h, w * v.ox, h * v.oy, w, h);
     } else {
-      camera.zoom = 0.62;
-      camera.setViewOffset(w, h, 0, h * 0.2, w, h);
+      camera.zoom = v.narrowZoom;
+      camera.setViewOffset(w, h, w * v.narrowOx, h * v.narrowOy, w, h);
     }
     camera.updateProjectionMatrix();
     renderer.render(scene, camera);

@@ -146,20 +146,61 @@ td .row { flex-wrap: nowrap; }
 }
 @media (prefers-reduced-motion: reduce) { .lp-btn { transition: none; } }
 
-/* ── ① 로그인 · 가입 ── */
-.auth { min-height: 100%; display: grid; grid-template-rows: 1fr auto; }
-.auth-main { display: grid; place-items: center; padding: 40px 16px 24px; }
-.auth-card { width: min(440px, 100%); }
-.auth-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-.auth-brand b { font-size: 28px; letter-spacing: -0.04em; }
-.auth-brand span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.auth h1 { margin: 6px 0 18px; font-size: 22px; letter-spacing: -0.03em; line-height: 1.25; }
-.tabs { display: flex; border: 1px solid var(--line-strong); margin-bottom: 16px; }
-.tabs button { flex: 1; border: 0; background: transparent; padding: 10px; font-weight: 600; border-radius: 0; }
-.tabs button + button { border-left: 1px solid var(--line-strong); }
-.tabs button[aria-selected="true"] { background: var(--fg); color: var(--bg); }
-.street { height: 128px; background: #78C850; border-top: 1px solid var(--line-strong); display: flex; align-items: flex-end; justify-content: center; gap: 4px; overflow: hidden; padding: 0 16px; }
-.street img { width: 96px; height: 96px; image-rendering: pixelated; flex: none; }
+/* ── ① 로그인 · 가입 — 로그인 시안 02 '유리 카드'(design/login-30). 첫 화면 리본이 가운데에서 돌고, 그 앞 유리 카드에 폼(좁은 화면은 아래) ── */
+.auth { position: fixed; inset: 0; overflow: hidden; background: var(--bg); color: var(--fg); cursor: grab; touch-action: pan-y; }
+.auth:active { cursor: grabbing; }
+.auth > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.auth-hd, .auth-rib, .auth-glass { position: absolute; z-index: 2; }
+.auth-hd { left: max(clamp(20px, 3.4vw, 56px), env(safe-area-inset-left, 0px)); top: calc(clamp(20px, 4vh, 40px) + env(safe-area-inset-top, 0px)); display: flex; align-items: center; gap: 14px; }
+.auth-word { display: flex; align-items: baseline; gap: 0.05em; font-size: 28px; line-height: 0.9; font-weight: 700; letter-spacing: -0.05em; white-space: nowrap; }
+.auth-word svg { flex: none; width: 0.9em; height: 0.9em; margin-left: -0.08em; transform: translateY(0.1em); fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+.auth-hd small { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-left: 14px; border-left: 1px solid rgba(8, 11, 9, 0.22); line-height: 1.6; }
+.auth-rib { left: max(clamp(20px, 3.4vw, 56px), env(safe-area-inset-left, 0px)); bottom: calc(clamp(20px, 4vh, 40px) + env(safe-area-inset-bottom, 0px)); margin: 0; display: grid; gap: 4px; font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.02em; pointer-events: none; }
+.auth-rib b { color: var(--fg); font-weight: 500; }
+.auth-rib span { display: flex; gap: 10px; align-items: center; }
+.auth-rib i { width: 22px; height: 1px; background: currentColor; display: inline-block; }
+.auth-glass {
+  left: 55vw; top: 0; bottom: 0; margin-block: auto; height: fit-content; max-height: calc(100% - 48px); width: min(440px, 38vw); display: flex; cursor: auto;
+  background: rgba(251, 251, 246, 0.34); -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6);
+  box-shadow: 0 40px 90px -40px rgba(8, 11, 9, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+/* 테두리 1px — 평소 박막색, 오류는 빨강, 잠금은 황토 */
+.auth-glass::before {
+  content: ""; position: absolute; inset: 0; padding: 1px; background: var(--film); pointer-events: none; transition: background .3s ease;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.auth-glass[data-state="bad"]::before { background: var(--bad); }
+.auth-glass[data-state="lock"]::before { background: #b07800; }
+.auth-in { flex: 1; min-width: 0; overflow-y: auto; padding: 34px 34px 30px; display: grid; gap: 22px; align-content: start; }
+.auth-tabs { display: flex; gap: 4px; padding: 4px; background: rgba(8, 11, 9, 0.07); }
+.auth-tabs button { flex: 1; border: 0; background: transparent; padding: 9px 10px; color: var(--muted); font-size: 13.5px; font-weight: 600; border-radius: 0; }
+.auth-tabs button[aria-selected="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 2px rgba(8, 11, 9, 0.14), 0 6px 14px -8px rgba(8, 11, 9, 0.3); }
+.auth-form { display: grid; gap: 16px; }
+.auth-fields { display: grid; gap: 12px; }
+.auth-fld { display: grid; gap: 6px; min-width: 0; }
+.auth-fld label { font-size: 12px; font-weight: 600; color: #2b312a; }
+.auth-inp { width: 100%; min-width: 0; min-height: 46px; padding: 10px 12px; border: 1px solid rgba(8, 11, 9, 0.14); background: rgba(255, 255, 255, 0.58); border-radius: 0; transition: border-color .15s ease, background-color .15s ease; }
+.auth-inp::placeholder { color: inherit; opacity: 0.45; }
+.auth-inp:focus { outline: none; background: #fff; border-color: var(--fg); }
+.auth-msg { margin: 0; display: grid; gap: 2px; padding: 10px 12px; border-left: 3px solid currentColor; background: rgba(255, 255, 255, 0.62); color: var(--bad); font-size: 13px; line-height: 1.45; }
+.auth-msg[data-kind="lock"] { color: var(--warn); }
+.auth-msg span { font-weight: 400; }
+.auth-go { min-height: 52px; padding: 0 20px; border: 0; background: var(--fg); color: var(--bg); font-size: 15.5px; font-weight: 700; border-radius: 0; }
+.auth-go:hover:not(:disabled) { box-shadow: inset 0 0 0 999px rgba(241, 241, 233, 0.12); }
+.auth-go:disabled { opacity: 0.45; }
+.auth-hint { margin: 0; font-size: 12.5px; color: #3d443b; }
+@media (max-width: 760px) {
+  .auth-hd { left: max(16px, env(safe-area-inset-left, 0px)); top: calc(18px + env(safe-area-inset-top, 0px)); }
+  .auth-word { font-size: 24px; }
+  .auth-rib { display: none; }
+  .auth-glass {
+    left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); width: auto;
+    top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); margin: 0; max-height: calc(100% - 150px);
+  }
+  .auth-in { padding: 22px 18px 20px; gap: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .auth-glass::before, .auth-inp { transition: none; } }
 
 /* ── ② 사옥 지구 ── */
 .district { position: fixed; inset: 0; background: #78C850; overflow: hidden; }
