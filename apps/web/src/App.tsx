@@ -122,11 +122,15 @@ export function App() {
         // 등기 전 학생이 주소로 **작업 화면**에 바로 들어온 경우 되돌린다(항체 설계 §1.3).
         // `lab`(연구소 고르기)은 되돌리지 않는다 — 등기 전에도 무엇을 고르는 화면인지 봐야 한다(§1.1 · §12).
         const needsTeam = (['antibody', 'board'] as Route[]).includes(current);
+        // 고른 랩이 없는데 작업 화면 주소로 들어오면(`?lab=` 을 지우고 새 탭에서 열기) 저분자로 조용히 넘기지 않고
+        // 연구소 고르기로 되돌린다(항체 설계 §1.1 — 주소가 1순위 · `sessionStorage` 는 같은 탭 보조).
+        const noLab = needsTeam && fromUrl === null;
         const wrong =
           current === 'login' ||
           (found.next === 'teacher') !== (current === 'teacher') ||
           (found.next === 'enroll') !== (current === 'enroll') ||
-          (needsTeam && found.next === 'district');
+          (needsTeam && found.next === 'district') ||
+          noLab;
         if (wrong) go(entry(found), true);
       })
       .catch((error) => {
@@ -169,7 +173,11 @@ export function App() {
   const nav: Nav = { go, me, setMe, logout };
   if (me.account.kind === 'teacher') return <Teacher nav={nav} />;
   // 학급이 없는 학생은 주소와 상관없이 학급부터 고른다(지구 · 전광판은 학급이 있어야 열린다).
-  if (me.next === 'enroll') return <Enroll nav={nav} />;
+  // 학급을 고른 **직후에도 연구소 고르기가 먼저다** — `Enroll` 은 서버가 준 `me.next`('district')로 가려 하니
+  // 여기서 로그인과 같은 입구 규칙(`entry`)으로 바꿔 끼운다(항체 설계 §1.1).
+  if (me.next === 'enroll') {
+    return <Enroll nav={{ ...nav, go: (next, replace) => go(next === 'teacher' || next === 'enroll' ? next : 'lab', replace) }} />;
+  }
   // 랩을 고르면 주소 · 보조 캐시에 남기고 그 작업 화면으로 — 등기 전이면 먼저 사옥 지구로 보낸다(항체 설계 §1.1).
   const pickLab = (track: TrackId) => {
     rememberLab(track);

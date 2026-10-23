@@ -252,8 +252,14 @@ export async function me(db: Pool, account: AccountView): Promise<MeResponse> {
  * 저분자 `total` 은 **`STEP_IDS.length`**(박아 두면 단계가 늘 때 진행 칩이 멈춘다).
  */
 async function loadLabProgress(db: Pool, teamId: string): Promise<{ drug: LabProgress; antibody: LabProgress }> {
+  // 저분자 '진행 중' — **빈 `web.programs` 줄만으로는 켜지 않는다.** 항체 랩이 `ensureTeamRows` 로 그 줄을 미리 만들어 두기
+  // 때문에(§5.7), 줄의 있고 없음으로 재면 **항체만 연 모둠의 저분자 섬까지 '진행 중'으로 보인다**. 실제로 손댄 자취
+  // (표적 확정 · 내 추천 표적 카드 · 작업)로 잰다.
   const drug = await db.query<{ done: number; opened: boolean }>(
-    `select count(distinct j.step)::int as done, exists (select 1 from web.programs p where p.team_id = $1) as opened
+    `select count(distinct j.step)::int as done,
+            (exists (select 1 from web.programs p where p.team_id = $1 and p.target_id is not null)
+             or exists (select 1 from web.target_picks k where k.team_id = $1)
+             or exists (select 1 from web.jobs x where x.team_id = $1)) as opened
        from web.jobs j where j.team_id = $1 and j.status = 'succeeded'`,
     [teamId],
   );
