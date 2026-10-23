@@ -1,0 +1,678 @@
+<title>Crista 사이드바 30종</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+  /* 레이아웃: 시안 카드 격자. 카드마다 본문 바탕(--raise) 위에 사이드바 섬 하나를 실제 폭(272px)으로 놓는다.
+     색 · 글꼴은 apps/web/src/styles.css 의 Crista 토큰(잉크 · 페이퍼 · 라임 · 박막)을 그대로 쓴다. 앱처럼 밝은 박막 톤 하나로 고정한다. */
+  :root {
+    --bg: #f1f1e9; --surface: #fbfbf6; --raise: #e7e8de; --raise-2: #dcddd2; --fg: #080b09; --muted: #5b6358;
+    --line: rgba(8, 11, 9, 0.13); --line-strong: rgba(8, 11, 9, 0.32);
+    --hi: #c6ff4a; --hi-fg: #080b09; --hi-soft: rgba(198, 255, 74, 0.35);
+    --good: #2f6f2a; --good-bg: rgba(47, 111, 42, 0.12); --warn: #8a5a00; --warn-bg: rgba(176, 120, 0, 0.14); --bad: #b2361b; --bad-bg: rgba(178, 54, 27, 0.11);
+    --night: #0b0d0a; --night-2: #151a14; --night-fg: #f1f1e9; --night-muted: #9da59a; --night-line: rgba(241, 241, 233, 0.14);
+    --led: #ffb21a; --led-g: #8dff5a; --led-r: #ff5a3c;
+    --film: linear-gradient(115deg, #ffd3ea 0%, #cdeaff 28%, #e4ffc0 52%, #ffe2c2 76%, #e6d4ff 100%);
+    --film-1: #ffd3ea; --film-2: #cdeaff; --film-3: #e4ffc0; --film-4: #ffe2c2; --film-5: #e6d4ff;
+    --sans: "IBM Plex Sans KR", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    color-scheme: light;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--hi); color: var(--hi-fg); }
+  :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .page { max-width: 1480px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 22px; }
+  .hd { display: grid; gap: 10px; max-width: 760px; }
+  .eyebrow { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0; display: flex; gap: 8px; align-items: center; }
+  .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--film); box-shadow: 0 0 0 1px var(--fg); }
+  h1 { margin: 0; font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.04em; line-height: 1.1; text-wrap: balance; }
+  h1 em { font-style: normal; background: var(--film); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px var(--fg); }
+  .lede { margin: 0; color: var(--muted); max-width: 64ch; }
+  .lede b { color: var(--fg); font-weight: 600; }
+
+  .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  .jump { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
+  .jump a { font-family: var(--mono); font-size: 11px; text-decoration: none; padding: 3px 7px; border-radius: 999px; color: var(--muted); border: 1px solid transparent; }
+  .jump a:hover { border-color: var(--line-strong); color: var(--fg); }
+  .jump a.on { background: var(--fg); color: var(--bg); }
+  .picks { margin-left: auto; display: flex; gap: 8px; align-items: center; font-size: 12.5px; }
+  .picks output { font-family: var(--mono); font-size: 12px; }
+  .btn { appearance: none; border: 1px solid var(--line-strong); background: transparent; min-height: 30px; padding: 0 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+  .btn:hover { border-color: var(--fg); }
+  .btn.pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; align-items: start; }
+  .card { background: var(--surface); border-radius: 22px; padding: 14px; display: grid; gap: 10px; min-width: 0; scroll-margin-top: 64px; border: 1px solid transparent; }
+  .card.picked { border-color: var(--fg); box-shadow: 0 0 0 3px var(--hi); }
+  .card.wide { grid-column: 1 / -1; }
+  .ch { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 2px 10px; align-items: start; }
+  .cn { font-family: var(--mono); font-weight: 600; font-size: 12px; padding: 2px 7px; border-radius: 999px; background: var(--raise); }
+  .card[data-base] .cn { background: var(--fg); color: var(--bg); }
+  .ct { margin: 0; font-size: 15.5px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.35; }
+  .why { grid-column: 2 / 4; margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .star { appearance: none; border: 1px solid var(--line-strong); background: transparent; border-radius: 999px; font-size: 11.5px; padding: 2px 9px; white-space: nowrap; }
+  .star[aria-pressed="true"] { background: var(--hi); border-color: var(--fg); font-weight: 700; }
+  .stage { background: var(--raise); border-radius: 16px; padding: 14px; display: flex; gap: 12px; justify-content: center; align-items: flex-start; min-width: 0; overflow: hidden; }
+  .ghost { flex: 1; min-width: 0; align-self: stretch; border-radius: 20px; background: var(--surface); opacity: 0.7; padding: 14px; display: grid; gap: 8px; align-content: start; font-size: 11.5px; color: var(--muted); }
+  .ghost i { display: block; height: 8px; border-radius: 4px; background: var(--raise); }
+  .ghost b { font-size: 26px; letter-spacing: -0.05em; line-height: 1; color: var(--fg); }
+
+  /* ── 사이드바 섬 — 지금 화면(styles.css)의 값을 그대로 ── */
+  .sb { background: var(--surface); border-radius: 26px; padding: 18px 12px; display: grid; gap: 14px; width: 272px; max-width: 100%; flex: none; align-content: start; }
+  .side-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0; padding: 0 10px; }
+  .groups { display: grid; gap: 16px; }
+  .grp { display: grid; gap: 4px; min-width: 0; }
+  .grp-h { display: flex; align-items: baseline; gap: 8px; margin: 0; padding-left: 10px; font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+  .grp-h b { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--muted); }
+  .grp-h span { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; margin-left: auto; padding-right: 10px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .st { appearance: none; width: 100%; text-align: left; border: 0; background: transparent; color: inherit; border-radius: 14px; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; column-gap: 8px; padding: 7px 10px; align-items: baseline; transition: background-color .18s ease; }
+  .st:hover { background: var(--bg); }
+  .st-n { font-family: var(--mono); font-weight: 600; font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  .st-t { font-weight: 600; line-height: 1.35; min-width: 0; }
+  .st-s { grid-column: 2 / 4; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+  .st-k { font-family: var(--mono); font-size: 12px; }
+  .st[aria-current="step"] { background: var(--hi); color: var(--hi-fg); }
+  .st[aria-current="step"] .st-s { color: rgba(8, 11, 9, 0.66); }
+  .st[data-state="locked"] { opacity: 0.55; }
+  .st[data-state="locked"][aria-current="step"] { opacity: 1; }
+  .side-foot { padding: 4px 10px 0; display: grid; gap: 8px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .side-team { display: flex; flex-wrap: wrap; gap: 6px 12px; color: var(--fg); font-family: var(--sans); font-size: 12px; }
+  .side-team .badge { font-family: var(--mono); font-size: 10px; padding: 0 5px; border: 1px solid var(--line-strong); border-radius: 999px; margin-left: 4px; color: var(--muted); }
+  .ico { width: 14px; height: 14px; display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .ico.f { fill: currentColor; stroke: none; }
+  .ini { width: 20px; height: 20px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 10px; font-weight: 700; background: var(--raise); border: 1.5px solid var(--surface); }
+  .ini.k { background: var(--film-2); } .ini.p { background: var(--film-1); } .ini.l { background: var(--film-4); }
+
+  /* 01 진행 레일 */
+  .v01 .steps { gap: 0; }
+  .v01 li { position: relative; }
+  .v01 li::before { content: ""; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+  .v01 li:first-child::before { top: 50%; } .v01 li:last-child::before { bottom: 50%; }
+  .v01 li[data-state="done"]::before { background: var(--fg); }
+  .v01 li[data-state="running"]::before { background: linear-gradient(var(--fg) 50%, var(--line) 50%); }
+  .v01 .st { grid-template-columns: 22px 30px minmax(0, 1fr); align-items: center; position: relative; }
+  .v01 .st-s { grid-column: 3; margin: 0; }
+  .v01 .st-t { grid-column: 3; } .v01 .st-n { grid-column: 2; grid-row: 1; }
+  .v01 .nd { grid-row: 1 / 3; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--fg); background: var(--surface); justify-self: center; z-index: 1; }
+  .v01 .nd[data-s="done"] { background: var(--fg); }
+  .v01 .nd[data-s="running"] { background: var(--hi); width: 14px; height: 14px; }
+  .v01 .nd[data-s="locked"] { border-style: dashed; border-color: var(--line-strong); }
+  .v01 .st[aria-current="step"] .nd { box-shadow: 0 0 0 3px var(--surface); }
+
+  /* 02 묶음 칸 막대 */
+  .v02 .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; margin: 2px 10px 6px; }
+  .v02 .seg i { height: 5px; border-radius: 3px; background: var(--raise); }
+  .v02 .seg i[data-s="done"] { background: var(--fg); }
+  .v02 .seg i[data-s="running"] { background: linear-gradient(90deg, var(--fg) var(--p), var(--raise) var(--p)); }
+  .v02 .grp-h span { color: var(--fg); font-weight: 600; }
+
+  /* 03 선 아이콘 */
+  .v03 .st { grid-template-columns: 34px minmax(0, 1fr) 22px; }
+  .v03 .st-k { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; align-self: center; grid-row: 1 / 3; grid-column: 3; }
+  .v03 .st-k[data-s="done"] { background: var(--good-bg); color: var(--good); }
+  .v03 .st-k[data-s="running"] { background: var(--fg); color: var(--hi); }
+  .v03 .st-k[data-s="locked"] { border: 1px dashed var(--line-strong); color: var(--muted); }
+  .v03 .st-s { grid-column: 2; }
+  .v03 .st[data-state="locked"] { opacity: 0.7; }
+  .v03 .st[aria-current="step"] .st-k[data-s="done"] { background: var(--surface); }
+
+  /* 04 잠긴 단계 접기 */
+  .v04 .lockbox { border: 1px dashed var(--line-strong); border-radius: 16px; display: grid; }
+  .v04 .lk-b { appearance: none; border: 0; background: transparent; text-align: left; padding: 10px 12px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; border-radius: 16px; }
+  .v04 .lk-b:hover { background: var(--bg); }
+  .v04 .lk-b b { font-size: 13px; }
+  .v04 .lk-b small { grid-column: 1 / -1; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .v04 .lk-b span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .v04 .lockbox .steps { padding: 0 4px 6px; }
+
+  /* 05 진행 링 */
+  .v05 .st { grid-template-columns: 34px minmax(0, 1fr) 24px; }
+  .v05 .st-k { grid-row: 1 / 3; grid-column: 3; align-self: center; width: 24px; height: 24px; display: grid; place-items: center; }
+  .v05 .st-s { grid-column: 2; }
+  .v05 .ring { width: 24px; height: 24px; border-radius: 50%; background: conic-gradient(var(--fg) calc(var(--p) * 1%), var(--line) 0); display: grid; place-items: center; }
+  .v05 .ring::after { content: attr(data-i); width: 17px; height: 17px; border-radius: 50%; background: var(--surface); font-family: var(--sans); font-size: 9.5px; font-weight: 700; display: grid; place-items: center; }
+  .v05 .st[aria-current="step"] .ring::after { background: var(--hi); }
+
+  /* 06 지금 할 일 */
+  .v06 .todo { background: var(--fg); color: var(--bg); border-radius: 18px; padding: 12px 14px; display: grid; gap: 6px; }
+  .v06 .todo .eb { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hi); }
+  .v06 .todo b { font-size: 14px; line-height: 1.35; }
+  .v06 .todo p { margin: 0; font-size: 12px; color: var(--night-muted); line-height: 1.45; }
+  .v06 .todo .bar6 { height: 4px; border-radius: 2px; background: var(--night-line); overflow: hidden; } .v06 .todo .bar6 i { display: block; height: 100%; width: 62%; background: var(--hi); }
+  .v06 .todo button { appearance: none; border: 0; background: var(--hi); color: var(--hi-fg); border-radius: 999px; font-weight: 700; font-size: 12px; padding: 6px 12px; justify-self: start; }
+  .v06 .st-s { display: none; }
+  .v06 .st { padding: 6px 10px; }
+
+  /* 07 아이콘 레일 */
+  .v07 .rail { width: 64px; padding: 14px 8px; border-radius: 22px; background: var(--surface); display: grid; gap: 6px; justify-items: center; flex: none; }
+  .v07 .rail hr { width: 24px; border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+  .v07 .rail .gl { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 0.06em; }
+  .v07 .rb { appearance: none; width: 42px; height: 34px; border-radius: 12px; border: 0; background: transparent; font-family: var(--mono); font-size: 11.5px; font-weight: 600; position: relative; }
+  .v07 .rb:hover { background: var(--bg); }
+  .v07 .rb[aria-current="step"] { background: var(--hi); }
+  .v07 .rb[data-state="locked"] { color: var(--muted); opacity: 0.6; }
+  .v07 .rb::after { content: ""; position: absolute; right: 5px; top: 5px; width: 6px; height: 6px; border-radius: 50%; }
+  .v07 .rb[data-state="done"]::after { background: var(--good); }
+  .v07 .rb[data-state="running"]::after { background: var(--fg); box-shadow: 0 0 0 2px var(--hi); }
+  .v07 .tog { appearance: none; border: 1px solid var(--line-strong); background: transparent; border-radius: 999px; width: 30px; height: 30px; font-size: 13px; }
+  .v07 .sb-top { display: flex; justify-content: space-between; align-items: center; padding-right: 4px; }
+
+  /* 08 박막 전체 진행 */
+  .v08 .total { padding: 0 10px; display: grid; gap: 6px; }
+  .v08 .total-h { display: flex; justify-content: space-between; align-items: baseline; }
+  .v08 .total-h b { font-size: 22px; letter-spacing: -0.04em; font-family: var(--mono); }
+  .v08 .total-h span { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .v08 .cells { display: grid; grid-template-columns: repeat(9, 1fr); gap: 3px; }
+  .v08 .cells i { height: 14px; border-radius: 4px; background: var(--raise); }
+  .v08 .cells i.g { margin-left: 4px; }
+  .v08 .cells i[data-s="done"] { background: var(--film); background-size: 900% 100%; box-shadow: inset 0 0 0 1px var(--fg); }
+  .v08 .cells i[data-s="running"] { background: linear-gradient(90deg, var(--fg) 62%, var(--raise) 62%); }
+
+  /* 09 아코디언 */
+  .v09 .gb { appearance: none; border: 0; background: transparent; width: 100%; text-align: left; display: flex; gap: 8px; align-items: center; padding: 7px 10px; border-radius: 14px; font-size: 13px; font-weight: 700; }
+  .v09 .gb:hover { background: var(--bg); }
+  .v09 .gb b { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .v09 .gb .dots { margin-left: auto; display: flex; gap: 3px; }
+  .v09 .gb .dots i { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--fg); }
+  .v09 .gb .dots i[data-s="done"] { background: var(--fg); }
+  .v09 .gb .dots i[data-s="running"] { background: var(--hi); }
+  .v09 .gb .dots i[data-s="locked"] { border-color: var(--line-strong); }
+  .v09 .gb .chev { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 12px; }
+  .v09 .groups { gap: 4px; }
+  .v09 .grp.open { background: var(--bg); border-radius: 18px; padding-bottom: 4px; }
+
+  /* 10 게임 날짜 */
+  .v10 .today { margin: 0 10px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; padding: 6px 10px; border-radius: 999px; background: var(--raise); }
+  .v10 .day { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .v10 .st[aria-current="step"] .day { color: var(--fg); }
+  .v10 .day.run { color: var(--fg); font-weight: 600; }
+
+  /* 11 모둠원 */
+  .v11 .who { display: flex; } .v11 .who .ini { margin-left: -6px; } .v11 .who .ini:first-child { margin-left: 0; }
+  .v11 .st-k { align-self: center; grid-row: 1 / 3; grid-column: 3; }
+  .v11 .st-s { grid-column: 2; }
+
+  /* 12 근거 종류 */
+  .v12 .ev { font-family: var(--mono); font-size: 10px; padding: 1px 6px; border: 1px solid currentColor; border-radius: 999px; white-space: nowrap; }
+  .v12 .ev[data-e="계산"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .v12 .ev[data-e="예측"] { border-style: dashed; }
+  .v12 .ev[data-e="모의"] { color: var(--muted); }
+  .v12 .st[aria-current="step"] .ev[data-e="계산"] { background: var(--fg); }
+  .v12 .legend { padding: 0 10px; display: flex; flex-wrap: wrap; gap: 6px; font-size: 11px; color: var(--muted); align-items: center; }
+
+  /* 13 세그먼트 */
+  .v13 .segs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding: 3px; background: var(--raise); border-radius: 14px; }
+  .v13 .sg { appearance: none; border: 0; background: transparent; border-radius: 11px; padding: 6px 2px; display: grid; gap: 0; justify-items: center; font-size: 11.5px; font-weight: 700; }
+  .v13 .sg small { font-family: var(--mono); font-size: 9.5px; font-weight: 500; color: var(--muted); }
+  .v13 .sg[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 3px rgba(8, 11, 9, 0.12); }
+  .v13 .sg.hasrun::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--fg); box-shadow: 0 0 0 2px var(--hi); margin-bottom: 2px; }
+  .v13 .gname { margin: 0; padding: 0 10px; font-size: 18px; font-weight: 700; letter-spacing: -0.03em; }
+
+  /* 14 큰 번호 */
+  .v14 .st { grid-template-columns: 58px minmax(0, 1fr); align-items: center; padding: 8px 10px; }
+  .v14 .big { grid-row: 1 / 3; font-size: 30px; font-weight: 700; letter-spacing: -0.06em; line-height: 0.9; background: var(--film); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px var(--fg); }
+  .v14 .st[data-state="locked"] .big { background: none; -webkit-text-stroke: 1px var(--line-strong); }
+  .v14 .st[aria-current="step"] { background: var(--fg); color: var(--bg); }
+  .v14 .st[aria-current="step"] .big { -webkit-text-stroke: 0; }
+  .v14 .st[aria-current="step"] .st-s { color: var(--night-muted); }
+  .v14 .st-s { grid-column: 2; }
+
+  /* 15 잉크 = 선택, 라임 = 진행 */
+  .v15 .st[aria-current="step"] { background: var(--fg); color: var(--bg); }
+  .v15 .st[aria-current="step"] .st-s { color: var(--night-muted); }
+  .v15 .st[data-state="running"] .st-k { width: 10px; height: 10px; border-radius: 50%; background: var(--hi); box-shadow: 0 0 0 2px var(--fg); align-self: center; font-size: 0; animation: pulse 1.6s ease-in-out infinite; }
+  .v15 .st[data-state="running"] { background: var(--hi-soft); }
+  .v15 .st[data-state="running"][aria-current="step"] { background: var(--fg); }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 5px rgba(198, 255, 74, 0.0), 0 0 0 2px var(--fg); transform: scale(1.15); } }
+
+  /* 16 상태 칩 */
+  .v16 .fchips { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 6px; }
+  .v16 .fc { appearance: none; border: 1px solid var(--line-strong); background: transparent; border-radius: 999px; font-size: 11px; padding: 2px 8px; }
+  .v16 .fc b { font-family: var(--mono); margin-left: 2px; }
+  .v16 .fc[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+  /* 17 잠김 이유 */
+  .v17 .why17 { color: var(--fg); }
+  .v17 .st[data-next] { opacity: 1; background: repeating-linear-gradient(135deg, transparent 0 6px, var(--raise) 6px 7px); }
+  .v17 .st[data-next][aria-current="step"] { background: var(--hi); }
+  .v17 .st[data-next] .st-s { color: var(--fg); }
+  .v17 .st[data-state="locked"]:not([data-next]) { opacity: 0.4; }
+
+  /* 18 실시간 진행 */
+  .v18 .live { grid-column: 2 / 4; display: grid; gap: 4px; margin-top: 6px; }
+  .v18 .live .pb { height: 4px; border-radius: 2px; background: rgba(8, 11, 9, 0.12); overflow: hidden; position: relative; }
+  .v18 .live .pb i { position: absolute; inset: 0 auto 0 0; width: 62%; background: var(--fg); }
+  .v18 .live .pb i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(198, 255, 74, 0.8), transparent); animation: sweep 1.8s linear infinite; }
+  .v18 .live span { font-family: var(--mono); font-size: 10.5px; display: flex; justify-content: space-between; }
+  .v18 .live span em { font-style: normal; display: inline-flex; gap: 4px; align-items: center; }
+  .v18 .live span em::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--bad); }
+  @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+  /* 19 밤 섬 */
+  .v19 .sb { background: var(--night); color: var(--night-fg); }
+  .v19 .side-h, .v19 .grp-h b, .v19 .grp-h span, .v19 .st-s, .v19 .side-foot { color: var(--night-muted); }
+  .v19 .side-team { color: var(--night-fg); }
+  .v19 .side-team .badge { border-color: var(--night-line); color: var(--night-muted); }
+  .v19 .st:hover { background: var(--night-2); }
+  .v19 .st[aria-current="step"] { background: var(--hi); color: var(--hi-fg); }
+  .v19 .st[data-state="done"] .st-k { color: var(--led-g); text-shadow: 0 0 8px rgba(141, 255, 90, 0.5); }
+  .v19 .st[data-state="running"] .st-k { color: var(--led); text-shadow: 0 0 8px rgba(255, 178, 26, 0.6); }
+  .v19 .st[aria-current="step"] .st-k { color: var(--hi-fg); text-shadow: none; }
+  .v19 .st[data-state="locked"] { opacity: 0.45; }
+
+  /* 20 LED 숫자판 */
+  .v20 .st { grid-template-columns: 46px minmax(0, 1fr) 14px; align-items: center; }
+  .v20 .led { grid-row: 1 / 3; background: var(--night); border-radius: 8px; padding: 4px 0; text-align: center; font-family: var(--mono); font-weight: 600; font-size: 15px; letter-spacing: 0.04em; color: var(--led); text-shadow: 0 0 6px rgba(255, 178, 26, 0.6); }
+  .v20 .led span { -webkit-mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); -webkit-mask-size: 3px 3px; mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); mask-size: 3px 3px; display: inline-block; }
+  .v20 .st[data-state="done"] .led { color: var(--led-g); text-shadow: 0 0 6px rgba(141, 255, 90, 0.55); }
+  .v20 .st[data-state="locked"] .led { color: #4b5248; text-shadow: none; }
+  .v20 .lamp { grid-row: 1 / 3; grid-column: 3; width: 9px; height: 9px; border-radius: 50%; background: #c9cbc0; }
+  .v20 .st[data-state="done"] .lamp { background: var(--led-g); box-shadow: 0 0 6px var(--led-g); }
+  .v20 .st[data-state="running"] .lamp { background: var(--led); box-shadow: 0 0 8px var(--led); animation: blink 1.2s steps(2) infinite; }
+  .v20 .st-s { grid-column: 2; }
+  @keyframes blink { 50% { opacity: 0.35; } }
+
+  /* 21 보드게임 길 */
+  .v21 .path { position: relative; }
+  .v21 .path svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .v21 .path svg .bg { fill: none; stroke: var(--line-strong); stroke-width: 2; stroke-dasharray: 3 4; }
+  .v21 .path svg .fg { fill: none; stroke: var(--fg); stroke-width: 3; }
+  .v21 .nodes { list-style: none; margin: 0; padding: 0; display: grid; position: relative; }
+  .v21 .nodes li { height: 46px; display: flex; align-items: center; }
+  .v21 .nb { appearance: none; border: 0; background: transparent; display: flex; gap: 10px; align-items: center; text-align: left; padding: 0; border-radius: 999px; padding-right: 10px; }
+  .v21 .nb .pin { width: 32px; height: 32px; border-radius: 50%; flex: none; display: grid; place-items: center; font-family: var(--mono); font-size: 10.5px; font-weight: 700; background: var(--surface); border: 2px solid var(--fg); }
+  .v21 .nb[data-state="done"] .pin { background: var(--fg); color: var(--bg); }
+  .v21 .nb[data-state="locked"] .pin { border-style: dashed; border-color: var(--line-strong); color: var(--muted); }
+  .v21 .nb[data-state="running"] .pin { background: var(--film); }
+  .v21 .nb[aria-current="step"] { background: var(--hi); }
+  .v21 .nb[aria-current="step"] .pin { box-shadow: 0 0 0 3px var(--hi); }
+  .v21 .nb span { font-size: 12.5px; font-weight: 600; line-height: 1.25; }
+  .v21 .nb[data-state="locked"] span { color: var(--muted); }
+  .v21 .sign { position: absolute; right: 2px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; color: var(--muted); background: var(--surface); padding: 0 4px; }
+
+  /* 22 깔때기 · 업계 통과율 */
+  .v22 .groups { gap: 10px; }
+  .v22 .grp { margin-inline: calc(var(--k) * 7px); }
+  .v22 .grp-h span { padding-right: 4px; }
+  .v22 .rate { font-family: var(--mono); font-size: 10px; padding: 1px 6px; border-radius: 999px; background: var(--warn-bg); color: var(--warn); white-space: nowrap; }
+  .v22 .src { margin: 0 10px; font-size: 10.5px; color: var(--muted); line-height: 1.45; border-top: 1px solid var(--line); padding-top: 8px; }
+  .v22 .src b { color: var(--fg); font-family: var(--mono); }
+  .v22 .grp[data-g="4"] { background: var(--bg); border-radius: 14px; padding: 6px 0 4px; }
+
+  /* 23 키보드 */
+  .v23 kbd { font-family: var(--mono); font-size: 10px; min-width: 18px; height: 18px; display: inline-grid; place-items: center; padding: 0 4px; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; background: var(--surface); color: var(--fg); }
+  .v23 .st-k { align-self: center; }
+  .v23 .keys { padding: 0 10px; display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 11px; color: var(--muted); align-items: center; }
+  .v23 .st:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
+
+  /* 24 밀도 */
+  .v24 .dens { display: flex; justify-content: space-between; align-items: center; padding: 0 4px 0 10px; }
+  .v24 .seg2 { display: flex; padding: 2px; background: var(--raise); border-radius: 999px; }
+  .v24 .seg2 button { appearance: none; border: 0; background: transparent; border-radius: 999px; font-size: 11px; padding: 2px 9px; }
+  .v24 .seg2 button[aria-pressed="true"] { background: var(--surface); font-weight: 700; }
+  .v24 .sb.tight .st-s { display: none; }
+  .v24 .sb.tight .st { padding: 4px 10px; }
+  .v24 .sb.tight .groups { gap: 10px; }
+  .v24 .sb.tight .grp { gap: 0; }
+
+  /* 25 활동 피드 */
+  .v25 .feed { border-top: 1px solid var(--line); margin: 0 6px; padding-top: 10px; display: grid; gap: 8px; }
+  .v25 .feed h4 { margin: 0; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); font-weight: 500; }
+  .v25 .ev25 { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 6px; align-items: start; font-size: 12px; line-height: 1.4; }
+  .v25 .ev25 time { font-family: var(--mono); font-size: 10px; color: var(--muted); white-space: nowrap; }
+  .v25 .ev25 .ini { width: 22px; height: 22px; }
+
+  /* 26 고정 발 */
+  .v26 .sb { height: 470px; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; padding-bottom: 0; }
+  .v26 .scr { overflow-y: auto; scrollbar-width: thin; min-height: 0; padding-bottom: 8px; }
+  .v26 .dock { margin: 0 -12px; padding: 10px 14px 14px; border-top: 1px solid var(--line); display: grid; gap: 8px; background: var(--surface); border-radius: 0 0 26px 26px; }
+  .v26 .dock .r { display: flex; align-items: center; gap: 8px; }
+  .v26 .stack { display: flex; } .v26 .stack .ini { width: 26px; height: 26px; margin-left: -7px; font-size: 11px; } .v26 .stack .ini:first-child { margin-left: 0; }
+  .v26 .dock small { font-size: 11px; color: var(--muted); }
+  .v26 .wk { font-family: var(--mono); font-size: 10.5px; display: flex; gap: 6px; align-items: center; margin-left: auto; }
+  .v26 .wk::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 3px var(--good-bg); }
+
+  /* 27 체크리스트 */
+  .v27 .chk { grid-column: 2 / 4; list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 3px; font-size: 12px; font-family: var(--sans); }
+  .v27 .chk li { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 6px; align-items: center; }
+  .v27 .chk .bx { width: 13px; height: 13px; border: 1.5px solid currentColor; border-radius: 4px; display: grid; place-items: center; }
+  .v27 .chk .bx.on { background: var(--fg); color: var(--hi); border-color: var(--fg); }
+  .v27 .chk .bx.on .ico { width: 10px; height: 10px; stroke-width: 2.6; }
+  .v27 .chk .bx.half { background: linear-gradient(90deg, var(--fg) 62%, transparent 62%); }
+  .v27 .chk em { font-style: normal; font-family: var(--mono); font-size: 10px; opacity: 0.7; }
+
+  /* 28 묶음 박막 색 */
+  .v28 .groups { gap: 6px; }
+  .v28 .grp { border-radius: 18px; padding: 8px 0 4px; }
+  .v28 .grp[data-g="1"] { background: color-mix(in srgb, var(--film-1) 55%, var(--surface)); }
+  .v28 .grp[data-g="2"] { background: color-mix(in srgb, var(--film-2) 55%, var(--surface)); }
+  .v28 .grp[data-g="3"] { background: color-mix(in srgb, var(--film-3) 55%, var(--surface)); }
+  .v28 .grp[data-g="4"] { background: color-mix(in srgb, var(--film-4) 55%, var(--surface)); }
+  .v28 .st:hover { background: rgba(255, 255, 255, 0.55); }
+  .v28 .st[aria-current="step"] { background: var(--fg); color: var(--bg); }
+  .v28 .st[aria-current="step"] .st-s { color: var(--night-muted); }
+
+  /* 29 서류철 */
+  .v29 .sb { background: transparent; padding: 0; gap: 0; }
+  .v29 .side-h { padding: 0 6px 8px; }
+  .v29 .fold { position: relative; margin-top: -4px; }
+  .v29 .tab { display: inline-flex; gap: 6px; align-items: baseline; padding: 5px 12px 6px; border-radius: 10px 10px 0 0; font-size: 12px; font-weight: 700; margin-left: calc(var(--k) * 34px); }
+  .v29 .tab b { font-family: var(--mono); font-size: 10.5px; }
+  .v29 .tab span { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--muted); }
+  .v29 .sheet { border-radius: 0 14px 14px 14px; padding: 6px 6px 8px; background: var(--surface); box-shadow: 0 -1px 0 var(--line), 0 6px 14px -10px rgba(8, 11, 9, 0.35); }
+  .v29 .fold[data-g="1"] .tab, .v29 .fold[data-g="1"] .sheet { background: #f7f2df; }
+  .v29 .fold[data-g="2"] .tab, .v29 .fold[data-g="2"] .sheet { background: #eef1e2; }
+  .v29 .fold[data-g="3"] .tab, .v29 .fold[data-g="3"] .sheet { background: #f2ece4; }
+  .v29 .fold[data-g="4"] .tab, .v29 .fold[data-g="4"] .sheet { background: #fbfbf6; }
+  .v29 .sheet .st { border-radius: 4px; border-bottom: 1px solid var(--line); }
+  .v29 .sheet li:last-child .st { border-bottom: 0; }
+  .v29 .stamp { font-family: var(--mono); font-size: 9.5px; font-weight: 700; color: var(--good); border: 1.5px solid var(--good); padding: 0 4px; transform: rotate(-6deg); display: inline-block; }
+  .v29 .st[aria-current="step"] .stamp { color: var(--fg); border-color: var(--fg); }
+
+  /* 30 폰 하단 시트 */
+  .v30 .stage { padding: 18px 14px; }
+  .v30 .phone { width: 280px; max-width: 100%; height: 520px; border-radius: 36px; background: var(--night); padding: 10px; flex: none; }
+  .v30 .scr30 { height: 100%; border-radius: 28px; background: var(--raise); position: relative; overflow: hidden; display: grid; grid-template-rows: auto minmax(0, 1fr); }
+  .v30 .top30 { background: var(--bg); padding: 22px 14px 8px; font-size: 11px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); }
+  .v30 .top30 b { font-size: 12px; }
+  .v30 .body30 { padding: 10px; display: grid; gap: 8px; align-content: start; }
+  .v30 .body30 .ghost { opacity: 1; flex: none; min-height: 120px; }
+  .v30 .dockbar { position: absolute; left: 10px; right: 10px; bottom: 12px; appearance: none; border: 0; background: var(--fg); color: var(--bg); border-radius: 18px; padding: 10px 14px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; text-align: left; }
+  .v30 .dockbar small { font-family: var(--mono); font-size: 10px; color: var(--night-muted); }
+  .v30 .dockbar b { font-size: 13px; }
+  .v30 .dockbar .cnt { grid-row: 1 / 3; grid-column: 2; align-self: center; font-family: var(--mono); font-size: 11px; background: var(--hi); color: var(--hi-fg); border-radius: 999px; padding: 2px 8px; }
+  .v30 .dockbar .mini { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(9, 1fr); gap: 2px; margin-top: 4px; }
+  .v30 .dockbar .mini i { height: 3px; border-radius: 2px; background: var(--night-line); }
+  .v30 .dockbar .mini i[data-s="done"] { background: var(--hi); }
+  .v30 .dockbar .mini i[data-s="running"] { background: linear-gradient(90deg, var(--hi) 62%, var(--night-line) 62%); }
+  .v30 .sheet30 { position: absolute; inset: auto 0 0; background: var(--surface); border-radius: 22px 22px 0 0; padding: 8px 8px 14px; max-height: 84%; overflow-y: auto; box-shadow: 0 -12px 30px -10px rgba(8, 11, 9, 0.4); display: grid; gap: 8px; }
+  .v30 .sheet30::before { content: ""; width: 36px; height: 4px; border-radius: 2px; background: var(--line-strong); justify-self: center; }
+  .v30 .scrim { position: absolute; inset: 0; background: rgba(8, 11, 9, 0.3); border: 0; }
+  .v30 .sheet30 .st-s { display: none; }
+  .v30 .sheet30 .st { padding: 6px 10px; }
+  .v30 .sheet30 .groups { gap: 8px; }
+
+  .note { margin: 0; font-size: 12px; color: var(--muted); }
+  .note b { color: var(--fg); }
+  @media (max-width: 460px) {
+    .stage { padding: 10px; }
+    .picks { margin-left: 0; }
+    .ghost { display: none; }
+    .v30 .ghost { display: grid; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="page">
+  <header class="hd">
+    <p class="eyebrow">작업 화면 · 파이프라인 단계 섬</p>
+    <h1>사이드바 <em>30</em>종</h1>
+    <p class="lede">③ 작업 화면 왼쪽 사이드바(4묶음 · 9단계)를 고친 시안 30개입니다. 모두 같은 견본 상황을 씁니다. <b>세움제약</b>이 1.1~2.1을 마쳤고, 김하린 님이 <b>2.2 ADMET 예측</b>을 돌리는 중(62%)이며, 3.1부터는 잠겨 있습니다. 시안마다 단계를 눌러 볼 수 있고, 마음에 드는 시안은 <b>고르기</b>로 표시해 두세요.</p>
+  </header>
+  <div class="bar">
+    <nav class="jump" id="jump" aria-label="시안 바로 가기"></nav>
+    <div class="picks"><span>고른 시안</span><output id="picks">없음</output><button class="btn pri" type="button" id="copy">번호 복사</button></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const ST = [
+  { id: '1.1', g: 1, t: '질환 · 표적 선정', meta: 'Open Targets 근거', ev: '자료', state: 'done', s: 'EGFR · 비소세포폐암', day: 'D+4', who: ['p', 'k'] },
+  { id: '1.2', g: 1, t: '화합물 스크리닝', meta: 'ChEMBL · RDKit 깔때기', ev: '자료', state: 'done', s: '후보 2,418 → 12', day: 'D+11', who: ['k'] },
+  { id: '2.1', g: 2, t: '분자 도킹', meta: 'AutoDock Vina · PLIP', ev: '계산', state: 'done', s: '리드 3개 · −9.4 kcal/mol', day: 'D+19', who: ['k', 'l'] },
+  { id: '2.2', g: 2, t: 'ADMET 예측 · 특허 후보', meta: 'ADMET-AI v2', ev: '예측', state: 'running', pct: 62, by: '김하린', day: 'D+23', who: ['k'] },
+  { id: '3.1', g: 3, t: '선언 · 물질특허', meta: 'RDKit 물성 · 서류 심사', ev: '계산', state: 'locked', need: '2.2' },
+  { id: '3.2', g: 3, t: '전임상 · 동물실험', meta: '윤리 심의 · 교육용 모의 판정', ev: '모의', state: 'locked', need: '3.1' },
+  { id: '3.3', g: 3, t: '제형 · IND 신청', meta: '서류 심사 · 교육용 모의 판정', ev: '모의', state: 'locked', need: '3.2' },
+  { id: '4.1', g: 4, t: '임상 1 · 2 · 3상', meta: '교육용 모의 판정', ev: '모의', state: 'locked', need: '3.3' },
+  { id: '4.2', g: 4, t: '최종 허가', meta: '규칙 · 서류 심사', ev: '모의', state: 'locked', need: '4.1' },
+];
+const GT = { 1: '발견', 2: '최적화', 3: '개발 · 규제', 4: '임상 · 허가' };
+const WORD = { done: '완료', running: '진행 중', ready: '할 수 있음', locked: '잠김' };
+const MEM = [{ k: 'k', n: '김하린', r: 'CSO' }, { k: 'p', n: '박서준', r: 'CEO' }, { k: 'l', n: '이도윤', r: 'CTO' }];
+const INI = { k: '김', p: '박', l: '이' };
+const TEAM = '세움제약';
+const byId = (id) => ST.find((s) => s.id === id);
+const inG = (g) => ST.filter((s) => s.g === g);
+const doneOf = (g) => inG(g).filter((s) => s.state === 'done').length;
+
+const ICON = {
+  done: '<svg class="ico" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>',
+  running: '<svg class="ico f" viewBox="0 0 16 16"><path d="M5.5 3.5v9l7-4.5z"/></svg>',
+  locked: '<svg class="ico" viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7"/></svg>',
+  ready: '<svg class="ico" viewBox="0 0 16 16"><circle cx="8" cy="8" r="4.5"/></svg>',
+};
+const MARK = { done: '✓', running: '▸', ready: '', locked: '🔒' };
+const subTxt = (s) => (s.state === 'running' ? `${s.by} · ${s.pct}%` : s.state === 'locked' ? '잠김' : s.s ?? s.meta);
+const cur = (s, st) => (s.id === st.cur ? ' aria-current="step"' : '');
+const ini = (k) => `<span class="ini ${k}" title="${MEM.find((m) => m.k === k).n}">${INI[k]}</span>`;
+
+function row(s, st, o = {}) {
+  return `<button type="button" class="st" data-step="${s.id}" data-state="${s.state}"${cur(s, st)}${o.attr ? o.attr(s, st) : ''}>`
+    + (o.lead ? o.lead(s, st) : `<span class="st-n">${s.id}</span>`)
+    + `<span class="st-t">${s.t}</span>`
+    + (o.noMark ? '' : `<span class="st-k" data-s="${s.state}" aria-label="${WORD[s.state]}">${o.mark ? o.mark(s, st) : MARK[s.state]}</span>`)
+    + `<span class="st-s">${o.sub ? o.sub(s, st) : subTxt(s)}</span>`
+    + (o.after ? o.after(s, st) : '')
+    + '</button>';
+}
+const list = (items, st, o) => `<ol class="steps">${items.map((s) => `<li data-state="${s.state}">${row(s, st, o)}</li>`).join('')}</ol>`;
+const grp = (g, st, o = {}) => `<div class="grp" data-g="${g}" style="--k:${g - 1}"><p class="grp-h"><b>${g}</b> ${GT[g]} <span>${doneOf(g)}/${inG(g).length}</span></p>${o.grpExtra ? o.grpExtra(g, st) : ''}${list(inG(g).filter((s) => !o.filter || o.filter(s, st)), st, o)}</div>`;
+const foot = () => `<div class="side-foot"><div class="side-team">${MEM.map((m) => `<span><b>${m.n}</b><span class="badge">${m.r}</span></span>`).join('')}</div><span>3학년 2반 · 모둠 6개</span><span>계산 워커 실제 계산(compute)</span></div>`;
+function side(st, o = {}) {
+  return `<nav class="sb${o.cls ? ' ' + o.cls : ''}" aria-label="파이프라인 단계">${o.top ? o.top(st) : ''}${o.noHead ? '' : `<p class="side-h">${TEAM} · 신약 파이프라인</p>`}`
+    + `${o.mid ? o.mid(st) : ''}<div class="groups">${[1, 2, 3, 4].map((g) => (o.group ? o.group(g, st) : grp(g, st, o))).join('')}</div>${o.after2 ? o.after2(st) : ''}${o.foot ? o.foot(st) : foot()}</nav>`;
+}
+const ghost = (t) => `<div class="ghost" aria-hidden="true"><span>본문</span><b>2.2</b><i style="width:70%"></i><i style="width:90%"></i><i style="width:55%"></i>${t ? `<span>${t}</span>` : ''}</div>`;
+
+const V = [
+  { n: '00', base: true, name: '지금 화면', why: '지금 앱의 사이드바입니다. 단계 상태가 기호 하나(✓ ▸ 🔒)로만 보이고, 잠긴 이유는 마우스를 올려야 나오며, 전체 진행은 묶음별 숫자로만 읽힙니다.', html: (st) => side(st) },
+
+  { n: '01', name: '진행 레일', why: '단계를 세로 선 하나로 잇고 지나온 구간을 잉크로 칠합니다. 파이프라인이 한 줄로 이어진 과정이라는 게 바로 보입니다.',
+    html: (st) => side(st, { noMark: true, lead: (s) => `<span class="nd" data-s="${s.state}"></span><span class="st-n">${s.id}</span>` }) },
+
+  { n: '02', name: '묶음 칸 막대', why: '묶음 제목 밑에 단계 수만큼 칸을 두고 진행만큼 채웁니다. "1/2" 숫자를 읽지 않아도 어느 묶음이 얼마나 남았는지 보입니다.',
+    html: (st) => side(st, { grpExtra: (g) => `<div class="seg" aria-hidden="true">${inG(g).map((s) => `<i data-s="${s.state}" style="--p:${s.pct ?? 0}%"></i>`).join('')}</div>` }) },
+
+  { n: '03', name: '선 아이콘 상태', why: '🔒 이모지와 글자 기호를 같은 굵기의 선 아이콘으로 바꾸고, 완료 · 진행 · 잠김을 바탕색으로도 나눕니다. 운영체제마다 이모지 모양이 다른 문제도 사라집니다.',
+    html: (st) => side(st, { mark: (s) => ICON[s.state] }) },
+
+  { n: '04', name: '잠긴 단계 접기', why: '아직 못 여는 다섯 단계를 한 상자로 접고 "2.2를 마치면 3.1이 열려요"만 보여 줍니다. 지금 할 수 있는 단계에 눈이 먼저 갑니다.',
+    act: (st, el) => { st.lk = !st.lk; },
+    html: (st) => {
+      const locked = ST.filter((s) => s.state === 'locked');
+      const open = [1, 2, 3, 4].filter((g) => inG(g).some((s) => s.state !== 'locked'));
+      return side(st, {
+        group: (g) => (open.includes(g) ? grp(g, st, { filter: (s) => s.state !== 'locked' }) : ''),
+        after2: () => `<div class="lockbox"><button type="button" class="lk-b" data-act="lk" aria-expanded="${!!st.lk}"><b>잠긴 단계 ${locked.length}개</b><span>${st.lk ? '접기 ▴' : '펼치기 ▾'}</span><small>2.2를 마치면 3.1 선언 · 물질특허가 열려요</small></button>${st.lk ? list(locked, st, {}) : ''}</div>`,
+      });
+    } },
+
+  { n: '05', name: '진행 링 + 담당자', why: '진행 중인 단계는 62%를 원형 링으로 보이고 그 안에 시작한 사람의 성을 넣습니다. 누가 무엇을 돌리고 있는지 한 칸에서 읽힙니다.',
+    html: (st) => side(st, { mark: (s) => (s.state === 'running' ? `<span class="ring" style="--p:${s.pct}" data-i="${INI[s.who[0]]}"></span>` : ICON[s.state]), sub: (s) => (s.state === 'running' ? `ADMET 예측 · ${s.pct}%` : subTxt(s)) }) },
+
+  { n: '06', name: '지금 할 일 카드', why: '맨 위에 모둠이 지금 해야 할 한 가지를 카드로 띄우고, 아래 목록은 한 줄씩 줄입니다. 처음 들어온 학생도 어디서 시작할지 압니다.',
+    html: (st) => side(st, { top: () => `<div class="todo"><span class="eb">지금 할 일</span><b>2.2 예측이 끝나면 특허 후보 1개를 골라요</b><div class="bar6"><i></i></div><p>김하린 님이 ADMET 예측을 돌리는 중 · 62%</p><button type="button" data-step="2.2">2.2 열기</button></div>` }) },
+
+  { n: '07', name: '접히는 아이콘 레일', why: '사이드바를 64px 레일로 접을 수 있게 합니다. 2.1 도킹처럼 그래프가 넓은 단계에서 본문이 200px 넓어집니다. 단계 이름은 마우스를 올리면 나옵니다.',
+    act: (st) => { st.open = !st.open; },
+    html: (st) => {
+      if (st.open) return side(st, { top: () => `<div class="sb-top"><p class="side-h">${TEAM}</p><button type="button" class="tog" data-act="t" aria-label="사이드바 접기">«</button></div>`, noHead: true }) + ghost();
+      let h = `<nav class="rail" aria-label="파이프라인 단계"><button type="button" class="tog" data-act="t" aria-label="사이드바 펼치기">»</button>`;
+      [1, 2, 3, 4].forEach((g, i) => { h += `${i ? '<hr>' : ''}<span class="gl">${GT[g].split(' ')[0]}</span>` + inG(g).map((s) => `<button type="button" class="rb" data-step="${s.id}" data-state="${s.state}"${cur(s, st)} title="${s.id} ${s.t} · ${WORD[s.state]}" aria-label="${s.id} ${s.t} · ${WORD[s.state]}">${s.id}</button>`).join(''); });
+      return h + '</nav>' + ghost('본문이 200px 넓어짐');
+    } },
+
+  { n: '08', name: '박막 전체 진행', why: '섬 머리에 9칸 전체 진행을 박막 색으로 칠합니다. "우리 모둠은 아홉 단계 중 몇 번째"가 묶음 숫자 넷을 더하지 않고도 보입니다.',
+    html: (st) => side(st, { mid: () => `<div class="total"><div class="total-h"><b>3<small style="font-size:13px;color:var(--muted)">/9</small></b><span>2.2 진행 중 · 다음 3.1</span></div><div class="cells">${ST.map((s, i) => `<i data-s="${s.state}"${i && ST[i - 1].g !== s.g ? ' class="g"' : ''} title="${s.id} ${WORD[s.state]}" style="background-position:${i * 12.5}% 0"></i>`).join('')}</div></div>` }) },
+
+  { n: '09', name: '묶음 아코디언', why: '지금 묶음만 펼치고 나머지는 상태 점 한 줄로 접습니다. 묶음 제목을 누르면 펼쳐집니다. 9단계가 늘어나도 섬 높이가 거의 그대로입니다.',
+    act: (st, el) => { st.og = +el.dataset.g; },
+    html: (st) => {
+      const og = st.og ?? byId(st.cur).g;
+      return side(st, { group: (g) => {
+        const open = g === og;
+        return `<div class="grp${open ? ' open' : ''}"><button type="button" class="gb" data-act="og" data-g="${g}" aria-expanded="${open}"><span class="chev">${open ? '▾' : '▸'}</span><b>${g}</b>${GT[g]}<span class="dots" aria-label="${doneOf(g)}/${inG(g).length} 완료">${inG(g).map((s) => `<i data-s="${s.state}"></i>`).join('')}</span></button>${open ? list(inG(g), st, {}) : ''}</div>`;
+      } });
+    } },
+
+  { n: '10', name: '게임 날짜 기록', why: '단계마다 끝낸 게임 날짜를 오른쪽에 적습니다. 학급 시계와 같은 단위라 "우리가 어디서 오래 걸렸나"를 돌아보기 좋습니다.',
+    html: (st) => side(st, { mid: () => '<div class="today"><span>오늘</span><b>D+31</b></div>', mark: (s) => (s.state === 'done' ? `<span class="day">${s.day}</span>` : s.state === 'running' ? `<span class="day run">${s.day}~</span>` : '<span class="day">—</span>') }) },
+
+  { n: '11', name: '참여한 모둠원', why: '단계마다 거기서 작업한 모둠원의 성을 겹쳐 보입니다. 역할 분담이 한쪽으로 쏠렸는지 모둠이 스스로 볼 수 있습니다.',
+    html: (st) => side(st, { mark: (s) => (s.who ? `<span class="who">${s.who.map(ini).join('')}</span>` : '') }) },
+
+  { n: '12', name: '근거 종류 표시', why: '단계 이름 옆에 결과의 성격(자료 조회 · 실제 계산 · AI 예측 · 교육용 모의)을 작은 꼬리표로 답니다. 본문의 출처 칩과 같은 말을 써서 미리 알 수 있습니다.',
+    html: (st) => side(st, { mark: (s) => `<span class="ev" data-e="${s.ev}">${s.ev}</span>`, after2: () => '<div class="legend"><span class="ev" data-e="자료">자료</span>조회 <span class="ev" data-e="계산">계산</span>실제 <span class="ev" data-e="예측">예측</span>AI <span class="ev" data-e="모의">모의</span>교육용</div>' }) },
+
+  { n: '13', name: '묶음 세그먼트', why: '네 묶음을 맨 위 4칸 전환 단추로 두고 그 아래에 고른 묶음의 단계만 보입니다. 진행 중인 묶음엔 점이 붙습니다. 섬이 짧아져 폰 칩 줄과도 모양이 비슷해집니다.',
+    act: (st, el) => { st.sg = +el.dataset.g; },
+    html: (st) => {
+      const sg = st.sg ?? byId(st.cur).g;
+      return side(st, { mid: () => `<div class="segs" role="group" aria-label="묶음">${[1, 2, 3, 4].map((g) => `<button type="button" class="sg${inG(g).some((s) => s.state === 'running') ? ' hasrun' : ''}" data-act="sg" data-g="${g}" aria-pressed="${g === sg}">${GT[g].split(' ')[0]}<small>${doneOf(g)}/${inG(g).length}</small></button>`).join('')}</div><p class="gname">${sg}. ${GT[sg]}</p>`,
+        group: (g) => (g === sg ? `<div class="grp">${list(inG(g), st, {})}</div>` : '') });
+    } },
+
+  { n: '14', name: '큰 박막 번호', why: '단계 번호를 머리 섬의 큰 박막 숫자와 같은 모양으로 키웁니다. 사이드바와 본문 머리가 한 벌로 읽히고, 고른 단계는 잉크로 뒤집힙니다.',
+    html: (st) => side(st, { noMark: true, lead: (s) => `<span class="big">${s.id}</span>`, sub: (s) => (s.state === 'done' ? `✓ ${s.s}` : subTxt(s)) }) },
+
+  { n: '15', name: '선택은 잉크, 진행은 라임', why: '지금은 라임이 "보고 있는 단계"를 뜻해서 진행 중인 계산과 헷갈립니다. 보고 있는 단계는 잉크로, 돌아가는 계산은 깜빡이는 라임 점으로 나눕니다.',
+    html: (st) => side(st, { sub: (s) => (s.state === 'running' ? `계산 중 · ${s.pct}% · ${s.by}` : subTxt(s)) }) },
+
+  { n: '16', name: '상태 칩으로 거르기', why: '맨 위에 완료 · 진행 · 잠김 개수를 칩으로 보이고, 누르면 그 상태 단계만 남깁니다. 선생님이 모둠 화면을 볼 때 특히 빠릅니다.',
+    act: (st, el) => { st.f = st.f === el.dataset.f ? null : el.dataset.f; },
+    html: (st) => {
+      const cnt = (k) => ST.filter((s) => s.state === k).length;
+      return side(st, { mid: () => `<div class="fchips">${['done', 'running', 'locked'].map((k) => `<button type="button" class="fc" data-act="f" data-f="${k}" aria-pressed="${st.f === k}">${WORD[k]}<b>${cnt(k)}</b></button>`).join('')}</div>`,
+        group: (g) => (inG(g).some((s) => !st.f || s.state === st.f) ? grp(g, st, { filter: (s) => !st.f || s.state === st.f }) : '') });
+    } },
+
+  { n: '17', name: '잠긴 이유를 줄에 쓰기', why: '잠긴 이유가 지금은 마우스를 올려야 보입니다. 바로 다음에 열릴 3.1에는 "2.2를 마치면 열려요"를 적고 빗금으로 표시하고, 그 뒤 단계는 더 흐리게 둡니다.',
+    html: (st) => side(st, { attr: (s) => (s.id === '3.1' ? ' data-next' : ''), sub: (s) => (s.state !== 'locked' ? subTxt(s) : s.id === '3.1' ? `<span class="why17">${s.need}를 마치면 열려요</span>` : `${s.need} 다음`) }) },
+
+  { n: '18', name: '실시간 진행 줄', why: '진행 중인 단계 아래에 가는 진행 막대와 지금 상(리간드 준비 → 예측)을 붙입니다. 본문을 열지 않아도 계산이 살아 있는지 보입니다.',
+    html: (st) => side(st, { after: (s) => (s.state === 'running' ? '<span class="live"><span class="pb"><i></i></span><span><em>실시간</em>예측 62% · 대기열 없음</span></span>' : ''), sub: (s) => (s.state === 'running' ? `${s.by} 님이 시작` : subTxt(s)) }) },
+
+  { n: '19', name: '밤 섬', why: '사이드바만 전광판처럼 어둡게 하고 상태를 LED 색(초록 완료 · 주황 진행)으로 켭니다. 위 LED 띠와 이어져 "전광판에서 뻗어 나온 목차"처럼 보입니다.',
+    html: (st) => side(st) },
+
+  { n: '20', name: 'LED 숫자판', why: '단계 번호를 LED 띠와 같은 점 글자로 찍고, 오른쪽 등이 완료면 초록으로 켜지고 진행 중이면 깜빡입니다. 밝은 섬은 그대로 두고 전광판 느낌만 빌립니다.',
+    html: (st) => side(st, { noMark: true, lead: (s) => `<span class="led"><span>${s.id}</span></span>`, after: () => '<span class="lamp" aria-hidden="true"></span>' }) },
+
+  { n: '21', name: '보드게임 길', why: '9단계를 지그재그 길 위의 칸으로 놓고 지나온 길을 굵게 칠합니다. 수업용 게임이라는 성격이 살고, 남은 거리가 몸으로 느껴집니다.',
+    html: (st) => {
+      const H = 46, xs = [0, 34, 68, 34];
+      const pts = ST.map((s, i) => [xs[i % 4] + 16, i * H + 23]);
+      const done = ST.findIndex((s) => s.state === 'running');
+      const d = (arr) => arr.map((p, i) => `${i ? 'L' : 'M'}${p[0]} ${p[1]}`).join(' ');
+      const signs = [1, 2, 3, 4].map((g) => { const i = ST.findIndex((s) => s.g === g); return `<span class="sign" style="top:${i * H + 2}px">${g} ${GT[g]}</span>`; }).join('');
+      return side(st, { group: () => '', mid: () => `<div class="path"><svg aria-hidden="true"><path class="bg" d="${d(pts)}"/><path class="fg" d="${d(pts.slice(0, done + 1))}"/></svg>${signs}<ol class="nodes">${ST.map((s, i) => `<li style="padding-left:${xs[i % 4]}px"><button type="button" class="nb" data-step="${s.id}" data-state="${s.state}"${cur(s, st)} aria-label="${s.id} ${s.t} · ${WORD[s.state]}"><span class="pin">${s.state === 'running' ? s.pct + '%' : s.id}</span><span>${s.t}</span></button></li>`).join('')}</ol></div>` });
+    } },
+
+  { n: '22', name: '깔때기 · 업계 통과율', why: '묶음이 내려갈수록 섬 안쪽 폭을 좁혀 신약 개발이 깔때기라는 걸 보이고, 임상 묶음엔 실제 업계 단계별 통과율을 붙입니다. 4.1에서 떨어져도 정상이라는 걸 미리 알려 줍니다.',
+    html: (st) => side(st, { mark: (s) => (s.id === '4.1' ? '<span class="rate">1→2상 52%</span>' : s.id === '4.2' ? '<span class="rate">허가 91%</span>' : MARK[s.state]),
+      after2: () => '<p class="src">임상 1상에 들어간 후보가 허가까지 가는 비율은 약 <b>7.9%</b>예요. 출처: BIO · Informa · QLS, 2011–2020 임상 성공률(2상→3상 29%, 3상→신청 58%).</p>' }) },
+
+  { n: '23', name: '키보드로 이동', why: '단계마다 숫자 단축키를 달고 ↑ ↓로 옮겨 다닐 수 있게 합니다. 이 카드 안 단계에 초점을 둔 뒤 ↑ ↓ 와 1~9를 눌러 보세요.',
+    html: (st) => side(st, { mark: (s) => `<kbd>${ST.indexOf(s) + 1}</kbd>`, after2: () => '<div class="keys"><span><kbd>↑</kbd> <kbd>↓</kbd> 단계 이동</span><span><kbd>1</kbd>–<kbd>9</kbd> 바로 가기</span></div>' }) },
+
+  { n: '24', name: '보통 · 좁게 전환', why: '섬 머리에 밀도 전환을 둡니다. 좁게를 고르면 둘째 줄을 숨겨 9단계가 노트북 한 화면에 다 들어갑니다. 고른 값은 브라우저에 기억합니다.',
+    act: (st, el) => { st.tight = el.dataset.v === 't'; },
+    html: (st) => side(st, { cls: st.tight ? 'tight' : '', noHead: true, top: () => `<div class="dens"><p class="side-h" style="padding:0">${TEAM}</p><div class="seg2" role="group" aria-label="목록 밀도"><button type="button" data-act="d" data-v="n" aria-pressed="${!st.tight}">보통</button><button type="button" data-act="d" data-v="t" aria-pressed="${!!st.tight}">좁게</button></div></div>` }) },
+
+  { n: '25', name: '모둠 소식', why: '모둠원 이름 대신 최근 모둠 활동 세 줄을 발에 둡니다. 다른 모둠원이 무엇을 바꿨는지 새로 읽지 않아도 알 수 있습니다.',
+    html: (st) => side(st, { foot: () => `<div class="feed"><h4>모둠 소식</h4>${[['k', '2.2 ADMET 예측을 시작했어요', '3분 전'], ['l', '2.1 연구 노트 "한계" 칸을 고쳤어요', '12분 전'], ['p', '2.1 리드 3개를 확정했어요', 'D+19']].map(([k, t, w]) => `<div class="ev25">${ini(k)}<span>${t}</span><time>${w}</time></div>`).join('')}</div>` }) },
+
+  { n: '26', name: '고정된 발', why: '섬 높이를 화면에 맞추고 단계 목록만 스크롤되게 합니다. 모둠원 · 계산 워커 상태가 늘 바닥에 붙어 있어, 워커가 멈추면 바로 보입니다.',
+    html: (st) => `<nav class="sb" aria-label="파이프라인 단계"><p class="side-h">${TEAM} · 신약 파이프라인</p><div class="scr"><div class="groups">${[1, 2, 3, 4].map((g) => grp(g, st)).join('')}</div></div><div class="dock"><div class="r"><span class="stack">${MEM.map((m) => ini(m.k)).join('')}</span><small>3명 · 3학년 2반</small><span class="wk">실제 계산</span></div></div></nav>` },
+
+  { n: '27', name: '단계 안 할 일', why: '보고 있는 단계 아래에 그 단계에서 할 일을 체크리스트로 펼칩니다. 연구 노트 3칸 중 몇 칸을 썼는지도 함께 보여 빠뜨리기 어렵습니다.',
+    html: (st) => side(st, { after: (s) => {
+      if (s.id !== st.cur) return '';
+      const bx = (on) => `<span class="bx${on === 1 ? ' on' : on === 2 ? ' half' : ''}">${on === 1 ? ICON.done : ''}</span>`;
+      const items = s.state === 'running' ? [[2, 'ADMET 예측 돌리기', '62%'], [0, '특허 후보 1개 고르기', ''], [0, '연구 노트', '2/3칸']] : s.state === 'done' ? [[1, '결과 확정', ''], [1, '연구 노트', '3/3칸']] : [[0, `${s.need} 마치기`, ''], [0, '초안 · 연구 노트는 미리 쓸 수 있어요', '']];
+      return `<ul class="chk">${items.map(([o, t, m]) => `<li>${bx(o)}<span>${t}</span><em>${m}</em></li>`).join('')}</ul>`;
+    } }) },
+
+  { n: '28', name: '묶음마다 박막 한 색', why: '네 묶음에 박막 간섭색을 하나씩 깔아 경계를 색으로 나눕니다. 머리 섬과 칩에 같은 색을 쓰면 "지금 최적화 묶음"이 색만으로도 읽힙니다.',
+    html: (st) => side(st) },
+
+  { n: '29', name: '서류철 탭', why: '네 묶음을 규제 서류철처럼 인덱스 탭으로 겹치고, 끝낸 단계엔 "승인" 도장을 찍습니다. 3.1 특허 · 3.3 IND처럼 서류를 내는 게임 흐름과 맞습니다.',
+    html: (st) => side(st, { foot: () => '', group: (g) => `<div class="fold" data-g="${g}" style="--k:${g - 1}"><div class="tab"><b>${g}</b>${GT[g]}<span>${doneOf(g)}/${inG(g).length}</span></div><div class="sheet">${list(inG(g), st, { mark: (s) => (s.state === 'done' ? '<span class="stamp">승인</span>' : MARK[s.state]) })}</div></div>` }) },
+
+  { n: '30', name: '폰 하단 단계 바', why: '폰에서는 위쪽 가로 칩 줄 대신 화면 아래에 "지금 단계 · 4/9" 바를 붙이고, 누르면 9단계 시트가 올라옵니다. 칩이 옆으로 밀려 안 보이는 문제가 없어집니다.',
+    act: (st) => { st.sheet = !st.sheet; },
+    html: (st) => {
+      const c = byId(st.cur);
+      const sheet = st.sheet ? `<button type="button" class="scrim" data-act="s" aria-label="시트 닫기"></button><div class="sheet30" role="dialog" aria-label="파이프라인 단계"><div class="groups">${[1, 2, 3, 4].map((g) => grp(g, st)).join('')}</div></div>` : '';
+      return `<div class="phone"><div class="scr30"><div class="top30"><b>${TEAM}</b><span class="mono">연구비 ₩4.2억</span></div><div class="body30">${ghost()}</div><button type="button" class="dockbar" data-act="s" aria-expanded="${!!st.sheet}"><small>${c.id} · ${WORD[c.state]}</small><b>${c.t}</b><span class="cnt">${ST.indexOf(c) + 1}/9 ▴</span><span class="mini">${ST.map((s) => `<i data-s="${s.state}"></i>`).join('')}</span></button>${sheet}</div></div>`;
+    } },
+];
+
+const state = {};
+const grid = document.getElementById('grid');
+const store = { get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+let picks = store.get('crista-sb-picks') || [];
+
+function paint(n) {
+  const v = V.find((x) => x.n === n);
+  const card = document.getElementById('v' + n);
+  const stage = card.querySelector('.stage');
+  const had = stage.contains(document.activeElement) ? document.activeElement : null;
+  const key = had && (had.dataset.step ? `[data-step="${had.dataset.step}"]` : had.dataset.act ? `[data-act="${had.dataset.act}"]${had.dataset.g ? `[data-g="${had.dataset.g}"]` : ''}${had.dataset.f ? `[data-f="${had.dataset.f}"]` : ''}${had.dataset.v ? `[data-v="${had.dataset.v}"]` : ''}` : null);
+  stage.innerHTML = v.html(state[n]);
+  if (key) stage.querySelector(key)?.focus();
+}
+
+grid.innerHTML = V.map((v) => `<article class="card v${v.n}" id="v${v.n}"${v.base ? ' data-base' : ''}><div class="ch"><span class="cn">${v.n}</span><h2 class="ct">${v.name}</h2>${v.base ? '<span></span>' : `<button type="button" class="star" data-pick="${v.n}" aria-pressed="false">고르기</button>`}<p class="why">${v.why}</p></div><div class="stage"></div></article>`).join('');
+V.forEach((v) => { state[v.n] = { cur: '2.2' }; });
+state['24'].tight = store.get('crista-sb-tight') === true;
+V.forEach((v) => paint(v.n));
+
+document.getElementById('jump').innerHTML = V.map((v) => `<a href="#v${v.n}" title="${v.name}" data-j="${v.n}">${v.n}</a>`).join('');
+
+function showPicks() {
+  document.querySelectorAll('[data-pick]').forEach((b) => { const on = picks.includes(b.dataset.pick); b.setAttribute('aria-pressed', on); b.textContent = on ? '골랐음' : '고르기'; b.closest('.card').classList.toggle('picked', on); });
+  document.querySelectorAll('[data-j]').forEach((a) => a.classList.toggle('on', picks.includes(a.dataset.j)));
+  document.getElementById('picks').textContent = picks.length ? picks.slice().sort().join(', ') : '없음';
+}
+showPicks();
+
+grid.addEventListener('click', (e) => {
+  const card = e.target.closest('.card'); if (!card) return;
+  const n = card.id.slice(1), st = state[n];
+  const pick = e.target.closest('[data-pick]');
+  if (pick) { picks = picks.includes(n) ? picks.filter((x) => x !== n) : [...picks, n]; store.set('crista-sb-picks', picks); showPicks(); return; }
+  const act = e.target.closest('[data-act]');
+  if (act) { V.find((x) => x.n === n).act?.(st, act); if (n === '24') store.set('crista-sb-tight', !!st.tight); paint(n); return; }
+  const step = e.target.closest('[data-step]');
+  if (step) { st.cur = step.dataset.step; if (n === '30') st.sheet = false; paint(n); }
+});
+
+// 23 — ↑ ↓ 로 단계 사이 초점 이동, 1~9 로 바로 가기
+grid.addEventListener('keydown', (e) => {
+  const card = e.target.closest('#v23'); if (!card) return;
+  const btns = [...card.querySelectorAll('[data-step]')];
+  const i = btns.indexOf(e.target);
+  if (/^[1-9]$/.test(e.key)) { state['23'].cur = ST[+e.key - 1].id; paint('23'); card.querySelector(`[data-step="${state['23'].cur}"]`).focus(); e.preventDefault(); return; }
+  if (i < 0) return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { btns[(i + (e.key === 'ArrowDown' ? 1 : btns.length - 1)) % btns.length].focus(); e.preventDefault(); }
+});
+
+document.getElementById('copy').addEventListener('click', async (e) => {
+  const text = picks.length ? `사이드바 시안 ${picks.slice().sort().join(', ')}번으로 가자` : '사이드바 시안을 아직 고르지 않았어요';
+  const out = document.getElementById('picks');
+  try { await navigator.clipboard.writeText(text); e.target.textContent = '복사됨'; setTimeout(() => (e.target.textContent = '번호 복사'), 1400); }
+  catch { out.textContent = text; const r = document.createRange(); r.selectNodeContents(out); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+});
+</script>

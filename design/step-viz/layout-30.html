@@ -1,0 +1,396 @@
+<title>Crista 본문 레이아웃 30종</title>
+<meta name="description" content="단계 시각화 화면의 본문(사이드바 · 단계 머리 · 시안 탭 · 시안 카드)을 덜 네모나게 바꾼 레이아웃 30종과 지금 화면.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;700&display=swap">
+<style>
+  /* 레이아웃: 위 띠 · LED 띠 · 아래 도구 띠는 단계 시각화 화면(step-viz) 그대로 두고, 가운데 본문만 레이아웃 30종으로 갈아 끼운다.
+     본문 부품(단계 목록 · 단계 머리 · 시안 탭 · 시안 카드)은 같고, 배치 · 모서리 · 면 · 선만 레이아웃마다 다르다.
+     색은 Crista 브랜드(잉크 · 페이퍼 · 라임) + 05 박막 간섭색. 01 화면처럼 밝은 박막 톤 하나로 고정한다. */
+  :root {
+    --paper: #f1f1e9; --surface: #f8f8f2; --raise: #e7e8de; --raise-2: #dcddd2; --ink: #080b09; --muted: #5b6358;
+    --line: rgba(8, 11, 9, 0.13); --line-strong: rgba(8, 11, 9, 0.32);
+    --hi: #c6ff4a; --hi-soft: rgba(198, 255, 74, 0.3);
+    --led: #ffb21a; --led-r: #ff5a3c; --led-g: #8dff5a; --night: #0b0d0a; --night-2: #151a14; --night-fg: #f1f1e9; --night-muted: #9da59a; --night-hover: rgba(241, 241, 233, 0.1);
+    --good: #2f6f2a; --good-bg: rgba(47, 111, 42, 0.12); --warn: #8a5a00; --warn-bg: rgba(176, 120, 0, 0.14); --bad: #b2361b; --bad-bg: rgba(178, 54, 27, 0.11);
+    --me: #183080; --seum: #007868; --daon: #a048c8; --mirp: #d88828;
+    --film: linear-gradient(115deg, #ffd3ea 0%, #cdeaff 28%, #e4ffc0 52%, #ffe2c2 76%, #e6d4ff 100%);
+    --film-1: #ffd3ea; --film-2: #cdeaff; --film-3: #e4ffc0; --film-4: #ffe2c2; --film-5: #e6d4ff;
+    --glass: rgba(248, 248, 242, 0.62); --glass-edge: rgba(255, 255, 255, 0.7);
+    --sh-1: 0 1px 2px rgba(8, 11, 9, 0.05), 0 12px 32px -18px rgba(8, 11, 9, 0.3);
+    --sh-2: 0 2px 4px rgba(8, 11, 9, 0.04), 0 40px 80px -40px rgba(8, 11, 9, 0.4);
+    --sans: "IBM Plex Sans KR", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
+    color-scheme: light;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--hi); color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  button, input, select { font: inherit; color: inherit; }
+  button, summary, [role="button"] { cursor: pointer; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+
+  .ui-page { height: 100%; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; }
+
+  /* ── 위 띠 ── */
+  .ui-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--line-strong); background: var(--paper); }
+  .ui-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: -0.03em; font-size: 17px; }
+  .ui-brand svg { width: 20px; height: 20px; }
+  .ui-brand small { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .ui-co { display: flex; align-items: center; gap: 8px; padding-left: 14px; border-left: 1px solid var(--line); font-weight: 600; }
+  .ui-co .ui-tick { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; padding: 2px 6px; border: 1px solid var(--line-strong); font-weight: 500; }
+  .top-r { margin-left: auto; display: flex; gap: 18px; align-items: center; }
+  .ui-kv { display: grid; line-height: 1.2; }
+  .ui-kv span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .ui-kv b { font-family: var(--mono); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ── LED 흐르는 띠 ── */
+  .ui-board { display: flex; align-items: stretch; background: var(--night); color: var(--night-fg); border-bottom: 1px solid var(--line-strong); min-width: 0; }
+  .ui-bd-in { flex: 1; min-width: 0; padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
+  .ui-mq-track { display: flex; width: max-content; animation: mq 46s linear infinite; }
+  .ui-board:hover .ui-mq-track { animation-play-state: paused; }
+  .ui-mq-seg { display: flex; align-items: center; gap: 34px; padding-right: 34px; }
+  .ui-led { font-family: var(--mono); font-weight: 600; letter-spacing: 0.06em; font-size: 19px; white-space: nowrap; color: var(--led); text-shadow: 0 0 8px rgba(255, 178, 26, 0.55);
+    -webkit-mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); -webkit-mask-size: 3px 3px; mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); mask-size: 3px 3px; }
+  .ui-led.r { color: var(--led-r); text-shadow: 0 0 8px rgba(255, 90, 60, 0.55); }
+  .ui-led.g { color: var(--led-g); text-shadow: 0 0 8px rgba(141, 255, 90, 0.5); }
+  .ui-bd-ctl { flex: none; display: flex; align-items: center; gap: 6px; padding-block: 6px; padding-left: 12px; padding-right: max(16px, env(safe-area-inset-right, 0px)); border-left: 1px solid rgba(241, 241, 233, 0.16); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--night-muted); text-transform: uppercase; }
+  .ui-bd-ctl i { width: 7px; height: 7px; background: var(--led-r); border-radius: 50%; animation: blink 1.4s steps(2) infinite; }
+  @keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes blink { 50% { opacity: 0.2; } }
+
+  /* ── 본문: 레이아웃이 갈아 끼우는 자리 ── */
+  .lay { overflow: auto; min-height: 0; min-width: 0; position: relative; background: var(--paper); --vz-r: 999px; --vz-r2: 12px; }
+  .Lw { min-width: 0; padding-block: 28px 72px; padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px)); }
+  .Lm { min-width: 0; display: grid; gap: 20px; align-content: start; }
+  .Ls { min-width: 0; }
+
+  /* 단계 목록 */
+  .nv { display: grid; gap: 14px; min-width: 0; }
+  .nv-h { margin: 0; font: 500 10.5px/1.4 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .nv-g { display: grid; gap: 4px; min-width: 0; }
+  .nv-gh { margin: 0; display: flex; gap: 8px; align-items: baseline; font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+  .nv-gh b { font-family: var(--mono); font-weight: 600; font-size: 11px; color: var(--muted); }
+  .nv-l { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .nv-s { appearance: none; width: 100%; border: 0; background: transparent; color: inherit; text-align: left; display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 8px; align-items: baseline; padding: 7px 10px; border-radius: 0; transition: background-color 0.18s, color 0.18s, box-shadow 0.18s; }
+  .nv-s:hover { background: rgba(8, 11, 9, 0.05); }
+  .nv-c { font-family: var(--mono); font-size: 11.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .nv-t { font-weight: 600; line-height: 1.35; min-width: 0; }
+  .nv-sub { grid-column: 2; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+  .nv-f { display: grid; gap: 4px; font: 10.5px/1.5 var(--mono); color: var(--muted); }
+  .nv-f b { color: var(--ink); font-weight: 600; }
+
+  /* 단계 머리 */
+  .hd { display: grid; gap: 4px; min-width: 0; }
+  .hd-n { font-family: var(--mono); font-weight: 600; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .hd-e { margin: 0; font: 500 11px/1.5 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .hd-t { margin: 0; font-size: 28px; line-height: 1.15; letter-spacing: -0.035em; text-wrap: balance; }
+  .hd-q { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; text-wrap: balance; }
+
+  /* 시안 탭 */
+  .tb { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .tb-i { appearance: none; border: 0; background: transparent; color: inherit; text-align: left; display: grid; gap: 1px; padding: 6px 10px; min-width: 0; border-radius: 0; transition: background-color 0.18s, color 0.18s, box-shadow 0.18s, width 0.2s; }
+  .tb-i:hover { background: rgba(8, 11, 9, 0.05); }
+  .tb-n { font: 500 10px/1.3 var(--mono); letter-spacing: 0.06em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .tb-t { font-size: 12.5px; font-weight: 600; line-height: 1.3; word-break: keep-all; }
+  .tb-k { font: 10px/1.4 var(--mono); color: var(--muted); }
+
+  /* 시안 카드 */
+  .cd { display: grid; gap: 14px; min-width: 0; align-content: start; }
+  .cd-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; min-width: 0; }
+  .cd-no { font: 600 11px/1.4 var(--mono); font-variant-numeric: tabular-nums; }
+  .cd-t { margin: 0; font-size: 18px; letter-spacing: -0.02em; line-height: 1.25; }
+  .cd-k { font: 10.5px/1.4 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .cd-i { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 13px; max-width: 76ch; }
+  .cd-b { min-width: 0; overflow-x: auto; }
+  .cd-f { display: flex; gap: 10px; align-items: baseline; font-size: 13px; min-width: 0; }
+  .cd-f b { flex: none; font: 600 10.5px/1.5 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; padding: 1px 7px; background: var(--hi); }
+  .ga { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 16px; align-items: start; }
+  .ga .cd-h { cursor: pointer; }
+  .ga .cd-h:hover .cd-t { text-decoration: underline; text-underline-offset: 3px; }
+  .ui-err { color: var(--bad); font-family: var(--mono); font-size: 12px; }
+
+  /* ── 시안이 함께 쓰는 부품(step-viz 그대로, 모서리만 레이아웃을 따른다) ── */
+  .vz { display: grid; gap: 14px; min-width: 0; font-size: 13px; }
+  .vz-svg { display: block; width: 100%; height: auto; max-width: 100%; overflow: visible; font-family: var(--sans); }
+  .vz-svg text { fill: var(--ink); }
+  .vz-svg .t-m { font-family: var(--mono); }
+  .vz-svg .t-mu { fill: var(--muted); }
+  .vz-lab { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .vz-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .vz-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .vz-note { font-size: 12.5px; color: var(--muted); margin: 0; max-width: 72ch; }
+  .vz-chip { display: inline-block; font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border: 1px solid var(--line-strong); white-space: nowrap; border-radius: var(--vz-r, 0); }
+  .vz-sig { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 7px; white-space: nowrap; border-radius: var(--vz-r, 0); }
+  .vz-sig.good { color: var(--good); background: var(--good-bg); }
+  .vz-sig.warn { color: var(--warn); background: var(--warn-bg); }
+  .vz-sig.bad { color: var(--bad); background: var(--bad-bg); }
+  .vz-btn { appearance: none; border: 1px solid var(--line-strong); background: var(--paper); border-radius: var(--vz-r, 0); padding: 6px 12px; font-size: 12.5px; font-weight: 600; }
+  .vz-btn:hover { border-color: var(--ink); }
+  .vz-btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .vz-rng { width: 100%; accent-color: var(--ink); }
+  .molbox { width: 100%; max-width: 100%; border: 1px solid var(--line); background: var(--paper); display: grid; place-items: center; overflow: hidden; border-radius: var(--vz-r2, 0); }
+  .molbox .mol { display: block; width: 100%; height: 100%; }
+  .molbox .fallback { font-family: var(--mono); font-size: 10.5px; color: var(--muted); padding: 8px; word-break: break-all; }
+
+  /* ── 아래 도구 띠: 레이아웃 고르기 ── */
+  .ui-tools { display: flex; align-items: center; gap: 8px; background: var(--night); color: var(--night-fg); border-top: 1px solid rgba(241, 241, 233, 0.32); min-width: 0;
+    padding-top: 9px; padding-bottom: calc(9px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); font-family: var(--mono); font-size: 11px; }
+  .ui-tool-btn { flex: none; background: transparent; color: var(--night-fg); border: 1px solid rgba(241, 241, 233, 0.32); padding: 6px 11px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; white-space: nowrap; border-radius: 999px; }
+  .ui-tool-btn:hover { border-color: var(--night-fg); }
+  .ui-tools :focus-visible { outline-color: var(--hi); }
+  .ui-pick-w { position: relative; flex: 0 1 250px; min-width: 0; }
+  .ui-pick-w::after { content: "▾"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--night-muted); pointer-events: none; }
+  #lpick { appearance: none; -webkit-appearance: none; width: 100%; padding: 6px 30px 6px 12px; border: 1px solid rgba(241, 241, 233, 0.32); border-radius: 999px; background: transparent; color: var(--night-fg); font-family: var(--mono); font-size: 12px; text-overflow: ellipsis; }
+  #lpick option { background: var(--night-2); color: var(--night-fg); }
+  .ui-lidea { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--night-muted); font-family: var(--sans); font-size: 12.5px; }
+  .ui-lidea b { color: var(--hi); font-family: var(--mono); font-weight: 600; margin-right: 6px; }
+  .ui-keys { flex: none; display: flex; gap: 12px; color: var(--night-muted); font-size: 10px; white-space: nowrap; }
+  .ui-keys kbd { font-family: var(--mono); font-size: 10px; color: var(--night-fg); border: 1px solid rgba(241, 241, 233, 0.32); border-radius: 4px; padding: 1px 5px; margin-right: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-mq-track, .ui-bd-ctl i { animation: none !important; }
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  }
+  @media (max-width: 1180px) { .ui-keys { display: none; } }
+  @media (max-width: 860px) {
+    .top-r .ui-kv:not(.ui-cash) { display: none; }
+    .ui-led { font-size: 16px; }
+    .ui-tools { flex-wrap: wrap; }
+    .ui-lidea { flex-basis: 100%; order: 5; white-space: normal; font-size: 12px; }
+    .ui-pick-w { flex: 1 1 140px; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 40 40">
+      <path d="M31.5 7.5A15.5 15.5 0 1 0 31.5 32.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M27.2 12.2A10.7 10.7 0 1 0 27.2 27.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M22.8 16.8A6 6 0 1 0 22.8 23.2" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="ui-page">
+  <header class="ui-top">
+    <div class="ui-brand"><svg aria-hidden="true"><use href="#mark"></use></svg>CRISTA <small>파이프라인 랩</small></div>
+    <div class="ui-co"><span>크리스타바이오</span><span class="ui-tick">CRX</span></div>
+    <div class="top-r">
+      <div class="ui-kv"><span>예시 표적</span><b>ACHE · 4EY7</b></div>
+      <div class="ui-kv"><span>게임 날짜</span><b id="kv-d">D+0</b></div>
+      <div class="ui-kv ui-cash"><span>연구비</span><b id="kv-c">$6.000M</b></div>
+    </div>
+  </header>
+  <section class="ui-board" aria-label="학급 전광판 · 다른 모둠 소식">
+    <div class="ui-bd-in"><div class="ui-mq-track" id="mq"></div></div>
+    <div class="ui-bd-ctl"><i aria-hidden="true"></i>LIVE</div>
+  </section>
+  <div class="lay" id="body"></div>
+  <div class="ui-tools">
+    <button type="button" class="ui-tool-btn" id="lprev" aria-label="이전 레이아웃">←</button>
+    <div class="ui-pick-w"><label class="sr" for="lpick">레이아웃 고르기</label><select id="lpick"></select></div>
+    <button type="button" class="ui-tool-btn" id="lnext" aria-label="다음 레이아웃">→</button>
+    <span class="ui-lidea" id="lidea" aria-live="polite"></span>
+    <span class="ui-keys" aria-hidden="true"><span><kbd>←</kbd><kbd>→</kbd>레이아웃</span><span><kbd>↑</kbd><kbd>↓</kbd>단계</span><span><kbd>A</kbd>모아 보기</span></span>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
+<script src="core.js"></script>
+<script src="viz-1.js"></script>
+<script src="viz-2.js"></script>
+<script src="viz-3.js"></script>
+<script src="viz-4.js"></script>
+<script src="viz-5.js"></script>
+<script src="viz-6.js"></script>
+<script src="viz-7.js"></script>
+<script src="viz-8.js"></script>
+<script>window.LAY = [];</script>
+<script src="layouts-1.js"></script>
+<script src="layouts-2.js"></script>
+<script>
+(() => {
+  "use strict";
+  const CV = window.CV, { esc, pad, STEPS, PHASES, EX, MX } = CV;
+  const $ = (id) => document.getElementById(id);
+  const list = (k) => (window.VIZ[k] || []);
+  const LAYS = window.LAY.slice().sort((a, b) => a.no - b.no);
+
+  /* 상태: 레이아웃 li(LAYS 순번) · 단계 n(1~8) · 시안 v(0~9) · 모아 보기 */
+  let li = 1, n = 3, v = 0, all = false, cleanups = [];
+  try { const r = JSON.parse(localStorage.getItem("crista-body-layouts") || "null"); if (r) { li = r.li; n = r.n; v = r.v; all = r.all; } } catch (e) {}
+  const fromHash = () => {
+    const m = /^#L(\d{2})$/.exec(location.hash || "");
+    if (!m) return false;
+    const k = LAYS.findIndex((L) => L.no === +m[1]);
+    if (k >= 0) li = k;
+    return k >= 0;
+  };
+  fromHash();
+  li = Math.max(0, Math.min(LAYS.length - 1, li | 0)); n = Math.max(1, Math.min(8, n | 0)); v = Math.max(0, v | 0); all = !!all;
+  const save =() => { try { localStorage.setItem("crista-body-layouts", JSON.stringify({ li, n, v, all })); } catch (e) {} };
+
+  /* 예시 실행에서 단계까지 걸린 날짜 · 남은 연구비(위 띠) */
+  const dayAt = { 1: 0, 2: 0, 3: 2, 4: 4, 5: EX.program.day, 6: EX.ind ? EX.ind.day : 0, 7: EX.trials.length ? EX.trials[EX.trials.length - 1].day : 0, 8: EX.approval.day };
+  const spentAt = (k) => {
+    const c = CV.R.cost; let s = 0;
+    if (k >= 2) s += c.htvs; if (k >= 3) s += c.docking; if (k >= 4) s += c.admet; if (k >= 5) s += c.patent; if (k >= 6) s += c.ind;
+    if (k >= 7) s += EX.trials.reduce((a, t) => a + t.cost, 0); if (k >= 8) s += c.final; return s;
+  };
+
+  const NEWS = [
+    ["세움제약 SEU-904 임상 2상 통과", "g", "▲ 8.0%"], ["다온테라퓨틱스 도킹 신기록 -10.90 kcal/mol", "", "▲ 6.4%"],
+    ["미르파마 MIR-810 임상 보류", "r", "▼ 4.0%"], ["세움제약 연구 설비 건설", "", "▲ 2.0%"], ["미르파마 유상증자 공시", "r", "▼ 3.0%"],
+    ["시가총액 1위 바뀜 — 세움제약", "", ""]
+  ];
+  const seg = () => `<div class="ui-mq-seg">${NEWS.map(([t, c, d]) => `<span class="ui-led ${c}">${esc(t)}${d ? "  " + d : ""}</span>`).join("")}</div>`;
+  $("mq").innerHTML = seg() + seg();
+
+  /* ── 본문 부품: 레이아웃이 골라 쓴다 ── */
+  const firstOf = (ph) => STEPS.find((s) => s.ph === ph).n;
+  const P = {
+    esc, pad, STEPS, PHASES, firstOf,
+    meta() {
+      const st = STEPS[n - 1], ph = PHASES[st.ph - 1];
+      return `${ph.n}. ${ph.t} · ${st.sub} · ${st.cost ? MX(st.cost) : "무료"}`;
+    },
+    stepBtn(s, o = {}) {
+      return `<button type="button" class="nv-s${s.n < n ? " is-done" : ""}" data-step="${s.n}" ${s.n === n ? 'aria-current="step"' : ""} aria-label="${s.code} ${esc(s.t)}">` +
+        `<span class="nv-c">${s.code}</span><span class="nv-t">${esc(o.short ? s.short : s.t)}</span>${o.sub ? `<span class="nv-sub">${esc(s.sub)}</span>` : ""}</button>`;
+    },
+    nav(o = {}) {
+      const cur = STEPS[n - 1].ph;
+      const groups = PHASES.map((p) => {
+        const items = STEPS.filter((s) => s.ph === p.n);
+        return `<div class="nv-g${p.n === cur ? " is-cur" : ""}" data-ph="${p.n}">` +
+          (o.gh === false ? "" : `<p class="nv-gh"><b>${p.n}</b><span>${esc(p.t)}</span></p>`) +
+          `<ol class="nv-l">${items.map((s) => `<li>${P.stepBtn(s, o)}</li>`).join("")}</ol></div>`;
+      }).join("");
+      return `<nav class="nv ${o.cls || ""}" aria-label="파이프라인 단계">${o.head ? `<p class="nv-h">신약 개발 파이프라인 · 8단계</p>` : ""}${groups}${o.foot ? P.foot() : ""}</nav>`;
+    },
+    foot() {
+      return `<div class="nv-f"><span>예시 실행 <b>알츠하이머 → ACHE</b></span><span>리드 <b>${esc(EX.lead ? EX.lead.name : "—")}</b></span><span>모든 시안이 같은 값을 그립니다</span></div>`;
+    },
+    head(o = {}) {
+      const st = STEPS[n - 1];
+      return `<header class="hd ${o.cls || ""}">${o.code === false ? "" : `<div class="hd-n" aria-hidden="true">${st.code}</div>`}` +
+        `<p class="hd-e">${esc(P.meta())}</p><h1 class="hd-t">${esc(st.t)}</h1>${o.q === false ? "" : `<p class="hd-q">${esc(st.q)}</p>`}</header>`;
+    },
+    tabs(o = {}) {
+      const st = STEPS[n - 1], L = list(n);
+      return `<nav class="tb ${o.cls || ""}" aria-label="${st.code} 시각화 시안">` + L.map((it, i) =>
+        `<button type="button" class="tb-i" data-v="${i}" aria-pressed="${!all && i === v}" aria-label="${n}.${pad(i + 1)} ${esc(it.name)}" title="${n}.${pad(i + 1)} ${esc(it.name)}">` +
+        `<span class="tb-n">${o.num ? pad(i + 1) : `${n}.${pad(i + 1)}`}</span>${o.numOnly ? "" : `<b class="tb-t">${esc(it.name)}</b>`}${o.kind ? `<span class="tb-k">${esc(it.kind || "")}</span>` : ""}</button>`).join("") +
+        (o.all === false ? "" : `<button type="button" class="tb-i tb-all" data-all="1" aria-pressed="${all}" aria-label="${L.length}종 모아 보기"><span class="tb-n">ALL</span>${o.numOnly ? "" : `<b class="tb-t">${L.length}종 모아 보기</b>`}${o.kind ? `<span class="tb-k">한 화면에 나란히</span>` : ""}</button>`) +
+        `</nav>`;
+    },
+    parts(it, i) {
+      let body;
+      try { body = it.render(); } catch (e) { body = `<p class="ui-err">그리기 오류: ${esc(e.message)}</p>`; console.error(e); }
+      return { no: `${n}.${pad(i + 1)}`, name: esc(it.name), kind: esc(it.kind || ""), idea: esc(it.idea || ""), learn: esc(it.learn || ""), body: `<div class="vz" data-vz="${i}">${body}</div>` };
+    },
+    card(it, i, o = {}) {
+      const p = P.parts(it, i);
+      const open = o.compact ? ` data-open="${i}" role="button" tabindex="0" aria-label="${p.no} ${p.name} 크게 보기"` : "";
+      return `<article class="cd${o.compact ? " is-mini" : ""} ${o.cls || ""}"><header class="cd-h"${open}><span class="cd-no">${p.no}</span><h2 class="cd-t">${p.name}</h2><span class="cd-k">${p.kind}</span><p class="cd-i">${p.idea}</p></header>` +
+        `<div class="cd-b">${p.body}</div><footer class="cd-f"><b>배우는 것</b><span>${p.learn}</span></footer></article>`;
+    },
+    grid() { return `<div class="ga">${list(n).map((it, i) => P.card(it, i, { compact: true })).join("")}</div>`; },
+    view(o = {}) {
+      const L = list(n);
+      if (!L.length) return `<p class="ui-err">이 단계의 시안 파일을 불러오지 못했습니다.</p>`;
+      return all ? P.grid() : P.card(L[v], v, o);
+    }
+  };
+
+  function mountAll() {
+    for (const c of cleanups) { try { c && c(); } catch (e) {} }
+    cleanups = [];
+    for (const el of document.querySelectorAll("[data-vz]")) {
+      const it = list(n)[+el.dataset.vz];
+      if (it && it.mount) { try { cleanups.push(it.mount(el)); } catch (e) { console.error(e); } }
+    }
+    CV.drawMols($("body"));
+  }
+
+  function render() {
+    const Lay = LAYS[li], st = STEPS[n - 1], L = list(n);
+    v = Math.max(0, Math.min(Math.max(0, L.length - 1), v));
+    const ctx = { n, v, all, st, ph: PHASES[st.ph - 1], L, it: L[v], P };
+    let html;
+    try { html = Lay.render(ctx); } catch (e) { console.error(e); html = `<div class="Lw"><p class="ui-err">레이아웃 ${pad(Lay.no)} 그리기 오류: ${esc(e.message)}</p></div>`; }
+    $("body").innerHTML = html;
+    mountAll();
+    if (Lay.after) { try { Lay.after($("body"), ctx); } catch (e) { console.error(e); } }
+    $("kv-d").textContent = "D+" + dayAt[n];
+    $("kv-c").textContent = MX(CV.R.startCash - spentAt(n));
+    $("lpick").value = String(li);
+    $("lidea").innerHTML = `<b>${pad(Lay.no)}</b>${esc(Lay.idea)}`;
+  }
+
+  $("lpick").innerHTML = LAYS.map((L, i) => `<option value="${i}">${pad(L.no)} ${esc(L.name)}</option>`).join("");
+
+  function go(o = {}) {
+    if (o.li != null) li = (o.li + LAYS.length) % LAYS.length;
+    if (o.n != null) n = Math.max(1, Math.min(8, o.n));
+    if (o.v != null) v = o.v;
+    if (o.all != null) all = o.all;
+    const h = `#L${pad(LAYS[li].no)}`;
+    try { if (location.hash !== h) history.replaceState(null, "", h); } catch (e) {}
+    save(); render();
+    if (!o.keep) $("body").scrollTop = 0;
+  }
+
+  document.addEventListener("click", (e) => {
+    const o = e.target.closest("[data-open]"); if (o) return go({ v: +o.dataset.open, all: false });
+    const s = e.target.closest("[data-step]"); if (s) return go({ n: +s.dataset.step, v: 0 });
+    const t = e.target.closest("[data-v]"); if (t) return go({ v: +t.dataset.v, all: false });
+    if (e.target.closest("[data-all]")) return go({ all: !all });
+  });
+  document.addEventListener("keydown", (e) => {
+    const b = e.target.closest && e.target.closest('[data-open], svg [role="button"]');
+    if (b && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); b.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+  });
+  $("lprev").onclick = () => go({ li: li - 1 });
+  $("lnext").onclick = () => go({ li: li + 1 });
+  $("lpick").onchange = (e) => go({ li: +e.target.value });
+  addEventListener("keydown", (e) => {
+    if (e.target.closest && e.target.closest("input, select, textarea, summary")) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "ArrowRight") { e.preventDefault(); go({ li: li + 1 }); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); go({ li: li - 1 }); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); go({ n: n + 1, v: 0 }); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); go({ n: n - 1, v: 0 }); }
+    else if (e.key === "a" || e.key === "A") go({ all: !all });
+  });
+  addEventListener("hashchange", () => { if (fromHash()) go({ keep: true }); });
+
+  /* 레이아웃별 CSS 를 한 번에 붙이고, 그 뒤에 폰 너비 공통 규칙을 붙인다(같은 세기면 뒤가 이긴다). */
+  const st = document.createElement("style");
+  st.textContent = LAYS.map((L) => L.css || "").join("\n") + `
+  @media (max-width: 860px) {
+    .lay .Lw { grid-template-columns: minmax(0, 1fr); grid-template-areas: none; gap: 18px; padding-block: 16px 40px;
+      padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .lay .Lw > :not(.Lpos), .lay .Lg > * { grid-area: auto; grid-column: auto; grid-row: auto; position: static; max-height: none; margin-inline: 0; }
+    .lay .Lg { grid-template-columns: minmax(0, 1fr); }
+    .lay .Ls .nv { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+    .lay .Ls .nv-h, .lay .Ls .nv-gh, .lay .Ls .nv-sub, .lay .Ls .nv-f { display: none; }
+    .lay .Ls .nv-g, .lay .Ls .nv-l, .lay .Ls .nv-l > li { display: contents; }
+    .lay .Ls .nv-s { display: flex; gap: 6px; width: auto; height: auto; flex: none; white-space: nowrap; padding: 6px 12px; }
+    .lay .hd-t { font-size: 23px; }
+    .lay .hd-q { font-size: 15px; }
+  }`;
+  document.head.appendChild(st);
+
+  go({ keep: true });
+})();
+</script>
