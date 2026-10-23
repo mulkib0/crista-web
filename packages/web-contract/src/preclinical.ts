@@ -928,13 +928,6 @@ export const PRECLINICAL_COPY = {
     loading: '불러오는 중…',
     retry: '다시 불러오기',
     tabSub: { trained: '이수', notTrained: '이수 전', runs: (n: number) => `${n}건`, chosen: '지정함', notChosen: '아직' },
-    mine: {
-      ethics: '내 작업대 — 윤리 카드 · 확인 문제',
-      protocol: '내 작업대 — 계획서 칸 쓰기',
-      alt: '내 작업대 — 대체 시험 고르기',
-      animal: '내 작업대 — 동물실험 실행 · 계산 칸',
-      pick: '내 작업대 — 결과판 해석 · 근거 칩',
-    },
     team: {
       ethics: '모둠 공유 — 교육 이수 도장',
       protocol: '모둠 공유 — 계획서 설정 · 심의',

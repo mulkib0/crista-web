@@ -111,7 +111,6 @@ export function Step42(props: StepProps) {
         tabs={tabs}
         tab={tab}
         onTab={(id) => setTab(id as Tab)}
-        mineTitle={approved ? K.result.complete : K.tabs.result}
         mine={<ResultTab {...common} />}
       />
     );

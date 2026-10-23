@@ -143,10 +143,8 @@ function Screen12(p: ScreenProps) {
 
   let mine: ReactNode;
   let team: ReactNode;
-  let mineTitle: string | undefined;
   let teamTitle: string | undefined;
   if (tab === 'brief') {
-    mineTitle = C.ui.mineBrief;
     mine = (
       <>
         <Tabs size="sm" label={C.ui.toolBrief} value={briefTool} onChange={(id) => setBriefTool(id as typeof briefTool)} items={[{ id: 'mission', label: C.ui.toolMission }, { id: 'judge', label: C.judge.title, disabled: !mission }]} />
@@ -156,7 +154,6 @@ function Screen12(p: ScreenProps) {
     teamTitle = C.ui.teamBrief;
     team = <BriefTeam c={ctx} />;
   } else if (tab === 'meet') {
-    mineTitle = C.ui.mineMeet;
     mine = (
       <>
         <AgendaTabs c={ctx} />
@@ -202,12 +199,10 @@ function Screen12(p: ScreenProps) {
     team = <RunTeam c={ctx} />;
     teamTitle = C.ui.teamRun;
   } else if (tab === 'shop') {
-    mineTitle = C.ui.mineShop;
     mine = <ShopMine c={ctx} />;
     teamTitle = C.ui.teamShop;
     team = <Cart c={ctx} />;
   } else {
-    mineTitle = C.ui.mineHand;
     mine = (
       <>
         {judge.open && mission && <p className="hint">{screenFill(C.judge.hintNote, { n: judgeSame(ds, mission, judge), m: mission.judgeCards.length })}</p>}
@@ -227,7 +222,6 @@ function Screen12(p: ScreenProps) {
       onTab={(id) => setTab(id as StepTab)}
       tabsLabel={C.ui.tabsLabel}
       ratio={tab === 'meet' || tab === 'shop' ? 'mine' : 'even'}
-      mineTitle={mineTitle}
       mine={<div className="s12">{note && <p className="s12-note" role="status" onClick={() => setNote(null)}>{note}</p>}{act.error && <p className="err">{act.error}</p>}{!mission && <p className="hint">{C.noMission}</p>}{mine}</div>}
       teamTitle={teamTitle}
       team={<div className="s12">{team}</div>}

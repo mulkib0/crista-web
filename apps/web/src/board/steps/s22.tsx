@@ -408,7 +408,6 @@ export function Step22(props: StepProps) {
       onTab={(id) => setTab(id as Tab)}
       tabsLabel={C.s22.ui.tabsLabel}
       ratio={effectiveTab === 'run' ? 'team' : 'mine'}
-      mineTitle={effectiveTab === 'run' ? C.s22.ui.mineRun : C.s22.ui.mineRead}
       mine={
         <div className="s22">
           {!sel ? <Panel><p className="hint">{live.error ? live.error.message : C.s22.ui.loading}</p></Panel>

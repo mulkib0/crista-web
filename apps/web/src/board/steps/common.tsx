@@ -78,7 +78,6 @@ export interface StepLayoutProps extends Pick<StepProps, 'board' | 'step'> {
   tabsLabel?: string;
   /** 왼쪽 '내 작업대' 섬(개인 · 무료). 없으면 모둠 공유 섬이 두 열을 쓴다. */
   mine?: ReactNode;
-  mineTitle?: ReactNode;
   /** 오른쪽 '모둠 공유' 섬의 '공유 자료'(서버 저장 · 실시간). 섬은 늘 대화(대화 · 행적)이고, 이것은 그 옆 패널로 편다. 없으면 펴기 단추도 없다. */
   team?: ReactNode;
   teamTitle?: ReactNode;
@@ -90,13 +89,13 @@ export interface StepLayoutProps extends Pick<StepProps, 'board' | 'step'> {
  * 단계 화면 레이아웃 — 섬 셋(머리 · 내 작업대 · 모둠 공유)을 Fragment 로 돌려준다. Board 의 본문 그리드가 자리를 정한다.
  * 섬 사이 · 섬 안 구역 사이에 선을 긋지 않는다(설계 §5.4.1) — 구역은 페이퍼 판(`Panel`)과 간격으로 나눈다.
  */
-/** 섬 큰 제목 옆의 작은 설명 — 옛 제목의 '내 작업대 — ' · '모둠 공유 — ' 머리말과 '나만 보여요' 단독 문구는 뗀다. */
+/** 공유 자료 제목 옆의 작은 설명 — 옛 제목의 '모둠 공유 — ' 머리말은 뗀다. 섬 큰 제목(나의 작업대 · 모둠 공유) 옆에는 설명을 달지 않는다. */
 function islSub(title: ReactNode | undefined, lead: string): ReactNode {
   if (title === undefined || title === null || title === false) return null;
   let t = title;
   if (typeof t === 'string') {
     t = t === lead ? '' : t.startsWith(`${lead} — `) ? t.slice(lead.length + 3) : t;
-    if (t === '나만 보여요' || t === '') return null;
+    if (t === '') return null;
   }
   return <small>{t}</small>;
 }
@@ -119,7 +118,7 @@ function useWide(ref: RefObject<HTMLElement | null>, min: number) {
   return wide;
 }
 
-export function StepLayout({ board, step, tabs, tab, onTab, tabsLabel, mine, mineTitle, team, teamTitle, ratio = 'team' }: StepLayoutProps) {
+export function StepLayout({ board, step, tabs, tab, onTab, tabsLabel, mine, team, teamTitle, ratio = 'team' }: StepLayoutProps) {
   const id = step.id.replace('.', '');
   const only = !mine ? 'team' : null;
   // 모둠 공유 = 대화가 바탕. 공유 자료는 옆 패널로 편다 — 개인 상태(단계를 오가도 남는다), 처음엔 접혀 있다.
@@ -138,13 +137,13 @@ export function StepLayout({ board, step, tabs, tab, onTab, tabsLabel, mine, min
       </header>
       {mine && (
         <section className={`isl isl-mine${only ? ' span' : ''}`} data-ratio={ratio} aria-labelledby={`w${id}`}>
-          <h2 className="isl-h isl-big" id={`w${id}`}>나의 작업대{islSub(mineTitle, '내 작업대')}</h2>
+          <h2 className="isl-h isl-big" id={`w${id}`}>나의 작업대</h2>
           {mine}
         </section>
       )}
       <section className={`isl isl-team${only ? ' span' : ''}`} aria-labelledby={`t${id}`}>
         <div className="isl-hrow">
-          <h2 className="isl-h isl-big team" id={`t${id}`}>모둠 공유<small>대화 · 행적</small></h2>
+          <h2 className="isl-h isl-big team" id={`t${id}`}>모둠 공유</h2>
           {team && (
             <button type="button" className="tm-tg" aria-expanded={open} aria-controls={`sd${id}`} onClick={() => setSide(open ? 'closed' : 'open')}>
               <span aria-hidden="true">▤</span> 공유 자료 {open ? '접기' : '펴기'}

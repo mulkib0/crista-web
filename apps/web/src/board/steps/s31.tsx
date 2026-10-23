@@ -138,7 +138,6 @@ export function Step31(props: StepProps) {
       onTab={(id) => setTab(id as Tab)}
       ratio="even"
       mine={mine ? <div className="s31">{mine}</div> : undefined}
-      mineTitle={app && tab !== 'pick' ? C.ui.mineTitle(app.codeName, C.status[app.status]) : undefined}
       team={
         <>
           <div className="s31">{team}</div>

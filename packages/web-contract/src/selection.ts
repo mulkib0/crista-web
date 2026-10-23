@@ -486,8 +486,6 @@ export const SELECTION_COPY = {
     ui: {
       loading: '불러오는 중…',
       tabsLabel: '2.1 도구',
-      mineEdit: '내 작업대 — 구조 바꿔 다시 도킹',
-      mineRead: '내 작업대 — 결과 읽기',
       teamTitle: '모둠 공유 — 도킹 비교표 · 2.2 대기열',
       loadTitle: '불러오기',
       loadSub: '내 담당 후보 · 기준 약',
@@ -619,8 +617,6 @@ export const SELECTION_COPY = {
       loading: '불러오는 중…',
       tabsLabel: '2.2 도구',
       queueTab: (n: number) => `대기열 ${n}`,
-      mineRun: '내 작업대 — ADMET 로 볼 분자(2.1 대기열)',
-      mineRead: '내 작업대 — 리드 읽기',
       teamTitle: '모둠 공유 — 특허 후보 · ADMET 비교',
       choose: '— 고르기 —',
       reasonOf: (reason: string) => `근거 · ${reason}`,

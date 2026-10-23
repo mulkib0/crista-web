@@ -714,7 +714,6 @@ export const IND_COPY = {
   },
   ui: {
     tabsLabel: '3.3 도구',
-    mineTitle: '내 작업대 — 도구로 조합 시험하기',
     teamTitle: '모둠 공유 — 임상시험 계획 승인 신청서',
   },
   board: {

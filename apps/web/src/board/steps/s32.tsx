@@ -117,7 +117,6 @@ export function Step32(props: StepProps) {
   return (
     <StepLayout
       {...layout}
-      mineTitle={U.mine[tab]}
       teamTitle={U.team[tab]}
       mine={
         <div className="s32">
