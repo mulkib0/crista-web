@@ -2,7 +2,7 @@
 
 - 출처: Gemini 4 Argon (High) 원문(`gemini-raw.md` · `agy --model gemini-4-argon-high --effort high --mode plan`) → Claude(Opus 5.5) 검토 · 수정
 - 날짜: 2026-10-24
-- 상태: **초안 — 코드 반영은 8b 통합 뒤**(`packages/web-contract/src/ind.ts` 의 `IND_COPY` 에 넣을 때 식별자 · 숫자 · 규칙 값은 바꾸지 않는다)
+- 상태: **반영됨(2026-10-24 · 문구 3.2 · 3.3 담당)** — `IND_COPY` 에 옮겼어요. 반영 때 버리거나 고친 줄은 아래 '반영 메모'에 적었어요. 화면 스크린샷 `.review/2026-10-24-copy-apply/3.2-3.3/`.
 - 표시: Claude 가 고친 줄은 '근거' 끝에 `(Claude 수정)`, Claude 가 채운 줄은 `(Claude 보충)`. 이유는 `review.md`.
 - 2차 독립 검증(2026-10-24): 고친 줄은 `(검증 수정)`, 채운 줄은 `(검증 보충)`. 이유는 `review.md` 의 '## 독립 검증(2차)'.
 - 자리표시자: 기존 `IND_COPY` 이름을 그대로 쓴다. 새로 만든 것은 `(새)` 로 적었다 — `{teamN}` 하나.
@@ -260,3 +260,14 @@
 - 2차 검증 뒤 줄 수: 209줄 — 위 195줄 중 12줄을 고쳤고(`(검증 수정)`), 14줄을 채웠다(`(검증 보충)` — `gates.*` · `roles.*` · `doc.{newDoc, newDocHint, planTitle, pick, candidate, serverFill, planCandidateGone, noFunds}`).
 - `{teamN}` 은 새 자리표시자다 — 서버가 모둠 하루 상한(지금 15)을 채운다. 코드에 넣을 때 `doc.reviewLimit` 의 채움 값에 더해야 한다.
 - 숫자 15 · 35 · 50 · 6.2 · 1.8 · 60 kg 처럼 문구 안에 박힌 규칙 값은 기존 `IND_COPY` 와 같은 방식(글에 그대로)이다. 서버 값으로 바꾸고 싶으면 review.md ⑥ 확인.
+
+## 반영 메모(2026-10-24)
+
+- 돈 · 기간은 함수 · 상수로 끼웠어요: `overview.summary3` 의 수수료 = `formatCrista(IND_FEE_CRISTA)`, 기간 = `IND_REVIEW_GAME_DAYS`.
+- 기준선 숫자를 글에 박지 않았어요: `tool.lab.howToRead` · `tool.plane.question` · `tool.peak.howToRead` · `tool.waterfall.howToRead` 는 `{ind}` `{p1}` `{p2e}` `{p3e}` `{p3s}` · `{kOral}` `{kIv}` `{kTd}` · `{base}` `{w}` 로 바꿔 화면이 서버 규칙 값으로 채워요. `overview.more.misconception` 의 '(참고 기준 S ≥ 50)'은 뺐어요.
+- 도구는 `tools.*.howTo` · `lesson`(배울 점 — 접어 보기)으로 넣고, 옛 `toolNotes.seesawNote` · `doseNote` · `planeNote` · `waterfallNote` 는 지웠어요.
+- `sec.*.criterion` 은 학생 화면 칸 안내 뒤에 붙였어요. LLM 기준(`IND_COPY.checklist`)은 그대로예요.
+- 넣지 않은 키: `revise.appeal`(이의 제기 경로가 아직 없음) · `tool.dose.zone`(쓸 자리 없음) · `revise.itemStatus.*` 의 '— 풀이'(화면 낭독용 짧은 이름만).
+- `submit.waiting` 은 용어집대로 'D+' 꼴('{from} 접수 → {to} 판정')을 지켰어요.
+- 화면에 박혀 있던 글(판 · 서버가 채운 값 줄 · 도구 그림 이름 · 축 · 범례 · 폭포 단계 이름 · 머리 제목)을 `IND_COPY.facts` · `ui` · `toolNotes` 로 옮겼어요. ④ 서버 첨부의 소견이 영문 id(qt · liver)로 보이던 것을 `PRECLINICAL_COPY.findings` 로 바꿨어요.
+- 규칙 문구 · 제형 이름이 LLM 입력(규칙 결과 · 사실)에 들어가서 `IND_REVIEWER_VERSION` 을 `ind-v2` 로 올렸어요.

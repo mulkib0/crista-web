@@ -2,7 +2,7 @@
 
 - 출처: Gemini 4 Argon (High) 원문 `gemini-raw.md`(2026-10-24, `agy --mode plan`) + Claude 검토 · 수정 · 보충
 - 날짜: 2026-10-24
-- 상태: **초안 — 코드 반영은 8b 통합 뒤**
+- 상태: **반영됨(2026-10-24 · 문구 1.2 — `packages/web-contract/src/screen.ts` `SCREEN_COPY` · 스크린샷 `../2026-10-24-copy-apply/1.2/`)**
 - 표기: '근거' 칸 끝의 `(Claude 수정)` = Gemini 문구를 고친 줄, `(Claude 보충)` = Gemini 가 빠뜨려 Claude 가 채운 줄, `(검증 수정)` · `(검증 보충)` = 독립 검증(2차)에서 고치거나 채운 줄. 고친 이유는 `review.md`(2차는 끝 절).
 - 자리표시자는 `packages/web-contract/src/screen.ts` 의 `screenFill` 가 채운다. 새로 쓰인 자리표시자는 `review.md` ② 에 모았다.
 - 키 `1.2.<자리>.<용도>` ↔ 기존 `SCREEN_COPY` 대응은 `review.md` ⑤.

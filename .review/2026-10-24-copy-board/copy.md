@@ -2,7 +2,7 @@
 
 - 출처: Gemini 4 Argon (High) 원문(`gemini-raw.md`, `agy --model gemini-4-argon-high --effort high --mode plan` 헤드리스 · 한 번에 성공) → Claude Opus 5.5 검토 · 수정
 - 날짜: 2026-10-24
-- 상태: **초안 — 코드 반영은 8b 통합 뒤**
+- 상태: **반영됨(2026-10-24 · copy-apply)** — `MARKET_COPY`. 위 띠 · LED 띠 · 공개 서랍은 설계 §5.2 · §5.3 대로 '시가총액'(초안 '기업가치 순위' 대신), 최종 순위 창은 '기업가치'. 쓸 자리가 없는 새 키(`news.*` 대부분 · `val.*` · `process.keyDesc.*` · `deadline.*` · `drawer.stepStatus.*`)는 넣지 않았다.
 - 근거 칸: `§` = 설계 문서(`docs/2026-10-23-crista-web-design.md`) 절, `FMARKET` = `packages/web-contract/src/market.ts` 규칙 값, `범위 n` = 지시문(`prompt.md`) 3절 범위 번호, `COPY.…` = 맞출 기존 `MARKET_COPY` 키(다른 단계 COPY 는 `PATENT_COPY.…` 처럼 이름 그대로).
 - 줄 끝 표시: `(Claude 수정)` = 사실 · 숫자 · 자리표시자 · 문체를 고친 줄, `(Claude 보충)` = Gemini 가 빠뜨려 Claude 가 채운 줄, `(검증 수정)` · `(검증 보충)` = 독립 검증(2차)이 고치거나 채운 줄. 이유는 `review.md`.
 - 키 269개(Gemini 255 · Claude 보충 7 · 검증 보충 7). Claude 수정 44줄 · 검증 수정 16줄(`board.drawer.stepStatus.active` → `running` 키 이름 변경 포함).

@@ -2,7 +2,7 @@
 
 - 출처: Gemini 4 Argon High(`agy --mode plan`) 원문 [`gemini-raw.md`](gemini-raw.md) → Claude Opus 5.5 검토 · 수정([`review.md`](review.md)). 지시문 [`prompt.md`](prompt.md).
 - 날짜: 2026-10-24
-- 상태: **초안 — 코드 반영은 8b 통합 뒤**. `APPROVAL_COPY`(packages/web-contract/src/approval.ts)는 아직 고치지 않았다.
+- 상태: **반영됨(2026-10-24)** — `APPROVAL_COPY`(packages/web-contract/src/approval.ts) · s42.tsx. 화면 자리가 없는 키(`stock.*` · `submit.dailyLimit` 등)는 넣지 않았어요. 스크린샷 `../2026-10-24-copy-apply/copy-4.2/`.
 - 표기: 근거 칸 끝 '(Claude 수정)' = Gemini 문구를 고친 줄 · '(Claude 보충)' = 빠진 범위를 Claude 가 채운 줄 · '(검증 수정)' · '(검증 보충)' = 독립 검증(2차)에서 고치거나 채운 줄([`review.md`](review.md) '독립 검증(2차)'). 표시 없는 줄은 Gemini 원문 그대로.
 - 돈 자리표시자: `{fee}` 는 기존 `confirmBody(fee)` 처럼 **단위까지 든 글**(예: '500,000 크리스타'), 나머지 돈(`{balance}` · `{initial}` · `{totalSpent}` …)도 마지막 점검에서 **단위까지 든 글**로 맞췄다(아래 '돈 자리표시자').
 - 조사: 브랜드 · 이름 뒤 조사는 `이(가)` · `을(를)` · `과(와)` 꼴로 두었다(코드 반영 때 받침 함수로 바꾼다).

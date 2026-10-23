@@ -2,7 +2,7 @@
 
 - 출처: Gemini 4 Argon (High) 원문(`gemini-raw.md`, 136행) → Claude 검토 · 수정 · 보충
 - 날짜: 2026-10-24
-- 상태: **초안 — 코드 반영은 8b 통합 뒤**
+- 상태: **반영됨(2026-10-24)** — `CLINICAL_COPY`(packages/web-contract/src/clinical.ts) · s41.tsx · s41-charts.tsx. 화면 자리가 없는 키(예: `recruit.factor.rule` · `viz.703~705`)는 넣지 않았어요. 스크린샷 `../2026-10-24-copy-apply/copy-4.1/`.
 - 근거: `../2026-10-24-copy-common/brief.md` 'F41 · 4.1 임상' · 설계 §6.1(4.1 줄) · §10(실패 바운티) · 시안 `design/step-viz/viz-7.js`(7.01~7.10) · `packages/web-contract/src/clinical.ts`(`PHASE_RULES` · `RECRUIT_TIERS` · `recruitModel` · `trialPower` · `CLINICAL_COPY`) · `apps/server/src/features/clinical.ts`(재도전 경로 · 바운티) · `clinical-sim.ts`(AI 판정 기준)
 
 표기 약속:

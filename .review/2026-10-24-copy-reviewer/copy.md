@@ -2,7 +2,7 @@
 
 - 출처: Gemini 4 Argon (High) 초안(`gemini-raw.md` · `agy --mode plan` · 2026-10-24) → Claude 검토 · 수정(`review.md`).
 - 날짜: 2026-10-24
-- 상태: **초안 — 코드 반영은 8b 통합 뒤.** 반영 자리는 `apps/server/src/reviews.ts` `HOW_TO_TALK_TO_STUDENTS`(서류 심사 4종 · 학습 연구비 채점이 함께 씀)와 `apps/server/src/features/clinical-sim.ts` `buildSimSystemPrompt` '## 글'. 바꾸면 심사관 판(`patent-v1` · `iacuc-v1` · `ind-v1` · `nda-v1`) · `simulatorVersion` · (공통 줄을 바꾸면) 학습 채점 판을 올린다.
+- 상태: **반영됨(2026-10-24)** — 서류 심사 4종은 `apps/server/src/reviews.ts` `REVIEWER_TALK_COMMON` · `REVIEWER_TALK_BY_KIND`(판 patent-v3 · iacuc-v3 · ind-v3 · nda-v2), 임상 해설은 `features/clinical-sim.ts` `SIM_TALK_*`(clinical-sim-v3). 학습 채점용 `HOW_TO_TALK_TO_STUDENTS` 는 그대로 두었어요(6.10-3 미정).
 - 읽는 법: `rule.*` = 시스템 프롬프트에 그대로 들어갈 지시 줄(조립할 때 앞에 "- " 를 붙인다) · `ex.*` = 학생 화면에 보일 글의 예시(지적 80자 · 피드백 300자 · analysis 400자 · recommendation 200자 이내) · `avoid.*` = 쓰지 말 말.
 - 조립: 서류 심사 4종 = `reviewer.common.rule.*` + 그 서류의 `rule.*` · `ex.*` · `avoid.*`. 4.1 임상 해설 = `reviewer.common.rule.*` 중 `noVerdictMoney` · `length` · `sectionName` · `praiseAndFix` · `factsOnly` · `noRepeat` · `offTopicInjection` · `aiIdentity` 를 빼고 `reviewer.sim.*` 를 더한다(검증 수정 — 해설의 숫자는 `<facts>` 가 아니라 같은 출력의 숫자 칸에서 오고(`sim.rule.exact_output_numbers`), 시뮬레이션 출력에는 칸별 ok · flags 가 없으며, 화면 표시는 'AI 임상 시뮬레이션'이라 'AI 심사관'과 맞지 않는다). `reviewer.common.ex.*` 는 여러 서류를 섞은 예시라 조립에 넣지 않고 참고로만 둔다.
 - 예시의 자리표시자는 서버가 바꿔 넣는 값이 아니라, 런타임 LLM 이 `<facts>`(또는 자기 출력 칸)의 값으로 바꿔 쓰는 자리다(`reviewer.common.rule.placeholder`). 사실 키 대응은 `review.md` ②.

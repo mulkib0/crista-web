@@ -2,7 +2,7 @@
 
 - 출처: Gemini 4 Argon (High) 원문(`gemini-raw.md` · `agy --model gemini-4-argon-high --effort high --mode plan` · 한 번에 성공) → Claude(Opus 5.5) 검토 · 수정
 - 날짜: 2026-10-24
-- 상태: **초안 — 코드 반영은 8b 통합 뒤**(`packages/web-contract/src/learn.ts` 의 `LEARN_COPY` · `QUANT_LABEL` · `pipeline.ts` 의 `NOTE_SECTION_LABEL` · `apps/web/src/board/parts.tsx` 의 `NOTE_PLACEHOLDER` 에 넣을 때 식별자 · 숫자 · 규칙 값은 바꾸지 않는다)
+- 상태: **반영됨(2026-10-24 · copy-apply)** — `LEARN_COPY` · `QUANT_LABEL.affinity` · `parts.tsx` `NOTE_PLACEHOLDER`. 새 키(`drawer.path.*` · `tier.*.guide` · `items.reviewGuide` · `shields.earned/used` · `district.*` · `pitch.qual.*` · `result.revisedPaid/None` · `result.aiNote` 등)는 화면에 쓸 자리가 아직 없어 넣지 않았다(보고서 참조).
 - 표시: Claude 가 고친 줄은 '근거' 끝에 `(Claude 수정)`, Claude 가 채운 줄은 `(Claude 보충)`. 2차 독립 검증에서 고친 줄은 `(검증 수정)`. 이유는 `review.md`.
 - 공통 손질(줄마다 표시하지 않음): 원문이 문구 안 자리표시자를 백틱으로 감싼 것을 모두 벗겼다(화면에 백틱이 찍히지 않게).
 - **돈 자리표시자 규칙**: `{c}` · `{max}` · `{used}` · `{cap}` · 예상 투자금 `{min}`/`{max}` 는 화면이 `formatCrista()` 로 채워 **'… 크리스타' 단위가 이미 붙는다**. 그래서 문구에 '크리스타'를 다시 쓰지 않는다. 글자 수 `{min}`/`{max}` 는 숫자만이다.

@@ -2,7 +2,7 @@
 
 - 출처: Gemini 4 Argon (High) 원문(`gemini-raw.md`, `agy --mode plan` 헤드리스 · 2026-10-24) → Claude Opus 5.5 검토 · 수정
 - 날짜: 2026-10-24
-- 상태: **초안 — 코드 반영은 8b 통합 뒤**
+- 상태: **반영됨(2026-10-24 · 문구 3.2 · 3.3 담당)** — `PRECLINICAL_COPY` 에 옮겼어요. 반영 때 버리거나 고친 줄은 아래 '반영 메모'에 적었어요. 화면 스크린샷 `.review/2026-10-24-copy-apply/3.2-3.3/`.
 - 근거 칸의 절 번호는 설계 문서(`docs/2026-10-23-crista-web-design.md`) 기준으로 바꿔 적었다(Gemini 원문은 지시문 `prompt.md` 의 절 번호 §2~§4 를 썼다). `범위 n` 은 지시문 2절 범위 번호다.
 - 줄 끝 표시: `(Claude 수정)` = 사실 · 숫자 · 자리표시자 · 문체를 고친 줄, `(Claude 보충)` = Gemini 가 빠뜨려 Claude 가 채운 줄. 이유는 `review.md`.
 - 키 141개(Gemini 125 · Claude 보충 11 · 검증 보충 5). Claude 수정 27줄(1차 메모의 '28줄'은 머리말 줄까지 센 수).
@@ -158,3 +158,13 @@
 메모
 - 자리표시자: `{value}` 하나만 새로 생겼다(대체 시험 실측값 — 결과 `value` 칸). 나머지 `{min}` · `{max}` · `{pct}` · `{ratio}` · `{sf}` 는 서버 값이 아니라 `preclinical.ts` 상수(`IACUC_SECTION_MIN` · `ENDPOINT_PCT_RANGE` · `EFFICACY_CHIP_MIN_PCT` · `BRAIN_PLASMA_HIGH_MIN` · `SAFETY_FACTOR`)를 끼워 넣는 자리다. 자세한 대응은 `review.md` ②.
 - 여러 값을 한 줄로 묶은 키(`quiz.*.options` · `protocol.checklist` · `pick.metrics.*` · `calc.fields` · `animal.models`)는 코드 반영 때 기존 배열 · 객체 키로 나눈다(`review.md` ⑤).
+
+## 반영 메모(2026-10-24)
+
+- 윤리 카드는 설계 §5.9 ① 표의 사실 · 숫자 · 출처 그대로 두었어요. 그래서 초안의 카드 1 끝 줄('IND 서류의 비임상 시험 자료가 돼요')과 출처 더하기(식약처 [별표 1] · 21 CFR 312.23(a)(8) · 농림축산검역본부 고시 제2023-47호 · FDA 현대화법 2.0 출처 칸)는 넣지 않았어요. IND 풀이는 카드 5에 붙였어요.
+- 카드 2 '오가노이드(사람 세포로 키운 …)' → '세포를 입체로 키운 작은 장기 모형'(오가노이드가 사람 세포로만 만들어지는 것은 아니라서).
+- 종 · 이유 칸의 '서버가 채우는 것'은 설계대로 '—'(6.4-2 질문은 그대로 남아요).
+- `pick.backupWhy` 는 첫 문장만 '보류' 표기로 바꿔 `ui.leadRule` 끝에 붙였어요(둘째 문장은 설계 규칙이 아니라 뺐어요 — 6.4-3).
+- 넣지 않은 키(쓸 자리가 없음): `common.stepTitle` · `common.island.*` · `protocol.section.performers.*` · `protocol.changeReview` · `pick.metrics.*`(결과판 행 이름은 짧게 둠) · `animal.models`(코드 `PRECLINICAL_MODELS` = 설계 표) · `pick.debate.ptgs2` · `alt.*.desc` 의 `{value}` 줄(결과는 결과표에 보임).
+- 숫자는 상수로 끼웠어요(`ANIMALS_PER_CANDIDATE` · `SAFETY_FACTOR` · `SPECIES_HED_DIVISOR` · `HUMAN_WEIGHT_KG` · `IACUC_SECTION_MIN` · `ENDPOINT_PCT_RANGE` · `REVIEW_LIMITS`). 진행 표시는 `formatGameDay`(D+).
+- 규칙 문구 · 체크리스트(IND 풀이)가 LLM 입력에 들어가서 `IACUC_REVIEWER_VERSION` 을 `iacuc-v2` 로 올렸어요.
