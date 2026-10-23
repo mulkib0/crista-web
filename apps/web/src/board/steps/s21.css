@@ -1,0 +1,96 @@
+/* 2.1 단계 화면 전용 모양(FSEL) — 공용 부품 · 섬 모양은 styles.css(바꾸지 말 것). 선택자는 .s21 아래로 묶는다.
+   .sel-* 는 2.1 · 2.2 가 같이 쓰는 FSEL 부품(출신 · 알려진 물질 칩 · 목록 · 그림) — :is(.s21, .s22) 아래로. 새 색은 쓰지 않는다. */
+
+.s21, .s22 { display: grid; gap: 12px; min-width: 0; }
+
+:is(.s21, .s22) .sel-q { font-family: var(--serif); font-size: 15px; margin: 0 0 10px; }
+:is(.s21, .s22) .sel-fig { margin: 0; display: grid; gap: 6px; }
+:is(.s21, .s22) .sel-svg { width: 100%; height: auto; display: block; max-width: 560px; }
+.s21 .sel-svg.gauge { max-width: 400px; }
+:is(.s21, .s22) .sel-svg text { font-family: var(--sans); fill: var(--fg); }
+
+/* 출신 · 알려진 물질 칩 — 기호 + 글(색만으로 말하지 않는다) */
+:is(.s21, .s22) .sel-origin, :is(.s21, .s22) .sel-known {
+  display: inline-block; border-radius: 999px; padding: 2px 9px; font-size: 11.5px; font-weight: 600; max-width: 100%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle;
+}
+:is(.s21, .s22) .sel-origin.this { background: var(--good-bg); color: var(--good); }
+:is(.s21, .s22) .sel-origin.other { background: var(--warn-bg); color: var(--warn); }
+:is(.s21, .s22) .sel-origin.unknown { background: var(--raise); color: var(--muted); }
+:is(.s21, .s22) .sel-known { background: var(--bad-bg); color: var(--bad); }
+
+/* 목록(대기열 · 특허 후보 · 찜 회고) */
+:is(.s21, .s22) .sel-list { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 6px; }
+:is(.s21, .s22) .sel-list li {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding: 8px 12px; border-radius: 14px; background: var(--surface); min-width: 0;
+}
+:is(.s21, .s22) .sel-list li b { overflow-wrap: anywhere; }
+:is(.s21, .s22) .sel-list li .btn { margin-left: auto; }
+
+/* 찜 회고 한 줄 */
+.s21 .sel-retro-line { margin: 0 0 10px; font-size: 13px; padding: 8px 12px; border-radius: 12px; background: var(--hi); color: var(--hi-fg); }
+
+/* 3.05 수심계 */
+.s21 .g-tube { fill: var(--surface); stroke: var(--fg); stroke-width: 1.2; }
+.s21 .g-zone { fill: var(--hi); opacity: 0.55; }
+.s21 .g-tick { stroke: var(--fg); stroke-width: 1; }
+.s21 .g-num { font-family: var(--mono) !important; font-size: 10.5px; fill: var(--muted) !important; }
+.s21 .g-side { font-size: 11px; font-weight: 700; }
+.s21 .g-lead { fill: none; stroke: var(--line-strong); stroke-width: 1; }
+.s21 .g-lab { font-size: 11px; }
+.s21 .g-lab.b { font-weight: 700; }
+.s21 .g-line { stroke-width: 2; stroke-dasharray: 4 3; }
+.s21 .g-m.bad .g-line, .s21 .g-m.bad circle { stroke: var(--bad); fill: var(--bad); }
+.s21 .g-m.bad text { fill: var(--bad); }
+.s21 .g-m.good .g-line, .s21 .g-m.good circle { stroke: var(--good); fill: var(--good); }
+.s21 .g-m.good text { fill: var(--good); }
+.s21 .g-m.ink .g-line { stroke: var(--fg); }
+.s21 .g-m.ink circle { fill: var(--fg); }
+.s21 .g-m.ink text { font-weight: 700; }
+.s21 .g-m.muted circle { fill: var(--muted); }
+.s21 .g-m.muted text { fill: var(--muted); }
+.s21 .g-m.me :is(circle, rect, path) { fill: var(--hi); stroke: var(--fg); stroke-width: 1.2; }
+
+/* 3.09 점수 카드 */
+.s21 .sel-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); gap: 10px; }
+.s21 .sel-card { background: var(--bg); border-radius: 18px; padding: 14px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+/* 카드 안 한 줄 칸이 긴 기전 · SMILES 의 min-content 로 넓어지지 않게(이웃 카드 밖으로 넘침 방지) */
+.s21 .sel-card { grid-template-columns: minmax(0, 1fr); }
+.s21 .sel-card > * { min-width: 0; }
+.s21 .sel-card h4 { margin: 0; font-size: 14px; overflow-wrap: anywhere; }
+.s21 .sel-card .smi { margin: 0; max-height: 2.8em; overflow: hidden; }
+.s21 .sel-card-top { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.s21 .sel-dg { font-size: 22px; font-weight: 700; }
+.s21 .sel-dg small { font-size: 11px; font-weight: 400; color: var(--muted); }
+.s21 .sel-pbar { height: 8px; border-radius: 999px; background: var(--raise); overflow: hidden; }
+.s21 .sel-pbar i { display: block; height: 100%; background: var(--fg); border-radius: 999px; }
+.s21 .sel-band { margin: 0; overflow-wrap: anywhere; font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 10px; background: var(--warn-bg); color: var(--warn); }
+.s21 .sel-card .btn { justify-self: start; }
+
+/* 3.07 10배 계단 */
+.s21 .st-band { fill: var(--raise); }
+.s21 .st-band.a { fill: var(--surface); }
+.s21 .st-path { fill: none; stroke: var(--fg); stroke-width: 2; }
+.s21 .st-dot.ref { fill: var(--fg); }
+.s21 .st-dot.me { fill: var(--hi); stroke: var(--fg); stroke-width: 1.5; }
+.s21 .st-dot.dim { fill: var(--muted); opacity: 0.6; }
+
+.s21 .fld { margin-top: 10px; }
+
+@media (max-width: 600px) {
+  :is(.s21, .s22) .sel-list li .btn { margin-left: 0; }
+}
+
+/* 도킹 비교표 — 출신 · 대기열 칩은 분자 칸 아래 한 줄 */
+.s21 .sel-row-chips { margin-top: 4px; }
+.s21 .sel-row-chips .sel-origin, .s21 .sel-row-chips .sel-known { max-width: 26ch; }
+.s21 table :is(th, td):first-child { white-space: nowrap; }
+
+/* 수심계 풀이 목록(그림 아래 — 이정표마다 한 줄) · 1위 도장 · 작용기 예시 칩(문구 반영 2026-10-24) */
+.s21 .sel-notes { margin: 8px 0 4px; padding: 0 0 0 18px; display: grid; gap: 3px; overflow-wrap: anywhere; }
+.s21 .sel-notes li.bad { color: var(--bad); }
+.s21 .sel-notes li.good { color: var(--good); }
+.s21 .sel-notes li.ink { font-weight: 700; }
+.s21 .sel-notes li.muted { color: var(--muted); }
+.s21 .sel-stamp { border-style: dashed; font-weight: 700; }
+.s21 .sel-edit-chips { margin: 6px 0; align-items: center; }

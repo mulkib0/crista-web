@@ -1,0 +1,68 @@
+/* 2.2 단계 화면 전용 모양(FSEL) — 공용 부품 · 섬 모양은 styles.css(바꾸지 말 것). 선택자는 .s22 아래로 묶는다.
+   출신 · 알려진 물질 칩 · 목록(.sel-*)은 s21.css(2.1 · 2.2 공용). 새 색은 쓰지 않는다. */
+
+.s22 .sel-pick { align-items: center; margin-bottom: 8px; }
+.s22 .sel-pick .lab { margin: 0 4px 0 0; }
+
+/* 4.02 물성 레이더 */
+.s22 .sel-radars { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr)); gap: 10px; }
+.s22 .sel-radars figure { margin: 0; background: var(--bg); border-radius: 18px; padding: 12px; display: grid; gap: 4px; min-width: 0; }
+.s22 .sel-radars figcaption { font-size: 13px; overflow-wrap: anywhere; }
+.s22 .rd-grid { fill: none; stroke: var(--line); stroke-width: 1; }
+.s22 .rd-band { fill: var(--hi); opacity: 0.5; stroke: var(--line-strong); stroke-width: 1; }
+.s22 .rd-mol { fill: var(--fg); fill-opacity: 0.08; stroke: var(--fg); stroke-width: 2; }
+.s22 .rd-pt { fill: var(--fg); }
+.s22 .rd-bad { fill: var(--bad); }
+.s22 .rd-lab { font-size: 11.5px; }
+.s22 .rd-lab.bad { fill: var(--bad) !important; font-weight: 700; }
+
+/* 4.03 신호등 표 */
+.s22 .sel-lights th small { display: block; font-family: var(--mono); font-size: 10px; font-weight: 400; color: var(--muted); }
+.s22 .sel-lights tr.ref td { background: var(--raise); }
+.s22 .sel-lights .sig { padding: 2px 6px; font-size: 11px; }
+.s22 .sel-lights :is(th, td) { padding-left: 6px; padding-right: 6px; }
+
+/* 4.04 몸속 여행 지도 */
+.s22 .sel-trip { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+.s22 .trip-path { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: trip; }
+.s22 .trip-path li {
+  position: relative; display: grid; gap: 3px; padding: 10px 12px 10px 34px; border-radius: 14px; background: var(--bg); margin-bottom: 14px; min-width: 0;
+}
+.s22 .trip-path li::before {
+  counter-increment: trip; content: counter(trip); position: absolute; left: 10px; top: 10px; font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+.s22 .trip-path li:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; bottom: -15px; font-size: 12px; color: var(--muted); }
+.s22 .trip-path li .mini { overflow-wrap: anywhere; }
+.s22 .trip-bar { height: 8px; border-radius: 999px; background: var(--raise); overflow: hidden; }
+.s22 .trip-bar i { display: block; height: 100%; background: var(--fg); }
+.s22 .trip-out { display: grid; gap: 10px; position: sticky; top: 12px; }
+.s22 .trip-box { display: grid; gap: 4px; padding: 14px; border-radius: 18px; background: var(--bg); min-width: 0; }
+.s22 .trip-box.film { background: var(--film); color: var(--film-ink); }
+.s22 .trip-box b { font-size: 30px; line-height: 1.1; }
+.s22 .trip-box .mini { overflow-wrap: anywhere; }
+
+/* 4.10 점수 분해 사슬 */
+.s22 .chain { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; }
+.s22 .chain-i { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.s22 .chain .op { font-style: normal; font-weight: 700; font-size: 16px; }
+.s22 .chain .blk { display: grid; gap: 2px; justify-items: center; text-align: center; padding: 8px 10px; border-radius: 14px; background: var(--bg); min-width: 74px; }
+.s22 .chain .blk small { font-size: 10.5px; color: var(--muted); }
+.s22 .chain .blk b { font-size: 18px; }
+.s22 .chain .blk.weak { box-shadow: inset 0 0 0 2px var(--warn); }
+.s22 .chain .blk.weak small { color: var(--warn); }
+.s22 .chain .blk.res { background: var(--film); color: var(--film-ink); }
+.s22 .chain .blk.res small { color: inherit; }
+.s22 .chain .blk.res.bad { background: var(--bad-bg); color: var(--bad); }
+.s22 .chain .blk.res.ok { background: var(--good-bg); color: var(--good); }
+
+/* ADMET-AI 레이더(참고) */
+.s22 .sel-ai { background: var(--bg); border-radius: 18px; padding: 12px 16px; }
+.s22 .sel-ai summary { cursor: pointer; }
+
+@media (max-width: 860px) {
+  .s22 .sel-trip { grid-template-columns: minmax(0, 1fr); }
+  .s22 .trip-out { position: static; }
+}
+
+/* 신호등 표 범례(문구 반영 2026-10-24) — 칩은 짧게, 풀이는 옆 글로(좁은 화면에서 줄바꿈) */
+.s22 .sel-legend { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 4px; overflow-wrap: anywhere; }
