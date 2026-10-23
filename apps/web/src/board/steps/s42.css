@@ -1,0 +1,110 @@
+/* 4.2 최종 허가(F42) 전용 모양 — 공용 부품 · 섬 모양은 styles.css(바꾸지 않는다). 선택자는 .s42- 로 묶는다.
+   시안: design/step-viz/viz-8.js 8.01 허가증 · 8.06 포장 · 8.08 영수증. 색은 토큰(--ink 대신 --fg 등)과 박막 색만. 폰 390 폭에서 가로 스크롤 없게. */
+
+.s42-brand-in { font-size: 18px; font-family: var(--serif); font-weight: 700; max-width: 360px; }
+.s42-tips { margin: 0 0 8px; padding-left: 18px; display: grid; gap: 4px; font-size: 13px; }
+
+/* ② 포장 */
+.s42-ctl { display: grid; gap: 12px; }
+.s42-choice .lab { margin-bottom: 6px; }
+.s42-sw { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; box-shadow: inset 0 0 0 1px var(--line-strong); }
+.s42-pack { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; align-items: start; min-width: 0; }
+.s42-pack.big { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); max-width: 960px; }
+.s42-art { background: var(--bg); border-radius: 18px; padding: 10px; min-width: 0; }
+.s42-art svg { display: block; width: 100%; height: auto; }
+.s42-art.sm { max-width: 260px; margin-top: 10px; }
+
+/* ④ 심사 · 접수 */
+.s42-rules { list-style: none; margin: 6px 0 10px; padding: 0; display: grid; gap: 4px; font-size: 13px; }
+.s42-rules li { padding: 5px 10px; border-radius: 10px; }
+.s42-rules li.ok { color: var(--good); background: var(--good-bg); }
+.s42-rules li.fail { color: var(--bad); background: var(--bad-bg); }
+.s42-rules b { font-family: var(--mono); }
+
+/* 모둠 공유 — 진행 줄 · 값 */
+.s42-flow { list-style: none; margin: 0 0 10px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.s42-flow li { font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); }
+.s42-flow li[data-on] { color: var(--fg); border-color: var(--fg); }
+.s42-flow li[aria-current="step"] { background: var(--hi); color: var(--hi-fg); border-color: var(--fg); font-weight: 600; }
+.s42-prog { position: relative; height: 22px; border-radius: 999px; background: var(--raise); overflow: hidden; margin-bottom: 10px; }
+.s42-prog i { position: absolute; inset: 0 auto 0 0; background: var(--film); }
+.s42-prog span { position: relative; font-size: 11px; line-height: 22px; padding-left: 10px; }
+.s42-kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin: 0; font-size: 13px; }
+.s42-kv dt { color: var(--muted); font-size: 12px; }
+.s42-kv dd { margin: 0; overflow-wrap: anywhere; }
+
+/* 증거 줄(NDA 요약 · 허가증) — 오른쪽 단계 꼬리표 */
+.s42-dl { margin: 0; display: grid; border-top: 1px solid var(--line-strong); }
+.s42-dl-r { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) auto; gap: 0 10px; padding: 6px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.s42-dl-r dt { color: var(--muted); font-size: 12px; }
+.s42-dl-r dd { margin: 0; font-size: 13px; overflow-wrap: anywhere; }
+.s42-tags { display: flex; gap: 3px; justify-content: flex-end; flex-wrap: wrap; }
+.s42-tag { font-family: var(--mono); font-size: 10.5px; padding: 1px 5px; background: var(--film); border: 1px solid var(--line-strong); white-space: nowrap; }
+@media (max-width: 520px) {
+  .s42-dl-r { grid-template-columns: minmax(0, 1fr) auto; }
+  .s42-dl-r dt { grid-column: 1 / -1; }
+}
+
+/* ⑤ 결과 */
+.s42-sec-block { display: grid; gap: 10px; min-width: 0; }
+.s42-h { margin: 6px 0 0; font-size: 15px; }
+.s42-doc-acts { justify-content: flex-end; }
+
+/* 완주 연출 — 9단계 사슬에 ✓ 가 차례로 켜지고 도장이 찍힌다(모션 줄이기면 멈춘 그림) */
+.s42-done { background: var(--film); color: var(--film-ink); border-radius: 20px; padding: 18px; display: grid; gap: 8px; }
+.s42-done-h { margin: 0; font-family: var(--serif); font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+.s42-chain { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.s42-chain li { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--fg); color: var(--bg); animation: s42-pop 0.45s both; animation-delay: calc(var(--i) * 90ms); }
+.s42-chain li b { color: var(--hi); }
+@keyframes s42-pop { from { opacity: 0; transform: translateY(6px) scale(0.9); } to { opacity: 1; transform: none; } }
+
+/* 허가증(8.01) */
+.s42-cert { border: 2px solid var(--fg); background: var(--surface); padding: 18px 20px; display: grid; gap: 12px; min-width: 0; max-width: 820px;
+  box-shadow: inset 0 0 0 4px var(--surface), inset 0 0 0 5px var(--line-strong); }
+.s42-cert-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
+.s42-cert-h { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.s42-cert-h h3 { margin: 0; font-family: var(--serif); font-size: 36px; letter-spacing: -0.02em; line-height: 1.1; overflow-wrap: anywhere; }
+.s42-cert-h p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+.s42-kind { font-family: var(--serif); font-size: 15px; font-weight: 700; }
+.s42-stamp { width: 112px; flex: none; transform: rotate(-11deg); animation: s42-stamp 0.5s 0.9s both cubic-bezier(0.2, 1.4, 0.4, 1); }
+.s42-stamp svg { display: block; width: 100%; height: auto; }
+@keyframes s42-stamp { from { opacity: 0; transform: rotate(-11deg) scale(1.8); } to { opacity: 1; transform: rotate(-11deg) scale(1); } }
+.s42-cert-f { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; font-weight: 600; }
+@media (max-width: 520px) { .s42-cert-h h3 { font-size: 28px; } .s42-stamp { width: 84px; } .s42-cert { padding: 14px; } }
+
+/* 영수증(8.08) — 아래 톱니 */
+.s42-rc-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; align-items: start; }
+.s42-rc { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; background: var(--surface); border: 1px solid var(--line-strong); padding: 16px 16px 22px; max-width: 560px; width: 100%; min-width: 0;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 12px 100%; mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 12px 100%; }
+.s42-rc h4 { margin: 0; text-align: center; font-size: 14px; letter-spacing: 0.12em; }
+.s42-rc > p { margin: 2px 0 0; text-align: center; color: var(--muted); font-size: 11.5px; font-family: var(--sans); }
+.s42-rc table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; table-layout: fixed; }
+.s42-rc td { padding: 3px 0; vertical-align: top; overflow-wrap: anywhere; }
+.s42-rc td:nth-child(1) { width: 62%; }
+.s42-rc td:nth-child(2) { color: var(--muted); padding: 3px 6px; white-space: nowrap; font-size: 11px; width: 16%; }
+.s42-rc td:last-child { text-align: right; white-space: nowrap; }
+.s42-rc tr.s42-sec td { color: var(--muted); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 6px; }
+.s42-rc tr.s42-sep td { border-top: 1px dashed var(--line-strong); padding-top: 6px; }
+.s42-rc tr.s42-fail td { color: var(--bad); }
+.s42-rc tr.s42-tot td { font-size: 14px; font-weight: 600; }
+.s42-bar { display: flex; height: 16px; border: 1px solid var(--fg); margin: 8px 0 4px; }
+.s42-bar i { display: block; height: 100%; }
+.s42-leg { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; font-family: var(--sans); }
+.s42-leg i { display: inline-block; width: 9px; height: 9px; margin-right: 4px; border: 1px solid var(--line-strong); }
+.s42-rc-end { margin: 10px 0 0; text-align: center; color: var(--muted); font-size: 11.5px; }
+.s42-side { display: grid; gap: 10px; align-content: start; }
+.s42-big { display: grid; gap: 2px; padding: 4px 0; }
+.s42-big b { font-family: var(--mono); font-size: 26px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.s42-big span { font-size: 12.5px; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .s42-chain li, .s42-stamp { animation: none; }
+}
+
+/* 인쇄 — 고른 덩어리 하나만(s42-art.ts printOnly) */
+@media print {
+  body.s42-printing * { visibility: hidden !important; }
+  body.s42-printing .s42-print-on, body.s42-printing .s42-print-on * { visibility: visible !important; }
+  body.s42-printing .s42-print-on { position: absolute; left: 0; top: 0; width: 100%; }
+  body.s42-printing .s42-print-on .s42-stamp { animation: none; }
+}
