@@ -52,3 +52,24 @@
 2. 워커는 지금 표적 4종(crista `DOCKING_TARGETS`) — 12대 질환 확장(§6.1.1)은 crista 저장소 변경.
 3. 로그인은 GoTrue 상한과 무관해졌다(위). 0004 전에 만든 계정만 첫 로그인 한 번 GoTrue 를 거친다.
 4. 호스팅 점검 학급 · 계정(W6 · 로그인 몰림 점검)을 남길지 지울지.
+
+### 6.11 F11 — 1.1 질환 · 표적 선정: 내 작업대 도구 5종 · 추천 서랍(설계 §5.4.2 · 2026-10-24 사용자 지시 "1~5 를 직접 적용하자")
+
+시안 `design/target-select-10.html` 01~05 의 **기능**을 지금 '둥근 섬' 화면에 넣었다(`styles.css` · `StepLayout` · 판 · 카드 모양은 그대로).
+
+| 층 | 파일 | 한 일 |
+| --- | --- | --- |
+| 규격 | `packages/web-contract/src/target.ts`(새) | 근거 4종 `TARGET_EVIDENCE` · 준비 상태 `targetTier` · 표적 8개 `targetShortlist`(워커 rank 1~8 = 도킹 표적 + 종합 상위 7 → 종합 순) · 가중치 `PICK_WEIGHT` · `pickWeightsOk` · `myTargetScore` · 추천 근거 6종 `TARGET_PICK_REASONS` + `checkTargetPickReasons`(시안 `REASONS[].check` 그대로 — 막음 `block` · 주의 `warn`) · 12대 질환 카탈로그 `TARGET_DISEASE_GROUPS` · 재도킹 값 `TARGET_REDOCK` · 한글 이름 `TARGET_KO_NAME` · 요청 `TargetPickRequest`. `TargetPickView` 에 `reasons` · `weights` |
+| DB | `db/migrations/0009_target_pick_reasons.sql`(새) | `target_picks.reasons text[] not null default '{}'`(6개까지) · `weights real[]`(4개 · 0~3). 로컬 적용함 · **호스팅 미적용** |
+| 서버 | `apps/server/src/pipeline.ts` `pickTarget` · `loadBoard` | `targetId` 를 보내면 질환의 도킹 표적과 같은지(아니면 400 `invalid_input` "도킹 준비된 표적은 X 하나예요") · 모르는/겹친 근거 400 · 가중치 틀림 400 · 근거가 있으면 그 질환 표적 8개(워커 10분 캐시)로 같은 코치를 다시 돌려 **막음이면 400 `reason_blocked`** · 주의는 받음 · 근거 없는 앞 판 요청은 그대로(`reasons = {}`). 다시 올리면 메모 · 근거 · 가중치가 함께 바뀜. board 의 picks 에 `reasons` · `weights` |
+| 화면 | `apps/web/src/board/steps/s11.tsx` · `s11-viz.tsx`(새) · `s11.css` | 머리 걸음 탭 ① 질환 지도(질환군 4 × 3 타일 → 근거 열지도) ② 관계망 ③ 내 점수(가중치 슬라이더 · 빠른 설정 · 32개 누적 막대, 상위 14 밖의 ◆ 4개는 점선 아래 늘 표시) ④ 32개 한눈에(축 끊김 산점도 · 필터 · 가리키면 이름) ⑤ 카드 뒤집기(✓ 카드 뒤집으면 서랍). 탭 아래 공통 **추천 서랍**: 정보판 + 공용 `ReasonChips`(여럿) + 칩마다 코치 줄(✓ · △ · ✕) + 한 줄 이유(≤ 90자) + [모둠에 올리기] · 준비 안 된 표적이면 [X 보러 가기]. 모둠 공유: ② 작은 망 4개 + 깃발 · ③ 모둠원 가중치 · 내 점수 1위 표 · ④ 깃발 산점도 · 추천 카드(근거 · 코치 · 한 줄 이유 · 가중치) · [이 표적으로 확정](그대로) |
+
+- 탭 · 고른 표적 · 가중치 · 필터 · 뒤집은 카드는 개인 상태(`useLocalTab('step:1.1')` · `useBenchState('s11:…')`). 한 줄 이유는 다른 질환으로 옮기면 비운다.
+- 새 색은 `s11.css` 의 `--e1~--e4`(근거) · `--d1~--d4`(질환)만 — 화면에 어두운 판이 없어 어두운 값은 `:root[data-theme="dark"]` 에만 둔다. 공용 `.btn` 에 눌림 모양이 없어 필터 · 빠른 설정 토글은 `.s11 .btn[aria-pressed="true"]` 로 잉크 채움.
+- 폰(≤ 860px): 그림은 판 안에서 가로로 넘기고(최소 520~560px — 글씨가 너무 작아지지 않게) 타일 2열 · 카드 2열. 390 폭에서 문서 · 본문 가로 넘침 0.
+
+**설계와 다른 것**: 마이그레이션 번호 `0009`(인계의 '00NN' — 0019 는 같은 날 모둠 대화방이 써서 겹쳤고, 로컬 기록을 관리자 연결로 `0009` 로 옮김) · 가중치 칸은 `int[4]` 가 아니라 `real[]`(0.5 단위를 담으려고 — 0.5 단위 · 하나 이상 0 초과는 서버가 본다) · '다른 모둠이 안 고른 질환' 근거는 `board` 가 다른 모둠의 질환을 주지 않아 늘 **주의**("전광판 공개 서랍에서 확인해 보세요") — 선점 배지도 뺐다 · 찬성 · 정족수 · 회의 기록 · 모둠원 뒤집기 진행은 넣지 않음(§5.4.2).
+
+**시험**: `npm run typecheck`(web-contract · web · 내 서버 파일 통과 — 서버 `scripts/e2e-feed.ts` 의 TS2371 은 모둠 대화방 작업 파일) · `npm test` 160 + 197 통과(새 `packages/web-contract/test/target.test.ts` 11건) · `node tools/with-local-env.mjs node apps/server/scripts/e2e-target.ts`(새) 9/9 — 표적 8개에 도킹 표적 · 엉뚱한 targetId 400 · 모르는/겹친 근거 400 · ACHE '유전' · '발현' 근거 400 `reason_blocked` · 가중치 틀림 400 · 주의만 200 · 다시 올리면 바뀜 · 앞 판 요청 200 · board picks 근거 · 가중치 · 확정 → 1.1 완료 · 1.2 열림 · `npm run e2e:parallel` 통과(1.1 추천 4장 동시 · 동시 확정 포함). 화면: Playwright 두 프로필(학생 2 · 같은 모둠)로 ① ACHE 막음 코치 → 단추 막힘 → 근거 고쳐 올리기 · ② EGFR 올리기 → 깃발 · ③ 유전만 · 32개 모두 · ④ 필터 · PTGS2 카드 뒷면 · ⑤ 당뇨 카드 뒤집기 → DPP4 서랍 · 다른 프로필이 확정 → 실시간 반영 → [다음 단계로 — 1.2] → 1.2 화면. 콘솔 오류 0. 스크린샷 `.review/2026-10-24-s11/`(1440 9장 · 390 3장).
+
+**남은 것**: 호스팅 DB 에 0009 적용(사용자 확인 뒤 — `npm run db:dry-run:hosted` 먼저) · 다른 모둠 선점 표시(board 에 다른 모둠 질환을 줄지 결정) · 찬성 · 정족수(시안의 모둠 공유 장치 — 넣을지 사용자 결정) · 12대 질환 나머지 8종 데이터(crista 일 — §6.1.1).
