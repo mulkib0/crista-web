@@ -92,7 +92,7 @@ export function AbIslands({ head, mine, team, ratio = 'team' }: AbIslandsProps) 
     <>
       <header className="isl isl-head" aria-label="단계 머리">{head}</header>
       <section className="isl isl-mine" data-ratio={ratio} aria-labelledby="ab-mine-h">
-        <h2 className="isl-h" id="ab-mine-h">내 작업대 — 나만 보여요</h2>
+        <h2 className="isl-h" id="ab-mine-h">나의 작업대</h2>
         {mine}
       </section>
       <section className="isl isl-team" aria-labelledby="ab-team-h">

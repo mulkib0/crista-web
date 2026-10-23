@@ -583,7 +583,6 @@ export const PATENT_COPY = {
   ui: {
     pickFirst: '출원서를 먼저 골라요',
     loading: '불러오는 중…',
-    mineTitle: (code: string | null, status: string) => `내 작업대 — ${code ?? '코드명 없음'} · ${status}`,
     pickReason: '2.2 근거',
     candidate: '후보',
     ourCandidate: '우리 후보',

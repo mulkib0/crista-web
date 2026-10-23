@@ -431,7 +431,6 @@ export function Step33(props: StepProps) {
         tab={tool}
         onTab={(id) => setTool(id as ToolId)}
         tabsLabel={C.ui.tabsLabel}
-        mineTitle={C.ui.mineTitle}
         mine={mine}
         teamTitle={C.ui.teamTitle}
         team={team}

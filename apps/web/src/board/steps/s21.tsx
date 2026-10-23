@@ -493,7 +493,6 @@ export function Step21(props: StepProps) {
       tab={hasResults || tab === 'edit' ? tab : 'edit'}
       onTab={(id) => setTab(id as Tab)}
       tabsLabel={C.s21.ui.tabsLabel}
-      mineTitle={tab === 'edit' || !hasResults ? C.s21.ui.mineEdit : C.s21.ui.mineRead}
       mine={
         <div className="s21">
           {tab === 'gauge' && hasResults ? readTool((s) => <Gauge sel={s} board={board} />, C.s21.gaugeQ)
