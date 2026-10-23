@@ -118,6 +118,34 @@ td .row { flex-wrap: nowrap; }
 .progress { height: 6px; background: var(--line); position: relative; overflow: hidden; }
 .progress i { position: absolute; inset: 0 auto 0 0; background: var(--fg); transition: width .4s ease; }
 
+/* ── ⓪ 첫 화면 — 히어로 변주판 20.02 '박막 무지개'. 장면이 화면을 채우고 오른쪽 아래에 워드마크 · 버튼(좁은 화면은 왼쪽 아래) ── */
+.lp { --lp-rgb: 241, 241, 233; --word: clamp(64px, 10.5vw, 188px); position: fixed; inset: 0; overflow: hidden; background: var(--bg); color: var(--fg); }
+.lp-stage { position: absolute; inset: 0; cursor: grab; touch-action: pan-y; }
+.lp-stage:active { cursor: grabbing; }
+.lp-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.lp-scrim { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(270deg, rgba(var(--lp-rgb), 0.72) 0%, rgba(var(--lp-rgb), 0.34) 30%, rgba(var(--lp-rgb), 0) 54%); }
+.lp-hero { position: absolute; z-index: 2; right: max(clamp(16px, 3.4vw, 56px), env(safe-area-inset-right, 0px)); bottom: calc(clamp(48px, 10vh, 112px) + env(safe-area-inset-bottom, 0px)); display: grid; justify-items: start; gap: clamp(22px, 2.4vw, 36px); pointer-events: none; }
+/* 마크의 바깥 호가 대문자 높이(0.7em)와 같도록 0.9em 상자에 그리고, 호 아래끝을 기준선에 맞춘다 */
+.lp-word { margin: 0; display: flex; align-items: baseline; gap: 0.05em; font-size: var(--word); line-height: 0.9; font-weight: 700; letter-spacing: -0.05em; white-space: nowrap; }
+.lp-word svg { flex: none; width: 0.9em; height: 0.9em; margin-left: -0.08em; transform: translateY(0.1em); fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+.lp-actions { display: flex; flex-wrap: wrap; gap: 12px; pointer-events: auto; }
+.lp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-width: 152px; min-height: 54px; padding: 0 28px; border: 1px solid transparent; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; text-decoration: none; transition: box-shadow .2s ease, border-color .2s ease; }
+.lp-btn svg { flex: none; width: 20px; height: 20px; fill: currentColor; }
+.lp-btn.primary { background: var(--fg); color: var(--bg); }
+.lp-btn.primary:hover { box-shadow: inset 0 0 0 999px rgba(241, 241, 233, 0.12); }
+.lp-btn.secondary { background: rgba(var(--lp-rgb), 0.24); border-color: rgba(8, 11, 9, 0.3); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.lp-btn.secondary:hover { border-color: var(--fg); }
+@media (max-width: 900px) {
+  .lp { --word: clamp(52px, 19vw, 136px); }
+  .lp-hero { left: max(20px, env(safe-area-inset-left, 0px)); right: max(20px, env(safe-area-inset-right, 0px)); bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+  .lp-scrim { background: linear-gradient(0deg, rgba(var(--lp-rgb), 0.82) 0%, rgba(var(--lp-rgb), 0.42) 32%, rgba(var(--lp-rgb), 0) 56%); }
+}
+@media (max-width: 560px) {
+  .lp-actions { width: 100%; }
+  .lp-btn { min-width: 0; flex: 1 1 0; padding: 0 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .lp-btn { transition: none; } }
+
 /* ── ① 로그인 · 가입 ── */
 .auth { min-height: 100%; display: grid; grid-template-rows: 1fr auto; }
 .auth-main { display: grid; place-items: center; padding: 40px 16px 24px; }
