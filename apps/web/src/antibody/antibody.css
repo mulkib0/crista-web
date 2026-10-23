@@ -1,0 +1,196 @@
+/* 항체 설계 랩 전용 모양 — **`.ab-` 접두만** 둬요(설계 §11.1).
+   둥근 섬 틀 · 위 띠 · LED 띠 · 판 · 탭 · 칩은 `styles.css` 와 `board/` 부품을 그대로 가져다 써요 — 이 파일은 고치지 않는 그 파일에
+   없는 칸만 더해요: 연구소 고르기 섬 · 서열 격자 · 3D 틀 · 다양성/등급 칩 · 점수 분해.
+   새 색을 만들지 않아요(§6.5) — 잉크 `--fg` · 페이퍼 `--bg` · 라임 `--hi` · 박막 `--film` 만 써요. */
+
+/* ── 폰 경계 960px — 섬을 한 줄로 쌓아요(§6.2).
+   공용 `.bd-body` 의 쌓기는 860px 부터라 그 사이(861~960px)를 여기서 덮어요. `styles.css` 는 고치지 않아요. */
+@media (max-width: 960px) {
+  .ab-body,
+  .ab-body:has(> .isl-mine[data-ratio]) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'side' 'head' 'mine' 'team';
+    padding-top: 12px;
+  }
+  .ab-body > .isl-mine.span,
+  .ab-body > .isl-team.span { grid-area: auto; grid-row: auto; grid-column: auto; }
+  .ab-body > .isl { border-radius: 20px; padding: 16px; }
+  .ab-body > .isl.side { position: static; max-height: none; overflow: visible; padding: 12px 8px; gap: 8px; }
+  .ab-body .side-groups { display: flex; gap: 6px; overflow-x: auto; scroll-snap-type: x proximity; padding: 0 4px 4px; scrollbar-width: none; }
+  .ab-body .grp { display: contents; }
+  .ab-body .grp-h,
+  .ab-body .st-s,
+  .ab-body .side-foot { display: none; }
+  .ab-body .steps { display: flex; gap: 6px; flex: none; }
+  .ab-body .steps li { flex: none; scroll-snap-align: start; }
+  .ab-body .st { width: auto; grid-template-columns: auto auto auto; column-gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--bg); white-space: nowrap; }
+  .ab-body .sh-n { font-size: 40px; grid-row: span 2; }
+  .ab-body .sh h1 { font-size: 24px; }
+}
+
+/* ── 연구소 고르기(§1.4) ─────────────────────────────────────────────── */
+.ab-labs-h { text-align: center; max-width: 560px; }
+.ab-labs-h h1 { margin: 0; font-size: 30px; letter-spacing: -0.03em; }
+.ab-labs-h .lede { margin: 6px 0 0; }
+.ab-labs-h .mini { margin: 4px 0 0; }
+.ab-lab-s { margin: 6px 0 0; font-size: 12.5px; color: var(--muted); }
+.ab-labs { min-height: 100%; background: var(--raise); padding: 32px max(16px, env(safe-area-inset-left, 0px)) 48px; display: grid; gap: 18px; align-content: start; justify-items: center; }
+.ab-labs-in { width: min(1040px, 100%); display: grid; gap: 12px; }
+.ab-labs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ab-lab { position: relative; display: grid; gap: 14px; align-content: start; justify-items: center; text-align: center; padding: 32px; }
+.ab-lab h2 { margin: 0; font-size: 34px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.15; }
+.ab-lab .ab-big { font-size: 96px; }
+/* 카드에 남은 조작은 이것 하나 — 손가락으로도 쉽게 누르게 크게 둬요. */
+.ab-lab .acts { margin-top: 10px; width: 100%; }
+.ab-labs-in > .acts { justify-content: center; }
+.ab-lab .ab-enter { width: 100%; min-height: 64px; font-size: 20px; font-weight: 700; }
+.ab-lab h2 a { text-decoration: none; }
+/* 카드 전체를 누르게 — 제목 링크의 클릭 영역을 겹침 레이어로 넓혀요(§1.4 접근성). 카드 안에 다른 조작 요소를 넣지 않아요. */
+.ab-lab h2 a::after { content: ''; position: absolute; inset: 0; border-radius: 26px; }
+.ab-lab:hover { background: var(--bg); }
+/* 겹침 레이어 위로 올려서 [들어가기] 단추가 그대로 눌리게 해요(레이어가 클릭을 가로채지 않게). */
+.ab-lab .acts { position: relative; z-index: 1; }
+.ab-lab:has(a:focus-visible) { outline: 2px solid var(--fg); outline-offset: 2px; }
+.ab-lab[data-closed='1'] { opacity: 0.55; }
+.ab-lab[data-closed='1'] h2 a::after { display: none; }
+.ab-big { margin: 0; font-size: 52px; font-weight: 700; letter-spacing: -0.06em; line-height: 0.84;
+  background: var(--film); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px var(--fg); }
+.ab-labs .panel { border: 0; background: var(--bg); border-radius: 18px; }
+.ab-labs .btn, .ab-labs .chip, .ab-labs .badge { border-radius: 999px; }
+@media (max-width: 960px) {
+  .ab-labs { padding-top: 20px; }
+  .ab-labs-grid { grid-template-columns: minmax(0, 1fr); }
+  .ab-labs .isl { border-radius: 20px; padding: 16px; }
+  .ab-big { font-size: 40px; }
+  .ab-lab .ab-big { font-size: 64px; }
+  .ab-lab h2 { font-size: 26px; }
+  .ab-lab .ab-enter { min-height: 56px; font-size: 18px; }
+}
+
+/* ── 랩 소식(공용 LED 띠는 학급 등기 소식이라 항체 소식은 여기 줄에 적어요) ── */
+.ab-news { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; margin: 0; padding: 6px max(16px, env(safe-area-inset-left, 0px)); background: var(--bg); border-bottom: 1px solid var(--line); font-size: 12px; }
+.ab-news b { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.ab-news span { white-space: nowrap; min-width: 0; }
+/* 폰에서는 소식 줄을 접어요 — 한 줄로 밀면 쪽이 가로로 스크롤돼요. */
+@media (max-width: 960px) {
+  .ab-news span { white-space: normal; }
+}
+
+/* ── 출처 배지(§3.5) ─────────────────────────────────────────────────── */
+.ab-badge { appearance: none; border: 0; cursor: pointer; }
+.ab-badge[data-approx='1'] { background: var(--film); color: var(--film-ink); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.ab-badge[data-approx='0'] { background: var(--fg); color: var(--bg); }
+.ab-badge-d { margin: 6px 0 0; padding: 8px 12px; border-radius: 12px; background: var(--bg); font-size: 12px; color: var(--muted); }
+.ab-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ── 등급 · 다양성 칩 — 색 + 이름 + 기호를 늘 함께(§6.5). 글자색은 항상 잉크예요. ── */
+.ab-grade { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 2px 10px; font-size: 11.5px; font-weight: 600; color: var(--fg); white-space: nowrap; }
+.ab-grade[data-g='great'] { background: var(--hi); }
+.ab-grade[data-g='good'] { background: color-mix(in srgb, var(--hi) 24%, var(--bg)); box-shadow: inset 0 0 0 1px var(--fg); }
+.ab-grade[data-g='fair'] { background: var(--bg); box-shadow: inset 0 0 0 1px var(--fg); }
+.ab-grade[data-g='poor'] { background: repeating-linear-gradient(45deg, var(--bg) 0 5px, rgba(8, 11, 9, 0.12) 5px 10px); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.ab-dv { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 20px; padding: 0 5px; border-radius: 999px; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--fg); box-shadow: inset 0 0 0 1px var(--line-strong); background: var(--film); }
+/* 9단 램프 — 박막 간섭색을 옅음→짙음으로. 숫자를 칩 안에 함께 적어 색맹 대비를 해요(§6.5). */
+.ab-dv[data-d='1'] { background: color-mix(in srgb, var(--bg) 92%, var(--fg)); }
+.ab-dv[data-d='2'] { background: color-mix(in srgb, var(--bg) 84%, var(--fg)); }
+.ab-dv[data-d='3'] { background: color-mix(in srgb, var(--bg) 76%, var(--fg)); }
+.ab-dv[data-d='4'] { background: color-mix(in srgb, var(--bg) 68%, var(--fg)); }
+.ab-dv[data-d='5'] { background: color-mix(in srgb, #cdeaff 70%, var(--bg)); }
+.ab-dv[data-d='6'] { background: color-mix(in srgb, #e4ffc0 80%, var(--bg)); }
+.ab-dv[data-d='7'] { background: color-mix(in srgb, #ffe2c2 86%, var(--bg)); }
+.ab-dv[data-d='8'] { background: color-mix(in srgb, #ffd3ea 88%, var(--bg)); }
+.ab-dv[data-d='9'] { background: var(--film); box-shadow: inset 0 0 0 1.5px var(--fg); }
+
+/* ── 서열 편집기(§6.3.1) — 줄바꿈 격자 · 10잔기 묶음 · 셀 28px ── */
+.ab-seq { display: grid; gap: 6px; min-width: 0; }
+/* 칸은 줄(`role="row"`)의 **직계 자식**이에요 — 중간 상자를 끼우지 않아요(화면 낭독기가 줄 · 칸을 세게). */
+.ab-seq-row { display: grid; grid-template-columns: 44px repeat(10, 28px); gap: 2px; align-items: center; justify-content: start; }
+.ab-seq-no { font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; padding-right: 4px; }
+.ab-seq-fold { display: block; }
+.ab-cell { position: relative; appearance: none; border: 0; width: 28px; height: 28px; padding: 0; border-radius: 8px;
+  background: var(--bg); color: var(--fg); font-family: var(--mono); font-size: 13px; font-weight: 600; line-height: 28px; text-align: center; }
+.ab-cell[data-cdr='1'] { background: color-mix(in srgb, var(--hi) 42%, var(--bg)); }
+.ab-cell[data-mut='1'] { box-shadow: inset 0 0 0 2px var(--fg); }
+.ab-cell[aria-selected='true'] { background: var(--fg); color: var(--bg); }
+/* 자물쇠는 **칸 안쪽**에 둬요 — 밖으로 내밀면 윗줄을 침범하고 폰에서 공중에 떠 보여요(§12). */
+.ab-cell[data-lock='1']::after { content: '🔒'; position: absolute; right: 1px; top: 1px; font-size: 10px; line-height: 1; }
+.ab-cell[data-lock='0'][data-unlocked='1']::after { content: '!'; position: absolute; right: 1px; top: -1px; font-family: var(--mono); font-size: 9px; font-weight: 700; }
+.ab-cell:disabled { opacity: 0.55; }
+.ab-seq-fr { appearance: none; border: 0; width: 100%; text-align: left; background: var(--bg); border-radius: 10px; padding: 6px 10px; font-size: 12px; color: var(--muted); }
+.ab-seq-jump { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.ab-seq-jump input { width: 84px; }
+.ab-sub { display: grid; gap: 6px; }
+.ab-sub-r { display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center; font-size: 12.5px; }
+.ab-sub-a { font-family: var(--mono); font-size: 15px; font-weight: 700; }
+
+/* ── 3D 뷰어 틀(§6.4) ── */
+.ab-mol { position: relative; border-radius: 16px; overflow: hidden; background: var(--bg); min-height: 320px; height: 320px; }
+.ab-mol > div { position: absolute; inset: 0; }
+.ab-mol-ctl { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.ab-mol-note { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+@media (max-width: 960px) {
+  .ab-mol { min-height: 240px; height: 240px; }
+  /* 폰에서는 한 줄 10칸을 **5칸 × 2줄**로 접어요 — 칸이 커져 터치 과녁이 44px 에 가까워져요(§12).
+     줄 번호는 칸 왼쪽이 아니라 줄 위로 올려 격자 전체 폭을 칸에 줘요. */
+  .ab-seq-row { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; }
+  .ab-seq-no { grid-column: 1 / -1; text-align: left; padding-right: 0; }
+  .ab-cell { width: 100%; height: 42px; line-height: 42px; font-size: 15px; }
+  .ab-cell[data-lock='1']::after { font-size: 12px; }
+  /* 서열 격자를 담은 판만 좌우 여백을 뺀다 — 설계 §6.3.1 이 센 콘텐츠 폭 296px 을 그대로 쓰려고. */
+  .ab-body .isl .panel.ab-seq-panel { padding-left: 0; padding-right: 0; }
+}
+
+/* 폰에서 단계 머리 칩이 섬 폭을 넘어 잘리지 않게 글을 접어요(§12 — 완료 조건은 잘리면 안 돼요). */
+@media (max-width: 960px) {
+  .ab-body .sh-m .chips { flex-wrap: wrap; }
+  .ab-body .sh-m .chip { white-space: normal; max-width: 100%; text-align: left; }
+  /* 기호만 남으면 '할 수 있음'은 기호가 빈 글자라 눈에 보이는 표시가 하나도 없어요(§12).
+     긴 설명(`.st-s`)은 그대로 숨기고 **짧은 상태 글자**를 알약 안에 되살려요. */
+  .ab-body .st { grid-template-columns: auto auto auto auto; }
+  .ab-body .st-p { display: inline; font-size: 11px; color: var(--muted); }
+  /* 위 띠 오른쪽이 가로로 밀린다는 단서 — 끝에 흐려지는 가림막을 둬요(공용 `styles.css` 는 고치지 않아요). */
+  .ab-shell .top-r { mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%); }
+}
+
+/* 짧은 상태 글자는 폰에서만 보여요(넓은 화면은 `.st-s` 가 길게 알려 줘요). */
+.ab-body .st-p { display: none; }
+
+/* 단계 머리의 접히는 상세(수업 자료 자리) — 학생 머리줄에서 노트북 쪽 말을 빼고 여기에 뒀어요. */
+.ab-head-x { margin-top: 6px; }
+.ab-head-x > summary { font-size: 11.5px; color: var(--muted); cursor: pointer; }
+
+/* ── 점수 카드 ── */
+.ab-score { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.ab-score-n { font-size: 46px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; font-variant-numeric: tabular-nums; }
+.ab-score-s { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.ab-scale { position: relative; height: 26px; margin-top: 8px; }
+.ab-scale-t { position: absolute; inset: 9px 0 auto; height: 8px; border-radius: 999px; background: var(--line); }
+.ab-scale-t i { position: absolute; inset: 0 auto 0 0; background: var(--film); outline: 1px solid var(--fg); border-radius: 999px; }
+.ab-scale-m { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px solid var(--fg); }
+.ab-scale-m[data-dash='1'] { border-left-style: dashed; }
+.ab-scale-m span { position: absolute; top: -2px; left: 4px; font-family: var(--mono); font-size: 9.5px; white-space: nowrap; color: var(--muted); }
+/* 원본 눈금(점선)은 글자를 왼쪽에 붙여 문턱 눈금 글자와 겹치지 않게 해요. */
+.ab-scale-m[data-dash='1'] span { left: auto; right: 4px; }
+.ab-val { display: grid; gap: 4px; }
+.ab-val-n { font-family: var(--mono); font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ab-quota { display: flex; flex-wrap: wrap; gap: 6px 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* 좁은 섬에서 표 칸이 한 글자씩 접히지 않게 — 넘치면 표 칸 안에서만 옆으로 밀려요(쪽 전체는 가로로 스크롤되지 않아요). */
+.ab-body .tbl-w > table { min-width: 460px; }
+.ab-body td, .ab-body th { word-break: keep-all; }
+
+/* 고른 칸을 잉크 바탕 · 페이퍼 글자로 — `styles.css` 의 `.shell .opt` 가 뒤에서 바탕만 되돌려 글자가 보이지 않는 걸 막아요.
+   `styles.css` 는 고치지 않고 항체 본문에서만 덮어요. */
+.ab-body .opt[aria-pressed='true'] { background: var(--fg); color: var(--bg); }
+.ab-body .opt[aria-pressed='true'] .muted { color: inherit; opacity: 0.75; }
+
+/* ── 작은 묶음 ── */
+.ab-kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.ab-kv > div { background: var(--bg); border-radius: 14px; padding: 9px 12px; display: grid; gap: 2px; min-width: 0; }
+.ab-kv dt { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.ab-kv dd { margin: 0; font-family: var(--mono); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ab-kv dd small { font-family: var(--sans); font-size: 11px; font-weight: 400; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-cell { transition: none; }
+}

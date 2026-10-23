@@ -1,0 +1,621 @@
+--- a/apps/web/src/App.tsx
++++ b/apps/web/src/App.tsx
+@@ -3,21 +3,65 @@
+  * 교사는 교사 화면. 주소는 /crista/ · /crista/login · /crista/district · /crista/board · /crista/teacher(History API).
+  */
+ import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+-import { API, type MeResponse, type NextScreen } from '@crista-web/web-contract';
++import { API, LAB_TRACKS, type LabTrack, type MeResponse, type NextScreen } from '@crista-web/web-contract';
+ import { api, ApiFailure, BASE } from './api.ts';
+ import { socket } from './ws.ts';
+ import { Landing } from './screens/Landing.tsx';
+ import { Login } from './screens/Login.tsx';
+ import { Board } from './screens/Board.tsx';
++import { Labs } from './screens/Labs.tsx';
+ import { Teacher } from './screens/Teacher.tsx';
+ 
+ // 사옥 지구는 Phaser 를 싣는다 — 들어갈 때만 내려받는다(설계 §8: 지구를 떠나면 Phaser 를 내린다).
+ const District = lazy(() => import('./screens/District.tsx').then((m) => ({ default: m.District })));
++// 항체 설계 랩은 3D 뷰어가 무겁다 — 들어갈 때만 내려받는다(항체 설계 §1.2 `lazy`).
++const Antibody = lazy(() => import('./screens/Antibody.tsx').then((m) => ({ default: m.Antibody })));
+ 
+-export type Route = 'landing' | 'login' | NextScreen;
++export type Route = 'landing' | 'login' | NextScreen | 'lab' | 'antibody';
+ 
+-const PATHS: Record<Route, string> = { landing: '/', login: '/login', district: '/district', board: '/board', teacher: '/teacher' };
++const PATHS: Record<Route, string> = { landing: '/', login: '/login', district: '/district', board: '/board', teacher: '/teacher', lab: '/lab', antibody: '/antibody' };
+ 
++/** 랩을 기억하는 라우트 — 주소에 `?lab=` 을 붙여 새로고침 · 링크 공유에도 고른 랩이 남는다(항체 설계 §1.1). */
++const LAB_ROUTES: readonly Route[] = ['district', 'board', 'antibody'];
++const LAB_KEY = 'crista.lab';
++const isLab = (v: string | null): v is LabTrack => v !== null && (LAB_TRACKS as readonly string[]).includes(v);
++
++/**
++ * 고른 랩 — **주소 쿼리 우선 · `sessionStorage` 보조**. 둘 다 없으면 null 이고, 그때는 저분자로 조용히 넘기지 않고
++ * 연구소 고르기 화면으로 되돌린다(시크릿 창 · 저장소 차단 · 새 탭에서 모르는 사이 다른 랩에 들어가는 일을 막는다).
++ */
++export function pickedLab(): LabTrack | null {
++  try {
++    const fromUrl = new URLSearchParams(location.search).get('lab');
++    if (isLab(fromUrl)) return fromUrl;
++  } catch {
++    // 주소를 읽을 수 없으면 저장소만 본다.
++  }
++  try {
++    const saved = sessionStorage.getItem(LAB_KEY);
++    if (isLab(saved)) return saved;
++  } catch {
++    // 저장소가 막혀 있으면(사생활 보호 창) 주소만 쓴다.
++  }
++  return null;
++}
++
++/** 보조 캐시에만 적는다 — 주소가 1순위다. */
++function rememberLab(track: LabTrack): void {
++  try {
++    sessionStorage.setItem(LAB_KEY, track);
++  } catch {
++    // 저장소가 막혀 있어도 주소에 남으므로 넘어간다.
++  }
++}
++
++/**
++ * 서버가 준 `next` 를 '처음 보낼 라우트'로 바꾼다 — 학생은 **늘 연구소 고르기부터** 본다(항체 설계 §1.1 · §12).
++ * 등기 전(`next === 'district'`)에도 연구소 고르기를 먼저 보여 준다 — 그 화면이 '먼저 사옥 지구에서 회사를
++ * 등기해야 해요' 안내와 [사옥 지구로] 단추를 들고 있고, 거기서 고른 랩이 `?lab=` 으로 등기 뒤까지 따라간다.
++ */
++const entry = (m: MeResponse): Route => (m.next === 'teacher' ? 'teacher' : 'lab');
++
+ function routeFromLocation(): Route {
+   const path = location.pathname.slice(BASE.length).replace(/\/+$/, '') || '/';
+   const hit = (Object.entries(PATHS) as Array<[Route, string]>).find(([, p]) => p === path);
+@@ -25,7 +69,8 @@
+ }
+ 
+ export interface Nav {
+-  go: (route: Route, replace?: boolean) => void;
++  /** `lab` 을 주면 그 랩을 주소(`?lab=`)에 싣는다 — 저장소가 막힌 창에서도 고른 랩이 남는다(§1.1). */
++  go: (route: Route, replace?: boolean, lab?: LabTrack) => void;
+   me: MeResponse;
+   setMe: (me: MeResponse) => void;
+   logout: () => Promise<void>;
+@@ -35,8 +80,9 @@
+   const [route, setRoute] = useState<Route>(routeFromLocation);
+   const [me, setMe] = useState<MeResponse | null | undefined>(undefined);
+ 
+-  const go = useCallback((next: Route, replace = false) => {
+-    const url = `${BASE}${PATHS[next] === '/' ? '/' : PATHS[next]}`;
++  const go = useCallback((next: Route, replace = false, lab?: LabTrack) => {
++    const keep = LAB_ROUTES.includes(next) ? (lab ?? pickedLab()) : null;
++    const url = `${BASE}${PATHS[next] === '/' ? '/' : PATHS[next]}${keep ? `?lab=${keep}` : ''}`;
+     if (replace) history.replaceState(null, '', url);
+     else history.pushState(null, '', url);
+     setRoute(next);
+@@ -57,7 +103,10 @@
+         setMe(found);
+         const current = routeFromLocation();
+         if (current === 'landing') return;
+-        if (current === 'login' || (found.next === 'teacher') !== (current === 'teacher') || (current === 'board' && found.next === 'district')) go(found.next, true);
++        // 등기 전 학생이 주소로 **작업 화면**에 바로 들어온 경우 사옥 지구로 되돌린다(항체 설계 §1.3).
++        // `lab`(연구소 고르기)은 되돌리지 않는다 — 등기 전에도 무엇을 고르는 화면인지 봐야 한다(§1.1 · §12).
++        const needsTeam = (['antibody', 'board'] as Route[]).includes(current);
++        if (current === 'login' || (found.next === 'teacher') !== (current === 'teacher') || (needsTeam && found.next === 'district')) go(entry(found), true);
+       })
+       .catch((error) => {
+         if (!(error instanceof ApiFailure) || error.status !== 401) console.error(error);
+@@ -84,20 +133,33 @@
+     go('login');
+   }, [go]);
+ 
+-  if (route === 'landing') return <Landing onStart={() => go(me ? me.next : 'login')} />;
++  if (route === 'landing') return <Landing onStart={() => go(me ? entry(me) : 'login')} />;
+   if (me === undefined) return <div className="empty" style={{ margin: 40 }}>불러오는 중…</div>;
+   if (me === null || route === 'login') {
+     return (
+       <Login
+         onDone={(found) => {
+           setMe(found);
+-          go(found.next, true);
++          go(entry(found), true);
+         }}
+       />
+     );
+   }
+   const nav: Nav = { go, me, setMe, logout };
++  // 랩을 고르면 주소 · 보조 캐시에 남기고 그 작업 화면으로 — 등기 전이면 먼저 사옥 지구로 보낸다(§1.1).
++  const pickLab = (track: LabTrack) => {
++    rememberLab(track);
++    go(me.next === 'district' ? 'district' : track === 'antibody' ? 'antibody' : 'board', false, track);
++  };
+   if (me.account.kind === 'teacher') return <Teacher nav={nav} />;
++  if (route === 'lab') return <Labs nav={nav} pickLab={pickLab} />;
++  if (route === 'antibody') {
++    return (
++      <Suspense fallback={<div className="empty" style={{ margin: 40 }}>항체 설계 랩을 여는 중…</div>}>
++        <Antibody nav={nav} />
++      </Suspense>
++    );
++  }
+   if (route === 'board') return <Board nav={nav} />;
+   return (
+     <Suspense fallback={<div className="empty" style={{ margin: 40 }}>사옥 지구를 여는 중…</div>}>
+--- a/apps/web/src/screens/District.tsx
++++ b/apps/web/src/screens/District.tsx
+@@ -19,7 +19,7 @@
+   type RegistrationResponse,
+   type ServerMessage,
+ } from '@crista-web/web-contract';
+-import type { Nav } from '../App.tsx';
++import { pickedLab, type Nav } from '../App.tsx';
+ import { api, ApiFailure, message } from '../api.ts';
+ import { DistrictScene } from '../district/DistrictScene.ts';
+ import { HEIGHT, WIDTH } from '../district/map.ts';
+@@ -60,6 +60,9 @@
+   );
+ }
+ 
++/** 등기 뒤 갈 곳 — 고른 랩(주소 `?lab=` 우선 · 저장소 보조). 둘 다 없으면 저분자로 넘기지 않고 연구소 고르기로(항체 설계 §1.1 · §1.3). */
++const afterRegister = (): 'antibody' | 'lab' => (pickedLab() === 'antibody' ? 'antibody' : 'lab');
++
+ export function District({ nav }: { nav: Nav }) {
+   const { me, setMe, go } = nav;
+   const host = useRef<HTMLDivElement>(null);
+@@ -153,7 +156,7 @@
+         // 내가 낸 등기는 사옥 패널이 도장을 보이고 넘어간다 — 같은 모둠의 다른 사람에게만 알린다.
+         if (msg.team.id === district?.myTeamId && msg.byName !== me.account.displayName) {
+           setToast(`${msg.byName} 님이 「${msg.team.startupName}」으로 등기했어요. 곧 작업 화면으로 가요.`);
+-          setTimeout(() => void refreshMe().then(() => go('board')), 2500);
++          setTimeout(() => void refreshMe().then(() => go(afterRegister())), 2500);
+         }
+       }
+     });
+@@ -194,7 +197,7 @@
+         )}
+         <button className="btn sm" type="button" onClick={() => setPickAvatar(true)}>캐릭터</button>
+         {me.next === 'board' && (
+-          <button className="btn sm pri" type="button" onClick={() => go('board')}>작업 화면으로</button>
++          <button className="btn sm pri" type="button" onClick={() => go(afterRegister())}>랩으로</button>
+         )}
+         <button className="btn sm" type="button" onClick={() => void nav.logout()}>나가기</button>
+       </header>
+@@ -240,7 +243,7 @@
+           }}
+           onBoard={async () => {
+             await refreshMe();
+-            go('board');
++            go(afterRegister());
+           }}
+         />
+       )}
+--- a/apps/web/src/screens/Board.tsx
++++ b/apps/web/src/screens/Board.tsx
+@@ -174,6 +174,7 @@
+           <GrantChip board={board} />
+           <GameDay board={board} />
+           <PitchButton board={board} />
++          <button className="btn sm" type="button" onClick={() => go('lab')}>랩 고르기</button>
+           <button className="btn sm" type="button" onClick={() => go('district')}>사옥 지구</button>
+           <button className="btn sm ghost" type="button" onClick={() => void nav.logout()}>나가기</button>
+         </div>
+--- a/apps/web/package.json
++++ b/apps/web/package.json
+@@ -14,6 +14,7 @@
+   },
+   "dependencies": {
+     "@crista-web/web-contract": "*",
++    "3dmol": "^2.5.5",
+     "phaser": "^3.90.0",
+     "react": "^19.2.0",
+     "react-dom": "^19.2.0",
+--- a/apps/server/src/routes.ts
++++ b/apps/server/src/routes.ts
+@@ -7,6 +7,7 @@
+ import { assignTeam, changeClassCode, classDetail, createClass, listClasses } from './classes.ts';
+ import { registerClockRoutes } from './clock.ts';
+ import type { Deps } from './context.ts';
++import { registerAntibodyRoutes } from './features/antibody/index.ts';
+ import { register as registerApproval } from './features/approval.ts';
+ import { register as registerClinical } from './features/clinical.ts';
+ import { register as registerInd } from './features/ind.ts';
+@@ -151,5 +152,8 @@
+   registerApproval(router);
+   registerClinical(router);
+ 
++  // 항체 설계 랩(트랙 2 · 항체 설계 §5.5) — 경로 전부를 이 한 줄로 단다.
++  registerAntibodyRoutes(router, account);
++
+   return router;
+ }
+--- a/apps/server/src/context.ts
++++ b/apps/server/src/context.ts
+@@ -1,3 +1,4 @@
++import { LOOKUP_PER_MIN_PER_TEAM, PREVIEW_PER_MIN_PER_TEAM } from '@crista-web/web-contract';
+ import type { Config } from './config.ts';
+ import type { Pool } from './db.ts';
+ import type { AuthClient } from './gotrue.ts';
+@@ -5,6 +6,7 @@
+ import type { JobRunner } from './jobs.ts';
+ import type { LlmClient } from './llm.ts';
+ import { LoginLockout, WindowLimiter } from './rate-limit.ts';
++import type { AntibodyRunner } from './features/antibody/runner.ts';
+ import type { BioWorker } from './worker.ts';
+ 
+ export interface Limits {
+@@ -17,6 +19,9 @@
+   /** 무료 미리보기(설계 §10) — 물성은 모둠당 분당 20, 깔때기는 모둠당 분당 60. */
+   propertiesPerTeam: WindowLimiter;
+   previewPerTeam: WindowLimiter;
++  /** 항체 랩(§5.5) — 미리보기는 모둠당 분당 20, 자료 조회는 모둠당 분당 20(캐시 뒤에서만 센다). */
++  antibodyPreviewPerTeam: WindowLimiter;
++  antibodyLookupPerTeam: WindowLimiter;
+ }
+ 
+ export const createLimits = (): Limits => ({
+@@ -26,6 +31,8 @@
+   loginLockout: new LoginLockout(5, 60_000),
+   propertiesPerTeam: new WindowLimiter(20, 60_000),
+   previewPerTeam: new WindowLimiter(60, 60_000),
++  antibodyPreviewPerTeam: new WindowLimiter(PREVIEW_PER_MIN_PER_TEAM, 60_000),
++  antibodyLookupPerTeam: new WindowLimiter(LOOKUP_PER_MIN_PER_TEAM, 60_000),
+ });
+ 
+ export interface Deps {
+@@ -38,4 +45,6 @@
+   jobs: JobRunner;
+   /** 파이프라인 LLM(설계 §5.13) — 키가 없거나 꺼져 있으면 `available` false(호출하면 'unavailable'). */
+   llm: LlmClient;
++  /** 항체 설계 랩 작업 러너(항체 설계 §5.7) — 별도 표 · 별도 폴러. */
++  antibody: AntibodyRunner;
+ }
+--- a/apps/server/src/index.ts
++++ b/apps/server/src/index.ts
+@@ -5,6 +5,7 @@
+ import { ClockRunner } from './clock.ts';
+ import { loadConfig } from './config.ts';
+ import { createLimits } from './context.ts';
++import { AntibodyRunner } from './features/antibody/runner.ts';
+ import { assertDatabase, createPool } from './db.ts';
+ import { GoTrueClient } from './gotrue.ts';
+ import { Hub } from './hub.ts';
+@@ -22,16 +23,28 @@
+ const worker = new HttpBioWorker(config.bioWorkerUrl);
+ const jobs = new JobRunner(db, worker, hub);
+ const llm = new LlmClient(config.llm, db);
+-const deps = { config, db, auth, hub, limits: createLimits(), worker, jobs, llm };
++// 항체 설계 랩 러너(트랙 2 · 항체 설계 §5.7) — 별도 표 · 별도 폴러. 어댑터는 하나의 Limiter · DB 캐시를 함께 쓴다.
++const antibody = new AntibodyRunner(db, config, hub);
++const deps = { config, db, auth, hub, limits: createLimits(), worker, jobs, llm, antibody };
+ // 작업 성공 처리기(`onJobSucceeded` — 예: FMARKET 도킹 신기록 소식)가 전체 의존성을 쓰게.
+ jobs.bindDeps(deps);
++antibody.bindDeps(deps);
+ // createApp 이 경로표를 만들 때 기능 모듈의 register() 가 onReviewed · onGameDay 처리기를 단다 — 시계 · 심사 루프는 그 뒤에 시작한다.
+ const server = createApp(deps);
+ const clock = new ClockRunner(deps);
+ const reviews = new ReviewRunner(deps);
+-jobs.start();
+-clock.start();
+-reviews.start();
++// 공용 배경 루프(작업 폴러 · 학급 게임 시계 · 서류 심사)는 **같은 로컬 DB 에 서버가 둘 붙으면 서로의 학급을 처리한다**.
++// 그래서 이 worktree 는 기본을 꺼 둔다 — 원본(3390) 서버가 그 루프를 맡는다. 이 저장소에서 공용 루프까지 시험할 때만 WEB_BACKGROUND=on 으로 띄운다.
++// 항체 랩 러너는 이 저장소만 가진 처리기라 늘 돈다(원본 서버에는 없어서 아무도 대신 돌리지 않는다).
++const sharedBackground = process.env.WEB_BACKGROUND === 'on';
++if (sharedBackground) {
++  jobs.start();
++  clock.start();
++  reviews.start();
++} else {
++  console.log('[server] 공용 배경 루프(작업 폴러 · 시계 · 심사)를 돌리지 않아요 — 같은 DB 의 원본 서버가 맡아요. 필요하면 WEB_BACKGROUND=on.');
++}
++antibody.start();
+ console.log(`[llm] ${llm.available ? `${config.llm.model} · effort ${config.llm.effort}${config.llm.fallbacks ? ' · fallbacks default' : ''}` : `꺼짐(${llm.unavailableReason}) — 서류 심사 · 채점은 pending 으로 남는다`}`);
+ 
+ const sweep = () => sweepExpiredSessions(db).catch((error: Error) => console.error('[session] 만료 세션 정리 실패:', error.message));
+@@ -54,6 +67,7 @@
+   jobs.stop();
+   clock.stop();
+   reviews.stop();
++  antibody.stop();
+   server.close(() => {
+     void db.end().then(() => process.exit(0));
+   });
+--- a/apps/server/src/config.ts
++++ b/apps/server/src/config.ts
+@@ -41,8 +41,44 @@
+   bioWorkerUrl: string;
+   /** 파이프라인 LLM(설계 §5.13) — 키 값은 여기 두지 않는다(SDK 가 `ANTHROPIC_API_KEY` 를 직접 읽는다). */
+   llm: LlmConfig;
++  /** 항체 설계 랩(항체 설계 §3.3) — 외부 API 어댑터의 설정 한 덩이. */
++  antibody: AntibodyConfig;
+ }
+ 
++/**
++ * 항체 랩 설정 — 항체 설계 §3.3.
++ * 선택 키(`nvidiaKey` · `boltzKey`)가 없으면 교육용 근사로 **강등**하고 화면이 그 사실을 말한다. 키 값은 로그 · 응답에 싣지 않는다.
++ */
++export interface AntibodyConfig {
++  /** `WEB_ANTIBODY_OFFLINE=1` → 외부 호출 금지. 캐시 → 고정 예시(fixture)로만 내려간다. */
++  offline: boolean;
++  /** `NVIDIA_API_KEY` — 없으면 규칙 기반 변이 제안. */
++  nvidiaKey: string | null;
++  /** `BOLTZ_API_KEY` — 없으면 교육용 근사 설계 적합도. */
++  boltzKey: string | null;
++  /** 학술 공용 서버 예절 — 연락처를 포함한 User-Agent. */
++  userAgent: string;
++  /** 시드 스크립트 전용 상한(32MB · 180초). 요청 경로 상한을 시드에 쓰면 all-summary(17.5MB · 96초)가 413 을 맞는다. */
++  seedLimits: { maxBytes: number; timeoutMs: number };
++}
++
++export const ANTIBODY_USER_AGENT_DEFAULT = 'crista-web-edu/0.1 (classroom teaching tool; +https://mulk.codes/crista)';
++
++export function loadAntibodyConfig(env: NodeJS.ProcessEnv = process.env): AntibodyConfig {
++  const userAgent = env.WEB_ANTIBODY_USER_AGENT?.trim() || ANTIBODY_USER_AGENT_DEFAULT;
++  if (userAgent.length < 8 || userAgent.length > 200) throw new ConfigError('WEB_ANTIBODY_USER_AGENT 는 8~200자여야 합니다.');
++  return {
++    offline: env.WEB_ANTIBODY_OFFLINE === '1' || env.WEB_ANTIBODY_OFFLINE === 'true',
++    nvidiaKey: env.NVIDIA_API_KEY?.trim() || null,
++    boltzKey: env.BOLTZ_API_KEY?.trim() || null,
++    userAgent,
++    seedLimits: {
++      maxBytes: intEnv(env, 'WEB_ANTIBODY_SEED_MAX_BYTES', 32 * 1024 * 1024, 1024 * 1024, 256 * 1024 * 1024),
++      timeoutMs: intEnv(env, 'WEB_ANTIBODY_SEED_TIMEOUT_MS', 180_000, 10_000, 900_000),
++    },
++  };
++}
++
+ export type LlmEffort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
+ const LLM_EFFORTS: readonly LlmEffort[] = ['low', 'medium', 'high', 'xhigh', 'max'];
+ 
+@@ -169,5 +205,6 @@
+     gatewaySecret,
+     bioWorkerUrl,
+     llm: loadLlmConfig(env),
++    antibody: loadAntibodyConfig(env),
+   };
+ }
+--- a/apps/server/src/db.ts
++++ b/apps/server/src/db.ts
+@@ -8,9 +8,15 @@
+ export type Tx = pg.PoolClient;
+ export type Queryable = Pick<pg.Pool, 'query'> | Pick<pg.PoolClient, 'query'>;
+ 
+-/** 서버가 요구하는 마지막 마이그레이션. */
++/** 서버가 요구하는 마지막 마이그레이션(가장 큰 번호 비교용 — 다른 기능이 쓴다). */
+ export const REQUIRED_MIGRATION = '0007';
+ 
++/**
++ * 꼭 적용돼 있어야 하는 번호 **집합**(항체 설계 §5.1 · §10 F7) — '가장 큰 번호 ≥ 필요 번호' 검사만으로는
++ * 공유 로컬 DB 에 0020 이 들어갔을 때 0007 미적용을 가려 버린다. 새 기능은 여기에 번호 한 줄을 더한다.
++ */
++export const REQUIRED_MIGRATIONS = ['0004', '0007', '0020'] as const;
++
+ export function createPool(config: Pick<Config, 'databaseUrl' | 'databaseCa'>): Pool {
+   const pool = new pg.Pool({
+     connectionString: config.databaseUrl,
+@@ -46,9 +52,10 @@
+ export async function assertDatabase(pool: Pool): Promise<void> {
+   const who = await pool.query<{ u: string }>('select current_user as u');
+   if (who.rows[0]?.u !== 'crista_web') throw new Error(`DB 역할이 crista_web 이 아닙니다(${who.rows[0]?.u}).`);
+-  const applied = await pool.query<{ version: string }>('select version from web.schema_migrations order by version desc limit 1');
+-  const latest = applied.rows[0]?.version ?? '';
+-  if (latest < REQUIRED_MIGRATION) throw new Error(`web 마이그레이션 ${REQUIRED_MIGRATION} 이 필요합니다(지금 ${latest || '없음'}). \`npm run db:migrate:local\``);
++  const applied = await pool.query<{ version: string }>('select version from web.schema_migrations');
++  const have = new Set(applied.rows.map((r) => r.version));
++  const missing = REQUIRED_MIGRATIONS.filter((v) => !have.has(v));
++  if (missing.length) throw new Error(`web 마이그레이션 ${missing.join(' · ')} 이 필요합니다. \`npm run db:migrate:local\``);
+ }
+ 
+ export const isUniqueViolation = (error: unknown, constraint?: string): boolean =>
+--- a/apps/server/src/accounts.ts
++++ b/apps/server/src/accounts.ts
+@@ -9,7 +9,10 @@
+  * 로그인은 web.password_verifiers(0004)로 이 서버 안에서 확인한다 — GoTrue 의 IP 당 로그인 상한에 걸리지 않게(passwords.ts).
+  */
+ import {
++  ANTIBODY_STEP_IDS,
+   AVATARS,
++  LAB_TRACKS,
++  STEP_IDS,
+   checkClassCode,
+   checkDisplayName,
+   checkLoginId,
+@@ -17,6 +20,8 @@
+   loginIdToEmail,
+   type AccountView,
+   type Avatar,
++  type LabProgress,
++  type LabTrack,
+   type MeResponse,
+ } from '@crista-web/web-contract';
+ import type { Deps } from './context.ts';
+@@ -174,15 +179,57 @@
+   if (!row) return { account, next: 'district', team: null, avatar: null };
+   const cls = await db.query<ClassRow>(`${CLASS_SELECT} where c.id = $1`, [row.class_id]);
+   const team = row.team_id ? await loadTeam(db, row.team_id) : null;
++  const labs = row.team_id ? await loadLabProgress(db, row.team_id) : undefined;
+   return {
+     account,
+     next: team?.registeredAt ? 'board' : 'district',
+     avatar: row.avatar,
+     class: classSummary(cls.rows[0]!),
+     team,
++    ...(labs ? { labs } : {}),
++    openTracks: await loadOpenTracks(db, row.class_id),
+   };
+ }
+ 
++/**
++ * '연구소 고르기' 화면의 진행 칩(항체 설계 §1.3 · §1.4) — 두 랩의 진행.
++ * 저분자 `total` 은 **`STEP_IDS.length`**(이 저장소는 9값이다 — 8 을 박으면 진행 칩이 `8/8` 에서 멈춘다).
++ */
++async function loadLabProgress(db: Pool, teamId: string): Promise<{ small: LabProgress; antibody: LabProgress }> {
++  const small = await db.query<{ done: number; opened: boolean }>(
++    `select count(distinct j.step)::int as done, exists (select 1 from web.programs p where p.team_id = $1) as opened
++       from web.jobs j where j.team_id = $1 and j.status = 'succeeded'`,
++    [teamId],
++  );
++  const ab = await db.query<{ opened: boolean; steps: number; submitted: number }>(
++    `select exists (select 1 from web.antibody_programs p where p.team_id = $1) as opened,
++            (select count(distinct j.step)::int from web.antibody_jobs j where j.team_id = $1 and j.status = 'succeeded') as steps,
++            (select count(*)::int from web.antibody_scores s where s.team_id = $1) as submitted`,
++    [teamId],
++  );
++  const abRow = ab.rows[0];
++  const confirmed = await db.query<{ n: number }>(
++    'select count(*)::int as n from web.antibody_programs where team_id = $1 and antigen_target is not null and parent_vh is not null',
++    [teamId],
++  );
++  // 끝난 항체 단계 — A1(확정) + 성공한 작업 단계 수 + A3(설계 1건 이상) + A6(제출 1건 이상).
++  const designs = await db.query<{ n: number }>(`select count(*)::int as n from web.antibody_designs where team_id = $1 and origin = 'student'`, [teamId]);
++  const abDone =
++    (confirmed.rows[0]!.n > 0 ? 1 : 0) + (abRow?.steps ?? 0) + (designs.rows[0]!.n > 0 ? 1 : 0) + ((abRow?.submitted ?? 0) > 0 ? 1 : 0);
++  return {
++    small: { opened: small.rows[0]?.opened ?? false, doneCount: small.rows[0]?.done ?? 0, total: STEP_IDS.length },
++    antibody: { opened: abRow?.opened ?? false, doneCount: Math.min(ANTIBODY_STEP_IDS.length, abDone), total: ANTIBODY_STEP_IDS.length },
++  };
++}
++
++/** 교사가 열어 둔 트랙 — 없는 트랙의 섬은 흐림 + 이유 문구로 그린다(§1.4). */
++async function loadOpenTracks(db: Pool, classId: string): Promise<LabTrack[]> {
++  const rows = await db.query<{ open_tracks: string[] }>('select open_tracks from web.antibody_class_settings where class_id = $1', [classId]);
++  const tracks = rows.rows[0]?.open_tracks;
++  if (!tracks) return [...LAB_TRACKS];
++  return tracks.filter((t): t is LabTrack => (LAB_TRACKS as readonly string[]).includes(t));
++}
++
+ /** 사옥 지구 캐릭터(직책 배지) — 능력치 · 잠금은 없고 비교표 · 노트 · 접속 표시에 쓴다(설계 §4.2). */
+ export async function setAvatar(db: Pool, account: AccountView, raw: unknown): Promise<MeResponse> {
+   if (account.kind !== 'student') throw new ApiError(403, 'forbidden', '학생 계정으로 해 주세요.');
+--- a/packages/web-contract/src/index.ts
++++ b/packages/web-contract/src/index.ts
+@@ -16,3 +16,5 @@
+ export * from './market.ts';
+ export * from './approval.ts';
+ export * from './clinical.ts';
++// 두 번째 파이프라인 — 항체 설계 랩(설계 §5.4).
++export * from './antibody.ts';
+--- a/packages/web-contract/src/api.ts
++++ b/packages/web-contract/src/api.ts
+@@ -2,6 +2,7 @@
+  * REST 규격 — 경로 · 요청 · 응답 모양(서버 `apps/server/src/routes.ts` 가 이 모양을 지킨다).
+  * 모든 오류 응답은 `ApiErrorBody` 다. 세션은 HttpOnly 쿠키(`SESSION_COOKIE`)라 화면 스크립트는 토큰을 모른다.
+  */
++import type { AntibodyNoteView, LabTrack } from './antibody.ts';
+ import type { NoteView } from './pipeline.ts';
+ import type { DocSectionView } from './review.ts';
+ import type { Assignment, Avatar } from './rules.ts';
+@@ -47,11 +48,26 @@
+   | 'limit_reached'
+   | 'reason_blocked'
+   | 'already_exists'
+-  | 'llm_unavailable';
++  | 'llm_unavailable'
++  // 항체 설계 랩 — 서열이 접힘 예측 상한(400 잔기)을 넘음 · 1인 설계 칸을 이미 씀 · 사람별 작업 상한에 닿음(설계 §5.5).
++  | 'sequence_too_long'
++  | 'slot_taken'
++  | 'my_quota_used';
+ 
+ export interface ApiErrorBody {
+-  /** `note` — 노트 칸 409 `stale` 때 지금 칸(상대 본문 · 버전). 칸이 아직 없으면 생략. `section` — 서류 칸(3판)도 같다. */
+-  error: { code: ErrorCode; message: string; retryAfterSec?: number; team?: TeamView; note?: NoteView; section?: DocSectionView };
++  /**
++   * `note` — 노트 칸 409 `stale` 때 지금 칸(상대 본문 · 버전). 칸이 아직 없으면 생략. `section` — 서류 칸(3판)도 같다.
++   * `abNote` — 항체 랩 노트 칸의 409 `stale`(`AntibodyNoteView` 는 `stepId` 축이 달라 `note` 에 담을 수 없다).
++   */
++  error: {
++    code: ErrorCode;
++    message: string;
++    retryAfterSec?: number;
++    team?: TeamView;
++    note?: NoteView;
++    section?: DocSectionView;
++    abNote?: AntibodyNoteView;
++  };
+ }
+ 
+ // ── 모양 ──
+@@ -118,9 +134,17 @@
+   roster: RosterEntry[];
+ }
+ 
+-/** 로그인 뒤 어디로 가나(설계 §2): 사옥 지구 ② · 전광판 ③ · 교사 화면. */
++/** 로그인 뒤 어디로 가나(설계 §2): 사옥 지구 ② · 전광판 ③ · 교사 화면. `NextScreen` 은 늘리지 않고 화면에서 'lab' 으로 감싼다(항체 설계 §1.3). */
+ export type NextScreen = 'district' | 'board' | 'teacher';
+ 
++/** 랩 하나의 진행 — '연구소 고르기' 화면의 진행 칩이 쓴다(항체 설계 §1.3). `total` 은 그 랩의 단계 수(저분자 `STEP_IDS.length` · 항체 6). */
++export interface LabProgress {
++  opened: boolean;
++  doneCount: number;
++  total: number;
++  stepId?: string;
++}
++
+ export interface MeResponse {
+   account: AccountView;
+   next: NextScreen;
+@@ -129,6 +153,10 @@
+   /** 학생만. */
+   class?: ClassSummary;
+   team?: TeamView | null;
++  /** 선택 — 두 랩의 진행. 없으면 고르기 화면은 진행 칩을 **그리지 않는다**(없는 값을 추측해 그리지 않는다 · §1.4). */
++  labs?: { small: LabProgress; antibody: LabProgress };
++  /** 선택 — 교사가 열어 둔 트랙. 없는 트랙의 섬은 흐림 + 이유 문구로 그린다(§1.4). */
++  openTracks?: LabTrack[];
+ }
+ 
+ export interface DistrictResponse {
+--- a/packages/web-contract/src/ws.ts
++++ b/packages/web-contract/src/ws.ts
+@@ -5,6 +5,7 @@
+  * 3판 기반: 서류 심사 · 학습 채점 · 1.2 회의는 모둠 채널, 전광판 소식 · 게임 시계 · 특허 원장은 학급 채널, 심사 플래그는 교사 채널.
+  * 메시지는 '무엇이 바뀌었다'만 싣고 상세는 화면이 그 기능의 GET 을 다시 읽는다(비공개 값을 채널에 싣지 않는다).
+  */
++import type { AntibodyProposalTopic, LabTrack } from './antibody.ts';
+ import type { TeamView } from './api.ts';
+ import type { ClassClockView } from './clock.ts';
+ import type { DistrictLight, LearnTargetType } from './learn.ts';
+@@ -71,6 +72,14 @@
+   | { type: 'patent.ledger'; classId: string; reason: 'registered' | 'abandoned' | 'corrected'; patentId?: string }
+   /** 교사 채널 — 교사가 볼 일(심사 인젝션 플래그 · LLM 거절로 수동 심사 대기 · 이의 제기). */
+   | { type: 'teacher.alert'; classId: string; kind: 'review_flagged' | 'review_manual' | 'appeal' | 'learn_flagged'; refId: string; teamId?: string; message: string }
++  /** 모둠 채널 — 항체 랩 데이터가 바뀌었다(화면은 `GET /api/antibody/board` 를 다시 읽는다. 저분자 화면은 다시 읽지 않는다). */
++  | { type: 'antibody.changed'; teamId: string; reason: string; byName?: string }
++  /** 모둠 채널 — 항체 작업의 진행률만(결과는 끝난 뒤 `antibody.changed`). */
++  | { type: 'antibody.progress'; teamId: string; jobId: string; status: 'queued' | 'running'; progress: number; phase?: string }
++  /** 학급 채널 — 항체 소식 한 줄(공개 정보만 · 점수 숫자를 싣지 않는다 · 항체 설계 §4.3 · §4.5). */
++  | { type: 'antibody.news'; classId: string; teamId: string; ticker: string; headline: string; changePct?: number; tone: string; track: LabTrack }
++  /** 모둠 채널 — A1 · A2 제안의 찬반 투표 현황. */
++  | { type: 'antibody.consensus'; teamId: string; topic: AntibodyProposalTopic; yes: number; no: number; quorum: number; status: string }
+   | { type: 'pong' };
+ 
+ export type ClientMessage =
+--- a/package.json
++++ b/package.json
+@@ -30,6 +30,8 @@
+     "e2e:preclinical": "node tools/with-local-env.mjs node apps/server/scripts/e2e-preclinical.ts",
+     "e2e:ind": "node tools/with-local-env.mjs node apps/server/scripts/e2e-ind.ts",
+     "e2e:approval": "node tools/with-local-env.mjs node apps/server/scripts/e2e-approval.ts",
++    "e2e:antibody": "node tools/with-local-env.mjs node apps/server/scripts/e2e-antibody.ts",
++    "antibody:seed": "node tools/with-local-env.mjs node apps/server/scripts/antibody-seed.ts",
+     "dev:web": "npm run dev -w @crista-web/web",
+     "build:web": "npm run build -w @crista-web/web",
+     "db:status:hosted": "node tools/with-hosted-env.mjs node db/migrate.mjs --status",
+--- a/.env.example
++++ b/.env.example
+@@ -58,3 +58,17 @@
+ LLM_MAX_CONCURRENT_PER_CLASS=
+ LLM_DAILY_PER_CLASS=
+ LLM_TIMEOUT_MS=
++
++# ── 항체 설계 랩(항체 설계 §3.3) — 모두 선택 ──
++# 1 이면 외부 API 를 부르지 않는다(캐시 → 미리 받아 둔 자료로만). 네트워크가 없는 교실 · 회귀 시험에 쓴다.
++WEB_ANTIBODY_OFFLINE=
++# 학술 공용 서버 예절 — 연락처를 포함한 User-Agent. 비우면 crista-web-edu/0.1 (… +https://mulk.codes/crista).
++WEB_ANTIBODY_USER_AGENT=
++# 시드 스크립트 전용 상한(기본 33554432 바이트 · 180000ms). SAbDab2 all-summary(17.5MB · 약 96초)를 받는 경로에만 쓴다.
++WEB_ANTIBODY_SEED_MAX_BYTES=
++WEB_ANTIBODY_SEED_TIMEOUT_MS=
++# 선택 기능 — 없으면 교육용 근사로 강등하고 화면이 그 사실을 말한다. 키 발급 · 과금은 사용자 확인 뒤에만 한다.
++# NVIDIA NIM ProteinMPNN(변이체 자동 제안). 없으면 규칙 기반 제안.
++NVIDIA_API_KEY=
++# Boltz 복합체 예측(복합체 신뢰도). 없으면 교육용 근사 설계 적합도.
++BOLTZ_API_KEY=
