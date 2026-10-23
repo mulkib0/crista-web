@@ -1,0 +1,15 @@
+/* Relay체 v1.0: B안의 좁은 간격은 폰트 자체에 포함되어 있다. */
+@font-face {
+  font-family: 'Relay체';
+  src: url('/fonts/relay/Relay-Regular.woff2') format('woff2');
+  font-weight: 100 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Relay체';
+  src: url('/fonts/relay/Relay-SemiBold.woff2') format('woff2');
+  font-weight: 600 900;
+  font-style: normal;
+  font-display: swap;
+}

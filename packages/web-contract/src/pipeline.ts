@@ -1,58 +1,86 @@
 /**
  * 화면 ③ 파이프라인 규격(설계 §5 · §6) — 단계 · 모둠 프로그램 · 작업 · 찜 · 연구 노트 · 전광판 화면 한 장(`BoardResponse`).
- * W3 범위는 1. 발견(1.1 · 1.2) · 2. 최적화(2.1 · 2.2)까지다. 3.x · 4.x 는 잠긴 단계로만 내려간다(W4).
+ * 3판(설계 §6.1): 4묶음 · 하위 9단계 — 3. 개발 · 규제 = 3.1 물질특허 · 3.2 전임상 · 동물실험 · 3.3 제형 · IND. 4.1 · 4.2 는 상세 설계를 미뤄 잠긴 단계다.
+ * 기능별 상세 자료는 `BoardResponse` 에 싣지 않고 기능 경로가 따로 준다(screen · selection · patent · preclinical · ind · learn · market 규격).
  *
  * 계산 결과(`ExperimentResult`)는 crista 워커가 준 모양 그대로 싣는다 — 규격은 crista 사본 `@crista/shared-types`.
  */
 import type { ExperimentResult, JobPhase, JobStatus, ResultSource, ScreeningCandidate } from '@crista/shared-types';
 import type { AccountView, ClassSummary, TeamView } from './api.ts';
+import type { ClassClockView } from './clock.ts';
 import type { Avatar } from './rules.ts';
+import type { TrackId } from './track.ts';
 
-export type StepId = '1.1' | '1.2' | '2.1' | '2.2' | '3.1' | '3.2' | '4.1' | '4.2';
-export const STEP_IDS: readonly StepId[] = ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2'];
+export type StepId = '1.1' | '1.2' | '2.1' | '2.2' | '3.1' | '3.2' | '3.3' | '4.1' | '4.2';
+export const STEP_IDS: readonly StepId[] = ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '3.3', '4.1', '4.2'];
 
 export type StepState = 'locked' | 'ready' | 'running' | 'done' | 'held' | 'blocked' | 'review';
 export type Evidence = 'dataset' | 'compute' | 'prediction' | 'simulation';
 
 export interface StepMeta {
   group: 1 | 2 | 3 | 4;
-  index: 1 | 2;
+  /** 묶음 안 번호 — 3묶음만 3칸. */
+  index: 1 | 2 | 3;
   title: string;
   /** 사이드바 보조 줄 — 출처 · 도구. */
   sub: string;
   evidence: Evidence[];
 }
 
-/** 05 시안의 4묶음 · 하위 8단계(설계 §6.1). */
+/** 05 시안의 4묶음 · 하위 9단계(설계 §6.1 — 3판에서 3.2 전임상을 넣고 제형 · IND 를 3.3 으로 밀었다). */
 export const STEP_META: Record<StepId, StepMeta> = {
   '1.1': { group: 1, index: 1, title: '질환 · 표적 선정', sub: 'Open Targets 근거', evidence: ['dataset'] },
   '1.2': { group: 1, index: 2, title: '화합물 스크리닝', sub: 'ChEMBL · RDKit 깔때기', evidence: ['dataset'] },
   '2.1': { group: 2, index: 1, title: '분자 도킹', sub: 'AutoDock Vina · PLIP', evidence: ['compute'] },
-  '2.2': { group: 2, index: 2, title: 'ADMET 예측 · 리드', sub: 'ADMET-AI v2', evidence: ['prediction'] },
-  '3.1': { group: 3, index: 1, title: '선언 · 물질특허', sub: 'RDKit 물성', evidence: ['compute'] },
-  '3.2': { group: 3, index: 2, title: '제형 · IND 신청', sub: '교육용 모의 판정', evidence: ['simulation'] },
+  '2.2': { group: 2, index: 2, title: 'ADMET 예측 · 특허 후보', sub: 'ADMET-AI v2', evidence: ['prediction'] },
+  '3.1': { group: 3, index: 1, title: '선언 · 물질특허', sub: 'RDKit 물성 · 서류 심사', evidence: ['compute'] },
+  '3.2': { group: 3, index: 2, title: '전임상 · 동물실험', sub: '윤리 심의 · 교육용 모의 판정', evidence: ['simulation'] },
+  '3.3': { group: 3, index: 3, title: '제형 · IND 신청', sub: '서류 심사 · 교육용 모의 판정', evidence: ['simulation'] },
   '4.1': { group: 4, index: 1, title: '임상 1 · 2 · 3상', sub: '교육용 모의 판정', evidence: ['simulation'] },
-  '4.2': { group: 4, index: 2, title: '최종 허가', sub: '교육용 모의 판정', evidence: ['simulation'] },
+  '4.2': { group: 4, index: 2, title: '최종 허가', sub: '규칙 · 서류 심사', evidence: ['simulation'] },
 };
+
+/** 선행 단계(잠김 판정 · `StepView.unlockBy`). */
+export const STEP_REQUIRES: Partial<Record<StepId, StepId>> = {
+  '1.2': '1.1',
+  '2.1': '1.2',
+  '2.2': '2.1',
+  '3.1': '2.2',
+  '3.2': '3.1',
+  '3.3': '3.2',
+  '4.1': '3.3',
+  '4.2': '4.1',
+};
+
+/** 상세 설계를 미룬 단계(설계 §6.1 · §12-16) — 늘 잠김이지만 초안 · 연구 노트는 쓸 수 있다. */
+export const DEFERRED_STEPS: readonly StepId[] = [];  // 4.1 은 F41 · 4.2 는 F42 가 열었다(2026-10-24)
 
 export const GROUP_TITLE: Record<1 | 2 | 3 | 4, string> = { 1: '발견', 2: '최적화', 3: '개발 · 규제', 4: '임상 · 허가' };
 
 export interface StepView {
   id: StepId;
   group: 1 | 2 | 3 | 4;
-  index: 1 | 2;
+  index: 1 | 2 | 3;
   state: StepState;
   /** 잠김 · 막힘의 이유(사람이 읽는 한 줄). */
   reason?: string;
   unlockBy?: StepId;
   progressPct?: number;
   byName?: string;
+  /** 4.1 의 지금 상(F41). */
+  phase?: 'phase1' | 'phase2' | 'phase3';
+  /** 사이드바 보조 줄을 서버가 정할 때(예: 4.1 '2상 · 42%' · '1상 보류 · 재도전 가능'). 없으면 화면 기본 줄. */
+  sub?: string;
+  /** 재도전 회차(4.1 · 3.3 — 자리만). */
+  attempt?: number;
   evidence: Evidence[];
   costCents?: number;
+  /** 게임 시계로 걸리는 기간(3.2 동물실험 28 · 3.3 IND 30 …). */
+  durationGameDays?: number;
 }
 
-/** 작업이 있는 단계 — 1.2 스크리닝 · 2.1 도킹 · 2.2 ADMET. */
-export type JobStep = '1.2' | '2.1' | '2.2';
+/** 작업(`web.jobs`)이 있는 단계 — 1.2 스크리닝 · 2.1 도킹 · 2.2 ADMET(워커) · 3.2 대체 시험 · 동물실험(서버 내부 · 게임 시계). */
+export type JobStep = '1.2' | '2.1' | '2.2' | '3.2';
 
 /** 연구 노트 세 칸(설계 §6.4) — ① 왜 골랐나 · ② 무엇을 모르나 · ③ 실패하면 무엇을 바꾸나. */
 export type NoteSection = 'why' | 'unknown' | 'fallback';
@@ -101,7 +129,7 @@ export interface ProgramView {
   leadVersion: number;
 }
 
-/** 1.1 '내 추천 표적' 카드. 한 사람이 질환마다 한 장. */
+/** 1.1 '내 추천 표적' 카드. 한 사람이 질환마다 한 장 — 다시 올리면 메모 · 근거 · 가중치가 바뀐다. */
 export interface TargetPickView {
   id: string;
   userId: string;
@@ -110,6 +138,10 @@ export interface TargetPickView {
   diseaseId: string;
   targetId: string;
   note: string | null;
+  /** 추천 근거 칩 id(`TARGET_PICK_REASONS` — 설계 §5.4.2). 앞 판 카드는 빈 배열. */
+  reasons: string[];
+  /** ③ 내 점수 가중치(유전 · 약물 · 문헌 · 발현, 0~3). 올릴 때 가중치를 안 보냈으면 null. */
+  weights: number[] | null;
   createdAt: string;
 }
 
@@ -159,6 +191,8 @@ export interface ClaimView {
   screenScore: number | null;
   mw: number | null;
   qed: number | null;
+  /** 찜 근거 키(0005 — 그 전 찜은 'legacy'). */
+  reason?: string;
 }
 
 export interface NoteView {
@@ -190,7 +224,16 @@ export interface BoardResponse {
   team: TeamView;
   members: MemberView[];
   program: ProgramView;
+  /** 원장 잔액(정수 센트) — 화면은 크리스타(`balanceCrista`)로 보인다. */
   balanceCents: number;
+  /** 같은 잔액의 크리스타(1 크리스타 = 20 센트 — money.ts). */
+  balanceCrista: number;
+  /** 학급 게임 시계. */
+  clock: ClassClockView;
+  /** 학급 설정 — 모둠당 특허 상한(받아들여짐 + 심사 중). */
+  maxPatentsPerTeam: number;
+  /** 이 모둠의 트랙(track.ts 등록표) — 화면이 단계 목록 · 단계 화면을 고를 때 쓴다. 없으면 'drug'. */
+  track?: TrackId;
   steps: StepView[];
   jobs: WebJobView[];
   claims: ClaimView[];
@@ -198,7 +241,7 @@ export interface BoardResponse {
   notes: NoteView[];
   teams: PublicTeamView[];
   diseases: DiseaseOption[];
-  /** 유료 작업 1회 비용(센트) — crista `paidWorkCostCents`. */
+  /** 유료 작업 1회 비용(센트) — 1.2 · 2.1 · 2.2 는 crista `paidWorkCostCents`, 3.2 는 동물실험 묶음 후보당(preclinical.ts). */
   costs: Record<JobStep, number>;
   /** 이 서버가 부르는 워커가 실제 계산(compute)인가 · 고정 결과(fixture)인가 — 모르면 null. */
   workerMode: 'fixture' | 'compute' | null;
@@ -235,8 +278,14 @@ export interface TargetRequest {
 }
 
 export interface ClaimRequest {
-  screenJobId: string;
+  /** 화면이 본 진열대의 실행(그 버전 마지막 성공 1.2) — 그 사이 새 실행으로 바뀌었으면 409 stale. 비우면 서버가 마지막 실행을 쓴다. */
+  screenJobId?: string;
   compoundId: string;
+  /**
+   * 찜 근거 키 — **필수**(F12 · 설계 §5.5 ④ · §7.4 ⑧). `CLAIM_REASONS`(screen.ts) 중 하나여야 하고,
+   * 서버가 그 분자 값으로 다시 판정해 막음이면 400 `reason_blocked`.
+   */
+  reason: string;
 }
 
 export interface LeadRequest {

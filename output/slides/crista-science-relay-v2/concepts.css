@@ -1,0 +1,26 @@
+/* 해설은 발표 화면을 가리지 않는 별도 대화상자에서 읽는다. */
+.concept-dialog{width:min(1180px,94vw);max-width:94vw;max-height:88vh;padding:0;border:1px solid var(--line);border-radius:20px;background:var(--paper);color:var(--ink);font-family:'Relay체',sans-serif;overflow:auto}
+.concept-dialog::backdrop{background:rgba(8,11,9,.38);backdrop-filter:blur(8px)}
+.concept-head{position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:30px;padding:25px 32px 21px;background:var(--paper);border-bottom:1px solid var(--line)}
+.concept-head .eyebrow-small{font-size:13px;letter-spacing:.07em;margin:0 0 7px;color:var(--muted)}
+.concept-head h2{font-size:29px;line-height:1.35;margin:0;font-weight:600;text-wrap:balance}
+.concept-head button{flex:none;border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer;background:var(--surface);color:var(--ink);font:inherit;font-size:15px}
+.concept-intro{padding:20px 32px 0;margin:0;color:var(--muted);font-size:17px;line-height:1.6}
+.concept-list{padding:22px 32px 30px}
+.concept-entry{border-top:1px solid var(--line)}
+.concept-entry:last-child{border-bottom:1px solid var(--line)}
+.concept-entry>summary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 0;font-size:22px;line-height:1.4;font-weight:600;cursor:pointer;list-style:none}
+.concept-entry>summary::-webkit-details-marker{display:none}
+.concept-entry>summary:after{content:'+';font-size:26px;font-weight:400;flex:none}
+.concept-entry[open]>summary:after{content:'−'}
+.concept-entry>summary:focus-visible,.concept-head button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.concept-content{padding:0 0 23px;display:grid;grid-template-columns:145px minmax(0,1fr);gap:13px 20px}
+.concept-content dt{font-size:14px;line-height:1.7;color:var(--muted);font-weight:600;margin:0}
+.concept-content dd{font-size:19px;line-height:1.6;word-break:keep-all;margin:0}
+.concept-reference{grid-column:1/-1;margin:2px 0 0!important;font-size:13px!important;color:var(--muted)}
+.concept-hint{font-size:13px;line-height:1.5;color:var(--muted);margin:0;padding:0 32px 24px}
+.toolbar #details{border:1px solid #72796b;font-weight:600;padding:6px 10px}
+.toolbar button[aria-expanded=true]{background:#363a33}
+.panel-highlight.learn-link{font-family:'Relay체',sans-serif}
+@media(max-width:650px){.concept-head{padding:18px 20px;gap:15px}.concept-head h2{font-size:21px}.concept-head button{padding:6px 9px;font-size:13px}.concept-intro{padding:16px 20px 0;font-size:15px}.concept-list{padding:18px 20px}.concept-entry>summary{font-size:18px}.concept-content{grid-template-columns:1fr;gap:3px}.concept-content dt{font-size:12px;margin-top:9px}.concept-content dd{font-size:16px}.concept-hint{padding:0 20px 18px}.toolbar #notes{display:none}}
+@media print{.concept-dialog{display:none!important}.learn-link:after{display:none}}

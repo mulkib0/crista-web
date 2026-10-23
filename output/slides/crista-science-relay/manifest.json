@@ -1,0 +1,55 @@
+{
+  "문구": "Gemini 4 Argon (High) 원문 그대로",
+  "원문 조각": 105,
+  "슬라이드 수": 5,
+  "글꼴": "Relay체 Regular / SemiBold",
+  "프레임": "1920 × 1080 (16:9)",
+  "그림": "기존 PNG에서 image_gen으로 글자만 제거한 배경",
+  "검증": {
+    "slides": 5,
+    "copyFragments": 105,
+    "copyMismatch": 0,
+    "overflow": [],
+    "outside": [],
+    "overlap": [],
+    "relayLoaded": true,
+    "imagesLoaded": true,
+    "pageErrors": [],
+    "networkRequests": [],
+    "keyboard": true,
+    "contents": true,
+    "notes": true,
+    "fullscreen": true,
+    "mobileFits": true,
+    "printSlides": 5
+  },
+  "파일": [
+    {
+      "html": "slide-01.html",
+      "원본": "00-overview.png",
+      "title": "데이터와 AI로 탐구하는 신약 개발 4단계"
+    },
+    {
+      "html": "slide-02.html",
+      "원본": "01-target.png",
+      "title": "질병 코드와 3D 실측 단백질 표적 탐색"
+    },
+    {
+      "html": "slide-03.html",
+      "원본": "02-compounds.png",
+      "title": "화합물 라이브러리 탐색과 분자 물성 계산"
+    },
+    {
+      "html": "slide-04.html",
+      "원본": "03-docking.png",
+      "title": "3D 분자 도킹 탐색과 결합 상호작용 분석"
+    },
+    {
+      "html": "slide-05.html",
+      "원본": "04-admet-review.png",
+      "title": "약동학·독성 예측과 2단계 이중 서류 심사"
+    }
+  ],
+  "Argon 검수": "PASS",
+  "지정 ZIP 원문 일치": true
+}

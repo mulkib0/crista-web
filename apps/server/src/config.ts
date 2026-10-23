@@ -39,6 +39,57 @@ export interface Config {
   gatewaySecret: string | null;
   /** crista bio-worker — 로컬 8790 · Railway 내부망 `http://bio-worker.railway.internal:8787`. */
   bioWorkerUrl: string;
+  /** 파이프라인 LLM(설계 §5.13) — 키 값은 여기 두지 않는다(SDK 가 `ANTHROPIC_API_KEY` 를 직접 읽는다). */
+  llm: LlmConfig;
+}
+
+export type LlmEffort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
+const LLM_EFFORTS: readonly LlmEffort[] = ['low', 'medium', 'high', 'xhigh', 'max'];
+
+export interface LlmConfig {
+  /** `ANTHROPIC_API_KEY` 가 있나(값은 읽지 않는다). */
+  keyPresent: boolean;
+  /** `LLM_DISABLED=1` — 호출하지 않고 'unavailable'(호출자가 규칙 자동 판정으로 넘긴다 — 교사 대기 없음). */
+  disabled: boolean;
+  /** 기본 `claude-opus-5-5`. 바꾸면 reviewerVersion · graderVersion 도 올린다. */
+  model: string;
+  /** 기본 `medium` — 모든 작업에 같은 값(§5.13). */
+  effort: LlmEffort;
+  /** 서버 측 대체 실행 `fallbacks: 'default'`(beta server-side-fallback-2026-07-01) — 기본 켬, `LLM_FALLBACKS=0` 이면 끈다. */
+  fallbacks: boolean;
+  /** 동시 호출 상한 — 서버 전체 · 학급마다. */
+  maxConcurrent: number;
+  maxConcurrentPerClass: number;
+  /** 학급 하루 호출 상한(서류 심사 · 학습 채점 · 헤드라인을 한 통에서 센다). */
+  dailyPerClass: number;
+  /** 요청 하나의 시간 제한(ms). SDK 재시도(2회)가 이 안에서 따로 돈다. */
+  timeoutMs: number;
+}
+
+function intEnv(env: NodeJS.ProcessEnv, key: string, fallback: number, min: number, max: number): number {
+  const raw = env[key]?.trim();
+  if (!raw) return fallback;
+  const value = Number(raw);
+  if (!Number.isInteger(value) || value < min || value > max) throw new ConfigError(`${key} 는 ${min}~${max} 사이 정수여야 합니다.`);
+  return value;
+}
+
+export function loadLlmConfig(env: NodeJS.ProcessEnv = process.env): LlmConfig {
+  const effort = (env.LLM_EFFORT?.trim() || 'medium') as LlmEffort;
+  if (!LLM_EFFORTS.includes(effort)) throw new ConfigError(`LLM_EFFORT 는 ${LLM_EFFORTS.join(' · ')} 중 하나여야 합니다.`);
+  const model = env.LLM_MODEL?.trim() || 'claude-opus-5-5';
+  if (!/^[a-z0-9][a-z0-9.-]{2,79}$/.test(model)) throw new ConfigError('LLM_MODEL 이 모델 id 모양이 아닙니다.');
+  return {
+    keyPresent: Boolean(env.ANTHROPIC_API_KEY?.trim()),
+    disabled: env.LLM_DISABLED === '1' || env.LLM_DISABLED === 'true',
+    model,
+    effort,
+    fallbacks: env.LLM_FALLBACKS !== '0',
+    maxConcurrent: intEnv(env, 'LLM_MAX_CONCURRENT', 4, 1, 32),
+    maxConcurrentPerClass: intEnv(env, 'LLM_MAX_CONCURRENT_PER_CLASS', 2, 1, 16),
+    dailyPerClass: intEnv(env, 'LLM_DAILY_PER_CLASS', 400, 1, 100_000),
+    timeoutMs: intEnv(env, 'LLM_TIMEOUT_MS', 180_000, 5_000, 600_000),
+  };
 }
 
 const LOOPBACK = new Set(['127.0.0.1', 'localhost', '::1', '[::1]']);
@@ -117,5 +168,6 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     basePath,
     gatewaySecret,
     bioWorkerUrl,
+    llm: loadLlmConfig(env),
   };
 }

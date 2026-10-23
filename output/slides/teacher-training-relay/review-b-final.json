@@ -1,0 +1,74 @@
+{
+  "role": "B",
+  "verdict": "PASS",
+  "confidence": "High",
+  "image_viewing_method": "read_file tool로 .slides-grab/gate-preview/slide-01.png부터 slide-32.png까지 32개 PNG 바이너리 이미지를 모두 직접 열어 시각 검수함 (slides.css, argon-copy.json, validation.json, render-check.json 대조 포함)",
+  "inspected_images": [
+    "slide-01.png",
+    "slide-02.png",
+    "slide-03.png",
+    "slide-04.png",
+    "slide-05.png",
+    "slide-06.png",
+    "slide-07.png",
+    "slide-08.png",
+    "slide-09.png",
+    "slide-10.png",
+    "slide-11.png",
+    "slide-12.png",
+    "slide-13.png",
+    "slide-14.png",
+    "slide-15.png",
+    "slide-16.png",
+    "slide-17.png",
+    "slide-18.png",
+    "slide-19.png",
+    "slide-20.png",
+    "slide-21.png",
+    "slide-22.png",
+    "slide-23.png",
+    "slide-24.png",
+    "slide-25.png",
+    "slide-26.png",
+    "slide-27.png",
+    "slide-28.png",
+    "slide-29.png",
+    "slide-30.png",
+    "slide-31.png",
+    "slide-32.png"
+  ],
+  "checks": {
+    "Composition & hierarchy": "PASS",
+    "Typography & legibility": "PASS",
+    "Korean/CJK word-break integrity": "PASS",
+    "Review Litmus": "PASS"
+  },
+  "findings": [
+    {
+      "slide": 27,
+      "severity": "Minor",
+      "issue": "2열 소제목('문항 3단 · 노트 · 가동 연구비')에서 가운뎃점 앞뒤에 공백(' · ')이 있어 '.word' 래퍼가 가운뎃점을 단독 어절로 분리했고, 그 결과 2열 소제목 둘째 줄이 행두 가운뎃점('· 가동 연구비')으로 시작함.",
+      "fix": "소제목의 공백 포함 가운뎃점을 붙여 쓰거나 조사로 연결해('3단 문항·노트와 가동 연구비') 둘째 줄 첫머리에 가운뎃점이 오지 않도록 다듬을 수 있음."
+    }
+  ],
+  "copy_patches": [
+    {
+      "id": 27,
+      "items": [
+        {
+          "label": "초기 연구비와 실험 과금·환급",
+          "body": "초기 연구비에서 스크리닝·도킹·ADMET·임상 비용이 차감되고 일부 환급됩니다."
+        },
+        {
+          "label": "3단 문항·노트와 가동 연구비",
+          "body": "3단 문항 풀이와 연구 노트 평가, 단계 가동률에 따라 연구비를 받습니다."
+        },
+        {
+          "label": "Series A·B 투자 유치",
+          "body": "후보 정량 점수(70점)와 피치 서술(30점)을 합산해 투자금을 입금합니다."
+        }
+      ]
+    }
+  ],
+  "summary": "새로 렌더링된 slide-01.png~slide-32.png 32장을 모두 직접 열어 확인한 결과, 이전 검수에서 지적한 모든 주요 시각·조판 문제(12번 3열 재배치, 16번 4행 질환 목록 및 로마숫자·조사 정리, 3·11·17·21·24·25·26번 흐름도 화살표의 단계 간 배치(:not(:last-child)), 중복 원문자 제거, 15번 4열 소제목 1줄 정렬, .word nowrap 래퍼를 통한 괄호·조사 분리 및 가운뎃점 복합어 줄바꿈 방지, 8번 kcal/mol 표기 등)가 화면에서 깨끗하게 해결되었음을 확인했습니다. Critical·Major 결함이 없으므로 최종 시각 검수 PASS로 판정하며, 27번 슬라이드 2열 소제목의 공백 가운뎃점(' · ') 줄바꿈 1건만 선택적 Minor 다듬기 패치로 남깁니다."
+}

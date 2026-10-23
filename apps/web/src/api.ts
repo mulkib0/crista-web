@@ -13,6 +13,8 @@ export class ApiFailure extends Error {
   readonly team: TeamView | undefined;
   /** 노트 칸 409 `stale` — 지금 칸(상대 본문 · 버전). */
   readonly note: NoteView | undefined;
+  /** 서버가 준 오류 본문 그대로 — 기능마다 더 실은 칸(예: 서류 칸 409 `stale` 의 지금 칸)을 꺼낼 때 쓴다. */
+  readonly detail: ApiErrorBody['error'] | null;
   constructor(status: number, body: ApiErrorBody['error'] | null, fallback = '서버에 닿지 않아요. 잠시 뒤 다시 해 주세요.') {
     super(body?.message ?? fallback);
     this.status = status;
@@ -20,6 +22,7 @@ export class ApiFailure extends Error {
     this.retryAfterSec = body?.retryAfterSec;
     this.team = body?.team;
     this.note = body?.note;
+    this.detail = body;
   }
 }
 

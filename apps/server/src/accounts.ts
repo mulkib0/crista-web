@@ -1,8 +1,9 @@
 /**
- * 계정 — 학생 가입(학급 코드) · 로그인 · 교사 발급 · 내 정보(설계 §3 · §9).
+ * 계정 — 가입(학생 — 교사 가입은 당분간 닫음) · 학급 고르기 · 로그인 · 교사 발급 · 내 정보(설계 §3 · §9).
  *
- * 가입은 서버가 대신 만든다: 학급 코드 확인 → GoTrue 관리자 API 로 `<아이디>@web.crista.test`(email_confirm) →
- * web.accounts · web.members 를 한 트랜잭션에. 같은 아이디의 동시 가입은 권고 잠금으로 줄을 세운다
+ * 가입은 서버가 대신 만든다: GoTrue 관리자 API 로 `<아이디>@web.crista.test`(email_confirm) → web.accounts 를 한 트랜잭션에.
+ * 학급 코드는 받지 않는다 — 학생은 가입 뒤 교사가 '학생 받기'를 연 학급 목록에서 골라 들어간다(enroll).
+ * 같은 아이디의 동시 가입은 권고 잠금으로 줄을 세운다
  * (그래야 '이미 있는 GoTrue 사용자에 이어 붙이기'가 진짜 고아 계정에만 일어난다).
  * DB 쓰기가 실패하면 이번에 새로 만든 GoTrue 사용자를 지운다.
  *
@@ -14,13 +15,16 @@ import {
   checkDisplayName,
   checkLoginId,
   checkPassword,
+  classChannel,
   loginIdToEmail,
   type AccountView,
   type Avatar,
   type MeResponse,
+  type OpenClassesResponse,
+  type Role,
 } from '@crista-web/web-contract';
 import type { Deps } from './context.ts';
-import { withTx, type Pool, type Queryable } from './db.ts';
+import { isUniqueViolation, withTx, type Pool, type Queryable } from './db.ts';
 import { AuthRejectedError, AuthUnavailableError, type AuthClient } from './gotrue.ts';
 import { ApiError, badRequest } from './http.ts';
 import { changePassword, makeVerifier, matchesVerifier, saveVerifier } from './passwords.ts';
@@ -38,14 +42,19 @@ export function authUnavailable(error: AuthUnavailableError): ApiError {
   return new ApiError(503, 'auth_unavailable', error.message, { retryAfterSec: 5 });
 }
 
-export async function signupStudent(deps: Deps, raw: unknown, ip: string): Promise<{ account: AccountView; token: string }> {
+export async function signup(deps: Deps, raw: unknown, ip: string): Promise<{ account: AccountView; token: string }> {
   const body = (raw ?? {}) as Record<string, unknown>;
-  const code = take(checkClassCode(body.classCode));
+  // 교사 가입은 당분간 닫는다(연수 — 참가자는 학생으로 가입해 파이프라인을 해 본다). 교사 계정은 teacher:create 로만 만든다.
+  if (body.kind === 'teacher') throw new ApiError(403, 'forbidden', '선생님 계정은 지금 화면에서 만들 수 없어요. 진행자에게 문의해 주세요.');
+  const kind: Role = 'student';
+  // 화면은 코드를 보내지 않는다. 점검 스크립트처럼 코드를 보내는 학생 가입만 그 학급에 바로 넣는다.
+  const code = kind === 'student' && body.classCode != null && body.classCode !== '' ? take(checkClassCode(body.classCode)) : null;
   const loginId = take(checkLoginId(body.loginId));
   const displayName = take(checkDisplayName(body.displayName));
   const password = take(checkPassword(body.password));
 
-  for (const [limiter, key] of [[deps.limits.signupPerIp, ip], [deps.limits.signupPerCode, code]] as const) {
+  const limits = code ? ([[deps.limits.signupPerIp, ip], [deps.limits.signupPerCode, code]] as const) : ([[deps.limits.signupPerIp, ip]] as const);
+  for (const [limiter, key] of limits) {
     const hit = limiter.hit(key);
     if (!hit.ok) throw new ApiError(429, 'rate_limited', '가입 요청이 많아요. 잠시 뒤 다시 해 주세요.', { retryAfterSec: hit.retryAfterSec });
   }
@@ -57,27 +66,19 @@ export async function signupStudent(deps: Deps, raw: unknown, ip: string): Promi
       await tx.query('select pg_advisory_xact_lock(hashtext($1))', [accountLock(loginId)]);
       const taken = await tx.query('select 1 from web.accounts where login_id = $1', [loginId]);
       if (taken.rowCount) throw new ApiError(409, 'login_id_taken', '이미 쓰는 아이디예요. 다른 아이디를 골라 주세요.');
-      await assertClassOpen(tx, code, false);
+      if (code) await assertClassOpen(tx, { code }, false);
 
       const { userId, created } = await deps.auth.createOrAttach({
         email: loginIdToEmail(loginId),
         password,
-        metadata: { app: 'crista-web', login_id: loginId, display_name: displayName, kind: 'student' },
+        metadata: { app: 'crista-web', login_id: loginId, display_name: displayName, kind },
       });
       try {
-        await tx.query(`insert into web.accounts (user_id, login_id, display_name, kind) values ($1, $2, $3, 'student')`, [userId, loginId, displayName]);
+        await tx.query(`insert into web.accounts (user_id, login_id, display_name, kind) values ($1, $2, $3, $4)`, [userId, loginId, displayName, kind]);
         await saveVerifier(tx, userId, verifier, 'replace');
         const token = await createSession(tx, userId);
-        // 정원은 맨 끝에 — 학급 줄 잠금은 커밋까지 가고 같은 학급의 동시 가입이 그 잠금에 한 줄로 선다. 그래서 잠근 뒤에는
-        // '세면서 넣기' 한 문장과 커밋만 둔다(한 반 40명이 한꺼번에 가입할 때 앞 가입마다 DB 왕복 3번만 기다린다).
-        const cls = await assertClassOpen(tx, code, true);
-        const joined = await tx.query(
-          `insert into web.members (class_id, user_id, role)
-           select $1, $2, 'student' where (select count(*) from web.members where class_id = $1 and role = 'student') < $3`,
-          [cls.id, userId, cls.maxStudents],
-        );
-        if (!joined.rowCount) throw classFull();
-        return { account: { userId, loginId, displayName, kind: 'student' as const }, token };
+        if (code) await joinClass(tx, await assertClassOpen(tx, { code }, true), userId);
+        return { account: { userId, loginId, displayName, kind }, token };
       } catch (error) {
         if (created) await deps.auth.deleteUser(userId).catch((e: Error) => console.error('[signup] GoTrue 사용자 되돌리기 실패:', e.message));
         throw error;
@@ -89,26 +90,81 @@ export async function signupStudent(deps: Deps, raw: unknown, ip: string): Promi
   }
 }
 
+/** 교사가 '학생 받기'를 연 학급(code_open) — 가입한 학생이 이 가운데 하나를 고른다. */
+export async function openClasses(deps: Deps, student: AccountView): Promise<OpenClassesResponse> {
+  if (student.kind !== 'student') throw new ApiError(403, 'forbidden', '학생 계정으로 해 주세요.');
+  const result = await deps.db.query<ClassRow & { teacher_name: string }>(
+    `select x.*, a.display_name as teacher_name
+       from (${CLASS_SELECT} where c.code_open) x join web.accounts a on a.user_id = x.teacher_id
+      order by x.created_at desc`,
+  );
+  return {
+    classes: result.rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      teacherName: row.teacher_name,
+      teamCount: row.team_count,
+      studentCount: row.student_count,
+      maxStudents: row.max_students,
+    })),
+  };
+}
+
+/** 아직 학급이 없는 학생이 학급을 골라 들어간다. 한 학생은 한 학급(members_one_class_per_student). */
+export async function enroll(deps: Deps, student: AccountView, classId: string): Promise<MeResponse> {
+  if (student.kind !== 'student') throw new ApiError(403, 'forbidden', '학생 계정으로 해 주세요.');
+  if (!/^[0-9a-f-]{36}$/i.test(classId)) throw notFoundClass();
+  const already = () => new ApiError(409, 'already_in_class', '이미 학급에 들어가 있어요.');
+  try {
+    await withTx(deps.db, async (tx) => {
+      const member = await tx.query(`select 1 from web.members where user_id = $1 and role = 'student'`, [student.userId]);
+      if (member.rowCount) throw already();
+      await joinClass(tx, await assertClassOpen(tx, { id: classId }, true), student.userId);
+    });
+  } catch (error) {
+    if (isUniqueViolation(error)) throw already();
+    throw error;
+  }
+  await deps.hub.refreshUser(student.userId, 'student');
+  deps.hub.publish(classChannel(classId), { type: 'member.enrolled', classId, userId: student.userId });
+  return me(deps.db, student);
+}
+
 const classFull = () => new ApiError(409, 'class_full', '학급 정원이 찼어요. 선생님께 알려 주세요.');
+const notFoundClass = () => new ApiError(404, 'not_found', '학급을 찾지 못했어요. 목록을 새로 고쳐 주세요.');
 
 /**
- * 학급 코드 확인. 잠그지 않을 때는 정원도 미리 본다(일찍 거절). `lock` 이면 학급 줄만 잠그고 정원은 부른 쪽이
- * 잠근 **뒤의 다음 문장**에서 센다 — 잠그는 문장 안의 하위 질의는 문장 시작 때의 스냅숏을 써서 잠금을 기다리는 동안
- * 먼저 끝난 가입을 보지 못한다(READ COMMITTED, 정원 초과가 났었다).
+ * 학급 확인(코드 또는 id). 잠그지 않을 때는 정원도 미리 본다(일찍 거절). `lock` 이면 학급 줄만 잠그고 정원은
+ * joinClass 가 잠근 **뒤의 다음 문장**에서 센다 — 잠그는 문장 안의 하위 질의는 문장 시작 때의 스냅숏을 써서 잠금을
+ * 기다리는 동안 먼저 끝난 가입을 보지 못한다(READ COMMITTED, 정원 초과가 났었다).
  */
-async function assertClassOpen(tx: Queryable, code: string, lock: boolean): Promise<{ id: string; maxStudents: number }> {
+async function assertClassOpen(tx: Queryable, by: { code: string } | { id: string }, lock: boolean): Promise<{ id: string; maxStudents: number }> {
+  const [column, value] = 'code' in by ? ['code', by.code] : ['id', by.id];
   const result = await tx.query<{ id: string; code_open: boolean; max_students: number }>(
-    `select id, code_open, max_students from web.classes where code = $1${lock ? ' for update' : ''}`,
-    [code],
+    `select id, code_open, max_students from web.classes where ${column} = $1${lock ? ' for update' : ''}`,
+    [value],
   );
   const cls = result.rows[0];
-  if (!cls) throw new ApiError(404, 'invalid_class_code', '학급 코드를 찾지 못했어요. 선생님께 받은 코드 6자를 확인해 주세요.');
-  if (!cls.code_open) throw new ApiError(403, 'class_closed', '이 학급 코드는 닫혔어요. 선생님께 새 코드를 받아 주세요.');
+  if (!cls) throw 'code' in by ? new ApiError(404, 'invalid_class_code', '학급 코드를 찾지 못했어요. 선생님께 받은 코드 6자를 확인해 주세요.') : notFoundClass();
+  if (!cls.code_open) throw new ApiError(403, 'class_closed', '이 학급은 지금 학생을 받지 않아요. 선생님께 알려 주세요.');
   if (!lock) {
     const count = await tx.query<{ n: number }>(`select count(*)::int as n from web.members where class_id = $1 and role = 'student'`, [cls.id]);
     if (count.rows[0]!.n >= cls.max_students) throw classFull();
   }
   return { id: cls.id, maxStudents: cls.max_students };
+}
+
+/**
+ * 정원을 세면서 넣는다 — 학급 줄 잠금(assertClassOpen lock) 뒤 커밋 전 마지막 문장으로 둔다. 같은 학급의 동시 가입이
+ * 그 잠금에 한 줄로 서므로, 잠근 뒤에는 이 한 문장과 커밋만 둔다(한 반 40명이 한꺼번에 들어올 때 기다림이 짧다).
+ */
+async function joinClass(tx: Queryable, cls: { id: string; maxStudents: number }, userId: string): Promise<void> {
+  const joined = await tx.query(
+    `insert into web.members (class_id, user_id, role)
+     select $1, $2, 'student' where (select count(*) from web.members where class_id = $1 and role = 'student') < $3`,
+    [cls.id, userId, cls.maxStudents],
+  );
+  if (!joined.rowCount) throw classFull();
 }
 
 export async function login(deps: Deps, raw: unknown, ip: string): Promise<{ account: AccountView; token: string }> {
@@ -163,7 +219,7 @@ export async function login(deps: Deps, raw: unknown, ip: string): Promise<{ acc
   return { account: { userId, loginId, displayName: row.display_name, kind: row.kind }, token };
 }
 
-/** 내 정보 · 다음 화면(설계 §2): 모둠이 없거나 이름 전이면 사옥 지구, 등기 뒤면 전광판. */
+/** 내 정보 · 다음 화면(설계 §2): 학급이 없으면 학급 고르기, 모둠이 없거나 이름 전이면 사옥 지구, 등기 뒤면 전광판. */
 export async function me(db: Pool, account: AccountView): Promise<MeResponse> {
   if (account.kind === 'teacher') return { account, next: 'teacher' };
   const member = await db.query<{ team_id: string | null; class_id: string; avatar: Avatar | null }>(
@@ -171,7 +227,7 @@ export async function me(db: Pool, account: AccountView): Promise<MeResponse> {
     [account.userId],
   );
   const row = member.rows[0];
-  if (!row) return { account, next: 'district', team: null, avatar: null };
+  if (!row) return { account, next: 'enroll', team: null, avatar: null };
   const cls = await db.query<ClassRow>(`${CLASS_SELECT} where c.id = $1`, [row.class_id]);
   const team = row.team_id ? await loadTeam(db, row.team_id) : null;
   return {
@@ -193,7 +249,7 @@ export async function setAvatar(db: Pool, account: AccountView, raw: unknown): P
   return me(db, account);
 }
 
-/** 교사 계정 발급(관리 스크립트 전용 — 공개 가입 없음). */
+/** 교사 계정 발급 · 비밀번호 다시 정하기(관리 스크립트 — 교사 화면 가입은 당분간 닫음). */
 export async function createTeacher(
   db: Pool,
   auth: AuthClient,

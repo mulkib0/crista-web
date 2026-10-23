@@ -12,12 +12,15 @@ import {
   checkRegistration,
   checkRegistrationPatch,
   classChannel,
+  MARKET_COPY,
   type AccountView,
   type DistrictResponse,
   type JoinResponse,
   type RegistrationResponse,
   type TeamView,
 } from '@crista-web/web-contract';
+import { postBoardEvent } from './board-events.ts';
+import { currentGameDay } from './clock.ts';
 import type { Deps } from './context.ts';
 import { isUniqueViolation, withTx, type Tx } from './db.ts';
 import { ApiError, badRequest } from './http.ts';
@@ -129,6 +132,7 @@ export async function registerTeam(deps: Deps, student: AccountView, teamId: str
   const input = checked.value;
 
   let won: boolean;
+  let listed: (() => void) | null = null;
   try {
     won = await withTx(deps.db, async (tx) => {
       const member = await memberOf(tx, student.userId, false);
@@ -145,12 +149,24 @@ export async function registerTeam(deps: Deps, student: AccountView, teamId: str
         member.class_id,
         student.userId,
       ]);
+      // 등기는 전광판 첫 소식(설계 §4.3 · FMARKET) — 같은 트랜잭션 · 잠금 순서 teams → classes. 처리기가 상장가 $10.00 줄을 만든다.
+      const news = await postBoardEvent(tx, deps, {
+        classId: member.class_id,
+        teamId,
+        kind: 'listing',
+        headline: MARKET_COPY.listing(input.ticker, input.name),
+        public: { ticker: input.ticker, name: input.name },
+        idemKey: `listing:${teamId}`,
+        gameDay: await currentGameDay(tx, member.class_id),
+      });
+      listed = news.after;
       return true;
     });
   } catch (error) {
     throw registrationConflict(error) ?? error;
   }
 
+  (listed as (() => void) | null)?.();
   const team = mustTeam(await loadTeam(deps.db, teamId));
   if (!won) throw new ApiError(409, 'already_registered', `이미 「${team.startupName}」으로 등기됐어요.`, { team });
   deps.hub.publish(classChannel(team.classId), { type: 'team.registered', classId: team.classId, team, byName: student.displayName });

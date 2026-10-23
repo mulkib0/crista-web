@@ -3,13 +3,24 @@
  */
 import { SESSION_COOKIE, type AccountView } from '@crista-web/web-contract';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { login, me, setAvatar, signupStudent } from './accounts.ts';
+import { enroll, login, me, openClasses, setAvatar, signup } from './accounts.ts';
 import { assignTeam, changeClassCode, classDetail, createClass, listClasses } from './classes.ts';
+import { registerClockRoutes } from './clock.ts';
 import type { Deps } from './context.ts';
+import { register as registerApproval } from './features/approval.ts';
+import { register as registerClinical } from './features/clinical.ts';
+import { register as registerFeed } from './features/feed.ts';
+import { register as registerInd } from './features/ind.ts';
+import { register as registerLearn } from './features/learn.ts';
+import { register as registerMarket } from './features/market.ts';
+import { register as registerPatents } from './features/patents.ts';
+import { register as registerPreclinical } from './features/preclinical.ts';
+import { claimScreenCandidate, register as registerScreen } from './features/screen.ts';
+import { register as registerSelection } from './features/selection.ts';
+import { register as registerTeacher } from './features/teacher.ts';
 import { ApiError, clientIp, readJson, Router, serializeCookie } from './http.ts';
 import { startJob } from './jobs.ts';
 import {
-  claimCandidate,
   diseaseTargets,
   funnelPreview,
   loadBoard,
@@ -20,6 +31,7 @@ import {
   setLead,
   setTarget,
 } from './pipeline.ts';
+import { registerReviewRoutes } from './reviews.ts';
 import { deleteSession, SESSION_TTL_SEC, type Session } from './sessions.ts';
 import { district, joinTeam, registerTeam, updateRegistration } from './teams.ts';
 
@@ -53,7 +65,7 @@ export function buildRouter(): Router<RequestContext> {
   router.on('GET', '/api/health', async () => ({ ok: true }));
 
   router.on('POST', '/api/auth/signup', async (ctx) => {
-    const { account: created, token } = await signupStudent(ctx.deps, await readJson(ctx.req), ipOf(ctx));
+    const { account: created, token } = await signup(ctx.deps, await readJson(ctx.req), ipOf(ctx));
     setSessionCookie(ctx, token);
     ctx.status = 201;
     return me(ctx.deps.db, created);
@@ -94,7 +106,9 @@ export function buildRouter(): Router<RequestContext> {
     assignTeam(ctx.deps, account(ctx), p.classId!, p.userId!, await readJson(ctx.req)),
   );
 
-  // 학생 — 사옥 지구 · 입사 · 등기
+  // 학생 — 학급 고르기 · 사옥 지구 · 입사 · 등기
+  router.on('GET', '/api/open-classes', async (ctx) => openClasses(ctx.deps, account(ctx)));
+  router.on('POST', '/api/classes/:classId/enroll', async (ctx, p) => enroll(ctx.deps, account(ctx), p.classId!));
   router.on('GET', '/api/district', async (ctx) => district(ctx.deps, account(ctx)));
   router.on('POST', '/api/teams/:teamId/join', async (ctx, p) => joinTeam(ctx.deps, account(ctx), p.teamId!));
   router.on('POST', '/api/teams/:teamId/registration', async (ctx, p) => {
@@ -118,12 +132,32 @@ export function buildRouter(): Router<RequestContext> {
     return result;
   });
   router.on('POST', '/api/claims', async (ctx) => {
-    const result = await claimCandidate(ctx.deps, account(ctx), await readJson(ctx.req));
+    // F12: 근거 필수 · 서버 재판정(설계 §7.4 ⑧) · 마지막 실행 통과 분자만 — features/screen.ts.
+    const result = await claimScreenCandidate(ctx.deps, account(ctx), await readJson(ctx.req));
     ctx.status = 201;
     return result;
   });
   router.on('DELETE', '/api/claims/:compound', async (ctx, p) => releaseClaim(ctx.deps, account(ctx), p.compound!));
   router.on('PUT', '/api/notes/:step/:section', async (ctx, p) => saveNote(ctx.deps, account(ctx), p.step!, p.section!, await readJson(ctx.req)));
+
+  // 3판 기반 — 공통(학급 게임 시계 · 서류 심사 보기 · 교사 수동 판정 · LLM 사용량).
+  registerClockRoutes(router, account);
+  registerReviewRoutes(router);
+
+  // 기능 모듈(설계 §5.5~§5.13) — 각 모듈이 경로 · onReviewed · onGameDay 처리기를 단다. 순서는 상관없다(경로가 겹치지 않게 접두를 나눈다).
+  registerScreen(router);
+  registerSelection(router);
+  registerPatents(router);
+  registerPreclinical(router);
+  registerInd(router);
+  registerLearn(router);
+  registerMarket(router);
+  registerApproval(router);
+  registerClinical(router);
+  // 모둠 대화방(시안 06) — 대화 · 행적 · 읽은 위치. 행적은 index.ts 의 `bindTeamFeed` 가 모둠 채널 소식에서 만든다.
+  registerFeed(router);
+  // 교사 화면 — 모둠별 진행 · 막힌 이유 · 연구 노트(설계 §9).
+  registerTeacher(router);
 
   return router;
 }

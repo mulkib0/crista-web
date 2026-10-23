@@ -9,7 +9,7 @@ export type Tx = pg.PoolClient;
 export type Queryable = Pick<pg.Pool, 'query'> | Pick<pg.PoolClient, 'query'>;
 
 /** 서버가 요구하는 마지막 마이그레이션. */
-export const REQUIRED_MIGRATION = '0004';
+export const REQUIRED_MIGRATION = '0007';
 
 export function createPool(config: Pick<Config, 'databaseUrl' | 'databaseCa'>): Pool {
   const pool = new pg.Pool({

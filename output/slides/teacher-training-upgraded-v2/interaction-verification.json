@@ -1,0 +1,40 @@
+{
+  "slides": 106,
+  "glossary": 19,
+  "notes": 106,
+  "assets": [
+    {
+      "art": "protein",
+      "width": 1254
+    },
+    {
+      "art": "molecules",
+      "width": 1254
+    },
+    {
+      "art": "docking",
+      "width": 1254
+    },
+    {
+      "art": "review",
+      "width": 1254
+    }
+  ],
+  "keyboard": true,
+  "hash": true,
+  "tocSearch": true,
+  "notesModal": true,
+  "glossarySearch": true,
+  "fullscreen": true,
+  "printPages": 106,
+  "mobileFit": {
+    "left": 0,
+    "right": 390,
+    "top": 312.3125,
+    "bottom": 531.6875,
+    "width": 390,
+    "height": 844
+  },
+  "noRemoteRequests": true,
+  "errors": []
+}

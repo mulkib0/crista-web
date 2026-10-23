@@ -1,0 +1,13 @@
+{
+  "prev": "이전",
+  "next": "다음",
+  "contents": "목차",
+  "notes": "발표자 노트",
+  "fullscreen": "전체 화면",
+  "print": "인쇄",
+  "close": "닫기",
+  "help": "단축키 및 안내",
+  "overview": "전체 보기",
+  "sourceLabel": "기준 상태 안내",
+  "helpBody": "방향키·Space로 이전/다음 이동, Home·End로 처음/끝 이동, T 목차, N 발표자 노트, F 전체 화면, P 인쇄를 실행하며 터치 스와이프를 지원합니다."
+}

@@ -1,0 +1,14 @@
+w1 exit=0 22s 19ok 0fail
+parallel exit=0 23s 16ok 0fail
+base exit=0 2s 6ok 0fail
+screen exit=0 15s 17ok 0fail
+selection exit=0 23s 18ok 0fail
+patents exit=0 3s 24ok 0fail
+preclinical exit=0 7s 19ok 0fail
+ind exit=0 35s 16ok 0fail
+clinical exit=0 10s 18ok 0fail
+approval exit=0 11s 22ok 0fail
+learn exit=0 4s 22ok 0fail
+market exit=0 20s 20ok 0fail
+full exit=0 113s 18ok 0fail
+DONE

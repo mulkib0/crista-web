@@ -1,0 +1,1306 @@
+[llm] 꺼짐(disabled) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3422/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[http] GET /api/health 200 3ms
+[http] POST /api/auth/login 200 71ms
+[http] GET /api/health 200 1ms
+[http] POST /api/auth/login 200 63ms
+[http] POST /api/classes 201 10ms
+[http] POST /api/auth/signup 201 162ms
+[http] POST /api/teams/25372b3f-dbab-4538-8848-14639c5ad75b/join 200 5ms
+[http] POST /api/auth/signup 201 138ms
+[http] POST /api/teams/25372b3f-dbab-4538-8848-14639c5ad75b/join 200 3ms
+[http] POST /api/auth/signup 201 137ms
+[http] POST /api/teams/25372b3f-dbab-4538-8848-14639c5ad75b/join 200 6ms
+[http] POST /api/auth/signup 201 133ms
+[http] POST /api/teams/25372b3f-dbab-4538-8848-14639c5ad75b/join 200 3ms
+[http] POST /api/teams/25372b3f-dbab-4538-8848-14639c5ad75b/registration 201 13ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async balanceOf (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:178:18)
+    at async Promise.all (index 4)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 14ms
+[http] GET /api/me 200 5ms
+[http] GET /api/me 200 8ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 5)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 13ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 11ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 10ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 21ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 12ms
+[http] GET /api/health 200 0ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 12ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 21ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 9ms
+[http] GET /api/health 200 0ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 8ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 7ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 9ms
+[http] GET /api/health 200 0ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 21ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 13ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 8ms
+[http] GET /api/health 200 0ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 13ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 20ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 14ms
+[http] GET /api/health 200 0ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 21ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 7ms
+[http] GET /api/health 200 0ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 9ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 14ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 13ms
+[http] GET /api/health 200 0ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:48:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:551:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 21ms
+[http] GET /api/board 200 13ms
+[http] GET /api/me 200 11ms
+[http] GET /api/me 200 5ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 15ms
+[http] GET /api/board 200 13ms
+(node:7927) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[http] GET /api/market/board 200 13ms
+[http] GET /api/feed 200 11ms
+[http] GET /api/selection 200 53ms
+[http] GET /api/learn/summary 200 61ms
+[http] GET /api/selection 200 12ms
+[http] GET /api/selection 200 6ms
+[http] GET /api/learn/summary 200 22ms
+[http] GET /api/selection 200 11ms
+[http] GET /api/learn/step/2.2 200 139ms
+[http] GET /api/learn/step/2.2 200 26ms
+[http] GET /api/learn/summary 200 23ms
+[http] GET /api/learn/step/2.2 200 33ms
+[http] GET /api/learn/step/2.2 200 90ms
+[http] GET /api/learn/summary 200 16ms
+[http] GET /api/health 200 0ms
+[http] POST /api/auth/login 200 61ms
+[http] POST /api/classes 201 5ms
+[http] POST /api/auth/signup 201 142ms
+[http] POST /api/teams/522edd61-3c31-432a-ae09-86c0e4866681/join 200 3ms
+[http] POST /api/auth/signup 201 133ms
+[http] POST /api/teams/522edd61-3c31-432a-ae09-86c0e4866681/join 200 3ms
+[http] POST /api/auth/signup 201 137ms
+[http] POST /api/teams/522edd61-3c31-432a-ae09-86c0e4866681/join 200 3ms
+[http] POST /api/auth/signup 201 132ms
+[http] POST /api/teams/522edd61-3c31-432a-ae09-86c0e4866681/join 200 3ms
+[http] POST /api/teams/522edd61-3c31-432a-ae09-86c0e4866681/registration 201 17ms
+[http] GET /api/board 200 9ms
+[http] POST /api/program/target 200 4ms
+[http] GET /api/board 200 5ms
+[http] GET /api/selection 200 6ms
+[http] POST /api/jobs 409 3ms
+[http] POST /api/claims 400 2ms
+[http] POST /api/claims 400 1ms
+[http] POST /api/claims 400 1ms
+[http] POST /api/claims 400 1ms
+[http] POST /api/jobs 201 25ms
+[http] POST /api/jobs 201 30ms
+[http] POST /api/jobs 201 36ms
+[http] POST /api/jobs 201 43ms
+[http] GET /api/board 200 5ms
+[http] POST /api/jobs 201 20ms
+[http] GET /api/learn/summary 200 20ms
+[http] GET /api/selection 200 8ms
+[http] GET /api/learn/step/2.2 200 36ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 8ms
+[http] POST /api/jobs 201 19ms
+[http] GET /api/selection 200 22ms
+[http] GET /api/board 200 34ms
+[http] GET /api/learn/summary 200 44ms
+[http] GET /api/learn/step/2.2 200 56ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 10ms
+[http] POST /api/jobs 201 17ms
+[http] GET /api/selection 200 9ms
+[http] GET /api/board 200 9ms
+[http] GET /api/learn/summary 200 28ms
+[http] GET /api/learn/step/2.2 200 31ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 9ms
+[http] POST /api/jobs 201 17ms
+[http] GET /api/board 200 9ms
+[http] GET /api/selection 200 10ms
+[http] GET /api/learn/summary 200 25ms
+[http] GET /api/learn/step/2.2 200 25ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 6ms
+[http] POST /api/jobs 201 15ms
+[http] GET /api/board 200 6ms
+[http] POST /api/molecule/properties 200 5ms
+[http] POST /api/jobs 201 21ms
+[http] POST /api/jobs 201 30ms
+[http] GET /api/selection 200 10ms
+[http] GET /api/board 200 11ms
+[http] POST /api/jobs 201 43ms
+[http] GET /api/learn/summary 200 25ms
+[http] GET /api/board 200 10ms
+[http] GET /api/learn/step/2.2 200 34ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 11ms
+[http] GET /api/selection 200 13ms
+[http] GET /api/learn/summary 200 28ms
+[http] GET /api/board 200 9ms
+[http] GET /api/feed 200 12ms
+[http] GET /api/selection 200 21ms
+[http] GET /api/selection 200 9ms
+[http] GET /api/selection 200 6ms
+[http] GET /api/selection 200 5ms
+[http] GET /api/learn/step/2.1 200 50ms
+[http] GET /api/learn/step/2.1 200 23ms
+[http] GET /api/learn/step/2.1 200 26ms
+[http] GET /api/learn/step/2.1 200 24ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 10ms
+[http] GET /api/selection 200 12ms
+[http] GET /api/learn/summary 200 25ms
+[http] GET /api/board 200 29ms
+[http] GET /api/board 200 33ms
+[http] GET /api/selection 200 12ms
+[http] GET /api/board 200 13ms
+[http] GET /api/learn/summary 200 27ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 6ms
+[http] GET /api/selection 200 9ms
+[http] GET /api/board 200 11ms
+[http] GET /api/learn/summary 200 22ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 11ms
+[http] GET /api/selection 200 11ms
+[http] GET /api/learn/summary 200 24ms
+[http] GET /api/board 200 8ms
+[http] GET /api/selection 200 4ms
+[http] GET /api/board 200 6ms
+[http] POST /api/selection/dock-picks 400 5ms
+[http] POST /api/selection/dock-picks 400 9ms
+[http] POST /api/selection/dock-picks 400 9ms
+[http] POST /api/selection/dock-picks 400 1ms
+[http] POST /api/selection/dock-picks 400 9ms
+[http] POST /api/selection/dock-picks 201 12ms
+[http] POST /api/selection/dock-picks 409 14ms
+[http] POST /api/selection/dock-picks 409 15ms
+[http] POST /api/selection/dock-picks 409 16ms
+[http] POST /api/selection/dock-picks 409 9ms
+[http] DELETE /api/selection/dock-picks/not-a-uuid 404 0ms
+[http] DELETE /api/selection/lead-candidates/not-a-uuid 404 0ms
+[http] POST /api/selection/dock-picks 201 22ms
+[http] POST /api/selection/dock-picks 409 24ms
+[http] POST /api/selection/dock-picks 201 26ms
+[http] POST /api/selection/dock-picks 201 28ms
+[http] POST /api/selection/dock-picks 409 29ms
+[http] POST /api/selection/dock-picks 409 30ms
+[http] POST /api/selection/dock-picks 409 33ms
+[http] POST /api/selection/dock-picks 201 35ms
+[http] POST /api/selection/dock-picks 409 36ms
+[http] POST /api/selection/dock-picks 409 37ms
+[http] POST /api/selection/dock-picks 409 38ms
+[http] POST /api/selection/dock-picks 409 40ms
+[http] GET /api/selection 200 4ms
+[http] DELETE /api/selection/dock-picks/c4f28cc2-45b2-47e2-8187-5742eff724c7 404 5ms
+[http] DELETE /api/selection/dock-picks/c4f28cc2-45b2-47e2-8187-5742eff724c7 200 4ms
+[http] POST /api/selection/dock-picks 201 10ms
+[http] GET /api/selection 200 4ms
+[http] POST /api/jobs 409 7ms
+[http] GET /api/board 200 7ms
+[http] POST /api/jobs 201 17ms
+[http] POST /api/jobs 409 19ms
+[http] POST /api/jobs 409 22ms
+[http] POST /api/jobs 409 27ms
+[http] GET /api/board 200 5ms
+[http] DELETE /api/selection/dock-picks/49bb7f4d-59cf-43a8-ab81-69fcbc120627 200 6ms
+[http] POST /api/jobs 409 9ms
+[http] GET /api/selection 200 4ms
+[http] POST /api/jobs 201 14ms
+[http] POST /api/jobs 201 19ms
+[http] POST /api/jobs 201 27ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 21ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 9ms
+[http] GET /api/selection 200 8ms
+[http] POST /api/selection/lead-candidates 400 8ms
+[http] POST /api/selection/lead-candidates 201 16ms
+[http] POST /api/selection/lead-candidates 409 19ms
+[http] DELETE /api/selection/lead-candidates/ac66d79c-a036-4b24-a43e-d94f979abd1b 200 13ms
+[http] POST /api/selection/lead-candidates 201 27ms
+[http] POST /api/selection/lead-candidates 201 31ms
+[http] POST /api/selection/lead-candidates 201 34ms
+[http] POST /api/selection/lead-candidates 201 39ms
+[http] GET /api/selection 200 9ms
+[http] GET /api/board 200 7ms
+[http] DELETE /api/selection/lead-candidates/ac66d79c-a036-4b24-a43e-d94f979abd1b 200 9ms
+[http] POST /api/selection/lead-candidates 409 16ms
+[http] POST /api/selection/lead-candidates 201 19ms
+[http] GET /api/selection 200 6ms
+[http] GET /api/learn/summary 200 14ms
+[http] GET /api/health 200 0ms
+[http] POST /api/auth/login 200 55ms
+[http] POST /api/classes 201 5ms
+[http] POST /api/auth/signup 201 125ms
+[http] POST /api/teams/0923200e-c634-4559-9fba-60312c7872b9/join 200 4ms
+[http] POST /api/auth/signup 201 135ms
+[http] POST /api/teams/0923200e-c634-4559-9fba-60312c7872b9/join 200 2ms
+[http] POST /api/auth/signup 201 126ms
+[http] POST /api/teams/0923200e-c634-4559-9fba-60312c7872b9/join 200 3ms
+[http] POST /api/auth/signup 201 123ms
+[http] POST /api/teams/0923200e-c634-4559-9fba-60312c7872b9/join 200 4ms
+[http] POST /api/auth/signup 201 122ms
+[http] POST /api/teams/924cf54b-17e6-47c6-88fb-f0e2ff709294/join 200 3ms
+[http] POST /api/auth/signup 201 124ms
+[http] POST /api/teams/924cf54b-17e6-47c6-88fb-f0e2ff709294/join 200 4ms
+[http] POST /api/teams/0923200e-c634-4559-9fba-60312c7872b9/registration 201 9ms
+[http] POST /api/teams/924cf54b-17e6-47c6-88fb-f0e2ff709294/registration 201 10ms
+[http] GET /api/board 200 5ms
+[http] POST /api/program/picks 200 3ms
+[http] POST /api/program/target 200 4ms
+[http] POST /api/program/picks 200 2ms
+[http] POST /api/program/target 200 5ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 4ms
+[http] GET /api/patents 200 18ms
+[http] POST /api/patents/applications 409 16ms
+[http] POST /api/patents/applications 409 16ms
+[http] POST /api/patents/applications 409 16ms
+[http] POST /api/patents/applications 201 20ms
+[http] POST /api/patents/applications 409 6ms
+[http] POST /api/patents/applications 404 2ms
+[http] POST /api/patents/applications 404 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/code 200 6ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/code 409 6ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/code 409 6ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/code 409 7ms
+[http] GET /api/patents 200 9ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/code 400 4ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/code 400 7ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/claim1 200 5ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/field 200 6ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/title 200 9ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/background 200 10ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/summary 200 3ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/summary 409 4ms
+[http] GET /api/patents 200 5ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/mech_action 400 1ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/inventors 400 1ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/secret 404 0ms
+[http] GET /api/patents 200 5ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/review 201 13ms
+[http] GET /api/patents 200 7ms
+[http] GET /api/patents 200 7ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/code_tick 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/code_num 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/mech_how 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/mech_action 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/mech_why 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/title 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/field 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/background 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/claim1 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/claim2 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/effect 200 2ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/summary 200 3ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/inventors 200 3ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/precheck 200 4ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/review 409 2ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/review 201 12ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/review 200 13ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/review 200 15ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/review 200 16ms
+[http] GET /api/patents 200 10ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/code 409 2ms
+[http] GET /api/patents 200 7ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/sections/summary 200 3ms
+[http] POST /api/patents/applications 201 9ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/code 200 3ms
+[http] GET /api/patents 200 7ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/code_tick 200 2ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/code_num 200 3ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/mech_how 200 3ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/mech_action 200 4ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/mech_why 200 8ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/title 200 3ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/field 200 2ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/background 200 2ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/claim1 200 2ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/claim2 200 2ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/effect 200 3ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/summary 200 2ms
+[http] PUT /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/sections/inventors 200 2ms
+[http] GET /api/patents 200 6ms
+[http] GET /api/patents 200 7ms
+[http] POST /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/review 201 11ms
+[http] GET /api/patents 200 7ms
+[http] GET /api/patents 200 6ms
+[http] POST /api/patents/applications 201 10ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/code 200 3ms
+[http] GET /api/patents 200 7ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/code_tick 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/code_num 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/mech_how 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/mech_action 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/mech_why 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/title 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/field 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/background 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/claim1 200 2ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/claim2 200 2ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/effect 200 2ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/summary 200 3ms
+[http] PUT /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/sections/inventors 200 3ms
+[http] GET /api/patents 200 8ms
+[http] POST /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/review 201 10ms
+[http] POST /api/patents/applications 201 8ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/code 200 3ms
+[http] GET /api/patents 200 6ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/code_tick 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/code_num 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/mech_how 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/mech_action 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/mech_why 200 3ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/title 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/field 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/background 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/claim1 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/claim2 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/effect 200 3ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/summary 200 2ms
+[http] PUT /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/sections/inventors 200 2ms
+[http] GET /api/patents 200 5ms
+[http] POST /api/patents/applications/60802c52-8981-4994-9a7b-cdd09a37c2f9/review 201 9ms
+[http] GET /api/patents 200 8ms
+[http] GET /api/patents 200 6ms
+[http] POST /api/teacher/reviews/73e94bbb-e07e-4c1b-b9eb-c88d8563b69e/decision 200 18ms
+[http] POST /api/teacher/reviews/0a92111e-d322-4e53-8cfa-80d95d099a7f/decision 200 21ms
+[http] GET /api/patents 200 13ms
+[http] GET /api/patents 200 9ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/precheck 200 6ms
+[http] GET /api/patents/ledger 200 2ms
+[http] GET /api/patents 200 9ms
+[http] PUT /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/code 409 3ms
+[http] GET /api/patents 200 11ms
+[http] POST /api/patents/applications/8a5c0a30-023a-4ee1-b992-1a41d9d80284/abandon 200 5ms
+[http] GET /api/patents 200 11ms
+[http] POST /api/patents/applications 201 13ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/code 200 4ms
+[http] GET /api/patents 200 8ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/code_tick 200 3ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/code_num 200 2ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/mech_how 200 3ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/mech_action 200 4ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/mech_why 200 3ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/title 200 3ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/field 200 2ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/background 200 2ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/claim1 200 4ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/claim2 200 5ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/effect 200 2ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/summary 200 2ms
+[http] PUT /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/sections/inventors 200 2ms
+[http] GET /api/patents 200 8ms
+[http] POST /api/patents/applications/2a66b59a-1df0-4b26-b826-2926d044cb51/review 201 10ms
+[http] POST /api/teacher/reviews/d2292c53-b68b-4bc3-9a7c-05b431c8156a/decision 200 14ms
+[http] GET /api/patents 200 7ms
+[http] GET /api/patents/ledger 200 2ms
+[http] POST /api/patents/applications 201 9ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/code 200 3ms
+[http] GET /api/patents 200 8ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/code_tick 200 3ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/code_num 200 3ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/mech_how 200 2ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/mech_action 200 3ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/mech_why 200 2ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/title 200 2ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/field 200 2ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/background 200 2ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/claim1 200 2ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/claim2 200 2ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/summary 200 2ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/inventors 200 3ms
+[http] GET /api/patents 200 9ms
+[http] POST /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/review 201 10ms
+[http] GET /api/patents 200 10ms
+[http] PUT /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/sections/effect 200 3ms
+[http] GET /api/patents 200 8ms
+[http] POST /api/patents/applications/d4d43b15-0048-4e2a-b594-26cffdd84cf5/review 201 9ms
+[http] GET /api/patents 200 10ms
+[http] POST /api/teacher/reviews/b071c775-dbc8-4724-948c-3f9c993eaf75/decision 200 5ms
+[http] GET /api/patents 200 8ms
+[http] GET /api/patents 200 10ms
+[http] POST /api/teacher/reviews/a3222e1d-563c-4fe9-99df-2cd3f34e176b/decision 200 5ms
+[http] GET /api/patents 200 8ms
+[http] POST /api/patents/applications/dc41b80a-bad5-4fdf-b489-c0a15f94e715/abandon 200 2ms
+[http] POST /api/patents/applications/60577e21-1d1e-41bf-82ef-fc180bb45175/abandon 409 2ms
+[http] POST /api/patents/applications 201 8ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/code 200 2ms
+[http] GET /api/patents 200 8ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/code_tick 200 2ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/code_num 200 2ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/mech_how 200 3ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/mech_action 200 3ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/mech_why 200 3ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/title 200 2ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/field 200 3ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/background 200 2ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/claim1 200 2ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/claim2 200 2ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/effect 200 2ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/summary 200 3ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/inventors 200 2ms
+[http] GET /api/patents 200 8ms
+[http] POST /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/review 201 10ms
+[http] POST /api/program/picks 200 2ms
+[http] POST /api/program/target 200 6ms
+[http] GET /api/patents 200 9ms
+[http] POST /api/teacher/reviews/cad2583f-86b8-4f24-98d9-2d8fb8fec746/decision 200 5ms
+[http] GET /api/patents 200 9ms
+[http] GET /api/patents 200 11ms
+[http] PUT /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/sections/summary 200 3ms
+[http] GET /api/patents 200 10ms
+[http] POST /api/patents/applications/376655ed-d344-4e54-91c1-5a48bb4146bd/review 409 2ms
+[http] GET /api/selection 200 9ms
+[http] GET /api/board 200 10ms
+[http] GET /api/selection 200 10ms
+[http] GET /api/board 200 10ms
+[http] GET /api/me 200 9ms
+[http] GET /api/feed 200 20ms
+[http] GET /api/selection 200 37ms
+[http] GET /api/board 200 46ms
+[http] GET /api/selection 200 10ms
+[http] GET /api/board 200 12ms
+[http] GET /api/selection 200 12ms
+[http] GET /api/learn/step/2.1 200 65ms
+[http] GET /api/selection 200 8ms
+[http] GET /api/learn/step/2.1 200 23ms
+[http] GET /api/learn/step/2.1 200 35ms
+[http] GET /api/learn/step/2.1 200 22ms
+[http] GET /api/learn/summary 200 12ms
+[http] GET /api/selection 200 14ms
+[http] GET /api/board 200 21ms
+[http] GET /api/selection 200 10ms
+[http] GET /api/board 200 16ms
+[http] GET /api/feed 200 6ms
+[http] GET /api/selection 200 11ms
+[http] GET /api/selection 200 5ms
+[http] GET /api/selection 200 5ms
+[http] GET /api/learn/step/2.2 200 28ms
+[http] GET /api/selection 200 4ms
+[http] GET /api/learn/step/2.2 200 16ms
+[http] GET /api/learn/step/2.2 200 17ms
+[http] GET /api/learn/step/2.2 200 15ms
+[http] GET /api/learn/summary 200 19ms
+[http] GET /api/me 200 24ms
+[http] GET /api/feed 200 32ms
+[http] GET /api/selection 200 40ms
+[http] GET /api/selection 200 13ms
+[http] GET /api/board 200 54ms
+[http] GET /api/learn/step/2.2 200 71ms
+[http] GET /api/selection 200 22ms
+[http] GET /api/board 200 22ms
+[http] GET /api/selection 200 11ms
+[http] GET /api/learn/step/2.2 200 40ms
+[http] GET /api/learn/step/2.2 200 53ms
+[http] GET /api/learn/step/2.2 200 38ms
+[http] GET /api/selection 200 16ms
+[http] POST /api/selection/lead-candidates 201 13ms
+[http] GET /api/board 200 13ms
+[http] GET /api/selection 200 15ms
+[http] GET /api/learn/summary 200 31ms
+[http] GET /api/learn/summary 200 16ms
+[http] GET /api/me 200 9ms
+[http] GET /api/me 200 5ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 12ms
+[http] GET /api/feed 200 9ms
+[http] GET /api/market/board 200 11ms
+[http] GET /api/patents 200 12ms
+[http] GET /api/patents 200 5ms
+[http] GET /api/learn/summary 200 20ms
+[http] GET /api/patents 200 9ms
+[http] GET /api/patents 200 13ms
+[http] GET /api/learn/summary 200 27ms
+[http] GET /api/learn/step/3.1 200 25ms
+[http] GET /api/learn/step/3.1 200 13ms
+[http] GET /api/learn/step/3.1 200 14ms
+[http] GET /api/learn/step/3.1 200 19ms
+[http] GET /api/learn/summary 200 14ms
+[http] GET /api/me 200 4ms
+[http] GET /api/me 200 2ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 9ms
+[http] GET /api/market/board 200 5ms
+[http] GET /api/feed 200 5ms
+[http] GET /api/patents 200 8ms
+[http] GET /api/patents 200 7ms
+[http] GET /api/learn/summary 200 18ms
+[http] GET /api/patents 200 5ms
+[http] GET /api/patents 200 9ms
+[http] GET /api/learn/summary 200 15ms
+[http] GET /api/learn/step/3.1 200 15ms
+[http] GET /api/learn/step/3.1 200 12ms
+[http] GET /api/learn/step/3.1 200 13ms
+[http] GET /api/learn/step/3.1 200 11ms
+[http] GET /api/learn/summary 200 10ms
+[http] POST /api/patents/applications 201 18ms
+[http] GET /api/board 200 13ms
+[http] GET /api/learn/summary 200 29ms
+[http] GET /api/patents 200 22ms
+[http] GET /api/patents 200 17ms
+[http] GET /api/patents 200 6ms
+[http] GET /api/learn/step/3.1 200 16ms
+[http] GET /api/learn/step/3.1 200 13ms
+[http] GET /api/learn/step/3.1 200 13ms
+[http] GET /api/learn/step/3.1 200 12ms
+[http] GET /api/patents 200 13ms
+[http] PUT /api/patents/applications/fcb2dbb7-d48d-40ed-a46a-7a74d742b1c2/code 200 4ms
+[http] PUT /api/patents/applications/fcb2dbb7-d48d-40ed-a46a-7a74d742b1c2/sections/mech_how 200 7ms
+[http] PUT /api/patents/applications/fcb2dbb7-d48d-40ed-a46a-7a74d742b1c2/sections/mech_action 200 4ms
+[http] PUT /api/patents/applications/fcb2dbb7-d48d-40ed-a46a-7a74d742b1c2/sections/title 200 4ms
+[http] GET /api/board 200 10ms
+[http] GET /api/patents 200 16ms
+[http] GET /api/learn/summary 200 18ms
+[http] GET /api/me 200 3ms
+[http] GET /api/me 200 11ms
+[http] GET /api/board 200 23ms
+[http] GET /api/board 200 26ms
+[http] GET /api/feed 200 12ms
+[http] GET /api/market/board 200 18ms
+[http] GET /api/board 200 22ms
+[http] GET /api/patents 200 37ms
+[http] GET /api/learn/summary 200 52ms
+[http] GET /api/patents 200 27ms
+[http] GET /api/learn/summary 200 29ms
+[http] GET /api/patents 200 17ms
+[http] GET /api/patents 200 15ms
+[http] GET /api/learn/step/3.1 200 19ms
+[http] GET /api/learn/summary 200 24ms
+[http] GET /api/learn/step/3.1 200 33ms
+[http] GET /api/learn/step/3.1 200 13ms
+[http] GET /api/learn/step/3.1 200 15ms
+[http] GET /api/learn/summary 200 16ms
+[http] GET /api/patents 200 9ms
+[http] GET /api/patents 200 8ms
+[http] GET /api/learn/step/3.1 200 14ms
+[http] GET /api/learn/step/3.1 200 10ms
+[http] GET /api/learn/step/3.1 200 11ms
+[http] GET /api/learn/step/3.1 200 12ms
+[http] GET /api/learn/summary 200 11ms
+[http] GET /api/patents 200 9ms
+[http] GET /api/patents 200 9ms
+[http] GET /api/learn/step/3.1 200 35ms
+[http] GET /api/learn/step/3.1 200 14ms
+[http] GET /api/learn/step/3.1 200 15ms
+[http] GET /api/learn/step/3.1 200 11ms
+[http] GET /api/me 200 10ms
+[http] GET /api/feed 200 10ms
+[http] GET /api/patents 200 16ms
+[http] GET /api/board 200 24ms
+[http] GET /api/patents 200 14ms
+[http] GET /api/board 200 8ms
+[http] GET /api/patents 200 14ms
+[http] GET /api/patents 200 15ms
+[http] GET /api/learn/step/3.1 200 14ms
+[http] GET /api/learn/step/3.1 200 13ms
+[http] GET /api/learn/step/3.1 200 16ms
+[http] GET /api/learn/step/3.1 200 21ms
+[http] POST /api/patents/applications/fcb2dbb7-d48d-40ed-a46a-7a74d742b1c2/precheck 200 23ms
+[http] GET /api/patents 200 10ms
+[http] GET /api/patents 200 7ms
+[http] GET /api/learn/step/3.1 200 14ms
+[http] GET /api/learn/step/3.1 200 12ms
+[http] GET /api/learn/step/3.1 200 10ms
+[http] GET /api/learn/step/3.1 200 11ms
+[http] GET /api/feed 200 6ms
+[http] GET /api/selection 200 9ms
+[http] GET /api/selection 200 7ms
+[http] GET /api/selection 200 6ms
+[http] GET /api/learn/step/2.1 200 27ms
+[http] GET /api/selection 200 7ms
+[http] GET /api/learn/step/2.1 200 20ms
+[http] GET /api/learn/step/2.1 200 15ms
+[http] GET /api/learn/step/2.1 200 13ms
+[http] GET /api/learn/summary 200 12ms
+[http] GET /api/feed 200 5ms
+[http] GET /api/selection 200 10ms
+[http] GET /api/selection 200 5ms
+[http] GET /api/selection 200 6ms
+[http] GET /api/learn/step/2.2 200 25ms
+[http] GET /api/selection 200 4ms
+[http] GET /api/learn/step/2.2 200 14ms
+[http] GET /api/learn/step/2.2 200 15ms
+[http] GET /api/learn/step/2.2 200 14ms
+[http] GET /api/learn/summary 200 9ms
+[http] GET /api/selection 200 9ms
+[http] GET /api/selection 200 7ms
+[http] GET /api/learn/step/2.2 200 29ms
+[http] GET /api/learn/step/2.2 200 16ms
+[http] GET /api/feed 200 18ms
+[http] GET /api/selection 200 19ms
+[http] GET /api/me 200 21ms
+[http] GET /api/board 200 28ms
+[http] GET /api/selection 200 10ms
+[http] GET /api/board 200 9ms
+[http] GET /api/selection 200 8ms
+[http] GET /api/learn/step/2.2 200 43ms
+[http] GET /api/selection 200 6ms
+[http] GET /api/learn/step/2.2 200 16ms
+[http] GET /api/learn/step/2.2 200 13ms
+[http] GET /api/learn/step/2.2 200 16ms
+[http] GET /api/me 200 4ms
+[http] GET /api/feed 200 5ms
+[http] GET /api/selection 200 11ms
+[http] GET /api/board 200 15ms
+[http] GET /api/selection 200 7ms
+[http] GET /api/board 200 10ms
+[http] GET /api/selection 200 8ms
+[http] GET /api/learn/step/2.2 200 32ms
+[http] GET /api/selection 200 5ms
+[http] GET /api/learn/step/2.2 200 15ms
+[http] GET /api/learn/step/2.2 200 12ms
+[http] GET /api/learn/step/2.2 200 13ms
+[http] GET /api/learn/summary 200 31ms
+[http] GET /api/feed 200 3ms
+[http] GET /api/selection 200 10ms
+[http] GET /api/selection 200 5ms
+[http] GET /api/selection 200 5ms
+[http] GET /api/learn/step/2.1 200 24ms
+[http] GET /api/selection 200 4ms
+[http] GET /api/learn/step/2.1 200 17ms
+[http] GET /api/learn/step/2.1 200 10ms
+[http] GET /api/learn/step/2.1 200 12ms
+[http] GET /api/feed 200 3ms
+[http] GET /api/patents 200 12ms
+[http] GET /api/patents 200 7ms
+[http] GET /api/patents 200 8ms
+[http] GET /api/patents 200 7ms
+[http] GET /api/learn/step/3.1 200 15ms
+[http] GET /api/learn/step/3.1 200 12ms
+[http] GET /api/learn/step/3.1 200 10ms
+[http] GET /api/learn/step/3.1 200 11ms
+[http] GET /api/me 200 5ms
+[http] GET /api/me 200 5ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 6ms
+[http] GET /api/feed 200 7ms
+[http] GET /api/market/board 200 9ms
+[http] GET /api/patents 200 21ms
+[http] GET /api/learn/summary 200 24ms
+[http] GET /api/patents 200 12ms
+[http] GET /api/learn/summary 200 14ms
+[http] GET /api/patents 200 9ms
+[http] GET /api/patents 200 8ms
+[http] GET /api/learn/step/3.1 200 15ms
+[http] GET /api/learn/step/3.1 200 11ms
+[http] GET /api/learn/step/3.1 200 16ms
+[http] GET /api/learn/step/3.1 200 19ms
+[http] GET /api/learn/summary 200 10ms
+[http] POST /api/patents/applications/fcb2dbb7-d48d-40ed-a46a-7a74d742b1c2/precheck 200 9ms
+[http] GET /api/learn/summary 200 15ms
+[server] SIGTERM — 닫는 중

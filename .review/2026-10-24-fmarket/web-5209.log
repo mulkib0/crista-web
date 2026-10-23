@@ -1,0 +1,25 @@
+
+> @crista-web/web@0.1.0 predev
+> node scripts/prepare-assets.mjs
+
+[gen-campus-assets] 외관 8종 × 3단계 → /Users/mulkib/Desktop/repo/crista-web/apps/web/public/campus
+[prepare-assets] crista 에셋 8개 복사 · 사옥 외관 생성
+
+> @crista-web/web@0.1.0 dev
+> vite --port 5209 --strictPort
+
+
+  VITE v8.3.5  ready in 90 ms
+
+  ➜  Local:   http://127.0.0.1:5209/crista/
+3:19:47 AM [vite] (client) hmr update /src/board/market/Trend.tsx
+3:19:47 AM [vite] (client) hmr update /src/board/market/FinalStandings.tsx
+3:19:47 AM [vite] (client) hmr update /src/board/market/market.css
+3:19:52 AM [vite] (client) hmr update /src/board/market/FinalStandings.tsx
+npm error Lifecycle script `dev` failed with error:
+npm error code 143
+npm error path /Users/mulkib/Desktop/repo/crista-web/apps/web
+npm error workspace @crista-web/web@0.1.0
+npm error location /Users/mulkib/Desktop/repo/crista-web/apps/web
+npm error command failed
+npm error command sh -c vite --port 5209 --strictPort

@@ -1,0 +1,18 @@
+[
+  {
+    "file": "index.html",
+    "images": true,
+    "font": true,
+    "allFit": true,
+    "selectedSlide": 4,
+    "matchesStandalone": true
+  },
+  {
+    "file": "crista-science-relay.html",
+    "images": true,
+    "font": true,
+    "allFit": true,
+    "selectedSlide": 4,
+    "matchesStandalone": true
+  }
+]

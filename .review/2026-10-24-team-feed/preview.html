@@ -1,0 +1,734 @@
+<title>모둠 공유 시안 10</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;700&display=swap">
+<style>
+/* 레이아웃: 실제 보드 셸(위 띠 · 전광판 · 둥근 섬 그리드)을 그대로 두고, 오른쪽 '모둠 공유' 섬만 시안별로 갈아 끼운다. 앱이 밝은 화면 하나라서 프리뷰도 밝은 화면으로 고정한다. */
+:root {
+  --bg: #f1f1e9; --surface: #fbfbf6; --raise: #e7e8de; --fg: #080b09; --muted: #5b6358;
+  --line: rgba(8, 11, 9, 0.13); --line-strong: rgba(8, 11, 9, 0.32);
+  --acc: #080b09; --acc-fg: #f1f1e9; --hi: #c6ff4a; --hi-fg: #080b09;
+  --good: #2f6f2a; --good-bg: rgba(47, 111, 42, 0.12); --warn: #8a5a00; --warn-bg: rgba(176, 120, 0, 0.14);
+  --bad: #b2361b; --bad-bg: rgba(178, 54, 27, 0.11);
+  --film: linear-gradient(115deg, #ffd3ea 0%, #cdeaff 28%, #e4ffc0 52%, #ffe2c2 76%, #e6d4ff 100%);
+  --led: #0b0d0a; --led-fg: #f1f1e9; --amber: #ffb21a;
+  --sans: "IBM Plex Sans KR", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --side-w: 264px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--raise); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 프리뷰 띠 — 앱 밖 */
+.pv { background: var(--led); color: var(--led-fg); padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 10px; }
+.pv-top { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.pv-top b { font-size: 15px; }
+.pv-top span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #9da59a; }
+.pv-list { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.pv-list::-webkit-scrollbar { display: none; }
+.pv-b { flex: none; appearance: none; border: 1px solid rgba(241,241,233,0.22); background: transparent; border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; display: inline-flex; gap: 6px; align-items: baseline; color: var(--led-fg); }
+.pv-b i { font-style: normal; font-family: var(--mono); font-size: 11px; color: #9da59a; }
+.pv-b:hover { border-color: var(--led-fg); }
+.pv-b[aria-pressed="true"] { background: var(--hi); color: var(--hi-fg); border-color: var(--hi); }
+.pv-b[aria-pressed="true"] i { color: var(--hi-fg); }
+.pv-d { margin: 0; font-size: 13px; color: #c9cec5; max-width: 90ch; }
+.pv-d b { color: var(--hi); font-weight: 600; }
+
+/* 위 띠 */
+.top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--line-strong); background: var(--bg); }
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: -0.03em; font-size: 17px; }
+.brand svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+.brand small { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; color: var(--muted); }
+.co { display: flex; align-items: center; gap: 8px; padding-left: 14px; border-left: 1px solid var(--line); min-width: 0; }
+.co .dot { width: 10px; height: 10px; border-radius: 50%; background: #1f3a8a; }
+.co b { font-size: 15px; white-space: nowrap; }
+.co .tick { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 999px; }
+.co u { font-size: 12px; color: var(--muted); text-underline-offset: 3px; }
+.top-r { margin-left: auto; display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
+.kv { display: grid; line-height: 1.2; }
+.kv span, .tb-btn span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); }
+.kv b { font-family: var(--mono); font-size: 15px; font-weight: 600; white-space: nowrap; }
+.tb-btn { display: grid; line-height: 1.2; background: var(--raise); border-radius: 14px; padding: 5px 12px; }
+.tb-btn b { font-family: var(--mono); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.tb-chip { display: inline-flex; gap: 4px; border-radius: 999px; padding: 4px 10px; background: var(--film); font-family: var(--mono); font-size: 11.5px; font-weight: 600; white-space: nowrap; box-shadow: inset 0 0 0 1.5px var(--fg); }
+.pill { border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 13px; white-space: nowrap; background: transparent; }
+.top-r .out { font-size: 13px; color: var(--muted); }
+
+/* 전광판 */
+.board { display: flex; background: var(--led); color: var(--led-fg); border-bottom: 1px solid rgba(241,241,233,0.3); }
+.mq { flex: 1; min-width: 0; overflow: hidden; padding-block: 16px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
+.mq-track { display: flex; width: max-content; animation: mq 50s linear infinite; }
+.mq-seg { display: flex; gap: 28px; padding-right: 28px; }
+.led { font-family: var(--mono); font-weight: 600; letter-spacing: 0.06em; font-size: 22px; color: var(--amber); white-space: nowrap; text-shadow: 0 0 8px rgba(255,178,26,0.55); -webkit-mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); -webkit-mask-size: 3px 3px; mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); mask-size: 3px 3px; }
+.bd-ctl { flex: none; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 5px; padding: 6px max(16px, env(safe-area-inset-right, 0px)) 6px 12px; border-left: 1px solid rgba(241,241,233,0.16); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; }
+.live { display: inline-flex; align-items: center; gap: 6px; color: #9da59a; }
+.live i { width: 7px; height: 7px; background: #ff6b4a; border-radius: 50%; animation: blink 1.4s steps(2) infinite; }
+.bd-ctl .tool { border: 1px solid rgba(241,241,233,0.3); border-radius: 999px; padding: 3px 9px; font-size: 10.5px; }
+@keyframes mq { to { transform: translateX(-50%); } }
+@keyframes blink { 50% { opacity: 0.2; } }
+
+/* 본문 섬 그리드 */
+.bd-body { display: grid; align-content: start; gap: 12px; grid-template-columns: var(--side-w) minmax(0, 1fr) minmax(0, 1.15fr); grid-template-areas: "side head head" "side mine team"; padding-block: 16px 96px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.isl { background: var(--surface); border-radius: 26px; padding: 22px; min-width: 0; }
+.isl-h { margin: 0; display: flex; gap: 8px; align-items: center; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.isl-h small { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.06em; color: var(--muted); }
+.isl-h::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+.isl-h.team::before { background: var(--film); box-shadow: 0 0 0 1px var(--fg); }
+.isl-mine { grid-area: mine; display: grid; gap: 14px; align-content: start; }
+.isl-team { grid-area: team; display: grid; gap: 14px; align-content: start; position: relative; }
+
+/* 사이드 */
+.side { grid-area: side; align-self: start; padding: 18px 12px; display: grid; gap: 14px; }
+.side-name { display: grid; justify-items: center; padding: 16px 10px; border: 1px solid var(--line-strong); border-radius: 14px; }
+.side-name b { font-size: 22px; letter-spacing: -0.01em; }
+.grp { display: grid; gap: 4px; border-radius: 18px; padding: 8px 0 4px; }
+.grp[data-g="1"] { background: radial-gradient(ellipse 110% 75% at 40% -5%, #d4c7f1, transparent 85%), radial-gradient(ellipse 95% 60% at 75% 110%, #dce5ee, transparent 90%), #f1ecef; }
+.grp[data-g="2"] { background: linear-gradient(135deg, #e8e3f0, #f2ede8, #e3eee4); box-shadow: inset 0 0 0 1px var(--line); }
+.grp[data-g="3"] { background: linear-gradient(125deg, #e7edf4, #f3efe5 75%); box-shadow: inset 0 0 0 1px var(--line); }
+.grp[data-g="4"] { background: radial-gradient(ellipse 95% 85% at 0% 20%, #f3e2d8, transparent 80%), radial-gradient(ellipse 90% 85% at 100% 95%, #e0eee8, transparent 80%), #f6f1ec; box-shadow: inset 0 0 0 1px var(--line); }
+.grp-h { display: flex; align-items: baseline; gap: 8px; margin: 0; padding: 0 10px; font-size: 17px; font-weight: 700; }
+.grp-h b { font-family: var(--mono); font-size: 14px; color: var(--muted); }
+.grp-h span { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: auto; }
+.grp[data-g]:not([data-g="1"]) .grp-h { color: var(--muted); }
+.st { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; column-gap: 8px; padding: 7px 10px; border-radius: 14px; align-items: baseline; }
+.st-n { font-family: var(--mono); font-weight: 600; font-size: 11.5px; }
+.st-t { font-weight: 600; }
+.st-s { grid-column: 2 / 4; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.st.cur { background: var(--acc); color: var(--acc-fg); }
+.st.cur .st-s { color: rgba(241,241,233,0.66); }
+.st.lock { opacity: 0.55; }
+.side-team { display: flex; gap: 12px; padding: 4px 10px 0; font-size: 12px; font-weight: 600; }
+
+/* 머리 섬 */
+.isl-head { grid-area: head; padding: 14px 16px 14px 18px; }
+.hd-bar { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.hd-n { flex: none; font: 600 14px/1.3 var(--mono); padding: 6px 10px; border-radius: 12px; background: var(--film); box-shadow: inset 0 0 0 1px var(--fg); }
+.hd-t { margin: 0; font-size: 20px; font-weight: 700; white-space: nowrap; }
+.htabs { display: flex; gap: 2px; margin-left: auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.htab { flex: none; border-radius: 12px; padding: 8px 12px; font-size: 13px; font-weight: 600; white-space: nowrap; display: inline-flex; gap: 6px; align-items: baseline; }
+.htab i { font: 500 11px/1 var(--mono); font-style: normal; color: var(--muted); }
+.htab.on { background: var(--hi); }
+.htab.on i { color: var(--hi-fg); }
+.hd-tg { flex: none; border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+
+/* 내 작업대(1.2 ② 모둠 기준 회의 — 지금 화면) */
+.lab { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); margin: 0; }
+.banner { background: var(--hi); border-radius: 14px; padding: 10px 16px; font-size: 14px; }
+.crit { display: flex; flex-wrap: wrap; gap: 8px; }
+.crit div { background: var(--bg); border-radius: 14px; padding: 8px 12px; display: grid; }
+.crit b { font-size: 13.5px; }
+.crit span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.crit .dk { background: var(--acc); color: var(--acc-fg); }
+.crit .dk span { color: rgba(241,241,233,0.66); }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.kpi { background: var(--bg); border-radius: 16px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; }
+.kpi b { font-family: var(--mono); font-size: 24px; font-weight: 600; line-height: 1.1; }
+.kpi b small { font-size: 13px; color: var(--muted); font-weight: 400; }
+.kpi p { margin: 0; font-size: 12px; color: var(--muted); }
+.qcard { background: var(--bg); border-radius: 18px; padding: 16px 18px; display: grid; gap: 10px; }
+.qcard h3 { margin: 0; font-size: 15px; }
+.qcard .q { margin: 0; font-family: var(--serif); font-size: 19px; font-weight: 600; line-height: 1.5; text-wrap: balance; }
+.qcard ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
+
+/* 공유 자료(지금 모둠 공유 섬 내용) */
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.tile { background: var(--bg); border-radius: 14px; padding: 10px 12px; display: grid; gap: 2px; }
+.tile span { font-size: 12px; font-weight: 600; }
+.tile b { font-family: var(--mono); font-size: 18px; font-weight: 600; }
+.tile b em { font-style: normal; font-size: 12px; color: var(--bad); margin-left: 4px; }
+.tile small { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.tile.hi { background: var(--hi); }
+.vote { background: var(--bg); border-radius: 18px; padding: 14px 16px; display: grid; gap: 10px; }
+.vote-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.vote-h b { font-size: 15px; }
+.vote-h span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.vote-c { background: var(--surface); border-radius: 14px; padding: 12px 14px; display: grid; gap: 8px; }
+.vote-c .who { display: flex; gap: 8px; align-items: center; font-weight: 700; font-family: var(--mono); font-size: 14px; }
+.rchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.rchip { border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px 10px; font-family: var(--mono); font-size: 11.5px; }
+.rchip.g { border-color: transparent; background: var(--good-bg); color: var(--good); }
+.yes { display: flex; gap: 6px; align-items: center; font-family: var(--mono); font-size: 13px; }
+.btn { border: 1px solid var(--line-strong); border-radius: 999px; padding: 8px 16px; font-weight: 600; font-size: 13px; background: transparent; white-space: nowrap; }
+.btn.pri { background: var(--acc); color: var(--acc-fg); border-color: var(--acc); }
+.btn.sm { padding: 5px 11px; font-size: 12px; }
+
+/* 기록 공통 부품 */
+.av { --c: #ddd; flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--c); color: var(--fg); display: inline-grid; place-items: center; font-size: 12px; font-weight: 700; line-height: 1; }
+.av.sm { width: 20px; height: 20px; font-size: 10.5px; }
+.av.lg { width: 34px; height: 34px; font-size: 14px; }
+.av.me { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--fg); }
+.avs { display: inline-flex; }
+.avs .av + .av { margin-left: -6px; box-shadow: 0 0 0 2px var(--surface); }
+.on-dot { position: relative; }
+.on-dot::after { content: ""; position: absolute; right: -1px; bottom: -1px; width: 8px; height: 8px; border-radius: 50%; background: #3fb34f; box-shadow: 0 0 0 2px var(--surface); }
+.on-dot.away::after { background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--muted), 0 0 0 2px var(--surface); }
+.seg { display: inline-flex; gap: 2px; background: var(--bg); border-radius: 12px; padding: 3px; }
+.seg button { border: 0; background: transparent; border-radius: 9px; padding: 5px 11px; font-size: 12.5px; font-weight: 600; display: inline-flex; gap: 5px; align-items: baseline; white-space: nowrap; }
+.seg button i { font-style: normal; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 2px rgba(8,11,9,0.12); }
+.seg.dark button[aria-pressed="true"] { background: var(--acc); color: var(--acc-fg); }
+.seg.dark button[aria-pressed="true"] i { color: rgba(241,241,233,0.7); }
+.rowh { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: space-between; }
+.day { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); }
+.day::before, .day::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.msg { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 2px 10px; }
+.msg-h { display: flex; gap: 8px; align-items: baseline; }
+.msg-h b { font-size: 13.5px; }
+.msg-h time { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.msg-t { margin: 0; grid-column: 2; font-size: 14px; overflow-wrap: anywhere; }
+.msg.cont { margin-top: -6px; }
+.msg.cont .av { visibility: hidden; height: 0; }
+.mention { background: var(--hi); border-radius: 4px; padding: 0 3px; font-weight: 600; }
+.reacts { grid-column: 2; display: flex; gap: 4px; margin-top: 2px; }
+.react { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 0 8px; font-size: 12px; font-family: var(--mono); }
+.react.mine { border-color: var(--fg); background: var(--hi); }
+.act { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--fg); }
+.ico { flex: none; width: 22px; height: 22px; border-radius: 7px; display: grid; place-items: center; font-family: var(--mono); font-size: 11px; font-weight: 600; background: var(--raise); }
+.ico.run { background: var(--acc); color: var(--acc-fg); }
+.ico.ok { background: var(--hi); }
+.ico.pick { background: var(--film); }
+.act-b { min-width: 0; flex: 1; }
+.act-b p { margin: 0; }
+.act-m { display: flex; gap: 8px; flex-wrap: wrap; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.act-m .cost { color: var(--bad); }
+.where { font-family: var(--mono); font-size: 10.5px; border: 1px solid var(--line-strong); border-radius: 999px; padding: 0 7px; white-space: nowrap; color: var(--fg); background: transparent; }
+.where:hover { background: var(--hi); border-color: var(--hi); }
+.composer { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 16px; padding: 6px 6px 6px 14px; }
+.composer:focus-within { border-color: var(--fg); }
+.composer input { flex: 1; min-width: 0; border: 0; background: transparent; padding: 6px 0; outline: none; }
+.composer .at { font-family: var(--mono); font-size: 13px; color: var(--muted); border: 0; background: transparent; padding: 4px 6px; }
+.typing { font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: center; min-height: 18px; }
+.typing i { display: inline-flex; gap: 2px; }
+.typing i b { width: 4px; height: 4px; border-radius: 50%; background: var(--muted); animation: blink 1s infinite; }
+.typing i b:nth-child(2) { animation-delay: .2s; } .typing i b:nth-child(3) { animation-delay: .4s; }
+.feed { display: grid; gap: 14px; align-content: start; }
+.scroll { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.box { background: var(--bg); border-radius: 18px; padding: 14px 16px; display: grid; gap: 12px; min-width: 0; }
+.new { animation: pop .5s ease; }
+@keyframes pop { from { background: var(--hi); } }
+
+/* 시안 2 — 채널 */
+.ch-h { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.ch-h b { font-family: var(--mono); font-size: 14px; }
+.pin { display: flex; gap: 10px; align-items: center; background: var(--bg); border-radius: 12px; padding: 8px 12px; font-size: 13px; }
+.pin span { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.pin a { margin-left: auto; font-size: 12px; color: var(--fg); }
+.act.sys { color: var(--muted); padding-left: 36px; font-size: 12.5px; }
+.act.sys .ico { width: 18px; height: 18px; font-size: 10px; border-radius: 5px; }
+/* 시안 3 — 서랍 */
+.drawer { position: sticky; bottom: 12px; background: var(--surface); border-radius: 20px; box-shadow: 0 0 0 1px var(--line-strong), 0 -18px 40px -24px rgba(8,11,9,0.35); padding: 12px 14px; display: grid; gap: 10px; }
+.drawer-h { display: flex; align-items: center; gap: 10px; border: 0; background: transparent; padding: 0; text-align: left; width: 100%; }
+.drawer-h b { font-size: 15px; }
+.drawer-h .last { flex: 1; min-width: 0; font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chev { font-family: var(--mono); font-size: 12px; }
+/* 시안 4 — 두 줄기 */
+.two { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 10px; }
+.tl { position: relative; display: grid; gap: 14px; padding-left: 4px; }
+.tl::before { content: ""; position: absolute; left: 14px; top: 8px; bottom: 8px; width: 1.5px; background: var(--line-strong); }
+.tl .act { position: relative; }
+.tl .ico { box-shadow: 0 0 0 3px var(--bg); }
+.col-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.col-h b { font-size: 14px; }
+.col-h .x { border: 0; background: transparent; font-family: var(--mono); font-size: 11px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+/* 시안 5 — 스레드 */
+.post { background: var(--bg); border-radius: 16px; padding: 12px 14px; display: grid; gap: 8px; }
+.post.free { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.replies { display: grid; gap: 8px; padding-left: 14px; margin-left: 10px; border-left: 2px solid var(--line-strong); }
+.replies .msg { grid-template-columns: 20px minmax(0, 1fr); }
+.reply-in { display: flex; gap: 8px; }
+.reply-in input { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; background: var(--surface); font-size: 13px; }
+.thr { border: 0; background: transparent; padding: 0; font-size: 12px; font-weight: 600; text-align: left; display: inline-flex; gap: 6px; align-items: center; }
+/* 시안 6 — 채널 레일 */
+.rail-wrap { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 10px; min-height: 560px; }
+.rail { background: var(--bg); border-radius: 18px; padding: 12px 8px; display: grid; gap: 2px; align-content: start; }
+.rail h4 { margin: 8px 8px 4px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); font-weight: 500; }
+.rail h4:first-child { margin-top: 0; }
+.rail button { border: 0; background: transparent; border-radius: 10px; padding: 6px 8px; text-align: left; font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.rail button:hover { background: var(--surface); }
+.rail button[aria-pressed="true"] { background: var(--acc); color: var(--acc-fg); }
+.rail button .n { margin-left: auto; font-family: var(--mono); font-size: 10.5px; background: var(--hi); color: var(--hi-fg); border-radius: 999px; padding: 0 6px; }
+.rail button .h { font-family: var(--mono); color: var(--muted); }
+.rail button[aria-pressed="true"] .h { color: rgba(241,241,233,0.6); }
+.pane { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; min-width: 0; }
+/* 시안 7 — 장부 */
+.sum { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.sum div { background: var(--bg); border-radius: 14px; padding: 10px 12px; display: grid; }
+.sum span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); }
+.sum b { font-family: var(--mono); font-size: 18px; font-weight: 600; }
+.sum b.bad { color: var(--bad); }
+.tbl-w { overflow-x: auto; border-radius: 14px; background: var(--bg); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 520px; }
+th { text-align: left; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; font-weight: 500; color: var(--muted); padding: 10px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.t { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+tr.say td { color: var(--muted); font-size: 12.5px; background: var(--surface); }
+tr.say td.what { font-family: var(--serif); font-size: 13.5px; color: var(--fg); }
+tr.daybar td { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); background: var(--raise); padding: 4px 10px; }
+.kind { font-family: var(--mono); font-size: 10.5px; border-radius: 999px; padding: 1px 7px; white-space: nowrap; background: var(--raise); }
+.kind.run { background: var(--acc); color: var(--acc-fg); }
+/* 시안 8 — 모둠원 레인 */
+.pres { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.pcard { background: var(--bg); border-radius: 16px; padding: 10px 12px; display: grid; gap: 6px; align-content: start; }
+.pcard .nm { display: flex; gap: 8px; align-items: center; font-weight: 700; }
+.pcard .now { font-size: 12px; line-height: 1.4; }
+.pcard .now b { font-family: var(--mono); font-weight: 600; }
+.pcard.typing-c { box-shadow: inset 0 0 0 1.5px var(--fg); }
+.lanes-w { overflow-x: auto; }
+.lanes { display: grid; grid-template-columns: 56px repeat(4, minmax(120px, 1fr)); gap: 0; min-width: 560px; background: var(--bg); border-radius: 16px; padding: 8px 0; }
+.lanes .lh { font-size: 12px; font-weight: 700; padding: 4px 8px 8px; display: flex; gap: 6px; align-items: center; border-bottom: 1px solid var(--line); }
+.lanes .lt { font-family: var(--mono); font-size: 10.5px; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.lanes .lc { padding: 4px 6px; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line); min-height: 30px; }
+.lanes .cell { font-size: 12px; line-height: 1.35; border-radius: 8px; padding: 4px 7px; background: var(--surface); }
+.lanes .cell.c { background: transparent; color: var(--muted); font-style: normal; }
+.lanes .cell.c::before { content: "“"; }
+.lanes .cell.c::after { content: "”"; }
+.lanes .cell.run { background: var(--acc); color: var(--acc-fg); }
+/* 시안 9 — 묶음 요약 */
+.now-band { background: var(--led); color: var(--led-fg); border-radius: 16px; padding: 12px 14px; display: grid; gap: 4px; }
+.now-band .k { display: flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: #9da59a; }
+.now-band .k i { width: 7px; height: 7px; border-radius: 50%; background: #ff6b4a; animation: blink 1.4s steps(2) infinite; }
+.now-band .led { font-size: 18px; }
+details.dg { background: var(--bg); border-radius: 14px; padding: 0; }
+details.dg summary { list-style: none; cursor: pointer; display: flex; gap: 10px; align-items: center; padding: 10px 12px; font-size: 13px; }
+details.dg summary::-webkit-details-marker { display: none; }
+details.dg summary .tm { font-family: var(--mono); font-size: 10.5px; color: var(--muted); white-space: nowrap; }
+details.dg summary .sm { flex: 1; min-width: 0; }
+details.dg summary .sm b { font-weight: 700; }
+details.dg summary .chev { transition: transform .15s ease; }
+details.dg[open] summary .chev { transform: rotate(90deg); }
+details.dg .dg-in { display: grid; gap: 8px; padding: 0 12px 12px 44px; }
+.dg .gl { display: inline-grid; grid-auto-flow: column; gap: 3px; }
+/* 시안 10 — 떠 있는 대화창 */
+.float { position: sticky; bottom: 16px; justify-self: end; width: min(380px, 100%); background: var(--surface); border-radius: 22px; box-shadow: 0 0 0 1px var(--line-strong), 0 30px 60px -30px rgba(8,11,9,0.5); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; z-index: 3; }
+.float-h { display: flex; gap: 8px; align-items: center; padding: 10px 12px; background: var(--acc); color: var(--acc-fg); }
+.float-h b { font-size: 14px; }
+.float-h .seg { background: rgba(241,241,233,0.12); margin-left: auto; }
+.float-h .seg button { color: var(--acc-fg); padding: 3px 9px; font-size: 12px; }
+.float-h .seg button[aria-pressed="true"] { background: var(--hi); color: var(--hi-fg); }
+.float-h .min { border: 0; background: transparent; color: var(--acc-fg); font-family: var(--mono); font-size: 14px; padding: 2px 6px; }
+.float-b { padding: 12px; display: grid; gap: 12px; align-content: start; max-height: 340px; }
+.float-f { padding: 8px 10px 10px; border-top: 1px solid var(--line); }
+.fab { position: sticky; bottom: 16px; justify-self: end; display: inline-flex; gap: 10px; align-items: center; background: var(--acc); color: var(--acc-fg); border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 600; box-shadow: 0 20px 40px -20px rgba(8,11,9,0.6); z-index: 3; }
+.fab .n { background: var(--hi); color: var(--hi-fg); border-radius: 999px; padding: 0 7px; font-family: var(--mono); font-size: 11px; }
+.toasts { position: sticky; bottom: 16px; justify-self: end; display: grid; gap: 6px; width: min(380px, 100%); }
+.toast { background: var(--surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--line-strong); padding: 8px 12px; font-size: 12.5px; display: flex; gap: 8px; align-items: center; }
+
+/* 시안 이동 단추 */
+.pv-nav { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 20; display: flex; gap: 4px; align-items: center; background: var(--led); color: var(--led-fg); border-radius: 999px; padding: 4px; box-shadow: 0 16px 30px -16px rgba(8,11,9,0.6); }
+.pv-nav button { border: 0; background: transparent; color: var(--led-fg); border-radius: 999px; width: 34px; height: 34px; font-family: var(--mono); }
+.pv-nav button:hover { background: rgba(241,241,233,0.14); }
+.pv-nav span { font-size: 12.5px; font-weight: 600; padding: 0 6px; white-space: nowrap; }
+.pv-nav span i { font-style: normal; font-family: var(--mono); color: var(--hi); margin-right: 6px; }
+
+@media (max-width: 1180px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .two, .rail-wrap { grid-template-columns: minmax(0, 1fr); }
+  .rail { grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; align-items: center; }
+  .rail h4 { display: none; }
+  .pres, .sum { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .top-r { margin-left: 0; width: 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .top-r > * { flex: none; }
+  .bd-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "side" "head" "mine" "team"; padding-top: 12px; }
+  .isl { border-radius: 20px; padding: 16px; }
+  .side { padding: 12px 8px; gap: 8px; }
+  .side-name { padding: 10px; }
+  .side-name b { font-size: 18px; }
+  .side-groups { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+  .grp { flex: none; display: flex; gap: 4px; padding: 6px; background: transparent !important; box-shadow: none !important; }
+  .grp-h, .st-s, .side-team { display: none; }
+  .st { grid-template-columns: auto auto; column-gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--bg); white-space: nowrap; }
+  .st.cur { background: var(--acc); }
+  .st .st-k { display: none; }
+  .hd-bar { flex-wrap: wrap; gap: 10px; }
+  .htabs { order: 2; flex: 1 0 100%; margin: 0; }
+  .hd-tg { margin-left: auto; }
+  .isl-h { font-size: 19px; flex-wrap: wrap; }
+  .float, .toasts { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="pv" aria-label="시안 고르기">
+  <div class="pv-top"><b>모둠 공유 · 대화와 행적 시안</b><span>1.2 화합물 스크리닝 · ② 모둠 기준 회의 · 나 = 하늘</span><span>← → 키로도 넘겨요</span></div>
+  <div class="pv-list" id="pv-list"></div>
+  <p class="pv-d" id="pv-d"></p>
+</div>
+
+<header class="top">
+  <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M31.5 7.5A15.5 15.5 0 1 0 31.5 32.5M27.2 12.2A10.7 10.7 0 1 0 27.2 27.8M22.8 16.8A6 6 0 1 0 22.8 23.2"/></svg>CRISTA <small>파이프라인 랩</small></div>
+  <div class="co"><i class="dot"></i><b>학습제약ef1d</b><span class="tick">LEFB</span><u>고치기</u></div>
+  <div class="top-r">
+    <div class="tb-btn"><span>시가총액 순위</span><b>1위 · 5,645만 크리스타</b></div>
+    <div class="kv"><span>연구비</span><b>23,576,500 크리스타</b></div>
+    <span class="tb-chip">⚡ ×2.3 · 단계 가동 3/3</span>
+    <div class="kv"><span>게임 날짜</span><b>D+6</b></div>
+    <span class="pill">투자 유치 ✓1</span><span class="pill">사옥 지구</span><span class="out">나가기</span>
+  </div>
+</header>
+<div class="board">
+  <div class="mq"><div class="mq-track">
+    <div class="mq-seg"><span class="led">◆ LEFB 1.2 스크리닝 기준 확정 — 3/4 찬성</span><span class="led">◆ 민준 스크리닝 실행 · 132개 남음</span><span class="led">◆ 연구 노트 1/3칸</span></div>
+    <div class="mq-seg" aria-hidden="true"><span class="led">◆ LEFB 1.2 스크리닝 기준 확정 — 3/4 찬성</span><span class="led">◆ 민준 스크리닝 실행 · 132개 남음</span><span class="led">◆ 연구 노트 1/3칸</span></div>
+  </div></div>
+  <div class="bd-ctl"><span class="live"><i></i>LIVE</span><span class="tool">멈추기</span></div>
+</div>
+
+<main class="bd-body">
+  <nav class="isl side" aria-label="단계">
+    <div class="side-name"><b>학습제약ef1d</b></div>
+    <div class="side-groups">
+      <div class="grp" data-g="1"><p class="grp-h">1 발견<span>1/2</span></p>
+        <div class="st"><span class="st-n">1.1</span><span class="st-t">질환 · 표적 선정</span><span class="st-k">✓</span><span class="st-s">Open Targets 근거</span></div>
+        <div class="st cur"><span class="st-n">1.2</span><span class="st-t">화합물 스크리닝</span><span class="st-k"></span><span class="st-s">ChEMBL · RDKit 깔때기</span></div></div>
+      <div class="grp" data-g="2"><p class="grp-h">2 최적화<span>0/2</span></p>
+        <div class="st lock"><span class="st-n">2.1</span><span class="st-t">분자 도킹</span><span class="st-k">🔒</span><span class="st-s">잠김</span></div>
+        <div class="st lock"><span class="st-n">2.2</span><span class="st-t">ADMET 예측 · 특허 후보</span><span class="st-k">🔒</span><span class="st-s">잠김</span></div></div>
+      <div class="grp" data-g="3"><p class="grp-h">3 개발 · 규제<span>0/3</span></p>
+        <div class="st lock"><span class="st-n">3.1</span><span class="st-t">선언 · 물질특허</span><span class="st-k">🔒</span><span class="st-s">잠김</span></div>
+        <div class="st lock"><span class="st-n">3.2</span><span class="st-t">전임상 · 동물실험</span><span class="st-k">🔒</span><span class="st-s">잠김</span></div>
+        <div class="st lock"><span class="st-n">3.3</span><span class="st-t">제형 · IND 신청</span><span class="st-k">🔒</span><span class="st-s">잠김</span></div></div>
+      <div class="grp" data-g="4"><p class="grp-h">4 임상 · 허가<span>0/2</span></p>
+        <div class="st lock"><span class="st-n">4.1</span><span class="st-t">임상 1 · 2 · 3상</span><span class="st-k">🔒</span><span class="st-s">잠김</span></div>
+        <div class="st lock"><span class="st-n">4.2</span><span class="st-t">최종 허가</span><span class="st-k">🔒</span><span class="st-s">잠김</span></div></div>
+    </div>
+    <div class="side-team"><span>하늘</span><span>도윤</span><span>서연</span><span>민준</span></div>
+  </nav>
+
+  <header class="isl isl-head" aria-label="단계 머리">
+    <div class="hd-bar">
+      <span class="hd-n">1.2</span><h1 class="hd-t">화합물 스크리닝</h1>
+      <div class="htabs"><span class="htab"><i>✓</i>미션 브리핑</span><span class="htab on"><i>②</i>모둠 기준 회의</span><span class="htab"><i>③</i>스크리닝 실행</span><span class="htab"><i>④</i>분자 쇼핑</span><span class="htab"><i>⑤</i>넘기기</span></div>
+      <span class="hd-tg">단계 소개 ⌄</span>
+    </div>
+  </header>
+
+  <section class="isl isl-mine" aria-labelledby="w12">
+    <h2 class="isl-h" id="w12">나의 작업대 <small>무료 미리보기</small></h2>
+    <div class="banner">모둠에 제안했어요.</div>
+    <div class="crit">
+      <div><b>분자 크기 · MW ✓</b><span>MW ≤ 450</span></div>
+      <div><b>극성 · TPSA ✓</b><span>TPSA ≤ 90</span></div>
+      <div><b>먹는 약 규칙 · Ro5 ✓</b><span>Ro5 위반 ≤ 0</span></div>
+      <div><b>독성 부품 · 경고 ✓</b><span>구조 경고 빼기</span></div>
+      <div><b>약다움 · QED ✓</b><span>QED ≥ 0.50</span></div>
+      <div class="dk"><b>결합 예측 · 점수</b><span>논의 중 · 3/4 투표</span></div>
+    </div>
+    <p class="lab">내 값으로 본 점수판</p>
+    <div class="kpis">
+      <div class="kpi"><span class="lab">남은 분자</span><b>132 <small>/ 220</small></b><p>40% 걸러 냄</p></div>
+      <div class="kpi"><span class="lab">★ 아는 약 계열</span><b>10 <small>/ 12</small></b><p>남은 분자에 아는 약이 많아요</p></div>
+      <div class="kpi"><span class="lab">농축도</span><b>×1.4</b><p>아는 약 비율이 처음보다 1.4배</p></div>
+      <div class="kpi"><span class="lab">상위 10 중 아는 약</span><b>4 <small>/ 10</small></b><p>도킹 대기열 앞쪽에 몇 개가 오나</p></div>
+    </div>
+    <div class="qcard">
+      <h3>이 안건 값 바꿔 보기 <span class="lab" style="float:right">결합 예측 · 점수</span></h3>
+      <p class="q">ACHE 에 잘 붙을 것 같은 분자만 남기려면, 표적 점수를 몇 점 이상으로 할까요?</p>
+      <ul><li>표적마다 점수 분포가 달라요. 다른 모둠의 숫자를 따라 하지 말고 그래프를 보세요.</li><li>점수가 높은 분자만 남기면 도킹 비용은 줄지만, 구조를 조금 바꾸면 좋아질 분자를 버릴 수도 있어요.</li></ul>
+    </div>
+  </section>
+
+  <section class="isl isl-team" id="team" aria-labelledby="t12"></section>
+</main>
+
+<div class="pv-nav" aria-label="시안 넘기기"><button type="button" id="prev" aria-label="이전 시안">◀</button><span id="pv-now"></span><button type="button" id="next" aria-label="다음 시안">▶</button></div>
+
+<script>
+const M = {
+  ha: { n: '하늘', c: '#c6ff4a', me: true },
+  do: { n: '도윤', c: '#d4c7f1' },
+  se: { n: '서연', c: '#f1ccb9' },
+  mi: { n: '민준', c: '#bfe1dc' },
+};
+const ICO = { enter: ['→', ''], propose: ['＋', ''], vote: ['✓', 'ok'], decide: ['◆', 'ok'], run: ['▶', 'run'], pick: ['★', 'pick'], note: ['✎', ''], target: ['◎', 'ok'] };
+const KIND = { enter: '입장', propose: '제안', vote: '찬성', decide: '확정', run: '실행', pick: '찜', note: '노트', target: '확정' };
+// 예시 기록 — 실제 서버의 board 이벤트 · 채팅을 흉내 낸 것
+let EV = [
+  { id: 1, day: 'D+5', t: '15:40', who: 'se', kind: 'act', type: 'target', step: '1.1', tab: '③', text: '모둠 표적을 확정했어요', detail: '알츠하이머 · ACHE (PDB 4EY7) · 4/4 찬성' },
+  { id: 2, day: 'D+5', t: '15:42', who: 'do', kind: 'chat', step: '1.1', text: '결정구조 있는 거 고른 거 잘했다 👍', reacts: [['👍', 3]], about: 1 },
+  { id: 3, day: 'D+6', t: '09:02', who: 'se', kind: 'act', type: 'enter', step: '1.2', tab: '①', text: '1.2 화합물 스크리닝에 들어왔어요' },
+  { id: 4, day: 'D+6', t: '09:03', who: 'se', kind: 'chat', step: '1.2', text: '다들 1.2 왔어? 기준부터 정하자' },
+  { id: 5, day: 'D+6', t: '09:05', who: 'do', kind: 'act', type: 'propose', step: '1.2', tab: '②', text: '기준을 제안했어요 — ACHE 점수 ≥ 0.50', detail: '근거: 강하게 붙을 분자만 도킹하려고' },
+  { id: 6, day: 'D+6', t: '09:06', who: 'mi', kind: 'chat', step: '1.2', text: '0.5면 132개 남아. 너무 많지 않나?', about: 5 },
+  { id: 7, day: 'D+6', t: '09:06', who: 'do', kind: 'chat', step: '1.2', text: '2.1에서 도킹 비용 생각하면 더 줄이는 것도 괜찮아. 근데 아는 약 계열은 10개 남아', about: 5, reacts: [['🤔', 1]] },
+  { id: 8, day: 'D+6', t: '09:07', who: 'ha', kind: 'act', type: 'vote', step: '1.2', tab: '②', text: '도윤의 기준에 찬성했어요', detail: '2/4 찬성 · 이유: 강하게 붙을 분자만 도킹하려고' },
+  { id: 9, day: 'D+6', t: '09:08', who: 'se', kind: 'act', type: 'vote', step: '1.2', tab: '②', text: '도윤의 기준에 찬성했어요', detail: '3/4 찬성 · 이유: 실제 약 값을 참고해서' },
+  { id: 10, day: 'D+6', t: '09:08', who: 'do', kind: 'act', type: 'decide', step: '1.2', tab: '②', text: '결합 예측 기준이 확정됐어요', detail: '3표면 합의 · ACHE 점수 ≥ 0.50' },
+  { id: 11, day: 'D+6', t: '09:10', who: 'ha', kind: 'chat', step: '1.2', text: '@민준 실행 눌러도 돼? 연구비 120,000 나가', about: 10 },
+  { id: 12, day: 'D+6', t: '09:10', who: 'mi', kind: 'chat', step: '1.2', text: 'ㄱㄱ 내가 누를게', about: 10, reacts: [['✅', 2]] },
+  { id: 13, day: 'D+6', t: '09:11', who: 'mi', kind: 'act', type: 'run', step: '1.2', tab: '③', text: '스크리닝을 실행했어요', detail: '220 → 132개 남음 · 상위 10 중 아는 약 4', cost: -120000 },
+  { id: 14, day: 'D+6', t: '09:14', who: 'se', kind: 'act', type: 'pick', step: '1.2', tab: '④', text: 'CHEMBL502를 찜했어요', detail: '★ 도네페질 계열 · 점수 0.81' },
+  { id: 15, day: 'D+6', t: '09:15', who: 'se', kind: 'chat', step: '1.2', text: '찜한 거 아는 약 계열이야! 2.1에서 대조군이랑 같이 보자', about: 14, reacts: [['⭐', 2]] },
+  { id: 16, day: 'D+6', t: '09:17', who: 'do', kind: 'act', type: 'note', step: '1.2', tab: '노트', text: '연구 노트 ① 칸을 썼어요', detail: '왜 골랐나 · 1/3칸' },
+];
+let nextId = 100;
+const V = [
+  { name: '탭 나누기', d: '섬 위에 <b>공유 자료 · 기록</b> 두 탭. 기록 탭 안에서 <b>전체 · 대화 · 행적</b>을 고른다. 지금 화면과 가장 가깝다.' },
+  { name: '채널 하나', d: 'Slack 채널처럼 섬 전체를 <b>#1.2 대화방</b>으로 쓴다. 행적은 회색 한 줄로 끼어들고, 지금 안건은 위에 고정된다.' },
+  { name: '아래 서랍', d: '공유 자료는 그대로 두고, 섬 아래에 <b>붙어 따라오는 대화 서랍</b>을 둔다. 접으면 마지막 한 줄만 보인다.' },
+  { name: '두 줄기', d: '섬 안을 둘로 나눠 <b>왼쪽 행적 타임라인 · 오른쪽 대화</b>. 한쪽만 보기를 누르면 다른 쪽이 접힌다.' },
+  { name: '행적에 답글', d: '행적 하나하나가 글이 되고, 대화는 그 행적에 <b>답글 스레드</b>로 달린다. 어디에도 안 붙는 말은 잡담으로.' },
+  { name: '채널 목록', d: '왼쪽에 <b>채널 레일</b>(# 모둠 전체 · # 단계별 · 행적만 · 대화만 · 나를 부른 글). 단계를 오가도 대화가 갈라진다.' },
+  { name: '연구 장부', d: '행적을 <b>시각 · 누가 · 단계 · 한 일 · 연구비</b> 장부로 적고, 대화는 장부 사이 메모 줄로 끼운다. 위에 오늘 요약.' },
+  { name: '모둠원 레인', d: '위에 <b>네 명이 지금 어디서 뭘 하는지</b>, 아래는 사람별 세로 레인. 누가 일을 했고 누가 말만 했는지 한눈에.' },
+  { name: '묶음 요약', d: '연달은 행적을 <b>“09:07–09:08 · 찬성 2 · 확정”처럼 한 덩어리</b>로 접는다. 위에는 전광판 같은 ‘지금’ 띠.' },
+  { name: '떠 있는 대화창', d: '공유 자료는 지금 그대로. 섬 오른쪽 아래에 <b>떠 있는 대화창</b>(대화 · 행적 탭)과 새 행적 알림이 붙어 따라온다.' },
+];
+const S = { cur: 0, f: Array(10).fill('all'), tab1: 'log', open3: true, show4: 'both', open5: { 5: true, 10: true }, ch6: '12', open10: true, tab10: 'chat', typing: null };
+
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const fmt = (s) => esc(s).replace(/@(하늘|도윤|서연|민준)/g, '<span class="mention">@$1</span>');
+const won = (n) => (n < 0 ? '−' : '+') + Math.abs(n).toLocaleString('ko-KR');
+const av = (w, cls = '') => `<span class="av ${cls}${M[w].me ? ' me' : ''}" style="--c:${M[w].c}" title="${M[w].n}">${M[w].n[0]}</span>`;
+const nm = (w) => M[w].n + (M[w].me ? ' (나)' : '');
+const counts = () => ({ all: EV.length, chat: EV.filter((e) => e.kind === 'chat').length, act: EV.filter((e) => e.kind === 'act').length });
+const pick = (f, list = EV) => list.filter((e) => f === 'all' || e.kind === f);
+const where = (e) => e.tab ? `<button class="where" type="button" title="그 화면으로 가기">${e.step} ${e.tab} 보기</button>` : '';
+
+function seg(v, dark = '') {
+  const c = counts(), f = S.f[v];
+  return `<div class="seg ${dark}" role="group" aria-label="보기 고르기">${[['all', '전체'], ['chat', '대화'], ['act', '행적']].map(([k, l]) => `<button type="button" data-f="${k}" data-v="${v}" aria-pressed="${f === k}">${l}<i>${c[k]}</i></button>`).join('')}</div>`;
+}
+function msg(e, prev, sm = '') {
+  const cont = prev && prev.kind === 'chat' && prev.who === e.who && prev.t === e.t;
+  return `<div class="msg${cont ? ' cont' : ''}${e.isNew ? ' new' : ''}">${av(e.who, sm)}${cont ? '' : `<div class="msg-h"><b>${nm(e.who)}</b><time>${e.t}</time></div>`}<p class="msg-t">${fmt(e.text)}</p>${e.reacts ? `<div class="reacts">${e.reacts.map(([r, n]) => `<button type="button" class="react">${r} ${n}</button>`).join('')}<button type="button" class="react" aria-label="반응 달기">＋</button></div>` : ''}</div>`;
+}
+function act(e, cls = '') {
+  const [g, k] = ICO[e.type];
+  return `<div class="act ${cls}${e.isNew ? ' new' : ''}"><span class="ico ${k}">${g}</span><div class="act-b"><p><b>${nm(e.who)}</b> ${esc(e.text)}</p>${e.detail || e.cost ? `<div class="act-m">${e.detail ? `<span>${esc(e.detail)}</span>` : ''}${e.cost ? `<span class="cost">${won(e.cost)} 크리스타</span>` : ''}</div>` : ''}</div><span class="act-m" style="flex:none;gap:6px;align-items:center"><time>${e.t}</time>${where(e)}</span></div>`;
+}
+function stream(list, opts = {}) {
+  let out = '', day = null, prev = null;
+  for (const e of list) {
+    if (e.day !== day) { out += `<div class="day">${e.day} · 게임 날짜</div>`; day = e.day; prev = null; }
+    out += e.kind === 'chat' ? msg(e, prev, opts.sm) : act(e, opts.actCls || '');
+    prev = e;
+  }
+  return out || '<p class="muted" style="margin:0;font-size:13px">아직 기록이 없어요.</p>';
+}
+function composer(v, ph = '모둠에게 말하기 · @이름으로 부르기') {
+  return `<form class="composer" data-send="${v}"><label class="sr" for="m${v}">메시지</label><input id="m${v}" autocomplete="off" placeholder="${ph}"><button type="button" class="at" title="모둠원 부르기">@</button><button class="btn pri sm" type="submit">보내기</button></form>`;
+}
+function typing() {
+  return `<div class="typing">${S.typing ? `<i><b></b><b></b><b></b></i>${M[S.typing].n}이(가) 입력하는 중` : ''}</div>`;
+}
+function head(sub, extra = '') {
+  return `<div class="rowh"><h2 class="isl-h team" id="t12">모둠 공유 <small>${sub}</small></h2>${extra}</div>`;
+}
+const online = () => `<span class="avs">${['ha', 'do', 'se', 'mi'].map((w) => `<span class="on-dot${w === 'mi' ? ' away' : ''}">${av(w, 'sm')}</span>`).join('')}</span>`;
+function shared(compact) {
+  return `<div class="tiles">
+    <div class="tile"><span>라이브러리</span><b>220</b><small>ChEMBL</small></div>
+    <div class="tile"><span>분자 크기</span><b>209<em>−11</em></b><small>MW ≤ 450 ✓</small></div>
+    <div class="tile"><span>극성</span><b>171<em>−38</em></b><small>TPSA ≤ 90 ✓</small></div>
+    <div class="tile"><span>먹는 약 규칙</span><b>160<em>−11</em></b><small>Ro5 위반 ≤ 0 ✓</small></div>
+    ${compact ? '' : `<div class="tile"><span>독성 부품</span><b>144<em>−16</em></b><small>구조 경고 빼기 ✓</small></div>
+    <div class="tile"><span>약다움</span><b>132<em>−12</em></b><small>QED ≥ 0.50 ✓</small></div>
+    <div class="tile"><span>결합 예측</span><b>132</b><small>ACHE ≥ 0.50 ✓</small></div>`}
+    <div class="tile hi"><span>남는 후보</span><b>132</b><small>확정됨</small></div>
+  </div>
+  <div class="vote"><div class="vote-h"><b>모둠 회의 · 결합 예측</b><span>3/4 투표 · 3표면 합의</span></div>
+    <div class="vote-c"><div class="who">${av('do')} 도윤 ACHE 점수 ≥ 0.50</div><span style="font-size:13px">근거: 강하게 붙을 분자만 도킹하려고</span>
+      <div class="rchips"><span class="rchip">이 안건 −106</span><span class="rchip g">남는 후보 26개</span><span class="rchip g">실제 약 ✓ 통과</span></div>
+      <div class="yes"><span class="avs">${av('do', 'sm')}${av('ha', 'sm')}${av('se', 'sm')}</span> 3 / 4 찬성 · 확정</div></div></div>`;
+}
+
+const R = [
+  // 1 탭 나누기
+  () => {
+    const c = counts();
+    const tabs = `<div class="seg dark" role="group" aria-label="모둠 공유 탭"><button type="button" data-t1="data" aria-pressed="${S.tab1 === 'data'}">공유 자료</button><button type="button" data-t1="log" aria-pressed="${S.tab1 === 'log'}">기록<i>${c.all}</i></button></div>`;
+    if (S.tab1 === 'data') return head('기준 회의', tabs) + shared();
+    return head('기준 회의', tabs) + `<div class="box"><div class="rowh">${seg(0)}${online()}</div><div class="feed scroll" style="max-height:520px" data-bottom>${stream(pick(S.f[0]))}</div>${typing()}${composer(0)}</div>`;
+  },
+  // 2 채널 하나
+  () => head('# 1.2 대화방') + `<div class="ch-h"><b># 1.2-화합물-스크리닝</b>${online()}<span class="muted" style="font-size:12px">3명 접속</span><span style="margin-left:auto">${seg(1)}</span></div>
+    <div class="pin"><span>📌 고정</span><b>결합 예측 · ACHE ≥ 0.50</b><span>3/4 찬성 · 확정 · 남는 후보 132</span><a href="#v2">공유 자료 펴기</a></div>
+    <div class="feed scroll" style="max-height:560px" data-bottom>${stream(pick(S.f[1]), { actCls: 'sys' })}</div>${typing()}${composer(1, '#1.2-화합물-스크리닝 에 메시지 보내기')}`,
+  // 3 아래 서랍
+  () => {
+    const last = EV[EV.length - 1];
+    return head('기준 회의') + shared() + `<div class="drawer"><button type="button" class="drawer-h" data-open3 aria-expanded="${S.open3}"><b>대화 · 행적</b>${online()}<span class="last">${S.open3 ? '' : `${M[last.who].n}: ${esc(last.text)}`}</span><span class="chev">${S.open3 ? '▼ 접기' : '▲ 펴기'}</span></button>
+      ${S.open3 ? `${seg(2)}<div class="feed scroll" style="max-height:340px" data-bottom>${stream(pick(S.f[2]))}</div>${typing()}${composer(2)}` : ''}</div>`;
+  },
+  // 4 두 줄기
+  () => {
+    const acts = EV.filter((e) => e.kind === 'act'), chats = EV.filter((e) => e.kind === 'chat');
+    const sh = S.show4;
+    const L = `<div class="box"><div class="col-h"><b>행적 <span class="mono muted" style="font-size:11px">${acts.length}</span></b><button type="button" class="x" data-s4="${sh === 'act' ? 'both' : 'act'}">${sh === 'act' ? '둘 다 보기' : '행적만 보기'}</button></div><div class="tl scroll" style="max-height:600px">${acts.map((e) => act(e)).join('')}</div></div>`;
+    const Rr = `<div class="box" style="align-content:start"><div class="col-h"><b>대화 <span class="mono muted" style="font-size:11px">${chats.length}</span></b><button type="button" class="x" data-s4="${sh === 'chat' ? 'both' : 'chat'}">${sh === 'chat' ? '둘 다 보기' : '대화만 보기'}</button></div><div class="feed scroll" style="max-height:520px" data-bottom>${stream(chats)}</div>${typing()}${composer(3, '말하기')}</div>`;
+    return head('기준 회의', online()) + `<div class="${sh === 'both' ? 'two' : ''}">${sh !== 'chat' ? L : ''}${sh !== 'act' ? Rr : ''}</div>`;
+  },
+  // 5 행적에 답글
+  () => {
+    const f = S.f[4];
+    const acts = EV.filter((e) => e.kind === 'act' && e.step === '1.2');
+    const free = EV.filter((e) => e.kind === 'chat' && !e.about && e.step === '1.2');
+    const posts = acts.map((a) => {
+      const rs = EV.filter((e) => e.about === a.id);
+      const open = S.open5[a.id];
+      if (f === 'chat' && !rs.length) return '';
+      return `<div class="post">${f === 'chat' ? `<p class="act-m" style="margin:0">${esc(M[a.who].n)} · ${esc(a.text)}</p>` : act(a)}
+        ${rs.length || open ? `<button type="button" class="thr" data-o5="${a.id}"><span class="avs">${[...new Set(rs.map((r) => r.who))].map((w) => av(w, 'sm')).join('')}</span>${open ? '답글 접기' : `답글 ${rs.length}개`}<span class="muted mono" style="font-size:10.5px">${rs.length ? '마지막 ' + rs[rs.length - 1].t : ''}</span></button>` : `<button type="button" class="thr muted" data-o5="${a.id}">답글 달기</button>`}
+        ${open ? `<div class="replies">${rs.map((r, i) => msg(r, rs[i - 1], 'sm')).join('')}<form class="reply-in" data-send="4" data-about="${a.id}"><input id="r5-${a.id}" autocomplete="off" placeholder="이 행적에 답글"><button class="btn sm" type="submit">답글</button></form></div>` : ''}</div>`;
+    }).join('');
+    const freeB = f === 'act' ? '' : `<div class="post free"><div class="rowh"><b style="font-size:13px">잡담</b><span class="act-m">행적에 안 붙는 말</span></div>${stream(free)}</div>`;
+    return head('기준 회의', seg(4)) + `<div class="feed">${freeB}${posts}</div>${typing()}${composer(4, '새 잡담 쓰기')}`;
+  },
+  // 6 채널 목록
+  () => {
+    const ch = S.ch6;
+    const unread = { '12': 3, me: 1 };
+    const items = [['all', '#', '모둠 전체'], ['11', '#', '1.1 질환 · 표적'], ['12', '#', '1.2 스크리닝']];
+    const views = [['act', '◆', '행적만'], ['chat', '“', '대화만'], ['me', '@', '나를 부른 글']];
+    const btn = ([k, h, l]) => `<button type="button" data-c6="${k}" aria-pressed="${ch === k}"><span class="h">${h}</span>${l}${unread[k] && ch !== k ? `<span class="n">${unread[k]}</span>` : ''}</button>`;
+    let list = EV, title = '# 1.2 스크리닝';
+    if (ch === 'all') title = '# 모둠 전체';
+    if (ch === '11') { list = EV.filter((e) => e.step === '1.1'); title = '# 1.1 질환 · 표적'; }
+    if (ch === '12') list = EV.filter((e) => e.step === '1.2');
+    if (ch === 'act') { list = pick('act'); title = '◆ 행적만'; }
+    if (ch === 'chat') { list = pick('chat'); title = '“ 대화만'; }
+    if (ch === 'me') { list = EV.filter((e) => e.kind === 'chat' && /@하늘/.test(e.text) || e.id === 11); title = '@ 나를 부른 글'; }
+    return head('대화방') + `<div class="rail-wrap"><div class="rail"><h4>채널</h4>${items.map(btn).join('')}<h4>보기</h4>${views.map(btn).join('')}<h4>모둠원</h4>${['do', 'se', 'mi'].map((w) => `<button type="button"><span class="on-dot${w === 'mi' ? ' away' : ''}">${av(w, 'sm')}</span>${M[w].n}</button>`).join('')}</div>
+      <div class="pane box"><div class="rowh"><b class="mono">${title}</b><span class="act-m">${list.length}개</span></div><div class="feed scroll" style="max-height:470px" data-bottom>${stream(list)}</div><div>${typing()}${composer(5, title + ' 에 말하기')}</div></div></div>`;
+  },
+  // 7 연구 장부
+  () => {
+    const f = S.f[6];
+    const spent = EV.reduce((s, e) => s + (e.cost || 0), 0);
+    let rows = '', day = null;
+    for (const e of pick(f)) {
+      if (e.day !== day) { rows += `<tr class="daybar"><td colspan="5">${e.day} · 게임 날짜</td></tr>`; day = e.day; }
+      rows += e.kind === 'chat'
+        ? `<tr class="say${e.isNew ? ' new' : ''}"><td class="t">${e.t}</td><td>${av(e.who, 'sm')}</td><td></td><td class="what">“${fmt(e.text)}”</td><td></td></tr>`
+        : `<tr${e.isNew ? ' class="new"' : ''}><td class="t">${e.t}</td><td style="white-space:nowrap">${av(e.who, 'sm')} <b style="font-size:12.5px">${M[e.who].n}</b></td><td><span class="kind${e.type === 'run' ? ' run' : ''}">${e.step} ${KIND[e.type]}</span></td><td>${esc(e.text)}${e.detail ? `<div class="act-m">${esc(e.detail)}</div>` : ''}</td><td class="num${e.cost ? '" style="color:var(--bad)' : ''}">${e.cost ? won(e.cost) : '—'}</td></tr>`;
+    }
+    return head('연구 장부', seg(6)) + `<div class="sum"><div><span>오늘 행적</span><b>${EV.filter((e) => e.kind === 'act' && e.day === 'D+6').length}</b></div><div><span>오늘 대화</span><b>${EV.filter((e) => e.kind === 'chat' && e.day === 'D+6').length}</b></div><div><span>쓴 연구비</span><b class="bad">${won(spent)}</b></div><div><span>참여</span><b>4/4명</b></div></div>
+      <div class="tbl-w"><table><thead><tr><th>시각</th><th>누가</th><th>단계</th><th>한 일 · 한 말</th><th style="text-align:right">연구비</th></tr></thead><tbody>${rows}</tbody></table></div>${typing()}${composer(6, '장부에 메모 남기기 · 모둠에게 보여요')}`;
+  },
+  // 8 모둠원 레인
+  () => {
+    const P = [['ha', '<b>1.2 ②</b> 모둠 기준 회의 보는 중', ''], ['do', '<b>1.2 ④</b> 분자 쇼핑 보는 중', ''], ['se', '연구 노트 ② 칸 쓰는 중…', 'typing-c'], ['mi', '자리 비움 · 3분 전 <b>1.2 ③</b>', '']];
+    const f = S.f[7];
+    const list = pick(f).filter((e) => e.day === 'D+6');
+    const rows = list.map((e) => `<div class="lt">${e.t}</div>${['ha', 'do', 'se', 'mi'].map((w) => `<div class="lc">${e.who === w ? `<div class="cell ${e.kind === 'chat' ? 'c' : e.type === 'run' ? 'run' : ''}">${e.kind === 'chat' ? fmt(e.text) : `${ICO[e.type][0]} ${esc(e.text)}`}</div>` : ''}</div>`).join('')}`).join('');
+    return head('지금 모둠', seg(7)) + `<div class="pres">${P.map(([w, t, c]) => `<div class="pcard ${c}"><div class="nm"><span class="on-dot${w === 'mi' ? ' away' : ''}">${av(w)}</span>${nm(w)}</div><div class="now">${t}</div><div class="act-m">행적 ${EV.filter((e) => e.who === w && e.kind === 'act').length} · 말 ${EV.filter((e) => e.who === w && e.kind === 'chat').length}</div></div>`).join('')}</div>
+      <div class="lanes-w"><div class="lanes"><div class="lh"></div>${['ha', 'do', 'se', 'mi'].map((w) => `<div class="lh">${av(w, 'sm')}${M[w].n}</div>`).join('')}${rows}</div></div>${typing()}${composer(7)}`;
+  },
+  // 9 묶음 요약
+  () => {
+    const f = S.f[8];
+    const list = pick(f);
+    let out = '', buf = [], day = null, prev = null;
+    const flush = () => {
+      if (!buf.length) return;
+      if (buf.length === 1) { out += act(buf[0]); buf = []; return; }
+      const kinds = {}; buf.forEach((e) => { kinds[KIND[e.type]] = (kinds[KIND[e.type]] || 0) + 1; });
+      const who = [...new Set(buf.map((e) => e.who))];
+      out += `<details class="dg"><summary><span class="avs">${who.map((w) => av(w, 'sm')).join('')}</span><span class="sm"><b>${Object.entries(kinds).map(([k, n]) => `${k} ${n}`).join(' · ')}</b> <span class="muted">— ${esc(buf[buf.length - 1].text)}</span></span><span class="tm">${buf[0].t}–${buf[buf.length - 1].t}</span><span class="chev">▶</span></summary><div class="dg-in">${buf.map((e) => act(e)).join('')}</div></details>`;
+      buf = [];
+    };
+    for (const e of list) {
+      if (e.day !== day) { flush(); out += `<div class="day">${e.day} · 게임 날짜</div>`; day = e.day; prev = null; }
+      if (e.kind === 'act') buf.push(e); else { flush(); out += msg(e, prev); }
+      prev = e;
+    }
+    flush();
+    return head('기준 회의', seg(8)) + `<div class="now-band"><span class="k"><i></i>지금 모둠</span><span class="led">서연 연구 노트 쓰는 중 · 도윤 ④ 분자 쇼핑</span></div><div class="feed scroll" style="max-height:600px" data-bottom>${out}</div>${typing()}${composer(8)}`;
+  },
+  // 10 떠 있는 대화창
+  () => {
+    const base = head('기준 회의') + shared() + `<div class="vote"><div class="vote-h"><b>찜한 분자</b><span>1개 · 2.1로 넘길 후보</span></div><div class="vote-c"><div class="who">${av('se', 'sm')} CHEMBL502 <span class="rchip g">★ 도네페질 계열</span></div><span class="act-m">점수 0.81 · MW 379 · TPSA 38.8</span></div></div>`;
+    if (!S.open10) {
+      const recent = EV.filter((e) => e.kind === 'act').slice(-2);
+      return base + `<div class="toasts">${recent.map((e) => `<div class="toast"><span class="ico ${ICO[e.type][1]}">${ICO[e.type][0]}</span><span style="flex:1"><b>${M[e.who].n}</b> ${esc(e.text)}</span><span class="act-m">${e.t}</span></div>`).join('')}<button type="button" class="fab" data-o10 style="justify-self:end">대화 · 행적 <span class="n">3</span></button></div>`;
+    }
+    const k = S.tab10;
+    return base + `<div class="float" role="dialog" aria-label="모둠 대화창"><div class="float-h">${online()}<b>모둠 대화</b><div class="seg" role="group"><button type="button" data-t10="chat" aria-pressed="${k === 'chat'}">대화</button><button type="button" data-t10="act" aria-pressed="${k === 'act'}">행적</button><button type="button" data-t10="all" aria-pressed="${k === 'all'}">전체</button></div><button type="button" class="min" data-o10 aria-label="작게 접기">—</button></div>
+      <div class="float-b scroll" data-bottom>${stream(pick(k), { sm: 'sm' })}</div><div class="float-f">${typing()}${composer(9, '말하기')}</div></div>`;
+  },
+];
+
+const team = document.getElementById('team');
+function render() {
+  team.innerHTML = R[S.cur]();
+  team.querySelectorAll('[data-bottom]').forEach((el) => { el.scrollTop = el.scrollHeight; });
+  document.getElementById('pv-list').innerHTML = V.map((v, i) => `<button type="button" class="pv-b" data-v="${i}" aria-pressed="${i === S.cur}"><i>${i + 1}</i>${v.name}</button>`).join('');
+  document.getElementById('pv-d').innerHTML = V[S.cur].d;
+  document.getElementById('pv-now').innerHTML = `<i>${S.cur + 1}/10</i>${V[S.cur].name}`;
+  EV.forEach((e) => { delete e.isNew; });
+}
+function go(i) {
+  S.cur = (i + 10) % 10;
+  try { history.replaceState(null, '', '#v' + (S.cur + 1)); } catch (e) {}
+  render();
+}
+function now() { const d = new Date(); return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
+function keepFocus(id) { const el = document.getElementById(id); if (el) el.focus(); }
+
+document.addEventListener('click', (ev) => {
+  const b = ev.target.closest('button');
+  if (!b) return;
+  const d = b.dataset;
+  if (d.v !== undefined && b.classList.contains('pv-b')) return go(+d.v);
+  if (d.f) { S.f[+d.v] = d.f; return render(); }
+  if (d.t1) { S.tab1 = d.t1; return render(); }
+  if ('open3' in d) { S.open3 = !S.open3; return render(); }
+  if (d.s4) { S.show4 = d.s4; return render(); }
+  if (d.o5) { S.open5[d.o5] = !S.open5[d.o5]; return render(); }
+  if (d.c6) { S.ch6 = d.c6; return render(); }
+  if ('o10' in d) { S.open10 = !S.open10; return render(); }
+  if (d.t10) { S.tab10 = d.t10; return render(); }
+  if (b.classList.contains('at')) { const inp = b.closest('form').querySelector('input'); inp.value += '@도윤 '; inp.focus(); }
+});
+document.addEventListener('submit', (ev) => {
+  const form = ev.target.closest('[data-send]');
+  if (!form) return;
+  ev.preventDefault();
+  const inp = form.querySelector('input');
+  const text = inp.value.trim();
+  if (!text) return;
+  const v = +form.dataset.send;
+  const about = form.dataset.about ? +form.dataset.about : undefined;
+  const step = S.cur === 5 && S.ch6 === '11' ? '1.1' : '1.2';
+  EV.push({ id: nextId++, day: 'D+6', t: now(), who: 'ha', kind: 'chat', step, text, about, isNew: true });
+  if (S.f[v] === 'act') S.f[v] = 'all';
+  if (S.cur === 9) S.tab10 = S.tab10 === 'act' ? 'chat' : S.tab10;
+  const fid = inp.id;
+  render();
+  keepFocus(fid);
+  // 모둠원이 실시간으로 답하는 흉내
+  if (!S.replied) {
+    S.replied = true;
+    setTimeout(() => { S.typing = 'do'; render(); }, 700);
+    setTimeout(() => {
+      S.typing = null;
+      EV.push({ id: nextId++, day: 'D+6', t: now(), who: 'do', kind: 'chat', step, text: 'ㅇㅋ 확인! 나는 ④에서 하나 더 찜해 볼게', about, isNew: true });
+      EV.push({ id: nextId++, day: 'D+6', t: now(), who: 'do', kind: 'act', type: 'pick', step: '1.2', tab: '④', text: 'CHEMBL1678를 찜했어요', detail: '점수 0.74 · 새 골격', isNew: true });
+      const a = document.activeElement && document.activeElement.id;
+      render();
+      if (a) keepFocus(a);
+    }, 2600);
+  }
+});
+document.addEventListener('keydown', (ev) => {
+  if (ev.target.closest('input, textarea')) return;
+  if (ev.key === 'ArrowRight') go(S.cur + 1);
+  if (ev.key === 'ArrowLeft') go(S.cur - 1);
+});
+document.getElementById('prev').onclick = () => go(S.cur - 1);
+document.getElementById('next').onclick = () => go(S.cur + 1);
+const h = /^#v(\d+)$/.exec(location.hash || '');
+S.cur = h ? Math.min(Math.max(+h[1] - 1, 0), 9) : 0;
+render();
+</script>

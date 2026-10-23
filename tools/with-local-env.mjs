@@ -15,6 +15,8 @@
  *   SUPABASE_SECRET_KEY       ← SECRET_KEY (없으면 SERVICE_ROLE_KEY) — 웹 계정 발급(서버 전용)
  *   CRISTA_DATABASE_URL       ← DB_URL — 관리자 연결, 0000_bootstrap 에만
  *   WEB_DATABASE_URL          ← DB_URL 의 호스트 · 포트 · DB + crista_web + WEB_LOCAL_DB_PASSWORD
+ *   ANTHROPIC_API_KEY         ← `.env.local` 의 그 한 줄(파이프라인 LLM — 설계 §5.13). 셸에 같은 이름이 있어도 이 파일 값만 넘긴다(없으면 넘기지 않음).
+ *                               `ANTHROPIC_AUTH_TOKEN` 은 넘기지 않는다(SDK 가 다른 자격으로 과금하지 않게). 값은 출력하지 않는다.
  */
 import { spawn, spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
@@ -54,13 +56,16 @@ for (const key of ['API_URL', 'DB_URL']) {
   }
 }
 
-// crista_web 로컬 비밀번호 — .env.local 의 한 줄만 읽는다(다른 값은 읽지 않는다).
+// crista_web 로컬 비밀번호 · Anthropic 키 — .env.local 에서 이 두 줄만 읽는다(다른 값은 읽지 않는다 — 호스팅 값이라서).
 const envFile = join(root, '.env.local');
 let webPassword = process.env.WEB_LOCAL_DB_PASSWORD;
-if (!webPassword && existsSync(envFile)) {
+let anthropicKey = null;
+if (existsSync(envFile)) {
   for (const line of readFileSync(envFile, 'utf8').split('\n')) {
     const m = /^\s*WEB_LOCAL_DB_PASSWORD\s*=\s*"?([^"\s]+)"?\s*$/.exec(line);
-    if (m) webPassword = m[1];
+    if (m && !webPassword) webPassword = m[1];
+    const k = /^\s*ANTHROPIC_API_KEY\s*=\s*"?([^"\s]+)"?\s*$/.exec(line);
+    if (k) anthropicKey = k[1];
   }
 }
 if (!webPassword) {
@@ -75,6 +80,10 @@ webDb.username = 'crista_web';
 webDb.password = encodeURIComponent(webPassword);
 
 const env = { ...process.env };
+// 셸의 Anthropic 자격은 넘기지 않는다 — 서버는 .env.local 의 키만 쓴다.
+delete env.ANTHROPIC_API_KEY;
+delete env.ANTHROPIC_AUTH_TOKEN;
+if (anthropicKey) env.ANTHROPIC_API_KEY = anthropicKey;
 // 호스팅 전용 · crista 전용 이름은 넘기지 않는다.
 for (const key of ['DATABASE_URL', 'DIRECT_URL', 'SUPABASE_JWKS_URL', 'SUPABASE_ACCESS_TOKEN', 'SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_ANON_KEY', 'RUNPOD_API_KEY', 'CRISTA_WORKER_DATABASE_URL', 'CRISTA_STORE']) delete env[key];
 Object.assign(env, {

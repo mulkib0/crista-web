@@ -22,12 +22,26 @@
     "teacher:create": "node tools/with-local-env.mjs npm run teacher:create -w @crista-web/server --",
     "e2e:w1": "node tools/with-local-env.mjs node apps/server/scripts/e2e-w1.ts",
     "e2e:parallel": "node tools/with-local-env.mjs node apps/server/scripts/e2e-parallel.ts",
+    "e2e:base": "node tools/with-local-env.mjs node apps/server/scripts/e2e-base.ts",
+    "e2e:screen": "node tools/with-local-env.mjs node apps/server/scripts/e2e-screen.ts",
+    "e2e:clinical": "node tools/with-local-env.mjs node apps/server/scripts/e2e-clinical.ts",
+    "e2e:selection": "node tools/with-local-env.mjs node apps/server/scripts/e2e-selection.ts",
+    "e2e:patents": "node tools/with-local-env.mjs node apps/server/scripts/e2e-patents.ts",
+    "e2e:preclinical": "node tools/with-local-env.mjs node apps/server/scripts/e2e-preclinical.ts",
+    "e2e:ind": "node tools/with-local-env.mjs node apps/server/scripts/e2e-ind.ts",
+    "e2e:approval": "node tools/with-local-env.mjs node apps/server/scripts/e2e-approval.ts",
+    "e2e:learn": "node tools/with-local-env.mjs node apps/server/scripts/e2e-learn.ts",
+    "e2e:market": "node tools/with-local-env.mjs node apps/server/scripts/e2e-market.ts",
+    "e2e:feed": "node tools/with-local-env.mjs node apps/server/scripts/e2e-feed.ts",
+    "e2e:full": "node tools/with-local-env.mjs node apps/server/scripts/e2e-full.ts",
+    "e2e:teacher": "node tools/with-local-env.mjs node apps/server/scripts/e2e-teacher.ts",
     "dev:web": "npm run dev -w @crista-web/web",
     "build:web": "npm run build -w @crista-web/web",
     "db:status:hosted": "node tools/with-hosted-env.mjs node db/migrate.mjs --status",
     "db:dry-run:hosted": "node tools/with-hosted-env.mjs node db/migrate.mjs --dry-run",
     "db:check:hosted": "node tools/with-hosted-env.mjs node db/check-boundary.mjs",
-    "teacher:create:hosted": "node tools/with-hosted-env.mjs npm run teacher:create -w @crista-web/server --"
+    "teacher:create:hosted": "node tools/with-hosted-env.mjs npm run teacher:create -w @crista-web/server --",
+    "llm:probe:local": "node tools/with-local-env.mjs node apps/server/scripts/llm-probe.ts"
   },
   "dependencies": {
     "pg": "^8.23.1"

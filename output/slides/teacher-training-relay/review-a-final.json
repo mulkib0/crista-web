@@ -1,0 +1,40 @@
+{
+  "role": "A",
+  "verdict": "PASS",
+  "confidence": "High",
+  "image_viewing_method": "read_file 도구로 /Users/mulkib/Desktop/repo/crista-web/output/slides/teacher-training-relay/.slides-grab/gate-preview/ 경로의 재렌더링된 PNG 이미지 23장(필수 18장 포함)을 직접 열어 시각적으로 검수함",
+  "inspected_images": [
+    "slide-01.png",
+    "slide-02.png",
+    "slide-03.png",
+    "slide-04.png",
+    "slide-08.png",
+    "slide-09.png",
+    "slide-10.png",
+    "slide-11.png",
+    "slide-12.png",
+    "slide-13.png",
+    "slide-14.png",
+    "slide-16.png",
+    "slide-17.png",
+    "slide-18.png",
+    "slide-21.png",
+    "slide-24.png",
+    "slide-26.png",
+    "slide-27.png",
+    "slide-28.png",
+    "slide-29.png",
+    "slide-30.png",
+    "slide-31.png",
+    "slide-32.png"
+  ],
+  "checks": {
+    "System consistency": "PASS",
+    "Color discipline": "PASS",
+    "AI slop tropes": "PASS",
+    "Content discipline": "PASS"
+  },
+  "findings": [],
+  "copy_patches": [],
+  "summary": "재렌더링된 PNG 23장(필수 18장 포함)과 최신 argon-copy.json, slides.css, 개별 및 단일 발표 HTML을 대조 검수한 결과, 이전 검수에서 지적된 과학 표기(슬라이드 8 상온 -1.36 kcal/mol), 질환 목록·제목·로마숫자(슬라이드 16), 비강제 병렬 협업 표현(슬라이드 1·2·13·14), 최신 구현 기능 및 교사 시계·수동심사 화면 연결 중 구분(슬라이드 4·12·27·28·29·30·31·32), 흐름도 화살표(:not(:last-child)) 및 괄호 뒤 조사 줄바꿈(.word nowrap)이 모두 정확히 반영되었으며 신규 결함이 없어 PASS로 판정합니다."
+}

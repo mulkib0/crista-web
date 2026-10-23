@@ -1,0 +1,24 @@
+
+> crista-web@0.1.0 e2e:ind
+> node tools/with-local-env.mjs node apps/server/scripts/e2e-ind.ts
+
+    물성 신호 hERG high · 간 moderate · Rk 1.85 · MRSD {"oral":60,"iv":46,"transdermal":83} · HED 10
+✓ GET /api/ind — 준비됨 · 주력 9조합(E · S) · MRSD · 환자군 목록 · 규칙 값
+✓ 네 명이 동시에 [새 신청서] → 한 줄(201 하나 · 나머지 200 같은 id)
+✓ 네 명이 다른 칸 동시 저장 → 모두 200 · 같은 칸 같은 판 → 하나만 200(나머지 409 stale + 지금 칸)
+✓ 네 명이 동시에 조합 바꾸기(같은 planVersion) → 하나만 200 · 나머지 409
+✓ MRSD 를 넘는 용량(oral 100 mg > 60) → 규칙에서 보완(LLM 없음)
+✓ 교사가 규칙 보완 건을 손으로 통과 → passed 여도 접수는 서버가 규칙을 다시 봐서 409 · 과금 없음
+✓ uuid 가 아닌 신청서 id → 404(500 아님)
+✓ 규칙 미리 보기 — 고친 뒤 fail 0 · 상태 draft
+✓ 동시 심사 4번 → 심사 1건(created 하나) · pending(LLM 꺼짐이면) · 상태 reviewing
+✓ 교사 수동 통과(또는 AI 통과) → passed · 모둠 WS doc.reviewed
+✓ 통과 뒤 칸을 고치면 draft — 접수 409(다시 심사)
+✓ 통과 뒤 MRSD 가 줄면 접수 409(서버 재판정) · 같은 판 다시 심사 → 판 +1 · 규칙 보완(옛 통과를 돌려주지 않음)
+✓ 연구비가 모자라면 접수 402 · 상태 passed 그대로 · ind_fee 줄 없음
+✓ 네 명이 동시에 [접수] → 200 하나 · 과금 1회(ind_fee · ind:<id>) · 나머지 409
+✓ 접수 뒤 칸 · 조합 고치기 409 · 다시 접수 409
+    학급 WS board.event 받음
+✓ 30게임 일 뒤 승인 · 전광판 ind_approved 한 줄(공개 칸만) · 3.3 완료 · 승인서
+
+IND 점검 통과

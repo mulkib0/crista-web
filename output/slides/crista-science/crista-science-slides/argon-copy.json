@@ -1,0 +1,189 @@
+{
+  "author_model": "Gemini 4 Argon (High)",
+  "slides": [
+    {
+      "id": "00-overview",
+      "eyebrow": "CRISTA · PIPELINE OVERVIEW",
+      "title": "데이터와 AI로 탐구하는 신약 개발 4단계",
+      "subtitle": "질병 표적 선정부터 물성 계산, 3D 도킹, 독성·규제 심사까지 네 단계로 이어집니다.",
+      "panels": [
+        {
+          "title": "① 질환·표적 데이터",
+          "tool": "MONDO · Open Targets v4 · PDB",
+          "body": "표준 질병 코드와 유전자 연관성 점수로 질환 표적을 살피고, 옹스트롬 단위로 실측된 12종 단백질 3D 실험 구조를 불러옵니다.",
+          "highlight": "3D 구조 12종 · 0~1점"
+        },
+        {
+          "title": "② 화합물·물성 계산",
+          "tool": "ChEMBL · ZINC · RDKit",
+          "body": "표적당 220종 화합물 라이브러리에서 SMILES 구조식을 읽어 분자량, 극성 표면적, 지용성, Ro5, QED와 구조 경고를 계산합니다.",
+          "highlight": "표적당 220종 · QED 0~1"
+        },
+        {
+          "title": "③ 3D 분자 도킹",
+          "tool": "AutoDock Vina 1.2.7 · PLIP",
+          "body": "단백질 포켓 안에서 분자 결합 자세와 도킹 점수(kcal/mol)를 추정하고, 아미노산 잔기와의 비공유 결합 상호작용을 프로파일링합니다.",
+          "highlight": "도킹 점수 kcal/mol"
+        },
+        {
+          "title": "④ 약동학·독성 및 심사",
+          "tool": "ADMET-AI v2 · 서버 규칙 · Claude Opus 5.5",
+          "body": "그래프 신경망으로 체내 흡수·독성 신호를 예측하고, 서버 규칙 엔진과 AI 심사관이 특허·동물윤리·임상 신청서의 정합성을 이중 심사합니다.",
+          "highlight": "MPNN 예측 · 2단계 심사"
+        }
+      ],
+      "analogy": "자물쇠(표적)를 찾고 열쇠 후보(화합물)를 골라 끼워 본 뒤(도킹), 안전성과 서류까지 검증하는 여정입니다.",
+      "footnote": "본 파이프라인의 점수와 예측치는 수업용 컴퓨터 탐색 지표이며 실제 생체 내 약효나 임상 안전성을 확정하지 않습니다.",
+      "illustration_brief": "A minimalist 16:9 scientific exhibition catalog illustration on warm ivory paper (#f1f1e9) with deep ink accents (#080b09). Four interconnected translucent glass architectural pedestals arranged from left to right: first, a folded glass protein ribbon with a glowing cofactor; second, a crystalline array of small organic molecule wireframes; third, a small ligand nestled inside a sculpted glass binding pocket with delicate dashed interaction rods; fourth, a geometric molecular graph passing through a double prism gate. Subtle thin-film iridescent rainbow refractions along the glass edges, generous whitespace, studio lighting, completely free of any text, numbers, or labels."
+    },
+    {
+      "id": "01-target",
+      "eyebrow": "CRISTA · STEP 01 · TARGET DISCOVERY",
+      "title": "질병 코드와 3D 실측 단백질 표적 탐색",
+      "subtitle": "표준 질병 온톨로지와 연관성 근거 점수로 표적을 고르고 실측 3D 구조를 불러옵니다.",
+      "panels": [
+        {
+          "title": "국제 질병 표준 분류",
+          "tool": "MONDO 온톨로지",
+          "body": "병원과 연구소마다 다른 질병 명칭을 국제 표준 분류 코드로 통일하여 알츠하이머병이나 비소세포폐암 같은 대상 질환을 명확히 정의합니다.",
+          "highlight": "MONDO_0004975 등"
+        },
+        {
+          "title": "유전자·질병 연관성 근거",
+          "tool": "Open Targets v4",
+          "body": "EMBL-EBI와 제약사 컨소시엄 데이터로 유전학(GWAS), 학술 문헌, 기존 약물, 조직 발현의 4대 근거를 0~1점 점수로 제시합니다.",
+          "highlight": "4대 근거 · 0~1점"
+        },
+        {
+          "title": "원자 좌표 실측 3D 구조",
+          "tool": "PDB (Protein Data Bank)",
+          "body": "X선 회절이나 극저온전자현미경(Cryo-EM) 실험으로 측정한 원자별 3차원(x, y, z) 좌표를 옹스트롬 단위로 기록한 구조 지도입니다.",
+          "highlight": "1 Å = 10⁻¹⁰ m"
+        },
+        {
+          "title": "엄선된 12종 표적과 보조인자",
+          "tool": "PDB 3D 구조 12종 (§6.1.1)",
+          "body": "ACHE(4EY7), EGFR(1M17), MAOB(2V5Z) 등 12종 표적에 활성에 필수적인 보조인자(FAD)와 금속 이온까지 보존했습니다.",
+          "highlight": "FAD · Zn²⁺ · Mg²⁺"
+        }
+      ],
+      "analogy": "질병과 단백질의 족보로 유력한 표적을 좁히고, 실측 3D 자물쇠 모형(PDB)을 준비하는 단계입니다.",
+      "footnote": "MONDO는 질병 분류 표준이고 연관성 점수는 단독 원인 확정이 아니며, PDB는 X선 회절·Cryo-EM 등 실험 구조를 포함합니다.",
+      "illustration_brief": "A 16:9 scientific catalog composition on textured ivory background (#f1f1e9) with crisp charcoal linework (#080b09). At the center, a translucent sculpted glass protein structure made of alpha-helices and beta-strands rests inside a delicate three-dimensional coordinate grid marking x, y, and z axes at angstrom scale. Inside the protein's active gorge, a luminous amber FAD cofactor molecule and tiny metallic spheres representing zinc and magnesium ions are suspended in place, while four subtle radar-like evidence rings project onto the base plane. Thin-film rainbow interference highlights the glass folds, with no text or symbols."
+    },
+    {
+      "id": "02-compounds",
+      "eyebrow": "CRISTA · STEP 02 · COMPOUND & PHYSCHEM",
+      "title": "화합물 라이브러리 탐색과 분자 물성 계산",
+      "subtitle": "후보 분자의 SMILES 구조식을 읽어 체내 투과성, 약다움, 구조 경고를 계산합니다.",
+      "panels": [
+        {
+          "title": "검증된 화합물 도서관",
+          "tool": "ChEMBL · ZINC",
+          "body": "활성 검증 약물 DB(ChEMBL)와 소형 유기화합물 DB(ZINC)를 결합해 표적당 시판약·유도체·다양성 분자 220종 라이브러리를 제공합니다.",
+          "highlight": "표적당 220종 라이브러리"
+        },
+        {
+          "title": "SMILES와 핵심 물리화학 물성",
+          "tool": "RDKit (MW · TPSA · cLogP)",
+          "body": "문자열 구조식(SMILES)을 읽어 세포막 통과에 중요한 분자량(MW), 극성 표면적(TPSA), 조각 기반 지용성(cLogP)을 실시간 계산합니다.",
+          "highlight": "BBB 기준 TPSA ≤ 90 Å²"
+        },
+        {
+          "title": "경구 흡수 경험칙과 약다움 지수",
+          "tool": "RDKit (Ro5 · QED)",
+          "body": "경구약 조건의 기준선 위반 개수를 세는 리핀스키 5규칙(Ro5)과 복합 물성을 0~1점 연속 점수로 종합한 약다움(QED)을 구분해 산출합니다.",
+          "highlight": "Ro5 위반 수 vs QED 0~1"
+        },
+        {
+          "title": "위험 화학 작용기 사전 탐지",
+          "tool": "RDKit (PAINS · Brenk · SMARTS)",
+          "body": "부분 그래프 매칭(SMARTS)으로 방향족 니트로기 등 비특이적 반응이나 대사 독성 우려가 있는 구조 경고 작용기 포함 여부를 찾아냅니다.",
+          "highlight": "SMARTS 부분 그래프 매칭"
+        }
+      ],
+      "analogy": "수백만 열쇠 창고에서 후보를 꺼내 무게·크기·기름기와 위험 부품을 화학 계산기로 즉시 재는 단계입니다.",
+      "footnote": "QED(0~1 연속 지수)와 Ro5 위반 수는 서로 다른 지표이며, 구조 경고 탐지는 주의 신호일 뿐 실제 인체 독성 확정이 아닙니다.",
+      "illustration_brief": "A 16:9 scientific catalog illustration on matte ivory (#f1f1e9) with dark ink lines (#080b09). A central small organic molecule rendered in clear blown glass and dark ball-and-stick joints floats above a geometric chemical balance plate. Around the molecule, translucent polar surface patches glow with delicate iridescent rainbow contours representing TPSA, while a semi-permeable lipid bilayer membrane arch in the background illustrates lipophilic permeation, and one peripheral functional group is encircled by a subtle crimson glass prism ring indicating a structural subgraph match. No text, letters, or numbers."
+    },
+    {
+      "id": "03-docking",
+      "eyebrow": "CRISTA · STEP 03 · 3D MOLECULAR DOCKING",
+      "title": "3D 분자 도킹 탐색과 결합 상호작용 분석",
+      "subtitle": "단백질 포켓 내 최적 결합 자세와 도킹 점수를 구하고 아미노산 결합을 확인합니다.",
+      "panels": [
+        {
+          "title": "3D 포켓 내 결합 자세 탐색",
+          "tool": "AutoDock Vina 1.2.7",
+          "body": "단백질 활성 포켓 3D 상자 안에서 후보 분자의 위치·방향과 단일 결합 회전(Torsion)을 몬테카를로 및 국소 최적화로 탐색합니다.",
+          "highlight": "Monte Carlo + 국소 최적화"
+        },
+        {
+          "title": "도킹 점수(친화도 추정치) 해석",
+          "tool": "AutoDock Vina 1.2.7 (점수 함수)",
+          "body": "물리·경험적 점수 함수로 결합 친화도를 kcal/mol 단위로 추정하며, 음수 절댓값이 클수록 포켓 안에서 더 안정된 결합 자세를 뜻합니다.",
+          "highlight": "예: -10.5 kcal/mol"
+        },
+        {
+          "title": "열역학 평형 식과 10배 계단",
+          "tool": "열역학 원리 · 2.1 10배 계단 (§5.6)",
+          "body": "열역학 식(ΔG = RT ln K_d)상 상온에서 ΔG가 -1.36 kcal/mol 낮아질 때 이론적 해리 상수가 10배씩 감소하는 원리를 익힙니다.",
+          "highlight": "ΔG = RT ln K_d"
+        },
+        {
+          "title": "아미노산 잔기 상호작용 지도",
+          "tool": "PLIP",
+          "body": "도킹된 3D 좌표에서 아미노산 잔기(TRP86, SER203 등)와의 거리를 재어 수소 결합, 소수성 상호작용, π-스태킹, 염다리를 분석합니다.",
+          "highlight": "TRP86 · SER203 잔기"
+        }
+      ],
+      "analogy": "3차원 자물쇠 구멍(포켓)에 열쇠(분자)를 돌려 끼워 안정된 자세를 찾고, 어느 아미노산이 붙잡는지 확인합니다.",
+      "footnote": "Vina 도킹 점수는 실측 ΔG가 아닌 결합 친화도 추정치이므로, 점수 차이만으로 실제 생체 약효 배수를 단정할 수 없습니다.",
+      "illustration_brief": "A 16:9 scientific catalog close-up on warm ivory paper (#f1f1e9) with deep charcoal structural accents (#080b09). Inside a translucent glass protein binding cavity, a small ligand molecule with curved rotation arrows around its rotatable single bonds settles into a low-energy pose, accompanied by two faint ghosted alternative poses. Surrounding amino acid side chains—including an aromatic indole ring and a hydroxyl group—connect to the ligand via fine iridescent dashed rods representing hydrogen bonds, pi-stacking, and salt bridges within a subtle 3D search box wireframe. No text, letters, or numbers."
+    },
+    {
+      "id": "04-admet-review",
+      "eyebrow": "CRISTA · STEP 04 · ADMET & DUAL REVIEW",
+      "title": "약동학·독성 예측과 2단계 이중 서류 심사",
+      "subtitle": "체내 흡수·독성 위험 신호를 예측하고 코드 규칙과 AI 심사관이 신청서를 검증합니다.",
+      "panels": [
+        {
+          "title": "그래프 신경망 약동학·독성 예측",
+          "tool": "ADMET-AI v2 (Chemprop MPNN)",
+          "body": "분자를 원자와 결합의 그래프로 보고 메시지 전달 그래프 신경망(MPNN)으로 흡수·분포·대사·배설·독성(ADMET) 지표를 예측합니다.",
+          "highlight": "Chemprop MPNN 모델"
+        },
+        {
+          "title": "주요 체내 관문과 독성 신호",
+          "tool": "ADMET-AI v2 (hERG · DILI · BBB)",
+          "body": "수십만 건의 실험 데이터를 학습한 모델로 심장 hERG 채널 저해 위험, 간독성(DILI), 장 흡수율, 뇌혈관장벽 투과율을 추정합니다.",
+          "highlight": "hERG · DILI · 장 흡수"
+        },
+        {
+          "title": "1단계 서버 규칙 팩트 체크",
+          "tool": "서버 규칙 엔진 (§5.11)",
+          "body": "시판약 여부(신규성), 모둠 간 선착순 특허 중복, 동물실험 마릿수 과다, 최대 안전 시작 용량(MRSD) 초과를 코드가 100% 판정합니다.",
+          "highlight": "신규성 · 선착순 · MRSD"
+        },
+        {
+          "title": "2단계 데이터·논리 정합성 심사",
+          "tool": "Claude Opus 5.5 (3.1 · 3.2 · 3.3)",
+          "body": "특허·동물윤리·식약처/FDA 심사관 역할로 서술과 데이터의 모순이나 간독성 감시 계획 누락을 찾아 보완 요구(revise) 피드백을 줍니다.",
+          "highlight": "데이터-서술 정합성 · revise"
+        }
+      ],
+      "analogy": "열쇠가 맞아도 몸에 해로우면 약이 될 수 없듯, 체내 위험을 예측하고 신청서를 규칙·AI로 이중 심사합니다.",
+      "footnote": "ADMET 예측치는 컴퓨터 모델의 위험 신호 추정일 뿐 실제 임상 독성 확정이 아니며, 안전 모니터링 설계의 근거로 활용합니다.",
+      "illustration_brief": "A 16:9 scientific exhibition diagram on warm ivory paper (#f1f1e9) with crisp black ink lines (#080b09). On the left, a molecular structure transforms into a glowing node-and-edge graph neural network with message-passing pulses flowing toward abstract glass silhouettes of a heart, liver, intestine, and brain barrier. On the right, two sequential architectural glass gates stand in alignment: the first gate is a precision mechanical caliper sieve checking strict numerical thresholds, and the second gate is a multi-faceted optical prism aligning data waveforms with structured document planes, shimmering with thin-film rainbow interference and zero text."
+    }
+  ],
+  "editorial_notes": [
+    "Vina 도킹 점수는 물리·경험적 점수 함수가 산출한 결합 친화도 추정치로 서술하고, 실제 실험 ΔG 및 생체 내 약효 보장과 구분함.",
+    "열역학 공식(ΔG = RT ln K_d)과 상온 -1.36 kcal/mol당 해리 상수 10배 변화는 이론적 평형 관계로 분리 설명하고, 도킹 점수 차이로 실제 약효 배수를 단정하지 않도록 각주에 명시함.",
+    "MONDO는 국제 질병 표준 분류 온톨로지임을 밝히고, Open Targets v4의 0~1점 점수는 4대 근거 기반 연관성 지표일 뿐 단독 원인 확정이 아님을 명시함.",
+    "PDB 구조는 X선 회절과 극저온전자현미경(Cryo-EM) 등 실험적으로 규명된 3D 구조임을 밝혀 모두 X선 결정구조로 오해하지 않게 교정함.",
+    "리핀스키 5규칙(Ro5 기준 위반 개수)과 약다움 지수(QED, 0~1 연속 점수)를 별개 개념으로 분리 서술함.",
+    "SMARTS 구조 경고(PAINS/Brenk)와 ADMET-AI v2 예측값은 탐색 단계의 위험 신호 추정이며 실제 인체 독성 확정이 아님을 명시함.",
+    "Open Targets v4, AutoDock Vina 1.2.7, ADMET-AI v2, Claude Opus 5.5 등 원문 버전 표기를 플랫폼 구성 명칭 그대로 보존함."
+  ]
+}

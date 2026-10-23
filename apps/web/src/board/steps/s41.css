@@ -1,0 +1,114 @@
+/* 4.1 임상 화면 전용 모양 — 공용 부품 · 섬 모양은 styles.css(바꾸지 말 것). 선택자는 .s41 · .c41- 아래로 묶는다. 새 색은 쓰지 않는다(토큰만). */
+
+.s41 { display: grid; gap: 14px; min-width: 0; }
+.s41 .panel { border-radius: 18px; border-color: transparent; background: var(--bg); }
+.s41 .panel.plain { background: transparent; padding: 0; }
+.s41 .panel + .panel { margin-top: 0; }
+
+.s41-dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin: 0 0 10px; font-size: 13px; }
+.s41-dl dt { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; color: var(--muted); padding-top: 2px; }
+.s41-dl dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.s41-qs { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.s41-qs li { display: grid; gap: 1px; }
+
+.s41-prog { position: relative; height: 14px; border-radius: 999px; background: var(--line); overflow: visible; margin: 4px 0 8px; }
+.s41-prog i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--fg); }
+.s41-prog.run i { background: var(--film); box-shadow: inset 0 0 0 1px var(--fg); }
+.s41-prog b { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--fg); }
+
+.s41-tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.s41-tier { appearance: none; text-align: left; display: grid; gap: 3px; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--line-strong); background: var(--surface); min-width: 0; }
+.s41-tier:hover:not(:disabled) { border-color: var(--fg); }
+.s41-tier[aria-checked="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.s41-tier[aria-checked="true"] .mini { opacity: 0.85; }
+
+.s41-monitor { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 4px; font-size: 12.5px; }
+.s41-analysis { font-family: var(--serif); font-size: 15px; line-height: 1.6; margin: 12px 0 6px; }
+.s41-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.s41-picks .btn[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.s41 th[scope="row"] { white-space: normal; width: 34%; }
+
+.s41-routes { display: grid; gap: 10px; margin-bottom: 12px; }
+.s41-route { display: grid; gap: 4px; }
+.s41-route .btn { justify-self: start; border-radius: 999px; }
+.s41-amend { border: 1px dashed var(--line-strong); border-radius: 14px; padding: 10px 12px; display: grid; gap: 8px; min-width: 0; }
+.s41-amend legend { font-weight: 600; font-size: 13px; padding: 0 4px; }
+.s41-amend .btn { justify-self: start; border-radius: 999px; }
+
+.s41-bounty { display: grid; gap: 10px; }
+.s41-bounty fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 4px; min-width: 0; }
+.s41-bounty legend { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+.s41-bounty label { font-size: 12.5px; display: flex; gap: 6px; align-items: baseline; }
+.s41-bounty textarea { width: 100%; border-radius: 12px; }
+.s41-bounty .btn { justify-self: start; border-radius: 999px; }
+.s41-hints { margin: 6px 0 0; padding-left: 18px; font-size: 12px; color: var(--warn); }
+
+/* ── 그림(SVG) ── */
+.c41-fig { margin: 0; min-width: 0; }
+.c41-fig svg { display: block; width: 100%; height: auto; max-width: 100%; overflow: visible; }
+.c41-fig figcaption { margin-top: 4px; }
+.c41-t { fill: var(--fg); font-family: var(--sans); font-size: 12px; }
+.c41-t.s { font-size: 11px; }
+.c41-t.xs { font-size: 10px; }
+.c41-t.xl { font-size: 26px; font-weight: 600; }
+.c41-t.b { font-weight: 700; }
+.c41-t.mono, .c41-t .mono { font-family: var(--mono); }
+.c41-t.muted { fill: var(--muted); }
+.c41-card { fill: var(--surface); stroke: var(--line); }
+.c41-card[data-state="passed"] { stroke: var(--good); stroke-width: 2; }
+.c41-card[data-state="held"] { stroke: var(--bad); stroke-width: 2; }
+.c41-card[data-state="running"], .c41-card[data-state="recruiting"] { stroke: var(--fg); stroke-width: 1.5; stroke-dasharray: 5 3; }
+.c41-bar.ok { fill: var(--good); }
+.c41-bar.bad { fill: var(--bad); }
+.c41-bar.off { fill: var(--raise); stroke: var(--line-strong); stroke-dasharray: 3 3; }
+.c41-hurdle line { stroke: var(--fg); stroke-width: 3; }
+.c41-hurdle line.leg { stroke-width: 1.4; }
+.c41-person circle, .c41-person path { fill: var(--fg); }
+.c41-ln { fill: none; stroke: var(--fg); stroke-width: 1.8; }
+.c41-ln.thick { stroke-width: 2.6; }
+.c41-ln.dash { stroke-dasharray: 5 4; opacity: 0.6; }
+.c41-ref { stroke: var(--fg); stroke-width: 1; opacity: 0.55; }
+.c41-ref.dash { stroke-dasharray: 4 4; }
+.c41-axis { stroke: var(--line-strong); stroke-width: 1; fill: none; }
+.c41-mk { fill: var(--fg); stroke: var(--surface); stroke-width: 1; }
+.c41-mk.hollow { fill: var(--surface); stroke: var(--fg); stroke-width: 1.5; }
+.c41-wait { fill: var(--warn-bg); }
+.c41-gantt.recruit { fill: var(--raise); stroke: var(--line-strong); }
+.c41-gantt.run { fill: var(--fg); }
+.c41-gantt.run.held { fill: var(--bad); }
+.c41-gantt.run.completed { fill: var(--good); }
+.c41-gantt.plan { fill: none; stroke: var(--fg); stroke-dasharray: 3 3; }
+.c41-stair { fill: var(--fg); }
+.c41-stair.recruit { fill: var(--muted); }
+.c41-stair.backup_fee { fill: var(--warn); }
+.c41-stair.bounty { fill: var(--good); }
+.c41-box { fill: var(--surface); stroke: var(--line-strong); }
+.c41-box.hi { fill: var(--hi); stroke: var(--fg); }
+.c41-box.ok { stroke: var(--good); stroke-width: 1.6; }
+.c41-box.bad { stroke: var(--bad); stroke-width: 1.6; }
+.c41-box.dim { fill: var(--bg); stroke-dasharray: 3 3; }
+.c41-armbar { fill: var(--fg); }
+.c41-err { stroke: var(--fg); stroke-width: 1.6; }
+.c41-ae { fill: var(--fg); stroke: var(--surface); stroke-width: 1; }
+.c41-ae.p1 { fill: var(--muted); }
+.c41-ae.p2 { fill: var(--bad); }
+.c41-ae.p3 { fill: var(--warn); }
+.c41-ae.p4 { fill: var(--good); }
+.c41-ae.p5 { fill: var(--line-strong); }
+.c41-gauge svg { max-width: 260px; margin: 0 auto; }
+.c41-gauge-bg { fill: none; stroke: var(--line); stroke-width: 16; stroke-linecap: round; }
+.c41-gauge-fg { fill: none; stroke-width: 16; stroke-linecap: round; }
+.c41-gauge-fg.ok { stroke: var(--good); }
+.c41-gauge-fg.warn { stroke: var(--warn); }
+.c41-gauge-fg.bad { stroke: var(--bad); }
+.c41-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; }
+.c41-legend li { display: flex; align-items: center; gap: 6px; }
+
+@media (max-width: 860px) {
+  .s41-tiers { grid-template-columns: 1fr; }
+  .c41-t { font-size: 13px; }
+  .c41-t.s { font-size: 12px; }
+  .c41-t.xs { font-size: 11px; }
+}
+
+.s41 .abadge small { color: inherit; opacity: 0.75; }

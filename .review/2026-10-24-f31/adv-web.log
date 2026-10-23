@@ -1,0 +1,223 @@
+
+> @crista-web/web@0.1.0 predev
+> node scripts/prepare-assets.mjs
+
+[gen-campus-assets] 외관 8종 × 3단계 → /Users/mulkib/Desktop/repo/crista-web/apps/web/public/campus
+[prepare-assets] crista 에셋 8개 복사 · 사옥 외관 생성
+
+> @crista-web/web@0.1.0 dev
+> vite --port 5203 --strictPort
+
+
+  VITE v8.3.5  ready in 218 ms
+
+  ➜  Local:   http://127.0.0.1:5203/crista/
+2:16:22 AM [vite] (client) hmr update /src/board/learn/StepLearn.tsx
+2:16:48 AM [vite] (client) hmr update /src/board/learn/GrantChip.tsx
+2:17:24 AM [vite] (client) hmr update /src/board/learn/PitchButton.tsx
+2:18:57 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:18:57 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:18:57 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:18:57 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:18:57 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:18:57 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("agendaValueOf" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:18:57 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:18:57 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:18:57 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:18:57 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:18:57 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:18:57 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:18:57 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:18:57 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:18:57 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:19:01 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:19:01 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:01 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:19:01 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:01 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:19:01 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("agendaValueOf" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:01 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:19:01 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:01 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:19:01 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:01 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:19:01 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:01 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:19:01 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:01 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:19:15 AM [vite] (client) hmr update /src/board/steps/s32.tsx
+2:19:21 AM [vite] (client) hmr update /src/board/steps/s41-charts.tsx
+2:19:21 AM [vite] (client) hmr update /src/board/steps/s41.css
+2:19:21 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:21 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:19:29 AM [vite] (client) hmr update /src/board/steps/s32.tsx
+2:19:46 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:19:47 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:47 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:19:47 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:47 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:19:47 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("agendaValueOf" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:47 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:19:47 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:47 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:19:47 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:47 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:19:47 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:47 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:19:47 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:19:47 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:19:54 AM [vite] (client) hmr update /src/board/steps/s42.tsx
+2:20:06 AM [vite] (client) hmr update /src/board/steps/s31.tsx
+2:20:06 AM [vite] (client) [Unhandled error] TypeError: Cannot read properties of undefined (reading 'mineTitle')
+ > Step31 ../../../../../../../crista/src/board/steps/s31.tsx?t=1792776006451:248:43
+ > Object.react_stack_bottom_frame ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:14140:12
+ > renderWithHooks ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:4398:19
+ > updateFunctionComponent ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:5773:16
+ > beginWork ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:6389:20
+ > runWithFiberInDEV ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:942:66
+ > performUnitOfWork ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:9146:92
+ > workLoopSync ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:9042:37
+ > renderRootSync ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:9026:6
+ > performWorkOnRoot ../../../../../../../crista/node_modules/.vite/deps/react-dom_client.js?v=2dc2197b:8713:27
+
+2:20:06 AM [vite] (client) [console.warn] An error occurred in the <Step31> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+2:20:06 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:20:06 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:06 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:20:06 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:06 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:20:06 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("agendaValueOf" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:06 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:20:06 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:06 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:20:06 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:06 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:20:06 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:06 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:20:06 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:06 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:20:34 AM [vite] (client) hmr update /src/board/steps/s42.tsx
+2:20:43 AM [vite] (client) hmr update /src/board/steps/s42.tsx
+2:20:48 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:20:48 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:48 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:20:48 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:48 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:20:48 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("agendaValueOf" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:48 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:20:48 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:48 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:20:48 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:48 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:20:48 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:48 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:20:48 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:48 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:20:49 AM [vite] ws proxy error:
+Error: write EPIPE
+    at afterWriteDispatched (node:internal/stream_base_commons:138:10)
+    at writeGeneric (node:internal/stream_base_commons:126:10)
+    at Socket._writeGeneric (node:net:1324:11)
+    at Socket._write (node:net:1336:8)
+    at writeOrBuffer (node:internal/streams/writable:574:12)
+    at _write (node:internal/streams/writable:503:10)
+    at Writable.write (node:internal/streams/writable:512:10)
+    at writeChunk (file:///Users/mulkib/Desktop/repo/crista-web/node_modules/vite/dist/node/chunks/node.js:19597:13)
+    at IncomingMessage.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/node_modules/vite/dist/node/chunks/node.js:19609:6)
+    at IncomingMessage.emit (node:events:526:24)
+2:20:49 AM [vite] ws proxy socket error:
+Error: write EPIPE
+    at afterWriteDispatched (node:internal/stream_base_commons:138:10)
+    at writeGeneric (node:internal/stream_base_commons:126:10)
+    at Socket._writeGeneric (node:net:1324:11)
+    at Socket._write (node:net:1336:8)
+    at writeOrBuffer (node:internal/streams/writable:574:12)
+    at _write (node:internal/streams/writable:503:10)
+    at Writable.write (node:internal/streams/writable:512:10)
+    at writeChunk (file:///Users/mulkib/Desktop/repo/crista-web/node_modules/vite/dist/node/chunks/node.js:19597:13)
+    at IncomingMessage.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/node_modules/vite/dist/node/chunks/node.js:19609:6)
+    at IncomingMessage.emit (node:events:526:24)
+2:20:55 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:20:56 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:56 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:20:56 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:56 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:20:56 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("agendaValueOf" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:56 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:20:56 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:56 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:20:56 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:56 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:20:56 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:56 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:20:56 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:20:56 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:21:26 AM [vite] (client) hmr update /src/styles.css
+2:21:39 AM [vite] (client) hmr update /src/board/steps/s31.tsx
+2:21:57 AM [vite] ws proxy error:
+Error: connect ECONNREFUSED 127.0.0.1:3403
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+2:22:23 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:22:24 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:24 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:22:24 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:24 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:22:24 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("agendaValueOf" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:24 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:22:24 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:24 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:22:24 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:24 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:22:24 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:24 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:22:24 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:24 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:22:41 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:22:41 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:22:41 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx
+2:22:41 AM [vite] (client) hmr update /src/screens/Board.tsx
+2:22:41 AM [vite] (client) hmr update /src/board/learn/StepLearn.tsx
+2:22:45 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:45 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:22:45 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:45 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:22:45 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("AGENDA_TAB_ORDER" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:45 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:22:46 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:46 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:22:46 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:46 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:22:46 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:46 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:22:46 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:22:46 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:23:13 AM [vite] (client) hmr update /src/App.tsx, /src/screens/Login.tsx, /src/screens/Board.tsx, /src/screens/Teacher.tsx, /src/board/parts.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/common.tsx, /src/board/steps/s11.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx, /src/board/steps/s12-parts.tsx, /src/board/steps/s12-tools.tsx, /src/board/steps/s33-tools.tsx and 4 more
+2:23:13 AM [vite] (client) hmr update /src/board/market/RankButton.tsx
+2:23:13 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:23:13 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:23:13 AM [vite] (client) hmr invalidate /src/board/steps/common.tsx Could not Fast Refresh ("STEP_COPY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:23:13 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/locked.tsx, /src/board/steps/s11.tsx, /src/board/steps/s21.tsx, /src/board/steps/s12.tsx, /src/board/steps/s22.tsx, /src/board/steps/s31.tsx, /src/board/steps/s32.tsx, /src/board/steps/s33.tsx, /src/board/steps/s42.tsx, /src/board/steps/s41.tsx
+2:23:13 AM [vite] (client) hmr invalidate /src/board/steps/s12-parts.tsx Could not Fast Refresh ("agendaValueOf" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:23:13 AM [vite] (client) hmr update /src/board/steps/s12.tsx, /src/board/steps/s12-tools.tsx
+2:23:13 AM [vite] (client) hmr invalidate /src/board/steps/s12-tools.tsx Could not Fast Refresh ("LAB_PRESETS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:23:13 AM [vite] (client) hmr update /src/board/steps/s12.tsx
+2:23:13 AM [vite] (client) hmr invalidate /src/board/steps/s33-tools.tsx Could not Fast Refresh ("TOOL_IDS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:23:13 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:23:13 AM [vite] (client) hmr invalidate /src/board/steps/s41-charts.tsx Could not Fast Refresh ("ARM_STYLE" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:23:13 AM [vite] (client) hmr update /src/board/steps/s41.tsx
+2:23:13 AM [vite] (client) hmr invalidate /src/board/steps/s21.tsx Could not Fast Refresh ("fmtKcal" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+2:23:13 AM [vite] (client) hmr update /src/screens/Board.tsx, /src/board/steps/s22.tsx
+2:23:17 AM [vite] (client) hmr update /src/board/steps/s33.tsx
+2:23:17 AM [vite] (client) hmr update /src/board/steps/s33-tools.tsx
+2:23:19 AM [vite] (client) hmr update /src/board/market/LedBand.tsx
+npm error Lifecycle script `dev` failed with error:
+npm error code 143
+npm error path /Users/mulkib/Desktop/repo/crista-web/apps/web
+npm error workspace @crista-web/web@0.1.0
+npm error location /Users/mulkib/Desktop/repo/crista-web/apps/web
+npm error command failed
+npm error command sh -c vite --port 5203 --strictPort

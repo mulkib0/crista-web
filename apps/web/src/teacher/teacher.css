@@ -1,0 +1,176 @@
+/* 교사 화면 — 학생 ③ 화면과 같은 '둥근 섬'(설계 §5.4.1 · 시안 21): 섬 26px · 판 18px · 탭 12px · 칩 · 단추 알약(999px) · 섬 사이 틈 12.
+   공통 모양(.shell · .top · .isl · .panel · .st · .grp · .stabs)은 styles.css 그대로 — 여기는 교사 화면에 더한 것만. 새 색 없이 토큰만 쓴다. */
+
+/* 본문 그리드 — 사이드바 섬 | 머리 섬 / 본문 섬 */
+.tc-body {
+  grid-row: 3; position: relative; overflow: auto; min-height: 0; min-width: 0; background: var(--raise);
+  display: grid; align-content: start; gap: 12px;
+  grid-template-columns: var(--side-w) minmax(0, 1fr);
+  grid-template-areas: "side head" "side main";
+  /* 사이드바 섬이 두 줄에 걸쳐 길어도 머리 섬 줄은 늘지 않게 — 남는 높이는 본문 줄로 */
+  grid-template-rows: auto 1fr;
+  padding-block: 16px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.tc-main { grid-area: main; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.tc-isl { display: grid; gap: 14px; align-content: start; }
+.tc-isl > .ptitle { margin: 0; }
+
+/* 위 띠 */
+.tc .brand small { margin-left: 4px; }
+.tc-class { appearance: auto; border: 0; background: var(--raise); border-radius: 12px; padding: 6px 10px; font-weight: 700; font-size: 14px; max-width: min(360px, 60vw); }
+.tc-me { font-family: var(--sans); font-size: 13px; }
+.tb-btn.tc-wait { background: var(--hi); color: var(--hi-fg); cursor: pointer; }
+.tb-btn.tc-wait .tb-k { color: inherit; opacity: 0.7; }
+
+/* 사이드바 섬 — 학생 화면 사이드바와 같은 묶음 색. 고른 칸 = 잉크 */
+.tc-side .side-name { gap: 2px; }
+.tc-side .side-name b { font-size: 18px; }
+.tc-side .st[aria-current="page"] { background: var(--acc); color: var(--acc-fg); }
+.tc-side .st[aria-current="page"] .st-s { color: rgba(241, 241, 233, 0.66); }
+.tc-side .st:disabled { opacity: 0.45; }
+.tc-badge { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--hi); color: var(--hi-fg); font-family: var(--mono); font-size: 11px; font-weight: 700; }
+.tc-alerts { display: grid; gap: 6px; padding: 4px 6px 0; }
+.tc-alerts .side-h { padding: 0 4px; }
+.tc-alerts ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.tc-alerts li button { appearance: none; width: 100%; text-align: left; border: 0; background: var(--bg); border-radius: 14px; padding: 8px 10px; display: grid; gap: 2px; font-size: 12px; line-height: 1.4; }
+.tc-alerts li button:hover { background: var(--hi); }
+.tc-alerts small { color: var(--muted); font-size: 10.5px; }
+
+/* 머리 섬 — 왼쪽 칸 제목 · 설명, 오른쪽 ① 학급 게임 시계 */
+/* styles.css 가 이 파일보다 뒤에 실려 .isl-head(grid · gap 0)를 이기지 않게 .tc 를 붙인다 */
+.tc .tc-head { align-self: start; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 24px; align-items: start; padding: 16px 18px; }
+.tc-head-l { display: grid; gap: 6px; min-width: 0; }
+.tc-head h1 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 20px; line-height: 1.25; letter-spacing: -0.03em; }
+.tc-clock { display: grid; gap: 8px; justify-items: end; flex: 0 1 auto; min-width: 0; }
+.tc-clock-day { display: flex; align-items: baseline; gap: 10px; }
+.tc-clock-day b { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+.tc-k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.tc-state { font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--film); color: var(--film-ink); }
+.tc-state.off { background: var(--warn-bg); color: var(--warn); }
+.tc-clock-ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; }
+.tc-rates { display: flex; gap: 2px; padding: 3px; background: var(--bg); border-radius: 999px; }
+.tc-rate { appearance: none; border: 0; background: transparent; border-radius: 999px; padding: 4px 9px; font-family: var(--mono); font-size: 12px; font-weight: 600; }
+.tc-rate:hover:not(:disabled) { background: var(--raise); }
+.tc-rate[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.tc-rate-custom { display: flex; gap: 4px; align-items: center; }
+.tc .tc-rate-custom .txt { width: 76px; padding: 5px 9px; border-radius: 999px; }
+.tc-clock-note { margin: 0; font-size: 11.5px; color: var(--muted); text-align: right; max-width: 460px; }
+
+/* 공용 칸 */
+.tc-stack { display: grid; gap: 14px; min-width: 0; }
+.tc-push { margin-left: auto; }
+.tc-more { justify-self: start; padding-left: 0; }
+.tc-quote { margin: 0; padding: 10px 12px; background: var(--surface); border-radius: 12px; white-space: pre-wrap; font-size: 13px; }
+.tc-list { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 2px; font-size: 12.5px; }
+.tc-list li.bad { color: var(--bad); }
+.tc-list li.warn { color: var(--warn); }
+.tc .tc-num { width: 84px; }
+.tc .tc-sel { width: auto; padding: 5px 10px; }
+.tc-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.tc-tag { display: inline-flex; align-items: center; gap: 5px; min-width: 0; max-width: 100%; font-size: 12px; }
+.tc-tag .inkd { border-radius: 50%; }
+.tc-tag-n { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 12em; }
+.tc-tbl td { white-space: nowrap; }
+.tc-pitch { display: block; }
+
+/* 요약 수 */
+.tc-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.tc-sum-i { display: grid; gap: 2px; padding: 12px 14px; border-radius: 18px; background: var(--bg); min-width: 0; }
+.tc-sum-i span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.tc-sum-i b { font-size: 20px; font-weight: 600; overflow-wrap: anywhere; }
+.tc-sum-i.big b { font-size: 30px; letter-spacing: -0.02em; }
+.tc-sum-i.warn { background: var(--warn-bg); }
+.tc-sum-i.warn b { color: var(--warn); }
+.tc-sum-i.good { background: var(--film); color: var(--film-ink); }
+
+/* ① 모둠 진행 카드 */
+.tc-teams { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 12px; }
+.tc-team { display: grid; gap: 10px; align-content: start; background: var(--bg); border-radius: 18px; padding: 14px 16px; min-width: 0; }
+.tc-team.off { opacity: 0.7; }
+.tc-team-h { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.tc-team-h .inkd { width: 11px; height: 11px; border-radius: 50%; align-self: center; }
+.tc-team-h b { font-size: 16px; }
+.tc-tick { font-size: 11px; padding: 1px 8px; border: 1px solid var(--line-strong); border-radius: 999px; }
+.tc-team-m { flex: 1 1 100%; }
+.tc-now { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.tc-now b { font-size: 15px; }
+.tc-st { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--surface); }
+.tc-st.s-running { background: var(--film); color: var(--film-ink); }
+.tc-st.s-held, .tc-st.s-blocked { background: var(--bad-bg); color: var(--bad); }
+.tc-pips { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+.tc-pip { display: grid; justify-items: center; gap: 0; padding: 5px 0; border-radius: 10px; background: var(--surface); font-size: 10.5px; color: var(--muted); line-height: 1.3; }
+.tc-pip-k { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+.tc-pip.s-done { background: var(--hi); color: var(--hi-fg); }
+.tc-pip.s-running { background: var(--film); color: var(--film-ink); }
+.tc-pip.s-held, .tc-pip.s-blocked { background: var(--bad-bg); color: var(--bad); }
+.tc-pip.cur { box-shadow: inset 0 0 0 2px var(--fg); color: var(--fg); }
+.tc-stuck { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.tc-stuck li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 12.5px; padding: 6px 6px 6px 10px; border-radius: 12px; background: var(--bad-bg); }
+.tc-stuck li.me { background: var(--warn-bg); }
+.tc-stuck-k { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.04em; padding: 1px 7px; border-radius: 999px; background: var(--surface); }
+.tc-stuck .btn { min-height: 26px; }
+.tc-team-f { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding-top: 8px; border-top: 1px solid var(--line); }
+.tc-team-f .btn { margin-left: auto; }
+.tc-notes { display: grid; gap: 10px; }
+.tc-note-step h4 { margin: 0 0 4px; font-size: 13px; }
+.tc-note { display: grid; gap: 2px; padding: 8px 10px; border-radius: 12px; background: var(--surface); }
+.tc-note + .tc-note { margin-top: 4px; }
+.tc-note .lab { margin: 0; text-transform: none; letter-spacing: 0.02em; }
+.tc-note .lab em { font-style: normal; }
+.tc-note p { margin: 0; white-space: pre-wrap; font-size: 13px; overflow-wrap: anywhere; }
+
+/* ③ ④ 판정 카드 */
+.tc .card { gap: 8px; }
+.tc-rv-body { display: grid; gap: 10px; }
+.tc-doc { background: var(--surface); border-radius: 12px; padding: 8px 12px; }
+.tc-doc summary { cursor: pointer; font-size: 12.5px; font-weight: 600; }
+.tc-doc .tc-note { background: var(--bg); margin-top: 6px; }
+.tc-decide { display: grid; gap: 8px; padding: 12px; border-radius: 14px; background: var(--surface); }
+.tc-decide .lab { margin: 0; }
+.tc-decide textarea { resize: vertical; min-height: 54px; }
+.tc-seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.tc-seg .rchip[aria-checked="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.tc-tr-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.tc-tr-grid > div { display: grid; gap: 6px; align-content: start; padding: 10px 12px; border-radius: 14px; background: var(--surface); min-width: 0; }
+.tc-tr-grid .lab { margin: 0; }
+.tc-big { margin: 0; font-size: 17px; font-weight: 700; }
+.tc-big small { font-size: 12px; font-weight: 500; color: var(--muted); margin-left: 6px; }
+
+/* ⑤ 학습 */
+.tc-grid td { vertical-align: top; }
+.tc-cell { text-align: right; font-size: 11.5px; }
+.tc-cell.on { background: rgba(198, 255, 74, 0.25); }
+.tc-cell.ex { background: var(--warn-bg); }
+.tc-ex { display: flex; justify-content: flex-end; align-items: center; gap: 3px; font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+.tc-ex input { width: 13px; height: 13px; accent-color: var(--fg); }
+.tc-ovr { flex-wrap: nowrap; }
+
+/* ⑥ 윤리 토론 */
+.tc-discuss ol { margin: 0 0 8px; padding-left: 20px; display: grid; gap: 6px; font-family: var(--serif); font-size: 16px; font-weight: 600; }
+
+/* ⑦ 전광판 칸 — 위에 같은 띠가 늘 있어서 FMARKET 교사 칸의 띠(그리고 그 안의 서랍 · 최종 순위 창 두 벌째)는 숨긴다 */
+.tc-market .mk-t-band { display: none; }
+.tc-market .mk-teacher { background: transparent; padding: 0; border-radius: 0; }
+
+/* 폰(≤ 860px) — 사이드바(가로 칩) → 머리 섬 → 본문 섬 */
+@media (max-width: 860px) {
+  .tc-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "side" "head" "main"; grid-template-rows: auto; padding-top: 12px; }
+  .tc-side .st-k:empty { display: none; }
+  .tc-side .st { grid-template-columns: auto auto auto; }
+  .tc-alerts { display: none; }
+  .tc .tc-head { grid-template-columns: minmax(0, 1fr); padding: 14px; }
+  .tc-head h1 { font-size: 18px; }
+  .tc-clock { justify-items: start; width: 100%; }
+  .tc-clock-ctl { justify-content: flex-start; }
+  .tc-clock-note { text-align: left; }
+  .tc-two, .tc-tr-grid { grid-template-columns: minmax(0, 1fr); }
+  .tc-sum { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tc-sum-i.big b { font-size: 22px; }
+  .tc-pips { gap: 2px; }
+  .tc-pip { font-size: 9px; }
+  .tc-class { max-width: 100%; }
+  .tc .co { flex: 1 1 auto; min-width: 0; }
+}
+
+/* 학급 · 명단 — 지금 학급 섬 · 새 학급 섬 */
+.tc-admin { display: grid; gap: 12px; min-width: 0; }

@@ -4,6 +4,9 @@
  *
  * 사옥 지구(W2): 학생이 `district.enter` 를 보내면 같은 학급의 지금 위치 목록을 받고, 이후 `district.move` 를 같은 학급에 중계한다.
  * 위치는 서버 메모리에만 있다(저장 · 판정 없음 — 설계 §4.1). 초당 5회를 넘는 이동은 버리고, 좌표는 지구 안으로 자른다.
+ *
+ * 모둠 대화방(features/feed.ts): 모둠 채널로 나가는 소식을 `onTeamMessage` 로 받아 행적으로 남긴다(기능 모듈을 고치지 않고 한 곳에서).
+ * 접속한 모둠원(`feed.presence`)과 입력 중(`feed.typing` — 저장 없음 · 연결마다 3초에 한 번)도 여기서 같은 모둠에 알린다.
  */
 import type { IncomingMessage } from 'node:http';
 import type { Duplex } from 'node:stream';
@@ -13,7 +16,9 @@ import {
   DIRECTIONS,
   DISTRICT_MAP,
   DISTRICT_MOVE_PER_SEC,
+  FEED_TYPING_MS,
   SESSION_COOKIE,
+  teacherChannel,
   teamChannel,
   type AccountView,
   type Avatar,
@@ -40,12 +45,30 @@ interface Peer {
   /** 이동 중계 토큰 통(초당 5개). */
   moveTokens: number;
   moveRefillAt: number;
+  /** 마지막 입력 중 중계 시각(ms). */
+  typingAt: number;
 }
+
+/** 모둠 채널로 나가는 소식을 받는 쪽 — 보낸 뒤에 부른다(던져도 보내기에는 영향 없음). */
+export type TeamMessageTap = (teamId: string, message: ServerMessage) => void;
+
+const TEAM_PREFIX = teamChannel('');
+const teamOf = (channels: Iterable<string>): string | null => {
+  for (const c of channels) if (c.startsWith(TEAM_PREFIX)) return c.slice(TEAM_PREFIX.length);
+  return null;
+};
+const CLASS_PREFIX = classChannel('');
+/** 학생 채널 가운데 학급 id(없으면 null). */
+const classOf = (channels: Iterable<string>): string | null => {
+  for (const c of channels) if (c.startsWith(CLASS_PREFIX)) return c.slice(CLASS_PREFIX.length);
+  return null;
+};
 
 export async function channelsFor(db: Pool, userId: string, kind: 'teacher' | 'student'): Promise<string[]> {
   if (kind === 'teacher') {
     const owned = await db.query<{ id: string }>('select id from web.classes where teacher_id = $1', [userId]);
-    return owned.rows.map((row) => classChannel(row.id));
+    // 교사는 학급 채널 + 교사 채널(심사 플래그 · 이의 제기 — 학생은 받지 않는다).
+    return owned.rows.flatMap((row) => [classChannel(row.id), teacherChannel(row.id)]);
   }
   const member = await db.query<{ class_id: string; team_id: string | null }>(
     `select class_id, team_id from web.members where user_id = $1 and role = 'student'`,
@@ -67,6 +90,7 @@ export class Hub {
   private readonly db: Pool;
   private readonly allowedOrigins: readonly string[];
   private readonly heartbeat: NodeJS.Timeout;
+  private readonly taps = new Set<TeamMessageTap>();
 
   constructor(db: Pool, allowedOrigins: readonly string[]) {
     this.db = db;
@@ -109,8 +133,8 @@ export class Hub {
   }
 
   private accept(ws: WebSocket, account: AccountView, tokenHash: Buffer, channels: string[]): void {
-    const classId = account.kind === 'student' ? (channels.find((c) => c.startsWith('class:'))?.slice('class:'.length) ?? null) : null;
-    const peer: Peer = { ws, account, tokenHash, channels: new Set(channels), alive: true, classId, district: null, moveTokens: DISTRICT_MOVE_PER_SEC, moveRefillAt: Date.now() };
+    const classId = account.kind === 'student' ? classOf(channels) : null;
+    const peer: Peer = { ws, account, tokenHash, channels: new Set(channels), alive: true, classId, district: null, moveTokens: DISTRICT_MOVE_PER_SEC, moveRefillAt: Date.now(), typingAt: 0 };
     this.peers.add(peer);
     ws.on('pong', () => {
       peer.alive = true;
@@ -119,6 +143,7 @@ export class Hub {
     ws.on('close', () => {
       this.peers.delete(peer);
       this.leaveDistrict(peer);
+      this.announcePresence(teamOf(peer.channels));
     });
     ws.on('message', (data) => {
       let msg: Record<string, unknown>;
@@ -131,8 +156,41 @@ export class Hub {
       else if (msg.type === 'district.enter') void this.enterDistrict(peer, msg).catch((error: Error) => console.error('[ws] 지구 입장 오류:', error.message));
       else if (msg.type === 'district.move') this.moveInDistrict(peer, msg);
       else if (msg.type === 'district.exit') this.leaveDistrict(peer);
+      else if (msg.type === 'feed.typing') this.relayTyping(peer, msg);
     });
     this.send(peer, { type: 'hello', userId: account.userId, channels: [...peer.channels] });
+    this.announcePresence(teamOf(peer.channels));
+  }
+
+  // ── 모둠 대화방 ──
+
+  /** 그 모둠에 지금 연결이 있는 사용자(중복 없이). */
+  onlineIn(teamId: string): string[] {
+    const channel = teamChannel(teamId);
+    return [...new Set([...this.peers].filter((p) => p.channels.has(channel)).map((p) => p.account.userId))];
+  }
+
+  private announcePresence(teamId: string | null): void {
+    if (teamId) this.publish(teamChannel(teamId), { type: 'feed.presence', teamId, online: this.onlineIn(teamId) });
+  }
+
+  private relayTyping(peer: Peer, msg: Record<string, unknown>): void {
+    const teamId = teamOf(peer.channels);
+    const now = Date.now();
+    if (!teamId || now - peer.typingAt < FEED_TYPING_MS - 500) return;
+    peer.typingAt = now;
+    const stepId = typeof msg.stepId === 'string' && /^[a-z0-9.]{1,16}$/.test(msg.stepId) ? msg.stepId : null;
+    const message: ServerMessage = { type: 'feed.typing', teamId, userId: peer.account.userId, displayName: peer.account.displayName, stepId };
+    const channel = teamChannel(teamId);
+    for (const other of this.peers) {
+      if (other.account.userId !== peer.account.userId && other.channels.has(channel)) this.send(other, message);
+    }
+  }
+
+  /** 모둠 채널 소식 받기(대화방 행적) — 끄는 함수를 돌려준다. */
+  onTeamMessage(tap: TeamMessageTap): () => void {
+    this.taps.add(tap);
+    return () => this.taps.delete(tap);
   }
 
   // ── 사옥 지구 ──
@@ -208,21 +266,59 @@ export class Hub {
 
   publish(channel: string, message: ServerMessage): void {
     for (const peer of this.peers) if (peer.channels.has(channel)) this.send(peer, message);
+    if (this.taps.size > 0 && channel.startsWith(TEAM_PREFIX)) {
+      const teamId = channel.slice(TEAM_PREFIX.length);
+      for (const tap of this.taps) {
+        try {
+          tap(teamId, message);
+        } catch (error) {
+          console.error('[ws] 모둠 소식 받는 쪽 오류:', (error as Error).message);
+        }
+      }
+    }
   }
 
-  /** 모둠이 바뀐 사용자의 채널을 DB 에서 다시 정하고, 지구에 있으면 잉크를 바꿔 알린다. */
+  /** 모둠 채널로(그 모둠 학생들). 기능 모듈은 이것을 쓴다 — 비공개 값은 싣지 않고 '무엇이 바뀌었다'만. */
+  broadcastTeam(teamId: string, message: ServerMessage): void {
+    this.publish(teamChannel(teamId), message);
+  }
+
+  /** 학급 채널로(그 학급 학생 · 교사) — 공개 정보만(전광판 · 시계 · 특허 원장). */
+  broadcastClass(classId: string, message: ServerMessage): void {
+    this.publish(classChannel(classId), message);
+  }
+
+  /** 그 학급 교사에게만. */
+  broadcastTeachers(classId: string, message: ServerMessage): void {
+    this.publish(teacherChannel(classId), message);
+  }
+
+  /**
+   * 모둠 · 학급이 바뀐 사용자의 채널을 DB 에서 다시 정하고, 지구에 있으면 잉크를 바꿔 알린다.
+   * 학생의 학급(peer.classId)도 새 채널로 다시 정한다 — 학급 없이 연결한 뒤 학급에 들어가면(가입 → 연결 → 학급 고르기)
+   * classId 가 null 로 남아 사옥 지구 입장 · 이동 중계가 막혔어요. 학급이 바뀌면 옛 학급 지구에서 먼저 내보낸다.
+   */
   async refreshUser(userId: string, kind: 'teacher' | 'student'): Promise<void> {
     const targets = [...this.peers].filter((peer) => peer.account.userId === userId);
     if (targets.length === 0) return;
     const channels = await channelsFor(this.db, userId, kind);
     const look = kind === 'student' ? await this.lookFor(userId) : null;
+    const before = new Set(targets.map((peer) => teamOf(peer.channels)));
+    const classId = kind === 'student' ? classOf(channels) : null;
     for (const peer of targets) {
+      if (peer.classId !== classId) {
+        this.leaveDistrict(peer);
+        peer.classId = classId;
+      }
       peer.channels = new Set(channels);
       if (peer.district && look) {
         peer.district = { ...peer.district, avatar: look.avatar, ink: look.ink };
         this.broadcastDistrict(peer, { type: 'district.peer', peer: peer.district });
       }
     }
+    // 모둠이 바뀌었으면 옛 모둠 · 새 모둠의 접속 표시를 고친다.
+    const after = teamOf(channels);
+    if (!before.has(after) || before.size > 1) for (const teamId of new Set([...before, after])) this.announcePresence(teamId);
   }
 
   /** 로그아웃한 세션의 연결을 닫는다. */

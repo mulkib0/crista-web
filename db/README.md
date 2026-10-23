@@ -10,8 +10,15 @@ crista 와 같은 Supabase 프로젝트를 쓰되 **`web` 스키마만** 쓴다(
 | `migrations/0001_core.sql` | `crista_web` 연결 — `classes` · `teams` · `members` · `sessions` (소유자 `crista_web`) |
 | `migrations/0002_pipeline.sql` | `crista_web` 연결 — 화면 ③ 1. 발견 · 2. 최적화: `programs` · `target_picks` · `ledger` · `jobs` · `claims` · `notes` |
 | `migrations/0004_password_verifiers.sql` | `crista_web` 연결 — 로그인 비밀번호 검증값 `password_verifiers`(scrypt). 로그인을 서버 안에서 확인해 GoTrue 의 IP 당 상한을 피한다(`apps/server/src/passwords.ts`) |
+| `migrations/0005_screen_meeting.sql` | 3판 기반 — 1.2 기준 회의 · 분자 쇼핑: `screen_briefing` · `screen_agendas`(표적 버전마다 6행) · `screen_proposals` · `screen_votes` · `claims.reason`(옛 찜 'legacy') · 함수 `screen_agenda_value_ok` |
+| `migrations/0006_develop_regulate.sql` | 3판 기반 — 2.1 → 3.3 · 서류 심사 · 게임 시계 · LLM 기록: `dock_picks` · `lead_candidates`(W3 리드 · 백업을 옮기고 지정은 비움) · `patent_applications` · `patent_sections` · `patents`(부분 고유 키) · `ethics_training` · `iacuc_*` · `ind_applications` · `ind_sections` · `doc_reviews` · `llm_calls` · `classes` 의 특허 상한 · 시계 칸 · `jobs` 3.2 넓히기 · 노트 '3.2' → '3.3' |
+| `migrations/0007_market_learn.sql` | 3판 기반 — 전광판 `board_events` · `valuations` · 학습 연구비 `learn_*` 10표 · `ledger` 종류(출원료 · IND · 학습 · 투자 · 실패 바운티)와 `ref_type` · `ref_id` |
+| `migrations/0009_target_pick_reasons.sql` | 1.1 추천 카드 근거 칩 · 가중치(설계 §5.4.2) — `target_picks.reasons text[]`(빈 배열 기본) · `weights real[]`(원소 4개 · 0~3 또는 null). 비어 있던 번호를 썼다(0019 와 겹쳐 옮김) |
+| `migrations/0019_team_feed.sql` | 모둠 대화방(시안 06) — `team_feed_heads`(모둠마다 순번 머리) · `team_feed`(대화 · 행적 한 줄기) · `team_feed_reads`(사람 · 채널마다 읽은 위치). 쓰기 규칙은 `apps/server/src/features/feed.ts` 머리 주석 |
+| `migrations/0040_auto_judge.sql` | 교사 승인 폐지(설계 §5.11.1) — `doc_reviews.release_game_day · held_verdict`(숙고 기간 뒤 공개) · `llm_status 'auto'`(규칙 자동 판정) · `clinical_trials.result_source 'rule'` · `classes.clock_rate` 기본 12. 0020~0039 는 항체 랩 예약이라 0040 |
 
 번호는 비어도 된다 — 실행기는 이름순으로 아직 적용하지 않은 파일만 적용한다(0003 은 병렬 실험 작업이 쓰는 번호).
+기능 단계의 예약 번호: F12 `0010` · FSEL `0011` · F31 `0012` · F32 `0013` · F33 `0014` · FLEARN `0015` · FMARKET `0016`(스키마를 꼭 고쳐야 할 때만 새 파일) · 1.1 추천 근거 `0009` · 모둠 대화방 `0019`(`0020~0039` 는 항체 랩) · 교사 승인 폐지 `0040`.
 
 ## 명령(로컬)
 

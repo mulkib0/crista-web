@@ -1,0 +1,598 @@
+[llm] 꺼짐(disabled) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3403/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async balanceOf (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:172:18)
+    at async Promise.all (index 4)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 22ms
+[http] GET /api/patents 200 63ms
+[http] GET /api/learn/step/3.1 200 87ms
+[http] GET /api/learn/summary 200 39ms
+[http] GET /api/health 200 1ms
+[http] GET /api/me 200 32ms
+[http] GET /api/me 200 14ms
+[http] GET /api/board 200 84ms
+[http] GET /api/screen/compounds 200 55ms
+[http] GET /api/board 200 118ms
+[http] GET /api/screen 200 91ms
+[http] GET /api/screen/compounds 200 92ms
+[http] GET /api/board 200 100ms
+[http] GET /api/screen/compounds 200 17ms
+[http] GET /api/screen/compounds 200 17ms
+[http] GET /api/screen 200 118ms
+[http] GET /api/learn/summary 200 231ms
+[http] GET /api/screen 200 165ms
+[http] GET /api/learn/step/1.2 200 431ms
+[http] GET /api/screen 200 97ms
+[http] GET /api/learn/summary 200 250ms
+[http] GET /api/learn/summary 200 129ms
+[http] GET /api/learn/step/1.2 200 208ms
+[http] GET /api/learn/step/1.2 200 205ms
+[http] GET /api/learn/step/1.2 200 209ms
+[http] GET /api/patents 200 121ms
+[http] GET /api/patents 200 57ms
+[http] GET /api/patents 200 61ms
+[http] GET /api/patents 200 74ms
+[http] GET /api/learn/step/3.1 200 158ms
+[http] GET /api/learn/step/3.1 200 452ms
+[http] GET /api/learn/step/3.1 200 101ms
+[http] GET /api/learn/step/3.1 200 236ms
+[http] GET /api/learn/summary 200 508ms
+[http] GET /api/me 401 1ms
+[http] GET /api/me 200 179ms
+[http] GET /api/patents 200 681ms
+[http] GET /api/board 200 711ms
+[http] GET /api/board 200 366ms
+[http] GET /api/patents 200 511ms
+[http] GET /api/learn/step/3.1 200 1249ms
+[http] GET /api/learn/step/3.1 200 190ms
+[http] GET /api/learn/step/3.1 200 346ms
+[http] GET /api/learn/step/3.1 200 216ms
+[http] GET /api/learn/step/3.1 200 149ms
+[http] GET /api/learn/step/3.1 200 81ms
+[http] GET /api/health 200 1ms
+[http] POST /api/auth/login 200 163ms
+[http] POST /api/classes 201 27ms
+[http] POST /api/auth/signup 201 351ms
+[http] POST /api/teams/b3607336-9c6b-47be-a4f7-6153c3601611/join 200 18ms
+[http] POST /api/auth/signup 201 282ms
+[http] POST /api/teams/b3607336-9c6b-47be-a4f7-6153c3601611/join 200 16ms
+[http] POST /api/auth/signup 201 323ms
+[http] POST /api/teams/b3607336-9c6b-47be-a4f7-6153c3601611/join 200 19ms
+[http] POST /api/auth/signup 201 366ms
+[http] POST /api/teams/b3607336-9c6b-47be-a4f7-6153c3601611/join 200 17ms
+[http] POST /api/auth/signup 201 301ms
+[http] POST /api/teams/b9aade48-bc50-4a13-b9cb-770c8ebe3360/join 200 20ms
+[http] POST /api/auth/signup 201 307ms
+[http] POST /api/teams/b9aade48-bc50-4a13-b9cb-770c8ebe3360/join 200 25ms
+[http] POST /api/teams/b3607336-9c6b-47be-a4f7-6153c3601611/registration 201 67ms
+[http] POST /api/teams/b9aade48-bc50-4a13-b9cb-770c8ebe3360/registration 201 77ms
+[http] GET /api/board 200 31ms
+[http] POST /api/program/picks 200 11ms
+[http] POST /api/program/target 200 25ms
+[http] POST /api/program/picks 200 12ms
+[http] POST /api/program/target 200 35ms
+[http] GET /api/board 200 32ms
+[http] GET /api/board 200 32ms
+[http] GET /api/patents 200 157ms
+[http] POST /api/patents/applications 409 80ms
+[http] POST /api/patents/applications 409 81ms
+[http] POST /api/patents/applications 409 81ms
+[http] POST /api/patents/applications 201 226ms
+[http] POST /api/patents/applications 409 54ms
+[http] POST /api/patents/applications 404 47ms
+[http] POST /api/patents/applications 404 64ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/code 200 178ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/code 409 192ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/code 409 199ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/code 409 207ms
+[http] GET /api/patents 200 230ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/code 400 38ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/code 400 37ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/field 200 43ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/claim1 200 64ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/title 200 115ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/background 200 136ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/summary 200 216ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/summary 409 313ms
+[http] GET /api/patents 200 172ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/mech_action 400 22ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/inventors 400 29ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/secret 404 27ms
+[http] GET /api/patents 200 112ms
+[http] POST /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/review 201 558ms
+[http] GET /api/patents 200 312ms
+[http] GET /api/patents 200 672ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/code_tick 200 101ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/code_num 200 34ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/mech_how 200 141ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/mech_action 200 191ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/mech_why 200 67ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/title 200 703ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/field 200 1118ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/background 200 1971ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/claim1 200 2206ms
+[http] GET /api/me 401 1ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/claim2 200 2020ms
+[http] GET /api/me 401 1ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/effect 200 1599ms
+[http] GET /api/me 200 1328ms
+[http] GET /api/me 200 990ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/summary 200 1750ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 5)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 4016ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/inventors 200 1625ms
+[http] GET /api/patents 200 5450ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 5)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 1518ms
+[http] GET /api/learn/step/3.1 200 5794ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 5)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 720ms
+[http] POST /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/precheck 200 1185ms
+[http] POST /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/review 409 49ms
+[http] GET /api/patents 200 917ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadTeams (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/views.ts:51:18)
+    at async Promise.all (index 2)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 236ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadTeams (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/views.ts:51:18)
+    at async Promise.all (index 2)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 203ms
+[http] GET /api/learn/step/3.1 200 950ms
+[http] GET /api/patents 200 544ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadProgramRow (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:195:18)
+    at async Promise.all (index 3)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 209ms
+[http] POST /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/review 201 568ms
+[http] POST /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/review 200 613ms
+[http] POST /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/review 200 638ms
+[http] POST /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/review 200 644ms
+[http] GET /api/patents 200 246ms
+[http] GET /api/patents 200 212ms
+[http] GET /api/patents 200 225ms
+[http] GET /api/patents 200 137ms
+[http] GET /api/learn/step/3.1 200 214ms
+[http] GET /api/learn/step/3.1 200 208ms
+[http] GET /api/learn/step/3.1 200 123ms
+[http] GET /api/learn/step/3.1 200 133ms
+[http] GET /api/learn/summary 200 36ms
+[http] GET /api/me 401 0ms
+[http] GET /api/me 200 55ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:47:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 210ms
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadClock (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/clock.ts:47:18)
+    at async Promise.all (index 6)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 87ms
+[http] GET /api/learn/step/3.1 200 1135ms
+[http] GET /api/patents 200 1383ms
+[http] GET /api/patents 200 264ms
+[http] GET /api/learn/step/3.1 200 704ms
+[http] GET /api/learn/step/3.1 200 310ms
+[http] GET /api/learn/step/3.1 200 404ms
+[http] GET /api/learn/step/3.1 200 236ms
+[http] GET /api/learn/step/3.1 200 396ms
+[http] GET /api/learn/summary 200 122ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/code 409 34ms
+[http] GET /api/patents 200 57ms
+[http] PUT /api/patents/applications/66341448-a4ff-4b52-a587-af73b88fc581/sections/summary 200 27ms
+[http] POST /api/patents/applications 201 85ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/code 200 43ms
+[http] GET /api/patents 200 103ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/code_tick 200 26ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/code_num 200 28ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/mech_how 200 41ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/mech_action 200 34ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/mech_why 200 25ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/title 200 24ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/field 200 37ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/background 200 21ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/claim1 200 28ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/claim2 200 24ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/effect 200 17ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/summary 200 17ms
+[http] PUT /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/sections/inventors 200 17ms
+[http] GET /api/patents 200 50ms
+[http] GET /api/patents 200 50ms
+[http] POST /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/review 201 79ms
+[http] GET /api/patents 200 39ms
+[http] GET /api/patents 200 41ms
+[http] POST /api/patents/applications 201 35ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/code 200 16ms
+[http] GET /api/patents 200 45ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/code_tick 200 17ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/code_num 200 17ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/mech_how 200 23ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/mech_action 200 15ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/mech_why 200 74ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/title 200 48ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/field 200 14ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/background 200 15ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/claim1 200 13ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/claim2 200 16ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/effect 200 13ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/summary 200 14ms
+[http] PUT /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/sections/inventors 200 16ms
+[http] GET /api/patents 200 71ms
+[http] POST /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/review 201 86ms
+[http] POST /api/patents/applications 201 54ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/code 200 22ms
+[http] GET /api/patents 200 50ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/code_tick 200 17ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/code_num 200 15ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/mech_how 200 16ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/mech_action 200 17ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/mech_why 200 16ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/title 200 18ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/field 200 14ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/background 200 13ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/claim1 200 14ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/claim2 200 18ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/effect 200 18ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/summary 200 19ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/sections/inventors 200 21ms
+[http] GET /api/patents 200 55ms
+[http] POST /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/review 201 87ms
+[http] GET /api/patents 200 80ms
+[http] GET /api/patents 200 59ms
+[http] POST /api/teacher/reviews/39c3a945-47c9-402f-9e8a-92028e2dbf7f/decision 200 129ms
+[http] POST /api/teacher/reviews/aee8a2d2-725f-4fd2-86d4-fea20d265fba/decision 200 161ms
+[http] GET /api/patents 200 69ms
+[http] GET /api/patents 200 52ms
+[http] POST /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/precheck 200 32ms
+[http] GET /api/patents/ledger 200 10ms
+[http] GET /api/patents 200 77ms
+[http] PUT /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/code 409 22ms
+[http] GET /api/patents 200 48ms
+[http] POST /api/patents/applications/3892ce8e-bb41-4925-9468-e8bd76b4136e/abandon 200 25ms
+[http] GET /api/patents 200 43ms
+[http] POST /api/patents/applications 201 51ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/code 200 21ms
+[http] GET /api/patents 200 171ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/code_tick 200 18ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/code_num 200 17ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/mech_how 200 17ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/mech_action 200 19ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/mech_why 200 33ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/title 200 23ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/field 200 21ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/background 200 19ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/claim1 200 22ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/claim2 200 29ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/effect 200 30ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/summary 200 22ms
+[http] PUT /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/sections/inventors 200 24ms
+[http] GET /api/patents 200 75ms
+[http] POST /api/patents/applications/4047321f-35f5-4128-8985-39861c204e3d/review 201 108ms
+[http] POST /api/teacher/reviews/d00d893a-8a6d-4525-8f90-6857645d20ad/decision 200 147ms
+[http] GET /api/patents 200 71ms
+[http] GET /api/patents/ledger 200 17ms
+[http] POST /api/patents/applications 201 56ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/code 200 16ms
+[http] GET /api/patents 200 57ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/code_tick 200 18ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/code_num 200 15ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/mech_how 200 16ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/mech_action 200 21ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/mech_why 200 16ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/title 200 16ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/field 200 29ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/background 200 23ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/claim1 200 23ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/claim2 200 20ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/summary 200 25ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/inventors 200 22ms
+[http] GET /api/patents 200 67ms
+[http] POST /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/review 201 83ms
+[http] GET /api/patents 200 91ms
+[http] PUT /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/sections/effect 200 25ms
+[http] GET /api/patents 200 89ms
+[http] POST /api/patents/applications/de7d8864-6ed9-4218-b6f7-9d6fd47b1b97/review 201 70ms
+[http] GET /api/patents 200 80ms
+[http] POST /api/teacher/reviews/3f6af9c2-70b2-4d26-9049-e27db4d2e2ff/decision 200 34ms
+[http] GET /api/patents 200 81ms
+[http] GET /api/patents 200 63ms
+[http] POST /api/teacher/reviews/f39df9cb-36b3-4377-83a5-92f472dd5a73/decision 200 28ms
+[http] GET /api/patents 200 59ms
+[http] POST /api/patents/applications/c94e234b-e679-4aee-a4dc-379f4c0a4678/abandon 200 19ms
+[http] POST /api/patents/applications/5706cecf-8739-484b-9571-d55f54d0245f/abandon 409 27ms
+[http] POST /api/patents/applications 201 75ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/code 200 19ms
+[http] GET /api/patents 200 77ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/code_tick 200 21ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/code_num 200 39ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/mech_how 200 53ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/mech_action 200 32ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/mech_why 200 13ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/title 200 13ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/field 200 13ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/background 200 12ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/claim1 200 24ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/claim2 200 14ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/effect 200 12ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/summary 200 15ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/inventors 200 17ms
+[http] GET /api/patents 200 73ms
+[http] POST /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/review 201 69ms
+[http] POST /api/program/picks 200 10ms
+[http] POST /api/program/target 200 78ms
+[http] GET /api/patents 200 77ms
+[http] POST /api/teacher/reviews/4ffb4133-7ddb-42f0-91b6-7335e625c76d/decision 200 30ms
+[http] GET /api/patents 200 143ms
+[http] GET /api/patents 200 98ms
+[http] PUT /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/sections/summary 200 27ms
+[http] GET /api/patents 200 163ms
+[http] POST /api/patents/applications/6a8af531-e1eb-421f-8c9e-15703d170dd2/review 409 25ms
+[http] GET /api/learn/summary 200 75ms
+[http] GET /api/learn/summary 200 93ms
+[http] GET /api/learn/summary 200 146ms
+[http] GET /api/learn/summary 200 455ms
+[http] GET /api/learn/summary 200 58ms
+[server] SIGTERM — 닫는 중
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[clock] 현실 시간 처리기 market-final 오류: Cannot use a pool after calling end on the pool

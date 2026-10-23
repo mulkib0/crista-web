@@ -1,0 +1,33 @@
+{
+  "style_reference": "../crista-science/00-overview.png",
+  "images": [
+    {
+      "file": "glass-protein.png",
+      "tool": "Codex 내장 image_gen",
+      "reference": "glass-atlas.png",
+      "transparent_background": true,
+      "prompt": "Extract ONLY the top-left folded protein ribbon and its amber cofactor from the supplied four-object asset sheet as one isolated square illustration on a genuinely transparent background. Preserve its exact thin-film iridescent clear-glass material, colors, and object design. Fully contain the subject with comfortable 10% margin; nothing cropped. Remove the other three subjects completely. No text, no numbers, no new labels, no frames, no extra objects. This is a high quality reusable illustration for a presentation."
+    },
+    {
+      "file": "glass-molecules.png",
+      "tool": "Codex 내장 image_gen",
+      "reference": "glass-atlas.png",
+      "transparent_background": true,
+      "prompt": "Extract ONLY the top-right collection of small ball-and-stick drug molecules from the supplied four-object asset sheet as one isolated square illustration on a genuinely transparent background. Preserve its exact thin-film iridescent clear-glass material, colors, and object design. Fully contain the subject with comfortable 10% margin; nothing cropped. Remove the other three subjects completely. No text, no numbers, no new labels, no frames, no extra objects. This is a high quality reusable illustration for a presentation."
+    },
+    {
+      "file": "glass-docking.png",
+      "tool": "Codex 내장 image_gen",
+      "reference": "glass-atlas.png",
+      "transparent_background": true,
+      "prompt": "Extract ONLY the bottom-left protein binding pocket with its ligand and dashed interaction lines from the supplied four-object asset sheet as one isolated square illustration on a genuinely transparent background. Preserve its exact thin-film iridescent clear-glass material, colors, and object design. Fully contain the subject with comfortable 10% margin; nothing cropped. Remove the other three subjects completely. No text, no numbers, no new labels, no frames, no extra objects. This is a high quality reusable illustration for a presentation."
+    },
+    {
+      "file": "glass-review.png",
+      "tool": "Codex 내장 image_gen",
+      "reference": "glass-atlas.png",
+      "transparent_background": true,
+      "prompt": "Extract ONLY the bottom-right clear glass verification gates, document planes, and molecule from the supplied four-object asset sheet as one isolated square illustration on a genuinely transparent background. Preserve its exact thin-film iridescent clear-glass material, colors, and object design. Fully contain the subject with comfortable 10% margin; nothing cropped. Remove the other three subjects completely. No text, no numbers, no new labels, no frames, no extra objects. This is a high quality reusable illustration for a presentation."
+    }
+  ]
+}

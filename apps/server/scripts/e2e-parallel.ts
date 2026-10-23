@@ -8,7 +8,7 @@
  * 1. 1.1 표적 추천 카드 4장을 한꺼번에 내면 4장 모두 남는다.
  * 2. 1.2 같은 후보를 넷이 한꺼번에 찜하면 한 명만 되고 나머지는 409 claimed(먼저 찜한 사람 이름). 한 사람은 칸 1 · 2 까지(DB 제약).
  * 3. 2.1 병렬 도킹 4건이 모두 남는다. 표적을 바꿔 새 버전이 열리면 옛 버전 결과는 새 버전 근거에 섞이지 않는다.
- * 4. 2.2 주력 · 백업은 한 쌍으로 저장되고, 낡은 expectedVersion 의 동시 요청은 409 stale.
+ * 4. 2.2 결과만으로는 주력 · 백업을 지정할 수 없다(3판 — 3.2 에서, 동시 지정 · 409 stale 은 e2e:preclinical).
  * 5. 연구 노트 — 다른 칸은 동시에 저장되고, 같은 칸 · 같은 expectedVersion 이면 한 명만 되고 늦은 쪽은 409 stale + 상대 본문.
  * 6. public 표 행 수가 시작 전과 같다(관리자 연결 · 읽기만).
  *
@@ -22,6 +22,10 @@ import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import {
   API,
+  SCREEN_AGENDAS,
+  SCREEN_API,
+  type ScreenResponse,
+  SELECTION_API,
   type ApiErrorBody,
   type BoardResponse,
   type MeResponse,
@@ -134,8 +138,8 @@ async function tryClaimInsert(values: { teamId: string; revisionId: string; comp
   try {
     await client.query('begin');
     await client.query(
-      `insert into web.claims (team_id, program_revision_id, compound_id, slot, name, smiles, screen_job_id, claimed_by)
-       values ($1, $2, $3, $4, 'probe', 'C', $5, $6)`,
+      `insert into web.claims (team_id, program_revision_id, compound_id, slot, name, smiles, screen_job_id, claimed_by, reason)
+       values ($1, $2, $3, $4, 'probe', 'C', $5, $6, 'legacy')`,
       [values.teamId, values.revisionId, values.compoundId, values.slot, values.screenJobId, values.userId],
     );
     return 'inserted';
@@ -203,18 +207,24 @@ async function main(): Promise<void> {
   });
   assert.equal((await sa.call('PUT', API.note('1.1', 'why'), { body: '표적을 고른 이유', expectedVersion: 0 })).status, 200);
 
-  // 1.2 스크리닝
-  const screen = await sa.call<StartJobResponse>('POST', API.jobs, { requestId: requestId(), step: '1.2', params: { maxMw: 600, maxTpsa: 150, ro5Only: false, excludeAlerts: false } });
+  // 1.2 스크리닝 — F12: 기준은 모둠 회의 합의값으로만(요청에 싣지 않는다). 느슨하게 6개를 합의한 뒤 실행한다.
+  const loose = { mw: [650, 'keep'], tpsa: [180, 'keep'], ro5: [1, 'keep'], alert: [0, 'keep'], qed: [0, 'keep'], score: [0, 'keep'] } as const;
+  for (const a of SCREEN_AGENDAS) {
+    assert.equal((await sa.call('POST', SCREEN_API.proposals, { agenda: a, value: loose[a][0], reason: loose[a][1] })).status, 200, a);
+    for (const s of [sb, sc]) await s.call('POST', SCREEN_API.votes, { agenda: a, proposedBy: sa.userId, value: loose[a][0], reason: loose[a][1] });
+  }
+  const screen = await sa.call<StartJobResponse>('POST', API.jobs, { requestId: requestId(), step: '1.2', params: {} });
   assert.equal(screen.status, 201, JSON.stringify(screen.body));
   const [screenJob] = await waitJobs(sa, [screen.body.job.id]);
   assert.equal(screenJob!.status, 'succeeded', JSON.stringify(screenJob!.error));
-  const candidates = screenJob!.result?.candidates ?? [];
+  // 진열대(마지막 실행 통과 id) — 찜은 여기 있는 분자만(F12 · 설계 §7.4 ⑧).
+  const candidates = ((await sa.call<ScreenResponse>('GET', SCREEN_API.screen)).body.shelf?.passIds ?? []).map((compoundId) => ({ compoundId }));
   console.log(`  · 1.2 후보 ${candidates.length}개 · 버전 ${screenJob!.revisionId === rev1.program.revisionId ? '지금 버전' : '다른 버전'}`);
   assert.ok(candidates.length >= 12, `후보가 12개 이상 필요합니다(${candidates.length}).`);
 
   // 2. 같은 후보 동시 찜
   const c0 = candidates[0]!.compoundId;
-  const race = await Promise.all(people.map((s) => s.call('POST', API.claims, { screenJobId: screenJob!.id, compoundId: c0 })));
+  const race = await Promise.all(people.map((s) => s.call('POST', API.claims, { screenJobId: screenJob!.id, compoundId: c0, reason: 'top' })));
   const winner = people[race.findIndex((r) => r.status === 201)];
   check('② 1.2 — 같은 후보를 넷이 한꺼번에 찜 → 1명만 201 · 3명은 409 claimed(먼저 찜한 사람 이름)', () => {
     assert.equal(race.filter((r) => r.status === 201).length, 1, statuses(race));
@@ -231,7 +241,7 @@ async function main(): Promise<void> {
   const burst = await Promise.all(
     people.flatMap((s) => {
       const mine = (s === winner ? [1, 2] : [1, 2, 3]).map(() => candidates[next++]!.compoundId);
-      return mine.map((compoundId) => s.call('POST', API.claims, { screenJobId: screenJob!.id, compoundId }).then((r) => ({ s, r })));
+      return mine.map((compoundId) => s.call('POST', API.claims, { screenJobId: screenJob!.id, compoundId, reason: 'top' }).then((r) => ({ s, r })));
     }),
   );
   const afterClaims = await sc.board();
@@ -263,7 +273,7 @@ async function main(): Promise<void> {
   // 놓으면 그 칸이 다시 빈다
   const released = aClaims.find((c) => c.slot === 1)!;
   const del = await sa.call('DELETE', API.claim(released.compoundId));
-  const reclaim = await sa.call('POST', API.claims, { screenJobId: screenJob!.id, compoundId: spare });
+  const reclaim = await sa.call('POST', API.claims, { screenJobId: screenJob!.id, compoundId: spare, reason: 'top' });
   const afterReclaim = await sa.board();
   check('② 찜 놓기 → 빈 칸 1 을 다시 쓴다', () => {
     assert.equal(del.status, 200);
@@ -289,7 +299,13 @@ async function main(): Promise<void> {
     assert.equal(afterDocks.steps.find((s) => s.id === '2.1')?.state, 'done');
   });
 
-  // 4. 2.2 ADMET 2건 → 주력 · 백업 동시 지정
+  // 찜이 기준 약(도네페질 등 — 대기열에 담을 수 없음)이면 그 도킹을 뒤로 돌린다(3판 통합 — 찜 경합 결과에 따라 흔들리던 시험).
+  const refIds = new Set(((await sa.call<{ docked: Array<{ jobId: string; isReference: boolean }> }>('GET', SELECTION_API.get)).body.docked ?? []).filter((d) => d.isReference).map((d) => d.jobId));
+  docks.sort((a, b) => Number(refIds.has(a.id)) - Number(refIds.has(b.id)));
+
+  // 4. 2.2 ADMET 2건 → 주력 · 백업 동시 지정. 3판(FSEL): ADMET 는 2.1 대기열(dock_picks)에 담긴 분자만 — 먼저 각자 담는다('다른 계열' 근거는 막지 않음).
+  const queued = await Promise.all([sa, sb].map((s, i) => s.call('POST', SELECTION_API.dockPicks, { dockingJobId: docks[i]!.id, reason: 'different_series' })));
+  assert.deepEqual(queued.map((r) => r.status), [201, 201], statuses(queued));
   const admetReplies = await Promise.all([sa, sb].map((s, i) => s.call<StartJobResponse>('POST', API.jobs, { requestId: requestId(), step: '2.2', params: { dockingJobId: docks[i]!.id } })));
   assert.deepEqual(admetReplies.map((r) => r.status), [201, 201], statuses(admetReplies));
   const admets = await waitJobs(sa, admetReplies.map((r) => r.body.job.id));
@@ -297,32 +313,25 @@ async function main(): Promise<void> {
   const leadBefore = (await sa.board()).program.leadVersion;
   const pairA = { leadJobId: admets[0]!.id, backupJobId: admets[1]!.id };
   const pairB = { leadJobId: admets[1]!.id, backupJobId: docks[2]!.id };
+  // 3판(F32): 주력 · 백업은 3.2 끝에서 '유효 특허 + 동물실험 완료' 분자만(설계 §5.9 ⑤ · §7.4 ⑭) — 2.2 결과만으로는 지정할 수 없다.
+  // 같은 판 동시 지정 · 낡은 판 409 stale 은 e2e:preclinical ⑥ 이 특허 · 동물실험을 갖춘 모둠으로 본다.
   const leadRace = await Promise.all([
-    sa.call('PUT', API.lead, { ...pairA, expectedVersion: leadBefore }),
-    sb.call('PUT', API.lead, { ...pairB, expectedVersion: leadBefore }),
+    sa.call('PUT', API.lead, { ...pairA, reason: 'no_liver', expectedVersion: leadBefore }),
+    sb.call('PUT', API.lead, { ...pairB, reason: 'no_liver', expectedVersion: leadBefore }),
   ]);
   const afterLead = await sc.board();
-  const won = leadRace[0]!.status === 200 ? pairA : pairB;
-  check('④ 2.2 — 같은 expectedVersion 의 동시 지정 2건 → 1건 200 · 1건 409 stale · 주력 · 백업은 이긴 쪽 쌍 그대로', () => {
-    assert.deepEqual(leadRace.map((r) => r.status).sort(), [200, 409], statuses(leadRace));
-    assert.equal(err(leadRace.find((r) => r.status === 409)!)?.code, 'stale');
-    assert.equal(afterLead.program.leadVersion, leadBefore + 1);
-    assert.equal(afterLead.program.lead?.jobId, won.leadJobId);
-    assert.equal(afterLead.program.backup?.jobId, won.backupJobId);
-    assert.equal(afterLead.steps.find((s) => s.id === '2.2')?.state, 'done');
+  check('④ 2.2 — ADMET 결과만으로 주력 · 백업 지정은 409 step_locked(3판: 3.2 에서) · 버전 그대로 · 2.2 미완료 · 3.1 잠김', () => {
+    assert.deepEqual(leadRace.map((r) => r.status), [409, 409], statuses(leadRace));
+    assert.ok(leadRace.every((r) => err(r)?.code === 'step_locked'));
+    assert.equal(afterLead.program.leadVersion, leadBefore);
+    assert.equal(afterLead.program.lead, null);
+    // 3판(0006): 2.2 완료 = 특허 후보(lead_candidates) 1개 이상 — W3 의 주력 지정만으로는 완료가 아니다(설계 §6.1).
+    assert.notEqual(afterLead.steps.find((s) => s.id === '2.2')?.state, 'done');
+    assert.equal(afterLead.steps.find((s) => s.id === '3.1')?.state, 'locked');
   });
-  const oldVersion = await sd.call('PUT', API.lead, { ...pairB, expectedVersion: leadBefore });
   const noVersion = await sd.call('PUT', API.lead, { ...pairB });
-  const fresh = await sd.call('PUT', API.lead, { leadJobId: pairB.leadJobId, backupJobId: null, expectedVersion: afterLead.program.leadVersion });
-  const afterFresh = await sd.board();
-  check('④ 2.2 — 낡은 버전 409 stale · 버전 없음 400 · 새 버전이면 200(백업 비우기도 한 쌍으로)', () => {
-    assert.equal(oldVersion.status, 409);
-    assert.equal(err(oldVersion)?.code, 'stale');
+  check('④ 2.2 — 버전 없음 400', () => {
     assert.equal(noVersion.status, 400);
-    assert.equal(fresh.status, 200, JSON.stringify(fresh.body));
-    assert.equal(afterFresh.program.leadVersion, leadBefore + 2);
-    assert.equal(afterFresh.program.lead?.jobId, pairB.leadJobId);
-    assert.equal(afterFresh.program.backup, null);
   });
 
   // 5. 연구 노트
@@ -368,7 +377,7 @@ async function main(): Promise<void> {
   const evidence = (b: BoardResponse, step: string) => b.jobs.filter((j) => j.step === step && j.revisionId === b.program.revisionId);
   const dockNow = await sa.call('POST', API.jobs, { requestId: requestId(), step: '2.1', params: { smiles: docks[0]!.smiles } });
   const admetOld = await sa.call('POST', API.jobs, { requestId: requestId(), step: '2.2', params: { dockingJobId: docks[3]!.id } });
-  const claimOld = await sa.call('POST', API.claims, { screenJobId: screenJob!.id, compoundId: candidates[0]!.compoundId });
+  const claimOld = await sa.call('POST', API.claims, { screenJobId: screenJob!.id, compoundId: candidates[0]!.compoundId, reason: 'top' });
   const leadOld = await sa.call('PUT', API.lead, { leadJobId: pairA.leadJobId, expectedVersion: rev2.program.leadVersion });
   check('③ 표적 변경 — 새 버전 2 · 옛 도킹 4건은 남지만 새 버전 근거 0 · 찜 · 리드 비고 1.2 부터 · 1.1 노트만 이어짐', () => {
     assert.equal(change.status, 200);

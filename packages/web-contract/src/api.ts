@@ -3,6 +3,7 @@
  * 모든 오류 응답은 `ApiErrorBody` 다. 세션은 HttpOnly 쿠키(`SESSION_COOKIE`)라 화면 스크립트는 토큰을 모른다.
  */
 import type { NoteView } from './pipeline.ts';
+import type { DocSectionView } from './review.ts';
 import type { Assignment, Avatar } from './rules.ts';
 
 export const SESSION_COOKIE = 'crista_web_sid';
@@ -19,6 +20,7 @@ export type ErrorCode =
   | 'invalid_class_code'
   | 'class_closed'
   | 'class_full'
+  | 'already_in_class'
   | 'login_id_taken'
   | 'invalid_credentials'
   | 'login_locked'
@@ -41,11 +43,16 @@ export type ErrorCode =
   | 'too_many_jobs'
   | 'claimed'
   // 모둠 동시 조작(0003) — 화면이 읽은 버전이 낡았다(리드 · 노트 · 표적 바뀜).
-  | 'stale';
+  | 'stale'
+  // 3판 기반 — 상한(1인 · 모둠 · 하루 심사 · 특허 수)에 닿음 · 근거 칩이 데이터와 틀림(막음) · 이미 있음(같은 분자 특허 · 접수 중 IND) · LLM 을 쓸 수 없음.
+  | 'limit_reached'
+  | 'reason_blocked'
+  | 'already_exists'
+  | 'llm_unavailable';
 
 export interface ApiErrorBody {
-  /** `note` — 노트 칸 409 `stale` 때 지금 칸(상대 본문 · 버전). 칸이 아직 없으면 생략. */
-  error: { code: ErrorCode; message: string; retryAfterSec?: number; team?: TeamView; note?: NoteView };
+  /** `note` — 노트 칸 409 `stale` 때 지금 칸(상대 본문 · 버전). 칸이 아직 없으면 생략. `section` — 서류 칸(3판)도 같다. */
+  error: { code: ErrorCode; message: string; retryAfterSec?: number; team?: TeamView; note?: NoteView; section?: DocSectionView };
 }
 
 // ── 모양 ──
@@ -112,8 +119,8 @@ export interface TeacherClassDetail extends TeacherClassView {
   roster: RosterEntry[];
 }
 
-/** 로그인 뒤 어디로 가나(설계 §2): 사옥 지구 ② · 전광판 ③ · 교사 화면. */
-export type NextScreen = 'district' | 'board' | 'teacher';
+/** 로그인 뒤 어디로 가나(설계 §2): 학급 고르기(아직 학급이 없는 학생) · 사옥 지구 ② · 전광판 ③ · 교사 화면. */
+export type NextScreen = 'enroll' | 'district' | 'board' | 'teacher';
 
 export interface MeResponse {
   account: AccountView;
@@ -125,6 +132,20 @@ export interface MeResponse {
   team?: TeamView | null;
 }
 
+/** 학생이 가입 뒤 고르는 학급 — 교사가 '학생 받기'를 연 학급만. */
+export interface OpenClassView {
+  id: string;
+  name: string;
+  teacherName: string;
+  teamCount: number;
+  studentCount: number;
+  maxStudents: number;
+}
+
+export interface OpenClassesResponse {
+  classes: OpenClassView[];
+}
+
 export interface DistrictResponse {
   class: ClassSummary;
   teams: Array<TeamView & { isMine: boolean; canJoin: boolean }>;
@@ -134,7 +155,10 @@ export interface DistrictResponse {
 // ── 요청 ──
 
 export interface SignupRequest {
-  classCode: string;
+  /** 생략하면 학생. 'teacher' 는 당분간 거절(403) — 교사는 teacher:create 로만 만든다. */
+  kind?: Role;
+  /** 생략 가능 — 학생은 가입 뒤 학급을 고른다(`openClasses` · `enroll`). 보내면 그 학급에 바로 넣는다(점검 스크립트용). */
+  classCode?: string;
   loginId: string;
   displayName: string;
   password: string;
@@ -192,6 +216,8 @@ export const API = {
   classes: '/api/classes',
   classDetail: (classId: string) => `/api/classes/${classId}`,
   classCode: (classId: string) => `/api/classes/${classId}/code`,
+  openClasses: '/api/open-classes',
+  enroll: (classId: string) => `/api/classes/${classId}/enroll`,
   assignTeam: (classId: string, userId: string) => `/api/classes/${classId}/members/${userId}/team`,
   join: (teamId: string) => `/api/teams/${teamId}/join`,
   registration: (teamId: string) => `/api/teams/${teamId}/registration`,
