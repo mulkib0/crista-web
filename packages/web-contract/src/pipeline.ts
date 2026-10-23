@@ -86,14 +86,19 @@ export interface MemberView {
   avatar: Avatar | null;
 }
 
-/** 모둠 프로그램 — 확정 표적 · 주력 리드 · 백업. */
+/** 모둠 프로그램 — 확정 표적 · 주력 리드 · 백업. 표적을 바꾸면 새 표적 버전(`revisionNo`)이 열린다(설계 §7.3). */
 export interface ProgramView {
+  /** 지금 표적 버전 — 작업 · 찜 · 노트 · 리드가 이 버전에 묶인다. */
+  revisionId: string;
+  revisionNo: number;
   diseaseId: string | null;
   targetId: string | null;
   targetSetByName: string | null;
   lead: { jobId: string; smiles: string; label: string | null } | null;
   backup: { jobId: string; smiles: string; label: string | null } | null;
   leadSetByName: string | null;
+  /** 주력 · 백업을 바꿀 때 `LeadRequest.expectedVersion` 으로 돌려보낸다(오래된 화면이면 409 `stale`). */
+  leadVersion: number;
 }
 
 /** 1.1 '내 추천 표적' 카드. 한 사람이 질환마다 한 장. */
@@ -124,6 +129,8 @@ export interface WebJobView {
   byName: string;
   avatar: Avatar | null;
   targetId: string | null;
+  /** 이 작업이 속한 표적 버전 — 지금 버전(`ProgramView.revisionId`)과 같을 때만 근거로 센다. 0003 이전의 다른 표적 작업은 null. */
+  revisionId: string | null;
   label: string | null;
   /** 2.1 · 2.2 입력 분자의 정규 SMILES. */
   smiles: string | null;
@@ -137,9 +144,11 @@ export interface WebJobView {
   result?: ExperimentResult;
 }
 
-/** 1.2 히트 후보 찜(`claimedBy`) — 2.1 도킹 대기열. */
+/** 1.2 히트 후보 찜(`claimedBy`) — 2.1 도킹 대기열. 지금 표적 버전 것만 내려간다. */
 export interface ClaimView {
   compoundId: string;
+  /** 한 사람의 찜 칸 1 · 2(설계 §6.4 "1인 1~2개"). */
+  slot: 1 | 2;
   name: string;
   smiles: string;
   screenJobId: string;
@@ -159,6 +168,8 @@ export interface NoteView {
   byName: string | null;
   avatar: Avatar | null;
   updatedAt: string;
+  /** 칸 버전 — 고칠 때 `NoteRequest.expectedVersion` 으로 돌려보낸다(같은 칸 동시 수정이면 늦은 쪽 409 `stale`). */
+  version: number;
 }
 
 /** 다른 모둠 — 공개 정보만(이름 · 티커 · 잉크 · 부지). 후보 · 물성 · 노트는 싣지 않는다(설계 §5.3). */
@@ -232,10 +243,20 @@ export interface LeadRequest {
   /** 2.2 ADMET 작업(성공) — 그 분자가 주력 리드가 된다. */
   leadJobId: string;
   backupJobId?: string | null;
+  /** 화면이 읽은 `ProgramView.leadVersion`. 그 사이 누가 바꿨으면 409 `stale`. */
+  expectedVersion: number;
 }
 
 export interface NoteRequest {
   body: string;
+  /** 화면이 읽은 `NoteView.version`(칸이 비어 있었으면 0). 그 사이 누가 바꿨으면 409 `stale` + 지금 칸(`ApiErrorBody.error.note`). */
+  expectedVersion: number;
+}
+
+export interface NoteResponse {
+  ok: true;
+  /** 저장 뒤 칸 버전 — 다음 저장의 expectedVersion. */
+  version: number;
 }
 
 /** 무료 물성 미리보기 — 워커 RDKit 값 + crista `propertySignals`. */

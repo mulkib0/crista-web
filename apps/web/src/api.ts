@@ -2,7 +2,7 @@
  * 서버 호출 — 같은 출처(`/crista/api`)로 쿠키 세션을 싣는다. 상태를 바꾸는 요청은 늘 `content-type: application/json`
  * (서버가 그 형식만 받는다 — 다른 사이트 폼 차단). 오류는 `ApiFailure`(서버의 `ApiErrorBody` 그대로).
  */
-import type { ApiErrorBody, ErrorCode, TeamView } from '@crista-web/web-contract';
+import type { ApiErrorBody, ErrorCode, NoteView, TeamView } from '@crista-web/web-contract';
 
 export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -11,12 +11,15 @@ export class ApiFailure extends Error {
   readonly code: ErrorCode | 'network';
   readonly retryAfterSec: number | undefined;
   readonly team: TeamView | undefined;
+  /** 노트 칸 409 `stale` — 지금 칸(상대 본문 · 버전). */
+  readonly note: NoteView | undefined;
   constructor(status: number, body: ApiErrorBody['error'] | null, fallback = '서버에 닿지 않아요. 잠시 뒤 다시 해 주세요.') {
     super(body?.message ?? fallback);
     this.status = status;
     this.code = body?.code ?? 'network';
     this.retryAfterSec = body?.retryAfterSec;
     this.team = body?.team;
+    this.note = body?.note;
   }
 }
 

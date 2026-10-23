@@ -276,6 +276,8 @@ td .row { flex-wrap: nowrap; }
 .note-c { display: grid; gap: 4px; }
 .note-c .lab { margin: 0; display: flex; gap: 8px; align-items: center; }
 .note-c .lab em { font-style: normal; margin-left: auto; text-transform: none; letter-spacing: 0; }
+.note-stale { border: 1px dashed var(--bad); padding: 8px 10px; display: grid; gap: 6px; }
+.note-stale blockquote { margin: 0; padding-left: 8px; border-left: 3px solid var(--line-strong); white-space: pre-wrap; color: var(--muted); }
 .mini { font-size: 12px; }
 .next { border-top: 1px dashed var(--line-strong); padding-top: 14px; }
 .lock-box { border: 1px dashed var(--line-strong); padding: 16px; display: grid; gap: 6px; }
