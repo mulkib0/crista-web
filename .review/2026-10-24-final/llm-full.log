@@ -2,21 +2,29 @@
 > crista-web@0.1.0 e2e:full
 > node tools/with-local-env.mjs node apps/server/scripts/e2e-full.ts
 
-서버 http://127.0.0.1:3450 · 접미 b43a0 · 1상 시뮬레이션 실제 Claude
+서버 http://127.0.0.1:3450 · 접미 83441 · 1상 시뮬레이션 실제 Claude
 
-✓ 준비 — 교사 · 학급(모둠 2) · 학생 4 가입 · 입사 · 등기(상장 소식) (0.7s)
-✓ 모둠 A 1.1 → 2.2 — 표적 ACHE · 회의 6안건 합의 · 1.2 실행 · 찜 4 · 도킹 4(변형체 2) · 대기열 · ADMET 2 · 특허 후보 2 (28.9s)
-✓ 모둠 B 1.1 → 2.2 — 표적 DPP4 · 같은 흐름 (30.1s)
+✓ 준비 — 교사 · 학급(모둠 2) · 학생 4 가입 · 입사 · 등기(상장 소식) (0.6s)
+✓ 모둠 A 1.1 → 2.2 — 표적 ACHE · 회의 6안건 합의 · 1.2 실행 · 찜 4 · 도킹 4(변형체 2) · 대기열 · ADMET 2 · 특허 후보 2 (27.5s)
+✓ 모둠 B 1.1 → 2.2 — 표적 DPP4 · 같은 흐름 (28.2s)
 ✓ FLEARN Series A — 2.2 뒤 열림(3판 번호) · 정량 몫 입금 · 사옥 Tier 2 (0.0s)
-[reviews] 심사 6a9455ea-1db9-496e-bcd3-d82a626f1660 처리 중 오류: column "held_verdict" does not exist
-✗ 모둠 A 3.1 — 출원서 · 코드명 · 13칸 · 심사 pending → 교사 통과 → 등록 · 출원료 1회 · 3.1 완료
-    Error: 모둠 A 3.1 특허 심사(다른 서버) — 400000ms 안에 되지 않았어요.
-        at waitFor (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:122:35)
+✓ 모둠 A 3.1 — 출원서 · 코드명 · 13칸 · 심사 pending → 교사 통과 → 등록 · 출원료 1회 · 3.1 완료 (0.1s)
+✓ 모둠 B 3.1 — 같은 흐름(다른 표적 · 학급 중복 없음) (0.1s)
+✓ FMARKET — 특허 소식이 두 모둠 기업가치를 움직였어요(결과 소식 · 공개 칸에 SMILES 없음) (0.0s)
+✓ 모둠 A 3.2 — 윤리 이수 2 · 계획서 설정 · 5칸 · 심의 pending → 교사 통과 · 동물실험 · 30게임 일 → 결과 · 계산 칸 · 주력 지정 · 3.2 완료 (1.8s)
+✓ 모둠 A 3.3 — IND 신청서 · 조합(MRSD 이하 · S ≥ 35) · 12칸 · 규칙 fail 0 · 심사 pending → 교사 통과 · 접수(수수료 1회) · 30게임 일 → 승인 (3.0s)
+✓ 모둠 A 4.1 1상 — 모집(집중) · 최소 인원 · [임상 시작] 과금 1회 · 끝나는 날 판정 대기 → 교사 통과 · 전광판 소식 · 보류면 같은 프로토콜로 재도전 (9.9s)
+✓ 모둠 A 4.1 2상 — 모집(집중) · 최소 인원 · [임상 시작] 과금 1회 · 끝나는 날 판정 대기 → 교사 통과 · 전광판 소식 · 보류면 같은 프로토콜로 재도전 (14.7s)
+    · 3상 시뮬레이션 ready · 모델 claude-opus-5-5 · 호출 1
+    · 3상 보류(efficacy · 출처 llm) — 같은 프로토콜로 재도전 1
+✗ 모둠 A 4.1 3상 — 모집(집중) · 최소 인원 · [임상 시작] 과금 1회 · 끝나는 날 실제 Claude 시뮬레이션 공개 · 전광판 소식 · 보류면 같은 프로토콜로 재도전
+    Error: 나래 POST /api/clinical/trials/9d860eda-dc8a-47ef-bf76-2be6756e6f3f/start → 402:insufficient_funds 연구비가 모자라요.
+        at Agent.ok (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:163:41)
         at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-        at async reviewGate (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:245:73)
-        at async patent (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:438:3)
-        at async stage (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:106:5)
-        at async main (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:502:3)
+        at async runTrial (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:650:5)
+        at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:741:15
+        at async stage (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:110:5)
+        at async main (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:724:5)
 
-4개 통과 뒤 실패(접미 b43a0)
+11개 통과 뒤 실패(접미 83441)
 rc=1

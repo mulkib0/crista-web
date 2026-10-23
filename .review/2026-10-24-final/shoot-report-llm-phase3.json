@@ -1,0 +1,34 @@
+[
+ {
+  "width": 1440,
+  "name": "s41-result",
+  "doc": false,
+  "bad": [
+   "div.mq-track 15999",
+   "span.mq-seg 7689",
+   "button.led-i 2442",
+   "sup.led-ai 2442",
+   "button.led-i 2993",
+   "button.led-i 3987",
+   "sup.led-ai 3987",
+   "button.led-i 4543"
+  ],
+  "serverError": false
+ },
+ {
+  "width": 390,
+  "name": "s41-result",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank 457",
+   "span.tb-k 445",
+   "b.mono 445",
+   "div.kv cash 611",
+   "span. 611",
+   "b. 611",
+   "div.kv day 668",
+   "span. 668"
+  ],
+  "serverError": false
+ }
+]

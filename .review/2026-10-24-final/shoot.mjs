@@ -9,9 +9,12 @@ const require = createRequire('/opt/homebrew/lib/node_modules/');
 const { chromium } = require('playwright');
 const [studentId, studentPw, teacherId, teacherPw, base = 'http://127.0.0.1:5250'] = process.argv.slice(2);
 const out = dirname(fileURLToPath(import.meta.url));
+// ONLY=s41-result TAG=llm — 고른 학생 화면만, 파일 이름에 꼬리표(교사 아이디가 '-' 이면 교사 화면은 건너뜀).
+const ONLY = (process.env.ONLY ?? '').split(',').filter(Boolean);
+const TAG = process.env.TAG ? `-${process.env.TAG}` : '';
 
 /** 학생 화면 — 단계 · 탭(sessionStorage 키 → 값). */
-const studentShots = [
+const allStudentShots = [
   { name: 's12', step: '1.2', tabs: { 'step:1.2': 'brief' } },
   { name: 's12-meet', step: '1.2', tabs: { 'step:1.2': 'meet', 'step:1.2:meet': 'agenda' } },
   { name: 's21', step: '2.1', tabs: { 'step:2.1': 'gauge' } },
@@ -21,17 +24,21 @@ const studentShots = [
   { name: 's42-pack', step: '4.2', tabs: { 'step:4.2': 'pack' } },
   { name: 's42-result', step: '4.2', tabs: { 'step:4.2': 'result' } },
 ];
-const teacherShots = ['progress', 'reviews', 'clinical', 'market', 'llm'];
+const studentShots = allStudentShots.filter((x) => !ONLY.length || ONLY.includes(x.name));
+const teacherShots = teacherId === '-' ? [] : ['progress', 'reviews', 'clinical', 'market', 'llm'];
 
 const report = [];
 
 async function login(page, id, pw) {
   await page.goto(`${base}/crista/login`);
   for (let i = 0; i < 8; i++) {
-    const r = await page.evaluate(
-      async ([a, b]) => (await fetch('/crista/api/auth/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ loginId: a, password: b }) })).status,
-      [id, pw],
-    );
+    // 다른 세션이 화면 파일을 고치면 HMR 로 페이지가 다시 읽혀 fetch 가 끊겨요 — 다시 해요.
+    const r = await page
+      .evaluate(
+        async ([a, b]) => (await fetch('/crista/api/auth/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ loginId: a, password: b }) })).status,
+        [id, pw],
+      )
+      .catch(() => 0);
     if (r === 200) return;
     await page.waitForTimeout(5000);
   }
@@ -54,7 +61,7 @@ async function overflow(page) {
 async function shot(page, width, name) {
   await page.evaluate(() => document.querySelectorAll('details').forEach((d) => { d.open = true; }));
   await page.waitForTimeout(400);
-  await page.screenshot({ path: join(out, `${width}-${name}.png`), fullPage: true });
+  await page.screenshot({ path: join(out, `${width}-${name}${TAG}.png`), fullPage: true });
   const o = await overflow(page);
   report.push({ width, name, ...o });
   console.log(width, name, o.doc ? 'DOC-OVERFLOW' : 'ok', o.serverError ? 'SERVER-ERROR' : '', o.bad.join(' | '));
@@ -73,6 +80,7 @@ for (const width of [1440, 390]) {
     await shot(page, width, s.name);
   }
   // 전광판 · 최종 순위(마감된 학급 — 위 띠 순위 단추가 최종 순위 창을 열어요).
+  if (ONLY.length) { await ctx.close(); continue; }
   await page.goto(`${base}/crista/board`);
   await page.waitForTimeout(2500);
   await page.screenshot({ path: join(out, `${width}-board.png`), fullPage: false });
@@ -98,4 +106,4 @@ for (const width of [1440, 390]) {
   await tctx.close();
 }
 await browser.close();
-writeFileSync(join(out, 'shoot-report.json'), JSON.stringify(report, null, 1));
+writeFileSync(join(out, `shoot-report${TAG}.json`), JSON.stringify(report, null, 1));
