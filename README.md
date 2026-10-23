@@ -8,6 +8,7 @@
 - 설계: [`docs/2026-10-23-crista-web-design.md`](docs/2026-10-23-crista-web-design.md)
 - 화면 시안: [`design/pipeline-lab-30-variants.html`](design/pipeline-lab-30-variants.html) — 고른 시안은 **05 '4단계 로드맵'**([게시본 #v05](https://claude.ai/artifact/TPg2WfjBjjHSEDCuCD2Ekc)).
 - 전광판 시안 30종(05 바탕): [`design/pipeline-board-30-variants.html`](design/pipeline-board-30-variants.html)([게시본](https://claude.ai/artifact/GETqFjoHDn8sYqkoqaWA7a)) — **01 'LED 흐르는 띠'** 선택.
+- **1.2 화합물 스크리닝 미리보기(하나의 파이프라인)**: [`design/screening-pipeline.html`](design/screening-pipeline.html)([게시본](https://claude.ai/artifact/RvRQiUELeMJYWDyaFB8hA9)) — ① 미션 브리핑 → ② 모둠 기준 회의(6개 안건을 제안 · 근거 · 투표로 합의) → ③ 합의 기준으로 스크리닝 실행 → ④ 통과 분자 쇼핑(찜 = `claimedBy`) → ⑤ 연구 노트 · 2.1 로 넘기기. 앞선 시안: 학습 활동 30종 [`design/screening-learn-30.html`](design/screening-learn-30.html)(게시본 2판) · 그림 30종 [`design/screening-30-variants.html`](design/screening-30-variants.html)(게시본 1판).
 - 사옥 지구 그림: crista 06 픽셀 에셋 사본 [`assets/crista/`](assets/crista/SOURCE.md).
 - 계산: [crista](https://github.com/mulkib0/crista) 의 bio-worker(Open Targets · ChEMBL · AutoDock Vina · PLIP · ADMET-AI · RDKit)를 HTTP 로 쓴다.
 - 규칙: `packages/shared-types` · `packages/game-rules` — crista 사본([`packages/SOURCE.md`](packages/SOURCE.md)).

@@ -1,0 +1,718 @@
+<title>화합물 스크리닝 학습 30종</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="1.2 화합물 스크리닝 — 학생이 지표를 배우고, 기준을 직접 정하고, 후보를 직접 골라 근거를 남기는 학습 활동 시안 30종.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+  /* 레이아웃: 위 띠(미션 · 표적) → 왼쪽 '지표 사전 · 내 기준' · 가운데 활동 · 활동 아래 '내 후보 바구니' → 맨 아래 활동 30종 고르기 띠.
+     색은 Crista 브랜드(잉크 · 페이퍼 · 라임). 관문 색(크기·극성 파랑 · Ro5 주황 · 경고 보라 · QED 청록)은 지표 표시에만,
+     맞음/틀림은 good/bad 의미색. 모서리는 각지게. */
+  :root {
+    --bg: #f1f1e9; --surface: #f8f8f2; --raise: #e7e8de; --fg: #080b09; --muted: #5b6358; --faint: #9aa196;
+    --line: rgba(8, 11, 9, 0.13); --line-strong: rgba(8, 11, 9, 0.32);
+    --hi: #c6ff4a; --hi-fg: #080b09; --hit-ring: #080b09;
+    --good: #2f6f2a; --good-bg: rgba(47, 111, 42, 0.12); --bad: #b2361b; --bad-bg: rgba(178, 54, 27, 0.11); --warn: #8a5a00; --warn-bg: rgba(176, 120, 0, 0.14);
+    --f1: #c9ccc1; --f2: #2a78d6; --f3: #eb6834; --f4: #6250d6; --f5: #1baf7a; --f6: #a3a99c; --f7: #c6ff4a;
+    --sans: "IBM Plex Sans KR", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --dict-w: 300px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0b0f0c; --surface: #111712; --raise: #1a221b; --fg: #eef0e6; --muted: #9da59a; --faint: #5f675d;
+      --line: rgba(238, 240, 230, 0.12); --line-strong: rgba(238, 240, 230, 0.3); --hit-ring: #c6ff4a;
+      --good: #9fe07a; --good-bg: rgba(159, 224, 122, 0.12); --bad: #ff8a6b; --bad-bg: rgba(255, 138, 107, 0.13); --warn: #f2c66b; --warn-bg: rgba(242, 198, 107, 0.13);
+      --f1: #343b34; --f2: #3987e5; --f3: #d95926; --f4: #9085e9; --f5: #199e70; --f6: #6a7368; --f7: #c6ff4a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b0f0c; --surface: #111712; --raise: #1a221b; --fg: #eef0e6; --muted: #9da59a; --faint: #5f675d;
+    --line: rgba(238, 240, 230, 0.12); --line-strong: rgba(238, 240, 230, 0.3); --hit-ring: #c6ff4a;
+    --good: #9fe07a; --good-bg: rgba(159, 224, 122, 0.12); --bad: #ff8a6b; --bad-bg: rgba(255, 138, 107, 0.13); --warn: #f2c66b; --warn-bg: rgba(242, 198, 107, 0.13);
+    --f1: #343b34; --f2: #3987e5; --f3: #d95926; --f4: #9085e9; --f5: #199e70; --f6: #6a7368; --f7: #c6ff4a;
+    color-scheme: dark;
+  }
+  [data-f="1"] { --c: var(--f1); } [data-f="2"] { --c: var(--f2); } [data-f="3"] { --c: var(--f3); }
+  [data-f="4"] { --c: var(--f4); } [data-f="5"] { --c: var(--f5); } [data-f="6"] { --c: var(--f6); } [data-f="7"] { --c: var(--f7); }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--hi); color: var(--hi-fg); }
+  :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; opacity: 0.45; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .page { min-height: 100%; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; }
+  .gut { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+  /* ── 위 띠 ── */
+  .top { display: flex; align-items: center; gap: 10px 18px; flex-wrap: wrap; padding-block: 10px; border-bottom: 1px solid var(--line-strong); }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: -0.03em; font-size: 16px; }
+  .brand svg { width: 18px; height: 18px; }
+  .crumb { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-left: 14px; border-left: 1px solid var(--line); }
+  .crumb b { color: var(--fg); font-weight: 600; }
+  .top .sp { flex: 1; }
+  .tsel { display: flex; align-items: center; gap: 8px; }
+  .tsel label { font-size: 12px; color: var(--muted); }
+  select { border: 1px solid var(--line-strong); background: var(--surface); padding: 5px 8px; border-radius: 0; }
+  .sum { display: flex; align-items: baseline; gap: 14px; font-family: var(--mono); font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+  .sum span { display: inline-flex; align-items: baseline; gap: 6px; }
+  .sum b { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+  .sum .hit { background: var(--hi); color: var(--hi-fg); padding: 0 6px; }
+  .sum small { font-family: var(--sans); color: var(--muted); font-size: 12px; }
+
+  /* ── 미션 띠 ── */
+  .mission { display: flex; gap: 8px 16px; align-items: baseline; flex-wrap: wrap; padding-block: 10px; border-bottom: 1px solid var(--line); background: var(--surface); }
+  .mission .tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--fg); color: var(--bg); padding: 2px 7px; }
+  .mission h2 { margin: 0; font-size: 15px; letter-spacing: -0.02em; }
+  .mission p { margin: 0; color: var(--muted); font-size: 13px; max-width: 78ch; flex-basis: 100%; }
+  .mission .hints { display: flex; gap: 6px; flex-wrap: wrap; flex-basis: 100%; }
+  .mission .hints span { font-size: 12px; border: 1px dashed var(--line-strong); padding: 1px 7px; }
+
+  /* ── 작업 영역 ── */
+  .work { display: grid; grid-template-columns: var(--dict-w) minmax(0, 1fr); min-height: 0; }
+  .dict { border-right: 1px solid var(--line); padding: 14px 14px 24px max(16px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 8px; }
+  .dict-h { display: flex; align-items: center; gap: 10px; }
+  .dict-h h2 { margin: 0; font-size: 11px; font-family: var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 500; white-space: nowrap; }
+  .dict-tog { display: none; }
+  .dict-intro { margin: 0 0 4px; font-size: 12px; color: var(--muted); }
+  .ent { border: 1px solid var(--line); background: var(--surface); }
+  .ent.flash { animation: flash 1.2s ease-out; }
+  @keyframes flash { 0% { box-shadow: 0 0 0 3px var(--hi); } 100% { box-shadow: 0 0 0 0 transparent; } }
+  .ent > button { width: 100%; border: 0; background: transparent; text-align: left; padding: 8px 10px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 2px 8px; align-items: baseline; }
+  .ent .sym { font-family: var(--mono); font-weight: 600; font-size: 12.5px; display: inline-flex; align-items: center; gap: 6px; }
+  .ent .sym::before { content: ""; width: 8px; height: 8px; background: var(--c, var(--faint)); }
+  .ent .nm { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ent .rule { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+  .ent .one { grid-column: 1 / -1; font-size: 12px; color: var(--muted); line-height: 1.45; }
+  .ent .body { padding: 0 10px 10px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; line-height: 1.55; }
+  .ent .body p { margin: 0; }
+  .ent .body .an { border-left: 2px solid var(--hi); padding-left: 8px; }
+  .ent .body .gd { font-weight: 600; }
+  .ent .body .mh { background: var(--raise); padding: 4px 8px; font-size: 12px; }
+  .ent .hist { width: 100%; height: 46px; display: block; }
+  .ent .hist text { font-family: var(--mono); font-size: 9px; fill: var(--muted); }
+  .ctlrow { display: flex; flex-direction: column; gap: 4px; }
+  .ctlrow .lab { font-size: 12px; font-weight: 600; display: flex; justify-content: space-between; }
+  .ctlrow .lab .val { font-family: var(--mono); font-weight: 500; }
+  input[type="range"] { width: 100%; accent-color: var(--fg); }
+  .chk { display: flex; align-items: center; gap: 7px; font-size: 12.5px; }
+  .chk .n { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .chk input { accent-color: var(--fg); }
+  .seg { display: flex; border: 1px solid var(--line-strong); }
+  .seg button { flex: 1; border: 0; background: transparent; padding: 4px 4px; font-size: 12px; font-family: var(--mono); }
+  .seg button + button { border-left: 1px solid var(--line-strong); }
+  .seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+
+  .stage { min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 16px max(16px, env(safe-area-inset-right, 0px)) 22px 22px; }
+  .vhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .vhead .vn { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.08em; }
+  .vhead .grp { font-size: 11px; border: 1px solid var(--line-strong); padding: 0 6px; }
+  .vhead h1 { margin: 0; font-size: 24px; letter-spacing: -0.03em; line-height: 1.2; text-wrap: balance; flex-basis: 100%; }
+  .vhead p { margin: 0; color: var(--muted); max-width: 66ch; flex-basis: 100%; }
+  .vhead .goal { flex-basis: 100%; font-size: 12.5px; display: flex; gap: 8px; align-items: baseline; }
+  .vhead .goal b { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; background: var(--hi); color: var(--hi-fg); padding: 1px 6px; }
+
+  .act { position: relative; min-height: 420px; border: 1px solid var(--line); background: var(--surface); padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .act.bare { padding: 0; }
+  .act canvas { display: block; width: 100%; }
+  .act svg { max-width: 100%; }
+  .act svg text { fill: var(--fg); font-family: var(--sans); }
+  .act .t-mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .act .t-muted { fill: var(--muted); }
+  .pending { display: grid; place-items: center; min-height: 380px; color: var(--muted); }
+
+  /* ── 활동 공통 부품 — 시안들이 같이 쓴다 ── */
+  .btn { border: 1px solid var(--line-strong); background: var(--surface); padding: 6px 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+  .btn:hover:not(:disabled) { background: var(--raise); }
+  .btn.pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .btn.pri:hover:not(:disabled) { background: var(--fg); opacity: 0.88; }
+  .btn.hi { background: var(--hi); color: var(--hi-fg); border-color: var(--hi-fg); }
+  .btn.sm { padding: 3px 8px; font-size: 12px; }
+  .btn[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--min, 220px)), 1fr)); }
+  .q { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+  .sub { font-size: 13px; color: var(--muted); margin: 0; }
+  /* SmilesDrawer 가 구조식 SVG 에 넣는 전역 `.sub { font: 5pt Arial }` 를 이긴다 */
+  .page p.sub, .page span.sub, .page div.sub, .page label.sub { font: 13px/1.5 var(--sans); }
+  .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; border: 1px solid var(--line-strong); padding: 0 6px; white-space: nowrap; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .chip.ok { color: var(--good); background: var(--good-bg); border-color: transparent; }
+  .chip.no { color: var(--bad); background: var(--bad-bg); border-color: transparent; }
+  .chip.warn { color: var(--warn); background: var(--warn-bg); border-color: transparent; }
+  .ind { border: 0; border-bottom: 1px dashed currentColor; background: transparent; padding: 0; font: inherit; font-weight: 600; cursor: help; }
+  .ind:hover { background: var(--hi); color: var(--hi-fg); }
+  .fb { padding: 10px 12px; font-size: 13px; line-height: 1.55; border-left: 3px solid var(--line-strong); background: var(--raise); }
+  .fb.right { border-color: var(--good); background: var(--good-bg); }
+  .fb.wrong { border-color: var(--bad); background: var(--bad-bg); }
+  .fb b:first-child { margin-right: 6px; }
+  .prog { display: flex; gap: 3px; }
+  .prog i { flex: 1; height: 4px; background: var(--line); }
+  .prog i.on { background: var(--fg); }
+  .prog i.ok { background: var(--good); }
+  .prog i.no { background: var(--bad); }
+
+  /* 분자 카드 — ctx.mcard(c) */
+  .mc { border: 1px solid var(--line-strong); background: var(--bg); display: flex; flex-direction: column; min-width: 0; position: relative; }
+  .mc.picked { box-shadow: inset 0 0 0 2px var(--hit-ring); }
+  .mc .mh { display: flex; justify-content: space-between; gap: 6px; padding: 7px 9px 0; align-items: baseline; }
+  .mc .mh b { font-size: 13px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mc .mh .mono { font-size: 10.5px; color: var(--muted); white-space: nowrap; }
+  .mc .molbox { height: 104px; padding: 2px 8px; }
+  .mc dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--line); }
+  .mc dl div { padding: 4px 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }
+  .mc dl div:nth-child(3n) { border-right: 0; }
+  .mc dt { font-family: var(--mono); font-size: 9.5px; color: var(--muted); letter-spacing: 0.04em; }
+  .mc dd { margin: 0; font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .mc dd.no { color: var(--bad); font-weight: 600; }
+  .mc dd.no::after { content: " ✕"; font-size: 10px; }
+  .mc .mf { display: flex; gap: 6px; padding: 7px 9px; align-items: center; justify-content: space-between; }
+  .mc.hide-v dd { color: transparent; text-shadow: 0 0 6px var(--muted); }
+
+  /* ── 내 후보 바구니 ── */
+  .tray { border: 1px solid var(--line-strong); background: var(--surface); }
+  .tray-h { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  .tray-h h3 { margin: 0; font-size: 14px; }
+  .tray-h .cnt { font-family: var(--mono); font-size: 12px; }
+  .tray-h .sp { flex: 1; }
+  .tray-list { display: flex; gap: 8px; padding: 10px 12px; overflow-x: auto; min-height: 64px; align-items: stretch; }
+  .tray-empty { color: var(--muted); font-size: 12.5px; align-self: center; }
+  .tc { flex: none; width: 196px; border: 1px solid var(--line); background: var(--bg); padding: 7px 9px; display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+  .tc .tn { display: flex; justify-content: space-between; gap: 6px; }
+  .tc .tn b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tc .tn button { border: 0; background: transparent; padding: 0 2px; color: var(--muted); }
+  .tc .tw { display: flex; gap: 3px; flex-wrap: wrap; }
+  .tc .why { color: var(--muted); font-size: 11.5px; line-height: 1.4; }
+  .check { padding: 12px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+  .check ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
+
+  /* ── 툴팁 ── */
+  .tip { position: fixed; z-index: 30; pointer-events: none; width: 252px; background: var(--surface); border: 1px solid var(--line-strong); box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 8px 24px -8px rgba(0,0,0,0.25); padding: 10px 12px; font-size: 12px; }
+  .tip h4 { margin: 0; font-size: 13px; line-height: 1.3; }
+  .tip .id { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .tip .molbox { height: 92px; margin: 6px 0; }
+  .tip dl { display: grid; grid-template-columns: auto 1fr auto 1fr; gap: 1px 10px; margin: 0; font-family: var(--mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .tip dt { color: var(--muted); }
+  .tip dd { margin: 0; }
+  .tip dd.x { color: var(--bad); font-weight: 600; }
+  .fate { display: flex; gap: 6px; align-items: flex-start; margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.4; }
+  .fate i { width: 10px; height: 10px; background: var(--c); flex: none; margin-top: 3px; }
+
+  .molbox { display: grid; place-items: center; width: 100%; }
+  .molbox svg.mol { width: 100%; height: 100%; }
+  .fallback { font-family: var(--mono); font-size: 10px; color: var(--muted); word-break: break-all; }
+
+  /* ── 활동 고르기 띠 ── */
+  .pick { position: sticky; bottom: 0; z-index: 20; background: var(--bg); border-top: 1px solid var(--line-strong); padding-block: 8px calc(8px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 10px; align-items: center; }
+  .pick .row2 { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 2px; min-width: 0; align-items: center; }
+  .pick button { flex: none; border: 1px solid var(--line); background: var(--surface); padding: 4px 9px 5px; display: flex; gap: 6px; align-items: baseline; font-size: 12px; white-space: nowrap; }
+  .pick button .n { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .pick button:hover { border-color: var(--line-strong); }
+  .pick button[aria-pressed="true"] { background: var(--hi); color: var(--hi-fg); border-color: var(--hi-fg); }
+  .pick button[aria-pressed="true"] .n { color: inherit; }
+  .pick .g { flex: none; font-size: 10.5px; color: var(--muted); padding: 0 4px 0 10px; border-left: 1px solid var(--line); white-space: nowrap; }
+  .pick .g:first-child { border-left: 0; padding-left: 0; }
+  .pick .nav { display: flex; gap: 4px; }
+  .pick .nav button { padding: 4px 8px; }
+
+  @media (max-width: 900px) {
+    .work { grid-template-columns: minmax(0, 1fr); }
+    .dict { border-right: 0; border-bottom: 1px solid var(--line); padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); }
+    .dict-tog { display: inline-flex; margin-left: auto; border: 1px solid var(--line-strong); background: var(--surface); padding: 4px 10px; font-size: 12px; }
+    .dict:not(.open) > :not(.dict-h) { display: none; }
+    .stage { padding-left: max(16px, env(safe-area-inset-left, 0px)); }
+    .act { padding: 14px; min-height: 340px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+</style>
+
+<div class="page">
+  <header class="top gut">
+    <div class="brand"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1 19 10 10 19 1 10Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 6 14 10 10 14 6 10Z" fill="currentColor"/></svg>CRISTA</div>
+    <div class="crumb">1. 발견 · <b>1.2 화합물 스크리닝</b></div>
+    <div class="tsel"><label for="tid">미션 표적</label><select id="tid"></select></div>
+    <div class="sp"></div>
+    <div class="sum" id="sum" aria-live="polite"></div>
+  </header>
+  <section class="mission gut" id="mission" aria-label="미션"></section>
+
+  <div class="work">
+    <aside class="dict" id="dict" aria-label="지표 사전과 내 기준"></aside>
+    <main class="stage">
+      <div class="vhead" id="vhead"></div>
+      <div class="act" id="act"></div>
+      <section class="tray" id="tray" aria-label="내 후보 바구니"></section>
+    </main>
+  </div>
+
+  <nav class="pick gut" aria-label="활동 30종">
+    <div class="nav"><button type="button" id="vprev" aria-label="이전 활동">←</button><button type="button" id="vnext" aria-label="다음 활동">→</button></div>
+    <div class="row2" id="pick"></div>
+  </nav>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
+<script>
+/* 공통 뼈대 — 미션 · 지표 사전(내 기준 조절) · 운명 계산 · 내 후보 바구니와 점검 · 툴팁 · 활동 고르기.
+   활동은 SV.add({ id, line, goal, render(el, ctx) }) 로 등록한다. render 는 정리 함수를 돌려줄 수 있다.
+   활동의 진행 상태(퀴즈 답 등)는 render 바깥 변수에 두어 다시 그려도 남게 한다. */
+(() => {
+  "use strict";
+  const D = window.DD || { compounds: [], meta: { counts: {} } };
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const CMP = new Map(D.compounds.map((c) => [c.id, c]));
+
+  /* ── 미션 — 표적마다 '어떤 약이어야 하나' ── */
+  const MISSIONS = {
+    "egfr-1m17": { gene: "EGFR", disease: "비소세포폐암", ref: "CHEMBL553", title: "폐암 환자가 집에서 먹는 항암 알약",
+      story: "EGFR 변이 폐암 환자가 매일 먹을 알약을 찾습니다. 먹는 약이니 장에서 잘 흡수돼야 하고, 뇌로 전이된 환자도 있어 뇌까지 가면 더 좋아요.",
+      advice: { tpsaMax: 120, ro5Max: 1, noAlerts: true }, hints: ["먹는 약 → Ro5 1개까지", "장 흡수 → TPSA 120 아래", "뇌 전이까지 노리면 TPSA 90 아래"] },
+    "ache-4ey7": { gene: "ACHE", disease: "알츠하이머병", ref: "CHEMBL502", title: "뇌에 도착해야 하는 알츠하이머 약",
+      story: "약이 뇌혈관 장벽(BBB)을 넘어 뇌 속 아세틸콜린에스테라아제를 막아야 해요. 작고, 물과 덜 친하고, 기름을 적당히 좋아하는 분자가 유리합니다.",
+      advice: { tpsaMax: 90, mwMax: 450, ro5Max: 0, noAlerts: true }, hints: ["뇌 투과 → TPSA 90 아래", "작을수록 유리 → MW 450 아래", "노인 환자 → 구조 경고 빼기"] },
+    "dpp4-1x70": { gene: "DPP4", disease: "2형 당뇨병", ref: "CHEMBL1422", title: "수십 년 매일 먹는 당뇨약",
+      story: "2형 당뇨 환자는 오랫동안 매일 약을 먹어요. 작은 독성도 쌓일 수 있으니 구조 경고는 반드시 빼고, 먹는 약 규칙도 엄격하게 지켜야 합니다.",
+      advice: { ro5Max: 0, noAlerts: true, qedMin: 0.5 }, hints: ["평생 복용 → 구조 경고 빼기", "먹는 약 규칙 엄격 → Ro5 0개", "약다움 → QED 0.5 이상"] },
+    "cox2-3ln1": { gene: "PTGS2", disease: "류마티스 관절염", ref: "CHEMBL118", title: "위가 덜 아픈 관절염 진통제",
+      story: "류마티스 관절염 환자가 오래 먹을 소염진통제입니다. 예전 약은 위장 부작용이 문제였어요. 약다움이 높고 독성 부품이 없는 분자를 찾아요.",
+      advice: { qedMin: 0.6, noAlerts: true, ro5Max: 0 }, hints: ["오래 복용 → 구조 경고 빼기", "약다움 → QED 0.6 이상", "먹는 약 → Ro5 0개"] }
+  };
+  const LIBS = Object.keys(D.meta.counts || {});
+  const DEF = { tid: "egfr-1m17", lib: Object.fromEntries(LIBS.map((k) => [k, true])), mwMax: 500, tpsaMax: 140, ro5Max: 1, noAlerts: false, qedMin: 0.3, topN: 10 };
+  const PICK_MAX = 6;
+  const S = Object.assign(JSON.parse(JSON.stringify(DEF)), { v: "01", picks: [], why: {} });
+
+  /* ── 지표 사전 ── gate 는 관문 색 번호, ctl 은 내 기준 조절 */
+  const IND = [
+    { k: "mw", sym: "MW", name: "분자량", unit: "Da", gate: 2, val: (c) => c.mw, fmt: (v) => v.toFixed(0),
+      one: "분자의 무게예요.",
+      what: "분자를 이루는 원자들의 무게를 모두 더한 값입니다. 단위는 Da(달톤)이에요.",
+      an: "큰 짐가방일수록 좁은 문을 지나기 어렵듯, 무거운 분자는 장 벽을 지나 몸에 흡수되기 어려워요.",
+      good: "먹는 약은 대부분 500 Da 이하예요.", ok: (c, s) => c.mw <= s.mwMax, rule: (s) => `≤ ${s.mwMax}`,
+      ctl: { type: "range", key: "mwMax", min: 250, max: 650, step: 10, unit: "Da" } },
+    { k: "tpsa", sym: "TPSA", name: "극성 표면적", unit: "Å²", gate: 2, val: (c) => c.tpsa, fmt: (v) => v.toFixed(0),
+      one: "분자 겉면에서 물과 친한 부분의 넓이예요.",
+      what: "분자 표면 가운데 산소 · 질소와 거기 붙은 수소가 차지하는 넓이입니다. 단위는 Å²(옹스트롬 제곱).",
+      an: "세포막은 얇은 기름막이에요. 물과 친한 부분이 넓을수록 기름막을 뚫고 지나가기 어려워요.",
+      good: "140 이하면 장에서 흡수, 90 이하면 뇌까지 들어갈 수 있어요.", ok: (c, s) => c.tpsa <= s.tpsaMax, rule: (s) => `≤ ${s.tpsaMax}`,
+      ctl: { type: "range", key: "tpsaMax", min: 40, max: 180, step: 5, unit: "Å²" } },
+    { k: "logp", sym: "logP", name: "기름 친화도", unit: "", gate: 3, val: (c) => c.logp, fmt: (v) => v.toFixed(1),
+      one: "물보다 기름을 얼마나 좋아하는지예요.",
+      what: "분자를 기름(옥탄올)과 물에 넣었을 때 기름 쪽에 녹는 비율을 로그로 나타낸 값입니다. 1 커질 때마다 기름을 10배 더 좋아해요.",
+      an: "물만 좋아하면 기름막을 못 뚫고, 기름만 좋아하면 피(물)에 녹지 않아요. 중간이 좋아요.",
+      good: "0~5 사이가 적당해요. 5를 넘으면 Ro5 위반 한 개.", ok: (c) => c.logp <= 5, rule: () => "≤ 5 (Ro5)" },
+    { k: "hbd", sym: "HBD", name: "수소결합 주개", unit: "개", gate: 3, val: (c) => c.hbd, fmt: (v) => String(v),
+      one: "물과 손을 잡는 OH · NH 의 개수예요.",
+      what: "수소를 내밀어 물과 수소결합을 만들 수 있는 자리(OH, NH)의 개수입니다.",
+      an: "손이 많으면 물 분자들이 꼭 붙잡고 놓아주지 않아 막을 지나기 어려워요.",
+      good: "5개 이하. 넘으면 Ro5 위반 한 개.", ok: (c) => c.hbd <= 5, rule: () => "≤ 5 (Ro5)" },
+    { k: "hba", sym: "HBA", name: "수소결합 받개", unit: "개", gate: 3, val: (c) => c.hba, fmt: (v) => String(v),
+      one: "물의 손을 받아 주는 N · O 의 개수예요.",
+      what: "물의 수소를 받아 수소결합을 만들 수 있는 질소 · 산소 원자의 개수입니다.",
+      an: "주개와 마찬가지로 많을수록 물에 붙잡혀 막을 지나기 어려워요.",
+      good: "10개 이하. 넘으면 Ro5 위반 한 개.", ok: (c) => c.hba <= 10, rule: () => "≤ 10 (Ro5)" },
+    { k: "ro5", sym: "Ro5", name: "리핀스키 5규칙", unit: "개 위반", gate: 3, val: (c) => c.ro5, fmt: (v) => String(v),
+      one: "먹는 약 체크리스트 4개 중 몇 개를 어겼는지예요.",
+      what: "MW ≤ 500 · logP ≤ 5 · HBD ≤ 5 · HBA ≤ 10. 네 규칙이 모두 5의 배수라서 '5규칙'이라 불러요. 어긴 개수를 셉니다.",
+      an: "먹는 약 합격 체크리스트예요. 승인된 먹는 약 대부분이 위반 0~1개입니다.",
+      good: "0개면 안심, 1개까지는 봐줘요.", ok: (c, s) => c.ro5 <= s.ro5Max, rule: (s) => `위반 ≤ ${s.ro5Max}`,
+      ctl: { type: "seg", key: "ro5Max", opts: [0, 1, 2], lab: (v) => `${v}개까지` } },
+    { k: "alert", sym: "경고", name: "구조 경고", unit: "", gate: 4, val: (c) => c.al.length, fmt: (v) => (v ? `${v}개` : "없음"),
+      one: "몸속에서 독이 되기 쉬운 부품이 있는지예요.",
+      what: "방향족 아민(벤젠 고리에 붙은 NH₂)과 니트로기(NO₂)는 간에서 대사되면서 DNA를 망가뜨리는 물질로 바뀔 수 있어요.",
+      an: "잘 만든 자동차라도 불량 부품 하나면 리콜돼요. 처음부터 불량 부품이 없는 분자를 고르는 게 안전해요.",
+      good: "없는 게 좋아요. 오래 먹는 약일수록 꼭 빼요.", ok: (c, s) => !s.noAlerts || !c.al.length, rule: (s) => (s.noAlerts ? "빼기" : "허용"),
+      ctl: { type: "toggle", key: "noAlerts", lab: "방향족 아민 · 니트로 빼기" } },
+    { k: "qed", sym: "QED", name: "약다움", unit: "", gate: 5, val: (c) => c.qed, fmt: (v) => v.toFixed(2),
+      one: "실제 약들과 얼마나 닮았는지 0~1 점수예요.",
+      what: "분자량 · logP · 극성 · 수소결합 · 고리 수 · 경고 부품 등 8가지를 실제 약들의 분포와 비교해 하나로 합친 점수입니다.",
+      an: "'약 닮은꼴 점수'예요. 1에 가까울수록 진짜 약처럼 생겼어요.",
+      good: "0.5 이상이면 무난, 0.67 이상이면 매력적이에요.", ok: (c, s) => c.qed >= s.qedMin, rule: (s) => `≥ ${s.qedMin.toFixed(2)}`,
+      ctl: { type: "range", key: "qedMin", min: 0, max: 0.9, step: 0.05, unit: "", fix: 2 } },
+    { k: "score", sym: "점수", name: "표적 점수", unit: "", gate: 6, val: (c) => c.score, fmt: (v) => v.toFixed(3),
+      one: "표적 단백질에 얼마나 잘 붙을지 계산한 점수예요.",
+      what: "3D 결합 모양, 이미 알려진 약과의 2D 닮음, 약다움(QED)을 합친 스크리닝 점수(0~1)입니다. 미션 표적이 바뀌면 점수도 바뀌어요.",
+      an: "열쇠(분자)가 자물쇠(표적)에 얼마나 잘 맞는지예요. 그래도 몸속에서 자물쇠까지 못 가면 소용없어요.",
+      good: "높을수록 좋지만, 위의 물성 조건을 먼저 통과해야 의미가 있어요.", ok: () => true, rule: (s) => `상위 ${s.topN}`,
+      ctl: { type: "seg", key: "topN", opts: [5, 10, 20], lab: (v) => `상위 ${v}` } },
+    { k: "vina", sym: "Vina", name: "도킹 에너지", unit: "kcal/mol", gate: 0, val: (c) => c.vina ?? 0, fmt: (v) => v.toFixed(1),
+      one: "미리 계산한 결합 에너지예요. 더 음수일수록 단단히 붙어요.",
+      what: "AutoDock Vina 로 분자를 표적 주머니에 넣어 본 결합 에너지(kcal/mol)입니다. 2.1 분자 도킹에서 직접 계산하게 돼요.",
+      an: "자석이 붙을 때 나오는 에너지 같아요. 많이 나올수록(더 음수) 떼어내기 어려워요.",
+      good: "−9 이하면 강한 편이에요. 지금은 참고값.", ok: () => true, rule: () => "참고" }
+  ];
+  const INDM = Object.fromEntries(IND.map((d) => [d.k, d]));
+  const FATE = { 1: "라이브러리에서 빠짐", 2: "크기 · 극성(MW · TPSA)에서 걸림", 3: "리핀스키 5규칙에서 걸림", 4: "구조 경고로 걸림", 5: "약다움 QED에서 걸림", 6: "기준 통과 · 점수 순위 밖", 7: "기준 통과 · 점수 상위" };
+
+  /* ── 운명 계산 — 학생이 정한 기준으로 ── */
+  let X = [], XM = new Map(), REM = [], DROP = [];
+  function compute() {
+    const tid = S.tid;
+    X = D.compounds.map((c) => {
+      const p = { lib: !!S.lib[c.lib], mw: c.mw <= S.mwMax, tpsa: c.tpsa <= S.tpsaMax, ro5: c.ro5 <= S.ro5Max, alert: !S.noAlerts || !c.al.length, qed: c.qed >= S.qedMin };
+      const f = !p.lib ? 1 : !(p.mw && p.tpsa) ? 2 : !p.ro5 ? 3 : !p.alert ? 4 : !p.qed ? 5 : 0;
+      return Object.assign({}, c, { p, f, score: c.sc[tid] || 0, vina: c.vk ? c.vk[tid] : null, rank: null, srank: 0 });
+    });
+    const pass = X.filter((c) => c.f === 0).sort((a, b) => b.score - a.score);
+    pass.forEach((c, i) => { c.rank = i + 1; c.f = i < S.topN ? 7 : 6; });
+    [...X].sort((a, b) => b.score - a.score).forEach((c, i) => { c.srank = i + 1; });
+    XM = new Map(X.map((c) => [c.id, c]));
+    REM = [0, 1, 2, 3, 4, 5, 6].map((k) => X.filter((c) => c.f > k).length);
+    DROP = [0, 1, 2, 3, 4, 5, 6, 7].map((k) => X.filter((c) => c.f === k).length);
+  }
+  function reason(c) {
+    const g = MISSIONS[S.tid].gene;
+    switch (c.f) {
+      case 1: return `${c.lib} 상자를 고르지 않았어요`;
+      case 2: return [!c.p.mw && `MW ${c.mw.toFixed(0)} > ${S.mwMax}`, !c.p.tpsa && `TPSA ${c.tpsa.toFixed(0)} > ${S.tpsaMax}`].filter(Boolean).join(" · ");
+      case 3: return `Ro5 위반 ${c.ro5}개 > ${S.ro5Max}개`;
+      case 4: return `경고 부품: ${c.al.map(alName).join(" · ")}`;
+      case 5: return `QED ${c.qed.toFixed(2)} < ${S.qedMin.toFixed(2)}`;
+      case 6: return `${g} 점수 ${c.score.toFixed(3)} · 통과 중 ${c.rank}위`;
+      case 7: return `${g} 점수 ${c.score.toFixed(3)} · 통과 중 ${c.rank}위`;
+    }
+    return "";
+  }
+  const alName = (a) => (a === "aromatic_amine" ? "방향족 아민" : a === "nitro_aromatic" ? "니트로" : a);
+
+  /* 고른 분자 하나에 대한 점검 — 내 기준 · 미션 조언 · 점수 */
+  function issues(c) {
+    const m = MISSIONS[S.tid], a = m.advice, out = [];
+    if (c.f >= 1 && c.f <= 5) out.push({ lv: "no", t: `내 기준에서 걸림 — ${reason(c)}` });
+    if (c.al.length) out.push({ lv: "no", t: `구조 경고 부품(${c.al.map(alName).join(" · ")})` });
+    if (a.tpsaMax && c.tpsa > a.tpsaMax) out.push({ lv: "warn", t: `미션 조언보다 TPSA 큼(${c.tpsa.toFixed(0)} > ${a.tpsaMax})` });
+    if (a.mwMax && c.mw > a.mwMax) out.push({ lv: "warn", t: `미션 조언보다 MW 큼(${c.mw.toFixed(0)} > ${a.mwMax})` });
+    if (a.qedMin && c.qed < a.qedMin) out.push({ lv: "warn", t: `미션 조언보다 QED 낮음(${c.qed.toFixed(2)} < ${a.qedMin})` });
+    if (c.ro5 > (a.ro5Max ?? 1)) out.push({ lv: "warn", t: `Ro5 위반 ${c.ro5}개` });
+    if (c.srank > 60) out.push({ lv: "warn", t: `${m.gene} 점수 낮음(전체 ${c.srank}위)` });
+    return out;
+  }
+  /* 내 기준이 미션 조언과 맞는지 */
+  function adviceCheck() {
+    const a = MISSIONS[S.tid].advice, out = [];
+    if (a.tpsaMax != null) out.push({ ok: S.tpsaMax <= a.tpsaMax, t: `TPSA ≤ ${a.tpsaMax}`, mine: `내 기준 ≤ ${S.tpsaMax}` });
+    if (a.mwMax != null) out.push({ ok: S.mwMax <= a.mwMax, t: `MW ≤ ${a.mwMax}`, mine: `내 기준 ≤ ${S.mwMax}` });
+    if (a.ro5Max != null) out.push({ ok: S.ro5Max <= a.ro5Max, t: `Ro5 위반 ≤ ${a.ro5Max}`, mine: `내 기준 ≤ ${S.ro5Max}` });
+    if (a.noAlerts) out.push({ ok: S.noAlerts, t: "구조 경고 빼기", mine: S.noAlerts ? "빼는 중" : "허용 중" });
+    if (a.qedMin != null) out.push({ ok: S.qedMin >= a.qedMin, t: `QED ≥ ${a.qedMin}`, mine: `내 기준 ≥ ${S.qedMin.toFixed(2)}` });
+    return out;
+  }
+
+  /* ── 색(캔버스용 실제 값) ── */
+  let PAL = {};
+  function readPal() {
+    const cs = getComputedStyle(document.documentElement), g = (k) => cs.getPropertyValue(k).trim();
+    PAL = { bg: g("--bg"), surface: g("--surface"), raise: g("--raise"), fg: g("--fg"), muted: g("--muted"), faint: g("--faint"), line: g("--line"), lineStrong: g("--line-strong"),
+      hi: g("--hi"), hitRing: g("--hit-ring"), good: g("--good"), bad: g("--bad"), warn: g("--warn"), f: [null, 1, 2, 3, 4, 5, 6, 7].map((i) => i && g("--f" + i)) };
+    PAL.dark = isDark();
+  }
+  function isDark() { const t = document.documentElement.getAttribute("data-theme"); return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; }
+
+  /* ── 구조식(SmilesDrawer) ── */
+  const molCache = new Map();
+  function mol(smiles, w, h, cls = "") {
+    const key = smiles + "|" + w + "|" + h + "|" + isDark();
+    const box = `<div class="molbox ${cls}" style="aspect-ratio:${w} / ${h}">`;
+    if (molCache.has(key)) return `${box}${molCache.get(key)}</div>`;
+    return `${box}<svg class="mol" data-smiles="${esc(smiles)}" data-w="${w}" data-h="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="구조식"></svg></div>`;
+  }
+  function drawMols(root = document) {
+    const SD = window.SmilesDrawer;
+    for (const el of root.querySelectorAll("svg[data-smiles]")) {
+      const smi = el.getAttribute("data-smiles"), w = +el.dataset.w, h = +el.dataset.h, key = smi + "|" + w + "|" + h + "|" + isDark();
+      el.removeAttribute("data-smiles");
+      if (!SD) { el.outerHTML = `<span class="fallback">${esc(smi)}</span>`; continue; }
+      try {
+        const sd = new SD.SmiDrawer({ width: w, height: h, padding: 6, bondThickness: 1.1, compactDrawing: false, fontSizeLarge: 7, fontSizeSmall: 5 });
+        sd.draw(smi, el, isDark() ? "dark" : "light", () => {
+          el.removeAttribute("style"); el.removeAttribute("width"); el.removeAttribute("height"); el.setAttribute("class", "mol");
+          try { const b = el.getBBox(); if (b.width && b.height) el.setAttribute("viewBox", `${b.x - 6} ${b.y - 6} ${b.width + 12} ${b.height + 12}`); } catch (e) {}
+          el.setAttribute("preserveAspectRatio", "xMidYMid meet");
+          molCache.set(key, el.outerHTML);
+        }, () => { el.outerHTML = `<span class="fallback">${esc(smi)}</span>`; });
+      } catch (e) { el.outerHTML = `<span class="fallback">${esc(smi)}</span>`; }
+    }
+  }
+
+  /* ── 분자 카드 ── keys: 보여 줄 지표, hide: 값을 가림(맞히기 활동), pick: 바구니 버튼, foot: 카드 아래 HTML */
+  function mcard(c, o = {}) {
+    const keys = o.keys || ["mw", "tpsa", "logp", "ro5", "qed", "score"];
+    const picked = S.picks.includes(c.id);
+    const cell = (k) => { const d = INDM[k], bad = o.judge !== false && !d.ok(c, S); return `<div><dt>${d.sym}</dt><dd class="${bad ? "no" : ""}">${k === "alert" ? (c.al.length ? c.al.map(alName).join("·") : "없음") : d.fmt(d.val(c))}</dd></div>`; };
+    return `<article class="mc ${picked ? "picked" : ""} ${o.hide ? "hide-v" : ""}" data-cid="${c.id}">
+      <div class="mh"><b title="${esc(c.n)}">${esc(o.name === false ? "분자 " + (o.label || "?") : short(c.n, 22))}</b><span class="mono">${esc(o.tag || c.lib)}</span></div>
+      ${mol(c.s, 220, o.molH || 104)}
+      <dl>${keys.map(cell).join("")}</dl>
+      ${o.pick === false && !o.foot ? "" : `<div class="mf">${o.foot || ""}${o.pick === false ? "" : pickBtn(c)}</div>`}
+    </article>`;
+  }
+  const pickBtn = (c) => { const on = S.picks.includes(c.id), full = !on && S.picks.length >= PICK_MAX; return `<button type="button" class="btn sm ${on ? "hi" : ""}" data-pick="${c.id}" ${full ? "disabled" : ""} aria-pressed="${on}">${on ? "✓ 바구니에 있음" : full ? "바구니 가득" : "+ 후보로 담기"}</button>`; };
+  const short = (n, k = 16) => { const s = String(n).replace(/\s*\(.*\)\s*$/, ""); return s.length > k ? s.slice(0, k - 1) + "…" : s; };
+  /* 지표 이름 — 누르면 왼쪽 사전이 열린다 */
+  const ind = (k, label) => `<button type="button" class="ind" data-ind="${k}">${esc(label || INDM[k].sym)}</button>`;
+
+  /* ── 툴팁 ── */
+  const tip = $("tip");
+  let tipId = null;
+  function tipHTML(c) {
+    const x = (ok) => (ok ? "" : ' class="x"');
+    return `<h4>${esc(c.n)}</h4><div class="id">${esc(c.id)} · ${esc(c.lib)}</div>${mol(c.s, 220, 92)}
+      <dl><dt>MW</dt><dd${x(c.p.mw)}>${c.mw.toFixed(1)}</dd><dt>TPSA</dt><dd${x(c.p.tpsa)}>${c.tpsa.toFixed(1)}</dd>
+      <dt>logP</dt><dd>${c.logp.toFixed(2)}</dd><dt>Ro5</dt><dd${x(c.p.ro5)}>${c.ro5}개</dd>
+      <dt>경고</dt><dd${x(c.p.alert)}>${c.al.length ? c.al.length + "개" : "없음"}</dd><dt>QED</dt><dd${x(c.p.qed)}>${c.qed.toFixed(2)}</dd>
+      <dt>점수</dt><dd>${c.score.toFixed(3)}</dd><dt>전체</dt><dd>${c.srank}위</dd></dl>
+      <div class="fate" data-f="${c.f}"><i></i><span><b>${FATE[c.f]}</b><br><span class="muted">${esc(reason(c))}</span></span></div>`;
+  }
+  function showTip(e, c) {
+    if (!c) return hideTip();
+    if (tipId !== c.id || tip.dataset.k !== S.tid + S.mwMax + S.tpsaMax + S.ro5Max + S.noAlerts + S.qedMin + S.topN) {
+      tip.innerHTML = tipHTML(c); tipId = c.id; tip.dataset.k = S.tid + S.mwMax + S.tpsaMax + S.ro5Max + S.noAlerts + S.qedMin + S.topN; drawMols(tip);
+    }
+    tip.hidden = false;
+    const r = tip.getBoundingClientRect(), pad = 14;
+    let x = e.clientX + pad, y = e.clientY + pad;
+    if (x + r.width > innerWidth - 8) x = e.clientX - r.width - pad;
+    if (y + r.height > innerHeight - 8) y = Math.max(8, innerHeight - r.height - 8);
+    tip.style.left = Math.max(8, x) + "px"; tip.style.top = y + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+  /* 활동 안 [data-cid] 요소(카드 제외 — 카드는 이미 정보가 다 보임)에 툴팁 */
+  $("act").addEventListener("pointermove", (e) => {
+    const el = e.target.closest && e.target.closest("[data-cid]");
+    if (el && !el.classList.contains("mc") && !el.hasAttribute("data-notip")) showTip(e, XM.get(el.getAttribute("data-cid")));
+    else if (!ctx._canvasTip) hideTip();
+  });
+  $("act").addEventListener("pointerleave", hideTip);
+
+  /* ── 활동 목록 ── */
+  const GROUPS = { A: "지표 배우기", B: "기준 정하기", C: "후보 고르기", D: "점검 · 되돌아보기" };
+  const NAMES = [
+    ["01", "지표 카드 뒤집기", "A"], ["02", "실제 약과 나란히", "A"], ["03", "둘 중 더 약다운 쪽", "A"], ["04", "통과할까? 예측 퀴즈", "A"],
+    ["05", "줄 세우기", "A"], ["06", "범위 맞히기", "A"], ["07", "비유 짝 맞추기", "A"], ["08", "구조식 보고 맞히기", "A"],
+    ["09", "미션 브리핑 → 기준 정하기", "B"], ["10", "기준 코치", "B"], ["11", "딱 알맞은 깔때기", "B"], ["12", "전략 카드 고르기", "B"],
+    ["13", "A안 vs B안", "B"], ["14", "근거 서명 체크리스트", "B"],
+    ["15", "분자 쇼핑", "C"], ["16", "드래프트 픽", "C"], ["17", "스카우트 리포트", "C"], ["18", "비교표에서 고르기", "C"],
+    ["19", "지도에서 직접 고르기", "C"], ["20", "레이더 겹쳐 고르기", "C"], ["21", "토너먼트", "C"], ["22", "심사위원 점수표", "C"], ["23", "모둠 찜 보드", "C"],
+    ["24", "근거 일관성 점검", "D"], ["25", "나 vs 계산 순위", "D"], ["26", "왜 떨어졌을까 탐정", "D"], ["27", "실수 찾기", "D"],
+    ["28", "예측 → 실행 → 확인", "D"], ["29", "학습 퀘스트 지도", "D"], ["30", "근거 문장 만들기", "D"]
+  ];
+  const REG = new Map();
+  window.SV = { add: (v) => REG.set(v.id, v) };
+
+  /* ── 렌더 컨텍스트 ── */
+  const ctx = {
+    get S() { return S; }, get X() { return X; }, get XM() { return XM; }, get REM() { return REM; }, get DROP() { return DROP; }, get PAL() { return PAL; },
+    get M() { return MISSIONS[S.tid]; }, get gene() { return MISSIONS[S.tid].gene; },
+    MISSIONS, IND, INDM, FATE, LIBS, DEF, PICK_MAX, CMP, reduced, esc, mol, mcard, pickBtn, ind, short, reason, issues, adviceCheck, alName, isDark,
+    /* 원자료 + 현재 미션 점수로 다른 기준을 계산(A안/B안 · 기본값 비교 등) */
+    runFunnel: (cut) => {
+      const s = Object.assign({}, S, cut), tid = s.tid;
+      const pass = D.compounds.filter((c) => s.lib[c.lib] && c.mw <= s.mwMax && c.tpsa <= s.tpsaMax && c.ro5 <= s.ro5Max && (!s.noAlerts || !c.al.length) && c.qed >= s.qedMin)
+        .sort((a, b) => (b.sc[tid] || 0) - (a.sc[tid] || 0));
+      return { pass: pass.map((c) => c.id), top: pass.slice(0, s.topN).map((c) => c.id) };
+    },
+    /* 기준 바꾸기. keep 이 참이면 활동을 다시 그리지 않고 v.update(ctx) 를 부른다 */
+    set: (patch, keep) => { Object.assign(S, patch); refresh(keep); renderDict(); },
+    /* 바구니 */
+    pick: (id, on) => togglePick(id, on),
+    setWhy: (id, text) => { S.why[id] = text; renderTray(); },
+    openInd: (k) => openInd(k),
+    drawMols: () => drawMols($("act")),
+    tip: (e, c) => { ctx._canvasTip = !!c; showTip(e, c); },
+    hideTip: () => { ctx._canvasTip = false; hideTip(); },
+    rerender: () => renderAct(),
+    canvas: (el, h) => {
+      const w = el.clientWidth || 800, dpr = Math.min(2, devicePixelRatio || 1), cv = document.createElement("canvas");
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); cv.style.height = h + "px"; el.appendChild(cv);
+      const g = cv.getContext("2d"); g.scale(dpr, dpr); return { cv, g, w, h };
+    },
+    rng: (seed = 7) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646,
+    svg: (w, h, inner, attrs = "") => `<svg viewBox="0 0 ${w} ${h}" width="100%" ${attrs} role="img">${inner}</svg>`
+  };
+
+  /* ── 지표 사전 그리기 ── */
+  const openSet = new Set(["tpsa"]);
+  let dictOpen = false;
+  function hist(d) {
+    const vals = X.map((c) => d.val(c)), lo = Math.min(...vals), hi = Math.max(...vals), n = 24, W = 260, H = 46;
+    const bins = new Array(n).fill(0), bw = (hi - lo) / n || 1;
+    for (const v of vals) bins[Math.min(n - 1, Math.floor((v - lo) / bw))]++;
+    const mx = Math.max(...bins), sx = (v) => ((v - lo) / (hi - lo || 1)) * W;
+    let out = bins.map((b, i) => { const ok = d.ok({ mw: lo + (i + 0.5) * bw, tpsa: lo + (i + 0.5) * bw, ro5: lo + (i + 0.5) * bw, qed: lo + (i + 0.5) * bw, logp: lo + (i + 0.5) * bw, hbd: lo + (i + 0.5) * bw, hba: lo + (i + 0.5) * bw, al: { length: Math.round(lo + (i + 0.5) * bw) } }, S);
+      const h = (b / mx) * (H - 14); return `<rect x="${(i * W) / n + 0.5}" y="${H - 12 - h}" width="${W / n - 1}" height="${h}" fill="${ok ? "var(--fg)" : "var(--c, var(--faint))"}" opacity="${ok ? 0.75 : 0.9}"/>`; }).join("");
+    const ref = CMP.get(MISSIONS[S.tid].ref);
+    if (ref) { const rx = sx(d.val(XM.get(ref.id))); out += `<path d="M${rx} 0 V${H - 12}" stroke="var(--hi-fg)" stroke-width="1.5" stroke-dasharray="2 2"/><circle cx="${rx}" cy="3" r="3" fill="var(--f7)" stroke="var(--hit-ring)"/>`; }
+    out += `<text x="0" y="${H - 2}">${d.fmt(lo)}</text><text x="${W}" y="${H - 2}" text-anchor="end">${d.fmt(hi)}</text>`;
+    return `<svg class="hist" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${out}</svg>`;
+  }
+  function ctlHTML(d) {
+    const c = d.ctl; if (!c) return "";
+    if (c.type === "range") return `<div class="ctlrow"><label class="lab" for="c-${c.key}"><span>내 기준</span><span class="val">${d.k === "qed" ? "≥ " : "≤ "}${(+S[c.key]).toFixed(c.fix || 0)} ${c.unit}</span></label>
+      <input type="range" id="c-${c.key}" min="${c.min}" max="${c.max}" step="${c.step}" value="${S[c.key]}" data-num="${c.key}"></div>`;
+    if (c.type === "seg") return `<div class="ctlrow"><span class="lab"><span>내 기준</span></span><div class="seg">${c.opts.map((v) => `<button type="button" data-seg="${c.key}" data-v="${v}" aria-pressed="${S[c.key] === v}">${c.lab(v)}</button>`).join("")}</div></div>`;
+    if (c.type === "toggle") return `<div class="ctlrow"><span class="lab"><span>내 기준</span></span><label class="chk"><input type="checkbox" id="c-${c.key}" data-tog="${c.key}" ${S[c.key] ? "checked" : ""}> ${c.lab}</label></div>`;
+    return "";
+  }
+  function renderDict() {
+    const m = MISSIONS[S.tid], ref = XM.get(m.ref), el = $("dict");
+    el.classList.toggle("open", dictOpen);
+    el.innerHTML = `<div class="dict-h"><h2>지표 사전 · 내 기준</h2><button type="button" class="dict-tog" id="dicttog" aria-expanded="${dictOpen}">${dictOpen ? "접기 ▴" : "펼치기 ▾"}</button></div>
+      <p class="dict-intro">지표를 눌러 뜻을 읽고, 미션에 맞게 내 기준을 정하세요. 그래프의 라임 점선은 이 미션의 실제 약 ${ref ? esc(short(ref.n, 12)) : ""}이에요.</p>
+      <div class="ent" data-f="1"><button type="button" data-ent="lib" aria-expanded="${openSet.has("lib")}"><span class="sym">상자</span><span class="nm">라이브러리</span><span class="rule">${LIBS.filter((k) => S.lib[k]).length}/${LIBS.length}</span><span class="one">어느 상자에서 분자를 꺼낼지예요.</span></button>
+        ${openSet.has("lib") ? `<div class="body"><p>승인약은 이미 사람에게 쓰여 안전 정보가 많고, ZINC 는 작은 구매 가능 분자, 사내 후보는 새롭지만 정보가 적어요.</p>${LIBS.map((k, i) => `<label class="chk"><input type="checkbox" id="lib${i}" data-lib="${esc(k)}" ${S.lib[k] ? "checked" : ""}> ${esc(k)} <span class="n">${D.meta.counts[k]}</span></label>`).join("")}</div>` : ""}</div>
+      ${IND.map((d) => { const open = openSet.has(d.k); const mh = (m.hints.find((h) => h.includes(d.sym)) || "");
+        return `<div class="ent" data-f="${d.gate || ""}" id="ent-${d.k}"><button type="button" data-ent="${d.k}" aria-expanded="${open}"><span class="sym">${d.sym}</span><span class="nm">${d.name}</span><span class="rule">${esc(d.rule(S))}</span><span class="one">${d.one}</span></button>
+        ${open ? `<div class="body"><p>${d.what}</p><p class="an">${d.an}</p><p class="gd">${d.good}</p>${mh ? `<p class="mh">미션 힌트 · ${esc(mh)}</p>` : ""}
+          ${hist(d)}<p class="muted" style="font-size:11px;margin:0">220종 분포 · ${d.ctl ? "색칠된 막대는 내 기준에서 걸리는 쪽" : "참고 지표"}${ref ? ` · ${esc(short(ref.n, 10))} ${d.fmt(d.val(ref))}${d.unit && d.unit.length < 4 ? " " + d.unit : ""}` : ""}</p>${ctlHTML(d)}</div>` : ""}</div>`; }).join("")}
+      <button type="button" class="btn sm" id="reset" style="align-self:flex-start">처음 기준으로</button>`;
+  }
+  function openInd(k) {
+    openSet.add(k); dictOpen = true; renderDict();
+    const e = $("ent-" + k); if (!e) return;
+    e.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
+    e.classList.remove("flash"); void e.offsetWidth; e.classList.add("flash");
+  }
+
+  /* ── 바구니 ── */
+  let checkOpen = false;
+  function togglePick(id, on) {
+    const has = S.picks.includes(id), want = on == null ? !has : on;
+    if (want && !has && S.picks.length < PICK_MAX) S.picks.push(id);
+    if (!want && has) { S.picks = S.picks.filter((x) => x !== id); delete S.why[id]; }
+    renderTray(); renderSum();
+    const v = current(); if (v && v.update) v.update(ctx); else renderAct();
+  }
+  function renderTray() {
+    const list = S.picks.map((id) => XM.get(id)).filter(Boolean);
+    const auto = new Set(X.filter((c) => c.f === 7).map((c) => c.id));
+    $("tray").innerHTML = `<div class="tray-h"><h3>내 후보 바구니</h3><span class="cnt">${list.length} / ${PICK_MAX}</span><span class="muted" style="font-size:12px">고른 분자는 2.1 분자 도킹으로 넘어갑니다.</span><span class="sp"></span>
+        <button type="button" class="btn sm ${checkOpen ? "pri" : ""}" id="checkb" ${list.length ? "" : "disabled"}>${checkOpen ? "점검 닫기" : "내 선택 점검하기"}</button></div>
+      <div class="tray-list">${list.length ? list.map((c) => { const is = issues(c);
+        return `<div class="tc" data-cid="${c.id}"><div class="tn"><b title="${esc(c.n)}">${esc(short(c.n, 16))}</b><button type="button" data-pick="${c.id}" aria-label="빼기">✕</button></div>
+          <span class="mono muted">${ctx.gene} ${c.score.toFixed(3)} · QED ${c.qed.toFixed(2)} · TPSA ${c.tpsa.toFixed(0)}</span>
+          <div class="tw">${is.length ? is.slice(0, 2).map((i) => `<span class="chip ${i.lv}">${i.lv === "no" ? "✕" : "!"} ${esc(i.t.split(" — ")[0].split("(")[0])}</span>`).join("") : `<span class="chip ok">✓ 문제 없음</span>`}</div>
+          ${S.why[c.id] ? `<span class="why">근거: ${esc(S.why[c.id])}</span>` : `<span class="why">근거 아직 없음</span>`}</div>`; }).join("")
+        : `<span class="tray-empty">아직 고른 분자가 없어요. 활동에서 '+ 후보로 담기'를 눌러 최대 ${PICK_MAX}개까지 담으세요.</span>`}</div>
+      ${checkOpen && list.length ? (() => {
+        const bad = list.filter((c) => issues(c).some((i) => i.lv === "no")), noWhy = list.filter((c) => !S.why[c.id]), both = list.filter((c) => auto.has(c.id));
+        const adv = adviceCheck();
+        return `<div class="check"><b>점검 결과</b><ul>
+          <li>${bad.length ? `<span class="chip no">✕ ${bad.length}개</span> 내 기준이나 구조 경고에 걸리는 분자를 골랐어요: ${bad.map((c) => esc(short(c.n, 14))).join(", ")}. 기준을 바꾸거나 분자를 바꾸세요.` : `<span class="chip ok">✓</span> 고른 분자가 모두 내 기준을 통과해요.`}</li>
+          <li>${noWhy.length ? `<span class="chip warn">! ${noWhy.length}개</span> 근거가 없는 분자가 있어요. 활동 25·30 에서 근거를 남길 수 있어요.` : `<span class="chip ok">✓</span> 모든 분자에 근거가 있어요.`}</li>
+          <li><span class="chip">${both.length} / ${list.length}</span> 계산(내 기준 + ${ctx.gene} 점수 상위 ${S.topN})과 겹쳐요. 겹치지 않는 분자는 왜 골랐는지 설명할 수 있어야 해요.</li>
+          <li>미션 조언과 내 기준: ${adv.map((a) => `<span class="chip ${a.ok ? "ok" : "warn"}">${a.ok ? "✓" : "!"} ${esc(a.t)}</span>`).join(" ")}</li></ul></div>`; })() : ""}`;
+  }
+
+  /* ── 화면 그리기 ── */
+  let cleanup = null;
+  const current = () => REG.get(S.v);
+  const meta = (id) => NAMES.find((n) => n[0] === id) || [id, "?", "A"];
+  function renderSum() {
+    $("sum").innerHTML = `<span><b>${X.length}</b><small>→ 내 기준 통과</small><b>${REM[5]}</b></span><span><small>내 후보</small><b class="hit">${S.picks.length}</b><small>/ ${PICK_MAX}</small></span>`;
+  }
+  function renderMission() {
+    const m = MISSIONS[S.tid], ref = XM.get(m.ref);
+    $("mission").innerHTML = `<span class="tag">미션</span><h2>${esc(m.title)}</h2><span class="muted" style="font-size:12px">${m.gene} · ${m.disease} · 실제 약 ${ref ? esc(short(ref.n, 14)) : "—"}</span>
+      <p>${esc(m.story)}</p><div class="hints">${m.hints.map((h) => `<span>${esc(h)}</span>`).join("")}</div>`;
+  }
+  function renderHead() {
+    const [id, name, g] = meta(S.v), v = current();
+    $("vhead").innerHTML = `<span class="vn">활동 ${id} / 30</span><span class="grp">${GROUPS[g]}</span><h1>${esc(name)}</h1>${v && v.line ? `<p>${esc(v.line)}</p>` : ""}${v && v.goal ? `<div class="goal"><b>배울 것</b><span>${esc(v.goal)}</span></div>` : ""}`;
+  }
+  function renderPick() {
+    let last = null;
+    $("pick").innerHTML = NAMES.map(([id, name, g]) => { const head = g !== last ? `<span class="g">${GROUPS[g]}</span>` : ""; last = g;
+      return `${head}<button type="button" data-v="${id}" aria-pressed="${S.v === id}"><span class="n">${id}</span>${esc(name)}</button>`; }).join("");
+    const on = $("pick").querySelector('[aria-pressed="true"]'); if (on) on.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }
+  function renderAct() {
+    const el = $("act"), v = current();
+    if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+    const sy = scrollY;
+    el.className = "act"; el.removeAttribute("style"); el.innerHTML = ""; ctx._canvasTip = false; hideTip();
+    if (!v) { el.innerHTML = `<div class="pending">활동 ${esc(S.v)}을 불러오지 못했습니다.</div>`; return; }
+    try { cleanup = v.render(el, ctx) || null; } catch (e) { console.error(e); el.innerHTML = `<div class="pending">그리다 멈췄습니다: ${esc(e.message)}</div>`; }
+    drawMols(el);
+    if (Math.abs(scrollY - sy) > 2) scrollTo(0, sy);
+  }
+  function refresh(keep) {
+    compute(); readPal(); renderSum(); renderMission(); renderHead(); renderTray();
+    const v = current();
+    if (keep && v && v.update) v.update(ctx); else if (!keep) renderAct();
+  }
+
+  /* ── 이벤트 ── */
+  const dict = $("dict");
+  dict.addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.id === "dicttog") { dictOpen = !dictOpen; renderDict(); return; }
+    if (b.id === "reset") { const keep = { tid: S.tid, picks: S.picks, why: S.why, v: S.v }; Object.assign(S, JSON.parse(JSON.stringify(DEF)), keep); refresh(); renderDict(); return; }
+    if (b.dataset.ent) { const k = b.dataset.ent; openSet.has(k) ? openSet.delete(k) : openSet.add(k); renderDict(); return; }
+    if (b.dataset.seg) { S[b.dataset.seg] = +b.dataset.v; refresh(); renderDict(); }
+  });
+  dict.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.num) { S[t.dataset.num] = +t.value; const lab = t.closest(".ctlrow").querySelector(".val"); const d = IND.find((x) => x.ctl && x.ctl.key === t.dataset.num);
+      lab.textContent = `${d.k === "qed" ? "≥ " : "≤ "}${(+t.value).toFixed(d.ctl.fix || 0)} ${d.ctl.unit}`; refresh();
+      const r = t.closest(".ent").querySelector(".rule"); if (r) r.textContent = d.rule(S); }
+  });
+  dict.addEventListener("change", (e) => {
+    const t = e.target;
+    if (t.dataset.num) { renderDict(); const n = $("c-" + t.dataset.num); if (n) n.focus(); }
+    else if (t.dataset.lib != null) { S.lib[t.dataset.lib] = t.checked; refresh(); renderDict(); }
+    else if (t.dataset.tog) { S[t.dataset.tog] = t.checked; refresh(); renderDict(); }
+  });
+  document.addEventListener("click", (e) => {
+    const p = e.target.closest("[data-pick]"); if (p && !p.disabled) { togglePick(p.dataset.pick); return; }
+    const i = e.target.closest("[data-ind]"); if (i) { openInd(i.dataset.ind); return; }
+    if (e.target.closest("#checkb")) { checkOpen = !checkOpen; renderTray(); }
+  });
+  $("tray").addEventListener("pointermove", (e) => { const el = e.target.closest("[data-cid]"); if (el) showTip(e, XM.get(el.dataset.cid)); else hideTip(); });
+  $("tray").addEventListener("pointerleave", hideTip);
+  $("tid").innerHTML = Object.entries(MISSIONS).map(([k, m]) => `<option value="${k}">${m.gene} · ${m.disease}</option>`).join("");
+  $("tid").addEventListener("change", (e) => { S.tid = e.target.value; refresh(); renderDict(); });
+  function go(id) {
+    S.v = id;
+    try { history.replaceState(null, "", "#v" + id); } catch (e) {}
+    try { localStorage.setItem("crista-learn-v", id); } catch (e) {}
+    renderPick(); refresh();
+  }
+  $("pick").addEventListener("click", (e) => { const b = e.target.closest("[data-v]"); if (b) go(b.dataset.v); });
+  const idx = () => NAMES.findIndex((n) => n[0] === S.v);
+  $("vprev").addEventListener("click", () => go(NAMES[(idx() + NAMES.length - 1) % NAMES.length][0]));
+  $("vnext").addEventListener("click", () => go(NAMES[(idx() + 1) % NAMES.length][0]));
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest("input, select, textarea")) return;
+    if (e.key === "ArrowRight" && e.shiftKey) { $("vnext").click(); e.preventDefault(); }
+    else if (e.key === "ArrowLeft" && e.shiftKey) { $("vprev").click(); e.preventDefault(); }
+  });
+  let rz = 0, lastW = 0;
+  addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { const w = $("act").clientWidth; if (w !== lastW) { lastW = w; renderAct(); } }, 160); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { refresh(); renderDict(); });
+  new MutationObserver(() => { refresh(); renderDict(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  window.SV.boot = () => {
+    const h = (location.hash.match(/^#v(\d\d)$/) || [])[1];
+    let saved = null; try { saved = localStorage.getItem("crista-learn-v"); } catch (e) {}
+    S.v = NAMES.some((n) => n[0] === h) ? h : NAMES.some((n) => n[0] === saved) ? saved : "01";
+    compute(); renderPick(); renderDict(); lastW = $("act").clientWidth; refresh();
+  };
+})();
+</script>
+<script src="screening-learn-1.js"></script>
+<script src="screening-learn-2.js"></script>
+<script src="screening-learn-3.js"></script>
+<script>SV.boot();</script>
