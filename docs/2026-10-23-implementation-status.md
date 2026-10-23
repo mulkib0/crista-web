@@ -18,8 +18,15 @@
   Vercel rewrite 가 WebSocket 을 넘기지 않아 **Cloudflare Worker 게이트웨이**가 앞에 선다 — `/crista/api` · `/crista/ws` 는 Railway 서버, 나머지는 Vercel. 자세히는 `deploy/README.md`.
 - **공개 접두 `/crista`**: 서버가 접두를 떼고 본다(접두 없는 경로도 받는다). 세션 쿠키 `Path=/crista`(같은 호스트의 다른 서비스로 가지 않게). 화면 빌드는 `dist/crista/…`.
 - **게이트웨이 비밀**: 호스팅 서버는 `x-crista-gateway` 가 맞지 않는 `/api`(건강 확인 제외) · `/ws` 를 거절, 사용자 IP 는 `x-crista-client-ip`.
-- **로그인 IP 상한**: GoTrue 비밀번호 확인에 secret 키 + `Sb-Forwarded-For`(학생 IP)를 싣는다. 프로젝트 설정 'IP Address Forwarding' 이 꺼져 있으면 무시된다 —
-  켜는 것은 게임과 같은 프로젝트 설정이라 사용자 결정으로 남긴다(꺼진 채면 한 반이 몇 분 안에 몰아서 로그인할 때 GoTrue 429 가 날 수 있다).
+- **로그인은 서버 안에서 확인(0004)**: GoTrue 비밀번호 확인 끝점은 IP 당 상한이 있고(호스팅 실측 — 한 IP 동시 40건 중 30 성공 · 10 실패 `503 auth_unavailable`)
+  모든 로그인이 서버 IP 하나에서 나가서 한 반이 몰리면 막혔다(한 교실은 학교 공인 IP 하나라 'IP Address Forwarding' 을 켜도 같다).
+  그래서 `web.password_verifiers`(scrypt N=2^15 · r 8 · p 1, 상수 시간 비교)로 확인한다 — 가입 · 교사 발급 · 재설정(`passwords.ts changePassword`)이 GoTrue 와 함께 쓰고,
+  0004 전에 만든 계정은 다음 GoTrue 로그인이 성공할 때 채운다. 검증값이 있으면 GoTrue 를 부르지 않는다. Supabase Auth 설정은 바꾸지 않았다.
+  고친 뒤 호스팅 한 IP 동시 40건 × 3회 모두 200(서버 처리 p50 1.2초). 로컬 GoTrue 는 IP 상한이 꺼져 있어(`GOTRUE_RATE_LIMIT_HEADER` 없음 — 2000건에 429 0건)
+  재현은 Kong 앞에 같은 토큰 버킷(용량 30)을 건 프록시로 했다.
+  GoTrue 비밀번호를 대시보드에서 직접 바꾸면 그 계정의 검증값 줄을 지워야 한다(교사는 `teacher:create --reset-password` 를 쓴다).
+- **가입 몰림**: 정원 확인용 학급 줄 잠금에 같은 학급 가입이 한 줄로 선다. 잠근 뒤에는 '세면서 넣기' 한 문장과 커밋만 두고, DB 풀의 빈 연결 대기를 5 → 20초로 늘렸다
+  (호스팅 실측 — 고치기 전 동시 40건 중 18건이 풀 대기 5초 초과로 500, 고친 뒤 40/40 · 서버 처리 p50 8.7초).
 - **표(0002_pipeline)**: `programs`(확정 표적 · 주력 리드 · 백업) · `target_picks`(1.1 추천 카드) · `ledger`(정수 센트 · 멱등 키) · `jobs`(워커 작업 · 과금 · 환급 · 폴러 상태) ·
   `claims`(1.2 찜, 후보 하나에 한 명, 한 사람 3개까지) · `notes`(단계 × 칸). 설계 §7.3 의 `patents` · `steps` · `board_events` · `valuations` 는 W4 · W5.
 - **비용**: crista 사본 `paidWorkCostCents`(HTVS · 도킹 · ADMET 각 $0.050M), 초기 연구비 `INITIAL_RESEARCH_FUND_CENTS`($6.000M). 첫 유료 작업이 스타트업 이름을 잠근다.
@@ -32,15 +39,16 @@
 
 | 어디 | 무엇 |
 | --- | --- |
-| Supabase crista(호스팅) | 스키마 `web`(0000 · 0001 · 0002), 역할 `crista_web`(세션 풀러 `crista_web.<ref>`), 경계 점검 12/12 |
+| Supabase crista(호스팅) | 스키마 `web`(0000 · 0001 · 0002 · 0004), 역할 `crista_web`(세션 풀러 `crista_web.<ref>`), 경계 점검 12/12 |
 | Railway 프로젝트 crista | 서비스 `crista-web`(싱가포르 · 복제본 1) — https://crista-web-production.up.railway.app (게이트웨이 비밀 없는 API 는 403) |
 | Vercel 팀 moranzz | 프로젝트 `crista-web` — https://crista-web.vercel.app |
 | Cloudflare 존 mulk.codes | Worker `crista-web-gateway` · 경로 `mulk.codes/crista` · `mulk.codes/crista/*` |
 | 호스팅 계정 | 교사 `webteacher`(선생님) · 점검 학급 `W6 배포 점검`(코드 JGED5W) · 점검 학생 `w6stua` · `w6stub` · 모둠 「배포바이오」 BAEP |
+| 호스팅 계정(로그인 몰림 점검) | 교사 `lbteachaa32` · 학급 「로그인 몰림 점검 acef」(6B94NV, 학생 22 — 고치기 전 가입) · 「로그인 몰림 점검 acc5」(GVTS2N, 학생 40) — 아이디 `lb…` |
 
 ## 4. 남은 위험 · 결정
 
-1. **crista 의 Railway IaC** 가 `crista-web` 을 지우는 계획을 낸다(`deploy/README.md` 주의). crista 저장소 변경이 필요하다.
+1. **crista 의 Railway IaC** — crista PR #7(`deploy/railway-keep-crista-web`)이 `crista-web` 을 그 파일에 적어 plan 이 변경 0건이 됐다. **병합 전까지는** crista main 에서 apply 하면 지우는 계획이 그대로 나온다.
 2. 워커는 지금 표적 4종(crista `DOCKING_TARGETS`) — 12대 질환 확장(§6.1.1)은 crista 저장소 변경.
-3. 같은 Supabase 의 IP Address Forwarding(위).
-4. 호스팅 점검 학급 · 계정을 남길지 지울지.
+3. 로그인은 GoTrue 상한과 무관해졌다(위). 0004 전에 만든 계정만 첫 로그인 한 번 GoTrue 를 거친다.
+4. 호스팅 점검 학급 · 계정(W6 · 로그인 몰림 점검)을 남길지 지울지.

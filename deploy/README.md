@@ -56,10 +56,11 @@ npm run teacher:create:hosted -- --login <아이디> --name <이름>
 | 변수(비밀 — `railway variable set --stdin` 로만) | `SUPABASE_URL` · `SUPABASE_PUBLISHABLE_KEY` · `SUPABASE_SECRET_KEY` · `WEB_DATABASE_URL`(crista_web) · `WEB_GATEWAY_SECRET` |
 | 업로드 제외 | `.railwayignore`(`.env*` · `.review/` · `design/` · `docs/` · `assets/` · 화면 산출물) |
 
-**주의 — crista 의 IaC 와 겹침.** crista 저장소의 `.railway/railway.ts` 는 프로젝트 전체를 한 파일로 관리한다(이름 있는 partial 없음).
-그 파일에 없는 `crista-web` 은 crista 쪽에서 `railway config apply` 를 하면 **지우는 계획**이 나온다(2026-10-23 `railway config plan`: `1 to destroy — Delete service crista-web`,
-비대화형에서는 `--confirm-destructive` 가 있어야 실제로 지운다). 고치려면 crista 저장소 변경이 필요하다 — crista 의 `railway.ts` 에 `crista-web` 서비스를 함께 적거나(한 파일 = 권장),
-두 저장소가 각자 이름 있는 partial 을 쓰도록 바꾼다(이 저장소만 partial 을 쓰면 crista 의 파일이 'partial 이 필요하다'며 멈춘다).
+**crista 의 IaC 와 겹침.** crista 저장소의 `.railway/railway.ts` 는 프로젝트 전체를 한 파일로 관리한다(이름 있는 partial 없음) — 그 파일에 없는 서비스는 apply 때 지운다
+(2026-10-23 `railway config plan`: `1 to destroy — Delete service crista-web`). 그래서 **crista 의 `railway.ts` 에 `crista-web` 을 지금 설정 그대로 적었다**(crista PR #7,
+비밀 변수는 `preserve()`) — 적은 뒤 plan: `already up to date`(변경 0건). 위 표의 설정(빌드 · 상태 확인 · 지역 · 일반 변수)을 바꿀 때는 그 파일도 함께 고친다.
+코드는 crista 에 들어가지 않는다 — 배포는 계속 이 저장소의 `railway up --service crista-web --detach`.
+(이 저장소만 이름 있는 partial 을 쓰는 길은 crista 의 파일이 'partial 이 필요하다'며 멈춰서 쓰지 않았다.)
 
 ## Vercel 프로젝트 `crista-web`
 

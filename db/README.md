@@ -9,6 +9,9 @@ crista 와 같은 Supabase 프로젝트를 쓰되 **`web` 스키마만** 쓴다(
 | `migrations/0000_bootstrap.sql` | **관리자 연결로 한 번** — 역할 `crista_web`(login · 슈퍼유저 아님 · 연결 30) · 스키마 `web`(public 권한 회수) · `web.schema_migrations` · `web.accounts` |
 | `migrations/0001_core.sql` | `crista_web` 연결 — `classes` · `teams` · `members` · `sessions` (소유자 `crista_web`) |
 | `migrations/0002_pipeline.sql` | `crista_web` 연결 — 화면 ③ 1. 발견 · 2. 최적화: `programs` · `target_picks` · `ledger` · `jobs` · `claims` · `notes` |
+| `migrations/0004_password_verifiers.sql` | `crista_web` 연결 — 로그인 비밀번호 검증값 `password_verifiers`(scrypt). 로그인을 서버 안에서 확인해 GoTrue 의 IP 당 상한을 피한다(`apps/server/src/passwords.ts`) |
+
+번호는 비어도 된다 — 실행기는 이름순으로 아직 적용하지 않은 파일만 적용한다(0003 은 병렬 실험 작업이 쓰는 번호).
 
 ## 명령(로컬)
 
@@ -41,7 +44,7 @@ node tools/with-hosted-env.mjs node db/migrate.mjs --yes-hosted
 npm run db:check:hosted
 ```
 
-2026-10-23 적용 — 0000 · 0001 · 0002, 경계 점검 12/12(호스팅). 적용 전 읽기 전용 점검: PostgreSQL 17.11 · `postgres` 의 `auth.users` REFERENCES 있음(넘길 권한 없음 — 0000 설계와 같다) ·
+2026-10-23 적용 — 0000 · 0001 · 0002, 경계 점검 12/12(호스팅). 같은 날 0004(로그인 검증값) — 로컬 · 호스팅, 경계 점검 12/12. 적용 전 읽기 전용 점검: PostgreSQL 17.11 · `postgres` 의 `auth.users` REFERENCES 있음(넘길 권한 없음 — 0000 설계와 같다) ·
 `web` 스키마 · `crista_web` 역할 없음 · `public` 표 34개 · `auth.users` 트리거 0개. 세션 풀러 역할 이름은 `crista_web.<project-ref>`(실행기 · 서버는 `.` 앞만 본다).
 
 ## 모두 걷어내기

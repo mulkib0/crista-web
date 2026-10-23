@@ -1,7 +1,8 @@
 /**
  * Supabase Auth(GoTrue) REST — crista `auth/gotrue.ts` · `auth/account-admin.ts` 를 옮겼다(`@supabase/supabase-js` 없이 fetch).
  *
- * - 비밀번호 확인: `POST /auth/v1/token?grant_type=password`. 받은 GoTrue 토큰은 저장하지 않고 바로 로그아웃한다 —
+ * - 비밀번호 확인: `POST /auth/v1/token?grant_type=password` — **검증값(0004, passwords.ts)이 없는 옛 계정에만** 쓴다.
+ *   이 끝점은 IP 당 상한(호스팅 버킷 30)이 있어 한 반이 몰리면 막힌다. 받은 GoTrue 토큰은 저장하지 않고 바로 로그아웃한다 —
  *   이 서버는 자기 세션(web.sessions)을 쓴다. 모든 로그인이 이 서버 IP 하나에서 나가므로 secret 키 + `Sb-Forwarded-For`(학생 IP)를
  *   싣는다 — 프로젝트의 'IP Address Forwarding' 이 켜져 있으면 GoTrue 가 IP 당 상한을 학생 IP 로 센다(꺼져 있으면 무시된다.
  *   그 설정은 게임과 같은 프로젝트 설정이라 이 저장소가 바꾸지 않는다).
@@ -36,6 +37,7 @@ export interface AuthClient {
   verifyPassword(email: string, password: string, clientIp?: string): Promise<string>;
   /** 새로 만들거나, 같은 이메일의 사용자가 이미 있으면(지난 가입에서 DB 쓰기만 실패한 고아) 비밀번호를 맞춰 이어 붙인다. */
   createOrAttach(input: { email: string; password: string; metadata: Record<string, unknown> }): Promise<{ userId: string; created: boolean }>;
+  /** 직접 부르지 않는다 — 검증값과 함께 바꾸는 passwords.ts `changePassword` 로. */
   setPassword(userId: string, password: string): Promise<void>;
   deleteUser(userId: string): Promise<void>;
 }

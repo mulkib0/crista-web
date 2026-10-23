@@ -4,6 +4,7 @@ import { describe, test } from 'node:test';
 import { generateClassCode } from '../src/classes.ts';
 import { ConfigError, loadConfig } from '../src/config.ts';
 import { clientIp, isCrossSite, parseCookies, Router, serializeCookie } from '../src/http.ts';
+import { makeVerifier, matchesVerifier } from '../src/passwords.ts';
 import { LoginLockout, WindowLimiter } from '../src/rate-limit.ts';
 import { hashToken } from '../src/sessions.ts';
 import { resolveStaticPath } from '../src/static.ts';
@@ -101,6 +102,30 @@ describe('학급 코드 · 세션 토큰', () => {
   });
   test('토큰 해시는 32바이트', () => {
     assert.equal(hashToken('x').length, 32);
+  });
+});
+
+describe('비밀번호 검증값(0004)', () => {
+  test('맞는 비밀번호만 통과 · 소금이 달라 같은 비밀번호도 값이 다르다 · 0004 표의 형식 검사를 지난다', async () => {
+    const password = '학생비번 pass-1234';
+    const a = await makeVerifier(password);
+    const b = await makeVerifier(password);
+    assert.notEqual(a, b);
+    assert.match(a, /^scrypt\$[0-9]{2}\$[0-9]{1,2}\$[0-9]{1,2}\$[A-Za-z0-9+/=]+\$[A-Za-z0-9+/=]+$/);
+    assert.ok(a.length <= 200);
+    assert.equal(a.includes(password), false);
+    assert.equal(await matchesVerifier(password, a), true);
+    assert.equal(await matchesVerifier(password, b), true);
+    assert.equal(await matchesVerifier('학생비번 pass-1235', a), false);
+    assert.equal(await matchesVerifier('', a), false);
+  });
+  test('깨진 값 · 범위 밖 비용은 거절(예외 없이 false)', async () => {
+    const good = await makeVerifier('password1');
+    const [, logN, r, p, salt, key] = good.split('$');
+    assert.equal(await matchesVerifier('password1', 'bcrypt$10$abc'), false);
+    assert.equal(await matchesVerifier('password1', `scrypt$${logN}$${r}$${p}$${salt}$${key!.slice(4)}`), false);
+    assert.equal(await matchesVerifier('password1', `scrypt$30$${r}$${p}$${salt}$${key}`), false);
+    assert.equal(await matchesVerifier('password1', `scrypt$${logN}$${r}$9$${salt}$${key}`), false);
   });
 });
 
