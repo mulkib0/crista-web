@@ -7,8 +7,7 @@
  * - 단계 화면 카드에는 출처 배지를 두지 않아요 — 어디가 근사인지는 '점수 계산 방법' 페이지 한 곳에서만 말해요.
  *   서버 응답의 출처 칸(`provenance`)은 그대로 들어와요(화면에만 그리지 않아요).
  */
-import type { AntibodyDataMode, AntibodyStepId, NumberingSource, StepId, TrackId } from '@crista-web/web-contract';
-import { ANTIBODY_STEP_IDS, STEP_IDS } from '@crista-web/web-contract';
+import type { AntibodyDataMode, NumberingSource, TrackId } from '@crista-web/web-contract';
 
 export interface Term {
   /** 화면 안에서 쓰는 열쇠 — 코드에서만 써요. */
@@ -83,56 +82,23 @@ export const CHAIN_WORD = { H: '중쇄(H)', L: '경쇄(L)' } as const;
 // 설명 덩어리(랩 한 줄 설명 · '결과의 성격' 줄 · 단계 칩 성격 배지)는 두지 않아요 — 이름 · 단계 · 진행만 보여요.
 // 용어(§11.4.2): 모둠 · 스타트업 · 연구비 · 선생님 · 해요체 · 화면 문구에 백틱을 쓰지 않아요.
 
-export interface LabStepChip {
-  /** 단계 번호 — 트랙 1 은 1.1~4.2 · 항체는 A1~A6. */
-  id: string;
-  /** 칩에 넣는 짧은 이름(섬 두 개가 한 화면에 들어가야 해서 제목을 줄여요). */
-  short: string;
-}
-
 export interface LabCardCopy {
   track: TrackId;
   /** 큰 번호 자리. */
   no: string;
   title: string;
-  steps: readonly LabStepChip[];
 }
-
-/** 저분자 랩 단계 칩의 짧은 이름 — 긴 제목(`STEP_META.title`)은 그 랩 사이드바가 보여 줘요. */
-const SMALL_STEP_SHORT: Record<StepId, string> = {
-  '1.1': '표적',
-  '1.2': '스크리닝',
-  '2.1': '도킹',
-  '2.2': 'ADMET',
-  '3.1': '물질특허',
-  '3.2': '전임상',
-  '3.3': 'IND 신청',
-  '4.1': '임상',
-  '4.2': '최종 허가',
-};
-
-/** 항체 랩 단계 칩의 짧은 이름. */
-const ANTIBODY_STEP_SHORT: Record<AntibodyStepId, string> = {
-  A1: '표적 항체',
-  A2: '다양성',
-  A3: '변이 설계',
-  A4: '접힘',
-  A5: '복합체',
-  A6: '보고서',
-};
 
 export const LAB_CARDS: readonly LabCardCopy[] = [
   {
     track: 'drug',
     no: '01',
     title: '저분자 신약 랩',
-    steps: STEP_IDS.map((id) => ({ id, short: SMALL_STEP_SHORT[id] })),
   },
   {
     track: 'antibody',
     no: '02',
     title: '항체 설계 랩',
-    steps: ANTIBODY_STEP_IDS.map((id) => ({ id, short: ANTIBODY_STEP_SHORT[id] })),
   },
 ];
 
@@ -140,12 +106,11 @@ export const LAB_CARDS: readonly LabCardCopy[] = [
 export const LABS_COPY = {
   eyebrow: 'CRISTA 파이프라인 랩',
   title: '연구소 고르기',
-  stepsLabel: '단계',
   enter: '들어가기',
   closed: '이번 차시에는 선생님이 이 랩을 닫아 뒀어요.',
   notRegistered: '먼저 사옥 지구에서 회사를 등기해야 해요.',
   toDistrict: '사옥 지구로',
-  district: '사옥 지구',
+  district: '제약회사 스타트업을 먼저 설립해주세요',
   logout: '로그아웃',
   running: '진행 중',
   /** 진행 칩 — `MeResponse.labs` 가 없으면 아예 그리지 않아요(§1.3 · §1.4). */
