@@ -8,3 +8,4 @@ export { DocSectionEditor, type DocSectionEditorProps, type DocSectionStale, typ
 export { HBars, Histogram, type BarRow, type HistMark } from './charts.tsx';
 export { clearBench, useBenchState, useLocalTab } from './useLocalTab.ts';
 export { useLive, type Live } from './useLive.ts';
+export { BodyResizers } from './Resizers.tsx';

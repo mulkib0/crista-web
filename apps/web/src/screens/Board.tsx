@@ -27,7 +27,7 @@ import { GuideButton } from '../board/guide/GuideButton.tsx';
 import { By } from '../board/parts.tsx';
 import { registryFor, type StepRegistry } from '../board/registry.ts';
 import { initialBench, type Bench, type StepProps } from '../board/steps/index.ts';
-import { clearBench, STATE_MARK, STATE_WORD } from '../board/ui/index.ts';
+import { BodyResizers, clearBench, STATE_MARK, STATE_WORD } from '../board/ui/index.ts';
 import { balanceText, clockOf, useGameDay } from '../board/view.ts';
 import { ink } from '../ink.ts';
 import { socket } from '../ws.ts';
@@ -235,6 +235,8 @@ export function Board({ nav, registry }: { nav: Nav; registry?: StepRegistry }) 
             <span>계산 워커 {board.workerMode === 'compute' ? '실제 계산(compute)' : board.workerMode === 'fixture' ? '테스트 고정 결과(fixture)' : '확인 중'}</span>
           </div>
         </nav>
+        {/* 사이드바 | 섬, 나의 작업대 | 모둠 공유 사이 너비 손잡이 — 섬 사이 틈에 겹친다. */}
+        <BodyResizers />
 
         {/* 대화방 행적의 '그 단계 보기' 가 단계를 옮기게. */}
         <StepNav.Provider value={goStep}>

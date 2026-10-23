@@ -348,12 +348,22 @@ td .row { flex-wrap: nowrap; }
   /* position: relative — 본문 안의 .sr(화면 낭독기 글 · absolute)이 문서 기준으로 놓여 문서 전체가 세로로 늘어나지 않게(3판 통합). */
   position: relative; overflow: auto; min-height: 0; min-width: 0; background: var(--raise);
   display: grid; align-content: start; gap: 12px;
-  grid-template-columns: var(--side-w) minmax(0, 1fr) minmax(0, 1.15fr);
+  grid-template-columns: var(--side-w) minmax(0, var(--mine-f, 1fr)) minmax(0, var(--team-f, 1.15fr));
   grid-template-areas: "side head head" "side mine team";
   padding-block: 16px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-.bd-body:has(> .isl-mine[data-ratio="even"]) { grid-template-columns: var(--side-w) minmax(0, 1fr) minmax(0, 1fr); }
-.bd-body:has(> .isl-mine[data-ratio="mine"]) { grid-template-columns: var(--side-w) minmax(0, 1.3fr) minmax(0, 1fr); }
+/* 단계별 기본 비율 — 손잡이로 끌어 바꾼 값(본문 인라인 --mine-f · --team-f)이 있으면 그쪽이 이긴다. */
+.bd-body:has(> .isl-mine[data-ratio="even"]) { --mine-f: 1fr; --team-f: 1fr; }
+.bd-body:has(> .isl-mine[data-ratio="mine"]) { --mine-f: 1.3fr; --team-f: 1fr; }
+/* 섬 너비 손잡이(board/ui/Resizers.tsx) — 섬 사이 틈(12px)에 겹쳐 놓는다. 끌면 너비, 두 번 누르면 처음대로. */
+.bd-rz { position: relative; z-index: 3; width: 12px; cursor: col-resize; touch-action: none; outline: none; }
+.bd-rz-side { grid-row: 1 / -1; grid-column: 1; justify-self: end; margin-right: -12px; }
+.bd-rz-mine { grid-row: 2; grid-column: 3; justify-self: start; margin-left: -12px; }
+.bd-rz::after { content: ""; position: absolute; top: 12px; bottom: 12px; left: 4px; width: 4px; border-radius: 999px; background: transparent; transition: background-color .15s ease; }
+.bd-rz:hover::after, .bd-rz:focus-visible::after { background: var(--line-strong); }
+.bd-body[data-rz="side"] > .bd-rz-side::after, .bd-body[data-rz="mine"] > .bd-rz-mine::after { background: var(--fg); }
+.bd-body[data-rz] { cursor: col-resize; user-select: none; }
+.bd-body:not(:has(> .isl-mine)) > .bd-rz-mine { display: none; }
 .isl { background: var(--surface); border-radius: 26px; padding: 22px; min-width: 0; }
 .isl-head { grid-area: head; display: grid; gap: 18px; }
 .isl-mine { grid-area: mine; }
@@ -541,6 +551,7 @@ td .row { flex-wrap: nowrap; }
   .top-r > * { flex: none; }
   .bd-body, .bd-body:has(> .isl-mine[data-ratio]) { grid-template-columns: minmax(0, 1fr); grid-template-areas: "side" "head" "mine" "team"; padding-top: 12px; }
   .isl-mine.span, .isl-team.span { grid-area: auto; grid-row: auto; grid-column: auto; }
+  .bd-rz { display: none; }
   .isl { border-radius: 20px; padding: 16px; }
   .isl.side { position: static; max-height: none; overflow: visible; padding: 12px 8px; gap: 8px; }
   .side-name { padding: 10px; }
