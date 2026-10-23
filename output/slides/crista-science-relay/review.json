@@ -1,0 +1,45 @@
+{
+  "reviewer": "Gemini 4 Argon (High)",
+  "verdict": "PASS",
+  "inspected_images": [
+    "crista-science/00-overview.png",
+    "crista-science-relay/previews/slide-01.png",
+    "crista-science/01-target.png",
+    "crista-science-relay/previews/slide-02.png",
+    "crista-science/02-compounds.png",
+    "crista-science-relay/previews/slide-03.png",
+    "crista-science/03-docking.png",
+    "crista-science-relay/previews/slide-04.png",
+    "crista-science/04-admet-review.png",
+    "crista-science-relay/previews/slide-05.png"
+  ],
+  "pass_a": {
+    "verdict": "PASS",
+    "summary": "원본 PNG 5장과 신규 렌더 5장이 1:1로 정확히 대응하며, 무지개빛 유리 일러스트·아이보리(#f1f1e9) 바탕·상단 CRISTA 워드마크·구분선·하단 비유 카드 아이콘이 온전히 보존되었다. 원본 이미지에 박혀 있던 오탈자 텍스트는 잔상이나 겹침 없이 깨끗이 제거되었고, copy.json의 105개 확정 문구 조각이 제목·본문·강조문구·비유·각주에 누락이나 변형 없이 Relay체 HTML로 정확히 반영되었다."
+  },
+  "pass_b": {
+    "verdict": "PASS",
+    "summary": "1920×1080(16:9) 프레임에서 Relay체(Regular 400 / SemiBold 600)가 전 슬라이드에 선명하게 적용되었고 텍스트 잘림·박스 넘침·본문 간 겹침이 없다. 4번(도킹) 슬라이드의 강조문구 4개 모두 단어 간 띄어쓰기가 정상 유지되고 세로·가로 구분선과 간섭하지 않으며, 1·3·4·5번 하단 비유 문구도 원본과 동일한 2줄 호흡으로 자연스럽게 줄바꿈되었다."
+  },
+  "findings": [
+    {
+      "slide": 2,
+      "severity": "Minor",
+      "issue": "우측 3D 좌표계 일러스트의 y축 라벨(.axis-y)이 top: 585px에 배치되어 y축 화살촉 상단과 미세하게 닿아 보임(원본 01-target.png에서는 화살촉 위쪽 여백에 위치).",
+      "fix": "slides.css에서 .axis-y의 top 값을 585px에서 548px~552px로 올려 화살촉과 간격을 확보할 것을 권장함."
+    },
+    {
+      "slide": 4,
+      "severity": "Note",
+      "issue": "1행 강조문구 'Monte Carlo + 국소 최적화'가 우측 칼럼 폭(299px) 내에서 'Monte Carlo +' / '국소 최적화' 2줄로 줄바꿈됨(원본은 1줄). 단, 띄어쓰기와 세로 구분선 간격, 우측 포켓 일러스트와의 여백은 모두 정상임.",
+      "fix": "1줄 유지를 원할 경우에만 .docking-rows의 width를 971px에서 1015px로 넓히거나 1행 .panel-highlight 글자 크기를 25px로 조정(현재 2줄 상태도 가독성 및 여백상 문제없음)."
+    },
+    {
+      "slide": 3,
+      "severity": "Note",
+      "issue": "원본 02-compounds.png 및 04-admet-review.png의 패널 제목 앞 원문자(①~④)가 신규 렌더(3·5번)에는 없으나, 이는 확정 원문인 copy.json을 그대로 따른 결과로 정상임.",
+      "fix": "수정 불필요(copy.json 원문 100% 일치 유지)."
+    }
+  ],
+  "summary": "원본 PNG 5장의 유리 조형 일러스트와 레이아웃 밀도를 그대로 보존하면서 copy.json의 105개 확정 문구를 Relay체 HTML로 결함 없이 변환 및 렌더링하여 검수를 통과(PASS)한다."
+}

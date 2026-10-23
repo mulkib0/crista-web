@@ -1,0 +1,47 @@
+Use case: scientific-educational / productivity-visual.
+Create a finished premium Korean educational presentation slide image in 16:9 landscape, preferably 3840x2160. This is a flat full-bleed slide, not a photograph of a slide, not a screen or device mockup.
+
+STYLE REFERENCE: /Users/mulkib/Desktop/repo/crista-web/.review/landing/new-1440.png is the actual CRISTA landing page. Reference its warm paper ivory #f1f1e9, near-black #080b09, huge bold clean typography, calm generous whitespace, optically clear protein ribbon sculpture with narrow thin-film rainbow edges and faint soft shadows. Use a restrained scientific editorial layout, contemporary Korean sans-serif with precise legible Hangul. No neon gradient backgrounds, no dark science-fiction aesthetic, no cartoon clipart, no UI dashboard controls, no website buttons, no decorative text. Small CRISTA wordmark with 3 nested open-C curves may appear as a brand mark. Keep rainbow color confined to glass optical edges and small accents.
+
+All visible copy is provided by Gemini 4 Argon (High) in the COPY JSON supplied below. Use its visible-copy fields VERBATIM, preserving all characters, numerals, Latin tool names, units, symbols and punctuation. Do not invent, rephrase, paraphrase, translate, add, or omit text. Do not render the JSON field names, ids, author_model or illustration_brief. illustration_brief is an illustration direction only. Do not print the author model on the slide. Avoid hyphenating Korean or breaking a Korean word across lines.
+
+LAYOUT: editorial header with small eyebrow, large decisive title and smaller subtitle. Organize panels in the provided order; each panel includes title, tool, body and highlight once. For overview: four generous columns under the header, linked subtly left to right, each with a different iridescent scientific object above its copy. For detail slides: one large, conceptually accurate scientific glass illustration on the right 40%; left 55% holds 3-4 clearly separated editorial rows with title and tool, readable body, and a distinct numerical highlight. Use thin rules and generous vertical spacing, no heavy card shadows. Integrate a wide quiet analogy callout near the bottom, then a smaller but readable footnote along the lower edge. All copy belongs on a calm plain ivory surface, never on top of complex glass objects. Do not reuse an object's decorative design where it could imply empirical scientific data. Illustrations are conceptual rather than actual measured structures. Keep a comfortable safe margin of at least 5% on all edges.
+
+QUALITY: flawless Korean text, coherent hierarchy, no clipped or overlapped text, no tiny densely packed paragraphs, no invented numeric chart results, no watermark. Strong contrast. Designed for projection in a classroom.
+
+COPY JSON (all text by Gemini 4 Argon High):
+{
+  "id": "00-overview",
+  "eyebrow": "CRISTA · PIPELINE OVERVIEW",
+  "title": "데이터와 AI로 탐구하는 신약 개발 4단계",
+  "subtitle": "질병 표적 선정부터 물성 계산, 3D 도킹, 독성·규제 심사까지 네 단계로 이어집니다.",
+  "panels": [
+    {
+      "title": "① 질환·표적 데이터",
+      "tool": "MONDO · Open Targets v4 · PDB",
+      "body": "표준 질병 코드와 유전자 연관성 점수로 질환 표적을 살피고, 옹스트롬 단위로 실측된 12종 단백질 3D 실험 구조를 불러옵니다.",
+      "highlight": "3D 구조 12종 · 0~1점"
+    },
+    {
+      "title": "② 화합물·물성 계산",
+      "tool": "ChEMBL · ZINC · RDKit",
+      "body": "표적당 220종 화합물 라이브러리에서 SMILES 구조식을 읽어 분자량, 극성 표면적, 지용성, Ro5, QED와 구조 경고를 계산합니다.",
+      "highlight": "표적당 220종 · QED 0~1"
+    },
+    {
+      "title": "③ 3D 분자 도킹",
+      "tool": "AutoDock Vina 1.2.7 · PLIP",
+      "body": "단백질 포켓 안에서 분자 결합 자세와 도킹 점수(kcal/mol)를 추정하고, 아미노산 잔기와의 비공유 결합 상호작용을 프로파일링합니다.",
+      "highlight": "도킹 점수 kcal/mol"
+    },
+    {
+      "title": "④ 약동학·독성 및 심사",
+      "tool": "ADMET-AI v2 · 서버 규칙 · Claude Opus 5.5",
+      "body": "그래프 신경망으로 체내 흡수·독성 신호를 예측하고, 서버 규칙 엔진과 AI 심사관이 특허·동물윤리·임상 신청서의 정합성을 이중 심사합니다.",
+      "highlight": "MPNN 예측 · 2단계 심사"
+    }
+  ],
+  "analogy": "자물쇠(표적)를 찾고 열쇠 후보(화합물)를 골라 끼워 본 뒤(도킹), 안전성과 서류까지 검증하는 여정입니다.",
+  "footnote": "본 파이프라인의 점수와 예측치는 수업용 컴퓨터 탐색 지표이며 실제 생체 내 약효나 임상 안전성을 확정하지 않습니다.",
+  "illustration_brief": "A minimalist 16:9 scientific exhibition catalog illustration on warm ivory paper (#f1f1e9) with deep ink accents (#080b09). Four interconnected translucent glass architectural pedestals arranged from left to right: first, a folded glass protein ribbon with a glowing cofactor; second, a crystalline array of small organic molecule wireframes; third, a small ligand nestled inside a sculpted glass binding pocket with delicate dashed interaction rods; fourth, a geometric molecular graph passing through a double prism gate. Subtle thin-film iridescent rainbow refractions along the glass edges, generous whitespace, studio lighting, completely free of any text, numbers, or labels."
+}

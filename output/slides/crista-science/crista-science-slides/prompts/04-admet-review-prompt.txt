@@ -1,0 +1,48 @@
+Use case: scientific-educational / productivity-visual.
+Create a finished premium Korean educational presentation slide image in 16:9 landscape, preferably 3840x2160. This is a flat full-bleed slide, not a photograph of a slide, not a screen or device mockup.
+
+STYLE REFERENCE: /Users/mulkib/Desktop/repo/crista-web/.review/landing/new-1440.png is the actual CRISTA landing page. Reference its warm paper ivory #f1f1e9, near-black #080b09, huge bold clean typography, calm generous whitespace, optically clear protein ribbon sculpture with narrow thin-film rainbow edges and faint soft shadows. Use a restrained scientific editorial layout, contemporary Korean sans-serif with precise legible Hangul. No neon gradient backgrounds, no dark science-fiction aesthetic, no cartoon clipart, no UI dashboard controls, no website buttons, no decorative text. Small CRISTA wordmark with 3 nested open-C curves may appear as a brand mark. Keep rainbow color confined to glass optical edges and small accents.
+
+All visible copy is provided by Gemini 4 Argon (High) in the COPY JSON supplied below. Use its visible-copy fields VERBATIM, preserving all characters, numerals, Latin tool names, units, symbols and punctuation. Do not invent, rephrase, paraphrase, translate, add, or omit text. Do not render the JSON field names, ids, author_model or illustration_brief. illustration_brief is an illustration direction only. Do not print the author model on the slide. Avoid hyphenating Korean or breaking a Korean word across lines.
+
+LAYOUT: editorial header with small eyebrow, large decisive title and smaller subtitle. Organize panels in the provided order; each panel includes title, tool, body and highlight once. For overview: four generous columns under the header, linked subtly left to right, each with a different iridescent scientific object above its copy. For detail slides: one large, conceptually accurate scientific glass illustration on the right 40%; left 55% holds 3-4 clearly separated editorial rows with title and tool, readable body, and a distinct numerical highlight. Use thin rules and generous vertical spacing, no heavy card shadows. Integrate a wide quiet analogy callout near the bottom, then a smaller but readable footnote along the lower edge. All copy belongs on a calm plain ivory surface, never on top of complex glass objects. Do not reuse an object's decorative design where it could imply empirical scientific data. Illustrations are conceptual rather than actual measured structures. Keep a comfortable safe margin of at least 5% on all edges.
+
+QUALITY: flawless Korean text, coherent hierarchy, no clipped or overlapped text, no tiny densely packed paragraphs, no invented numeric chart results, no watermark. Strong contrast. Designed for projection in a classroom.
+
+Additional style reference: image 2 is the completed overview from the same set; maintain the same type, ink contrast and glass material. Its text/content is NOT copy for this slide. Image 1 is the landing style reference.
+COPY JSON (all text by Gemini 4 Argon High):
+{
+  "id": "04-admet-review",
+  "eyebrow": "CRISTA · STEP 04 · ADMET & DUAL REVIEW",
+  "title": "약동학·독성 예측과 2단계 이중 서류 심사",
+  "subtitle": "체내 흡수·독성 위험 신호를 예측하고 코드 규칙과 AI 심사관이 신청서를 검증합니다.",
+  "panels": [
+    {
+      "title": "그래프 신경망 약동학·독성 예측",
+      "tool": "ADMET-AI v2 (Chemprop MPNN)",
+      "body": "분자를 원자와 결합의 그래프로 보고 메시지 전달 그래프 신경망(MPNN)으로 흡수·분포·대사·배설·독성(ADMET) 지표를 예측합니다.",
+      "highlight": "Chemprop MPNN 모델"
+    },
+    {
+      "title": "주요 체내 관문과 독성 신호",
+      "tool": "ADMET-AI v2 (hERG · DILI · BBB)",
+      "body": "수십만 건의 실험 데이터를 학습한 모델로 심장 hERG 채널 저해 위험, 간독성(DILI), 장 흡수율, 뇌혈관장벽 투과율을 추정합니다.",
+      "highlight": "hERG · DILI · 장 흡수"
+    },
+    {
+      "title": "1단계 서버 규칙 팩트 체크",
+      "tool": "서버 규칙 엔진 (§5.11)",
+      "body": "시판약 여부(신규성), 모둠 간 선착순 특허 중복, 동물실험 마릿수 과다, 최대 안전 시작 용량(MRSD) 초과를 코드가 100% 판정합니다.",
+      "highlight": "신규성 · 선착순 · MRSD"
+    },
+    {
+      "title": "2단계 데이터·논리 정합성 심사",
+      "tool": "Claude Opus 5.5 (3.1 · 3.2 · 3.3)",
+      "body": "특허·동물윤리·식약처/FDA 심사관 역할로 서술과 데이터의 모순이나 간독성 감시 계획 누락을 찾아 보완 요구(revise) 피드백을 줍니다.",
+      "highlight": "데이터-서술 정합성 · revise"
+    }
+  ],
+  "analogy": "열쇠가 맞아도 몸에 해로우면 약이 될 수 없듯, 체내 위험을 예측하고 신청서를 규칙·AI로 이중 심사합니다.",
+  "footnote": "ADMET 예측치는 컴퓨터 모델의 위험 신호 추정일 뿐 실제 임상 독성 확정이 아니며, 안전 모니터링 설계의 근거로 활용합니다.",
+  "illustration_brief": "A 16:9 scientific exhibition diagram on warm ivory paper (#f1f1e9) with crisp black ink lines (#080b09). On the left, a molecular structure transforms into a glowing node-and-edge graph neural network with message-passing pulses flowing toward abstract glass silhouettes of a heart, liver, intestine, and brain barrier. On the right, two sequential architectural glass gates stand in alignment: the first gate is a precision mechanical caliper sieve checking strict numerical thresholds, and the second gate is a multi-faceted optical prism aligning data waveforms with structured document planes, shimmering with thin-film rainbow interference and zero text."
+}

@@ -1,0 +1,90 @@
+/* CRISTA 교사 연수: 승인된 아이보리·박막 유리 테마, 모든 글자는 Relay체로 조판한다. */
+@font-face{font-family:'Relay체';src:url('./assets/Relay-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:'Relay체';src:url('./assets/Relay-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:block}
+:root{--paper:#f1f1e9;--surface:#fbfbf6;--ink:#080b09;--muted:#52574f;--line:#c7cbc1;--atlas:url('./assets/glass-atlas.png')}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:'Relay체',sans-serif;font-synthesis:none;-webkit-font-smoothing:antialiased}button{font:inherit}p,h1,h2,h3,h4{margin:0;word-break:keep-all;overflow-wrap:normal}h1,h2,h3{text-wrap:balance}p{text-wrap:pretty}.slide{position:relative;width:720pt;height:405pt;padding:23pt 30pt 21pt;display:flex;flex-direction:column;background:var(--paper);isolation:isolate;overflow:hidden}.slide-header{position:relative;z-index:2;flex:none}.eyebrow{font-size:10pt;line-height:1.3;letter-spacing:.07em;font-weight:400;margin:0 0 9pt;color:var(--muted)}.title{font-size:29pt;line-height:1.21;letter-spacing:-.035em;font-weight:600;max-width:650pt}.subtitle{font-size:14pt;line-height:1.4;margin-top:7pt;max-width:650pt;color:var(--muted)}.slide-main{flex:1;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:center;padding:14pt 0 10pt}.takeaway{flex:none;font-size:14pt;line-height:1.4;font-weight:600;padding-top:9pt;border-top:1px solid var(--line);max-width:650pt}.slide-footer{margin-top:9pt;display:flex;justify-content:space-between;align-items:center;gap:12pt;font-size:10pt;color:var(--muted);line-height:1.2}.footer-right{display:flex;gap:14pt}.footer-brand{font-weight:600;letter-spacing:.12em}.footer-status{border-left:1px solid var(--line);padding-left:14pt}.page-number{font-variant-numeric:tabular-nums}.art{flex:none;width:150pt;height:150pt;background-image:var(--atlas);background-size:200% 200%;background-repeat:no-repeat;pointer-events:none}.art-protein{background-position:0 0}.art-molecules{background-position:100% 0}.art-docking{background-position:0 100%}.art-review{background-position:100% 100%}.item{min-width:0;position:relative}.item-label{font-size:17pt;line-height:1.3;font-weight:600;margin-bottom:6pt;letter-spacing:-.025em}.item-body{font-size:14pt;line-height:1.45;color:var(--muted)}.item-value{font-size:14pt;line-height:1.35;font-weight:600;margin-top:8pt}.item-index{font-size:26pt;line-height:1;font-weight:400;letter-spacing:-.07em;margin-bottom:12pt;color:var(--ink)}.items-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22pt;align-items:start}.items-grid.four{grid-template-columns:repeat(4,minmax(0,1fr));gap:18pt}.items-grid .item+.item{border-left:1px solid var(--line);padding-left:18pt}.items-matrix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18pt 28pt}.items-matrix .item{border-top:1px solid var(--line);padding-top:9pt}.items-matrix .item-label{font-size:16pt}.items-matrix .item-body{font-size:14pt}.items-matrix .item-value{margin-top:5pt}.items-rows{display:grid;gap:9pt}.items-rows .item{display:grid;grid-template-columns:155pt minmax(0,1fr);gap:4pt 18pt;border-top:1px solid var(--line);padding-top:9pt}.items-rows .item-label{grid-column:1;grid-row:1/3;font-size:15pt;margin:0}.items-rows .item-body{grid-column:2;font-size:14pt}.items-rows .item-value{grid-column:2;font-size:13pt;margin:0;color:var(--ink)}
+/* 그림과 텍스트를 다른 층에 두어 활자가 유리 오브젝트와 겹치지 않게 한다. */
+.with-corner .title,.with-corner .subtitle{max-width:525pt}.corner-art{position:absolute;width:112pt;height:112pt;right:22pt;top:14pt;opacity:.95;z-index:0}.science-main{display:grid;grid-template-columns:182pt minmax(0,1fr);gap:24pt;align-items:center}.science-main>.art{width:180pt;height:180pt}.science-main .items-rows{gap:8pt}.science-main .items-rows .item{display:block;padding-top:8pt}.science-main .item-label{font-size:15pt;line-height:1.25;margin-bottom:4pt}.science-main .item-body{font-size:14pt;line-height:1.35}.science-main .item-value{font-size:11pt;margin-top:4pt;line-height:1.3}.science-main.is-four{display:block}.science-main.is-four .art{display:none}.science-main.is-four .items-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18pt 28pt}.science-main.is-four .item-label{font-size:16pt}.science-main.is-four .item-value{font-size:13pt}.science-main.is-four .item-body{line-height:1.4}
+.layout-cover .slide-main{justify-content:center;padding:14pt 0}.layout-cover .eyebrow{margin-bottom:0}.cover-grid{display:grid;grid-template-columns:385pt minmax(0,1fr);align-items:center;gap:4pt}.cover-grid h1{font-size:44pt;line-height:1.18;font-weight:600;letter-spacing:-.045em;max-width:400pt}.cover-grid .subtitle{max-width:365pt;font-size:17pt;line-height:1.5;margin-top:18pt}.cover-grid .art{width:270pt;height:270pt;margin-left:-5pt}.cover-items{display:flex;gap:22pt;margin-top:24pt}.cover-items .item-label{font-size:11pt;margin-bottom:5pt;color:var(--muted)}.cover-items .item-body{font-size:12pt;max-width:220pt;color:var(--ink)}.cover-items .item-value{display:none}.layout-cover .takeaway{font-size:14pt}.layout-cover .slide-footer{margin-top:13pt}
+.layout-closing .cover-grid h1{font-size:38pt}.layout-closing .cover-grid .subtitle{font-size:16pt}.layout-closing .cover-items{margin-top:16pt}.layout-closing .cover-items .item-body{font-size:14pt}.layout-closing .cover-items .item-label{font-size:14pt;color:var(--ink)}.layout-closing .cover-grid .art{width:230pt;height:230pt}.layout-closing .slide-main{justify-content:center}.layout-closing .cover-items .item-value{display:none}
+.layout-roadmap .item-index,.layout-flow .item-index,.layout-steps .item-index{font-size:32pt;margin-bottom:18pt}.layout-roadmap .items-grid .item,.layout-flow .items-grid .item,.layout-steps .items-grid .item{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:13pt}.layout-roadmap .item-label,.layout-flow .item-label,.layout-steps .item-label{font-size:17pt;min-height:43pt}.layout-roadmap .item-body,.layout-flow .item-body,.layout-steps .item-body{font-size:14pt;line-height:1.45}.layout-flow .items-grid.four .item-body,.layout-steps .items-grid.four .item-body{font-size:14pt}.layout-flow .item+.item:before,.layout-roadmap .item+.item:before{content:'→';position:absolute;top:16pt;right:1pt;font-size:20pt;color:var(--muted)}
+.layout-contrast .item-index{font-size:42pt;margin-bottom:20pt}.layout-contrast .item-label{font-size:20pt;min-height:54pt}.layout-contrast .item-value{margin-top:18pt;padding-top:9pt;border-top:1px solid var(--line)}.layout-compare .items-grid .item-label{font-size:20pt}.layout-compare .items-grid .item-value{margin-top:22pt}.layout-compare .items-matrix .item-value{margin-top:7pt}
+.layout-disease .items-rows{gap:10pt}.layout-disease .items-rows .item{grid-template-columns:135pt 1fr;gap:2pt 18pt;padding-top:10pt}.layout-disease .item-body{font-size:14pt;line-height:1.5}.layout-disease .item-value{font-size:11pt;color:var(--muted)}.layout-disease .item-label{font-size:16pt}.layout-formula .item-value{font-size:22pt;letter-spacing:-.035em;margin-top:18pt;line-height:1.3}.layout-formula .item-body{font-size:14pt}.layout-formula .items-grid .item-label{font-size:16pt}.layout-formula .item-index{font-size:38pt}
+.layout-schedule .item-value{display:inline-block;background:var(--ink);color:var(--paper);padding:6pt 9pt;margin:0 0 15pt;font-size:16pt}.layout-schedule .item-label{font-size:20pt;min-height:52pt}.layout-schedule .item-body{line-height:1.6}.layout-ethics .item-index{font-size:52pt;letter-spacing:-.05em;margin-bottom:14pt}.layout-ethics .item-label{font-size:21pt}.layout-ethics .item-value{margin-top:15pt}.layout-status .item-value{font-size:12pt;display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3pt 8pt;margin-top:7pt}.layout-status .items-matrix{gap:17pt 28pt}.layout-status .item-body{line-height:1.4}
+.workspace-map{display:grid;grid-template-columns:150pt 1fr 1fr;grid-template-rows:65pt 1fr;gap:10pt;flex:1;min-height:0}.workspace-map .item{padding:10pt 12pt;border:1px solid var(--line);border-radius:12pt}.workspace-map .item:first-child{grid-column:1/4;display:grid;grid-template-columns:155pt 1fr;gap:2pt 18pt;background:var(--ink);color:var(--paper);border:0}.workspace-map .item:first-child .item-label{grid-row:1/3}.workspace-map .item:first-child .item-body{color:var(--paper)}.workspace-map .item:first-child .item-value{grid-column:2;font-size:11pt;margin:0;color:var(--paper)}.workspace-map .item-label{font-size:15pt}.workspace-map .item-body{font-size:14pt}.workspace-map .item-value{font-size:12pt}.layout-workspace .slide-main{padding-bottom:12pt}.layout-collaboration .item-index{font-size:32pt;margin-bottom:16pt}.layout-collaboration .item-label{font-size:18pt;min-height:44pt}.layout-collaboration .item-value{border-top:1px solid var(--line);padding-top:9pt;margin-top:16pt}.layout-teacher .item-index{font-size:36pt;margin-bottom:18pt}.layout-teacher .item-label{font-size:19pt;min-height:47pt}.layout-teacher .item-value{margin-top:18pt}.layout-checklist .items-rows .item{grid-template-columns:28pt 150pt 1fr;gap:0 12pt;align-items:start}.layout-checklist .item-index{font-size:17pt;grid-row:1/3;margin:0;padding-top:2pt}.layout-checklist .item-label{grid-column:2;grid-row:1/3;font-size:16pt}.layout-checklist .item-body,.layout-checklist .item-value{grid-column:3}.layout-checklist .item-value{font-size:11pt;margin-top:3pt;color:var(--muted)}
+.speaker-note{display:none}.slide[data-count='4'] .science-main{padding-top:6pt}.slide.layout-split .items-matrix{gap:16pt 28pt}.slide.layout-split .item-label{font-size:17pt}.slide.layout-rules .item-value{font-size:12pt}.slide.layout-rules .items-matrix{gap:15pt 28pt}
+/* 각각의 HTML을 열어도 같은 비율을 유지한다. */
+body.standalone{width:720pt;height:405pt}body.standalone .slide{margin:0}
+@media print{@page{size:720pt 405pt;margin:0}html,body{width:720pt;height:auto;margin:0;padding:0;background:var(--paper);print-color-adjust:exact;-webkit-print-color-adjust:exact}.slide{page-break-after:always;break-after:page}.slide:last-child{page-break-after:auto}}
+/* 화면 검토 후 정한 발표용 간격. 표지의 상세 설명은 발표자 노트에 둔다. */
+.slide-main{justify-content:flex-start}
+.title{font-size:27pt}
+.layout-cover .slide-main,.layout-closing .slide-main{justify-content:center;padding-top:12pt;padding-bottom:10pt}
+.cover-grid h1{font-size:38pt;line-height:1.21}
+.cover-grid .subtitle{font-size:15pt;line-height:1.4;margin-top:13pt}
+.cover-grid .art{width:225pt;height:225pt;margin-left:5pt}
+.cover-items{margin-top:18pt;gap:24pt}
+.cover-items .item{flex:1;border-top:1px solid var(--line);padding-top:8pt}
+.cover-items .item-label{font-size:11pt;font-weight:400;line-height:1.35}
+.cover-items .item-value,.layout-closing .cover-items .item-value{display:block;font-size:14pt;font-weight:600;margin-top:4pt;line-height:1.35}
+.layout-closing .cover-grid h1{font-size:35pt}
+.layout-closing .cover-grid .subtitle{font-size:15pt}
+.layout-closing .cover-grid .art{width:210pt;height:210pt}
+.layout-closing .cover-items .item-label{font-size:11pt;font-weight:400;color:var(--muted)}
+.layout-formula .item-index,.layout-ethics .item-index{font-size:28pt;margin-bottom:14pt}
+.layout-formula .item-value{font-size:16pt;margin-top:13pt}
+.layout-formula .item-label,.layout-ethics .item-label{font-size:16pt;min-height:42pt}
+.layout-ethics .items-grid.four{gap:18pt}
+.layout-teacher .item-label{font-size:16pt;min-height:42pt}
+.layout-teacher .item-index{font-size:28pt;margin-bottom:13pt}
+.layout-teacher .item-value{font-size:13pt;margin-top:14pt}
+.layout-collaboration .item-label{font-size:16pt;min-height:42pt}
+.layout-steps .item-label,.layout-flow .item-label,.layout-roadmap .item-label{font-size:16pt;min-height:42pt}
+.layout-steps .item-value,.layout-flow .item-value,.layout-roadmap .item-value{font-size:13pt}
+.layout-science .slide-main{padding-top:10pt}
+.science-main.is-four .items-rows{gap:14pt 28pt}
+.layout-steps .item-index,.layout-flow .item-index,.layout-roadmap .item-index{font-size:28pt;margin-bottom:14pt}
+/* Relay의 받침·라틴 소문자 하단까지 여유를 확보한다. */
+p,h1,h2,h3,h4{padding-bottom:2pt}
+.eyebrow{line-height:1.4}
+.title{line-height:1.3}
+.cover-grid h1{line-height:1.3}
+.cover-grid .subtitle{line-height:1.5}
+.slide-footer{line-height:1.4}
+.item-index{line-height:1.3}
+.item-label{line-height:1.4}
+.science-main .item-label{line-height:1.4}
+/* 개별 투명 일러스트를 일반 이미지로 배치하여 단일 HTML과 장별 렌더가 일치한다. */
+.art{background:none;object-fit:contain;display:block}
+.illustrated-header{display:grid;grid-template-columns:minmax(0,1fr) 95pt;gap:20pt;align-items:start;flex:none}
+.illustrated-header .corner-art{position:static;width:95pt;height:95pt;margin:-3pt -4pt 0 0}
+.illustrated-header .slide-header{min-width:0}
+.illustrated-header .title,.illustrated-header .subtitle{max-width:none}
+.science-main.is-four{padding-top:12pt}
+/* 같은 뜻의 강조어를 반복하지 않아 본문과 하단 결론 사이에 여백을 만든다. */
+.cover-grid .art{width:205pt;height:205pt}
+.cover-items{margin-top:13pt}
+.layout-cover .slide-main{padding-bottom:18pt}
+.layout-closing .slide-main{padding-bottom:18pt}
+.layout-disease .items-rows{gap:5pt}
+.layout-disease .items-rows .item{grid-template-columns:190pt 1fr;gap:0 14pt;padding-top:7pt}
+.layout-disease .items-rows .item-label{font-size:15pt;line-height:1.4;grid-row:1}
+.layout-disease .items-rows .item-body{line-height:1.4}
+.workspace-map{grid-template-columns:190pt 1fr 1fr;grid-template-rows:60pt 1fr;gap:9pt}
+.workspace-map .item:first-child .item-label{grid-row:1}
+.workspace-map .item:first-child{grid-template-columns:155pt 1fr}
+.workspace-map .item-label{line-height:1.4}
+.workspace-map .item{padding:9pt 11pt}
+.layout-formula .item-label{min-height:48pt}
+.layout-formula .item-value{font-size:16pt;margin-top:13pt}
+.layout-contrast .item-index{font-size:28pt;margin-bottom:14pt}
+.layout-flow .item-index,.layout-roadmap .item-index,.layout-steps .item-index{font-size:22pt;margin-bottom:9pt}
+.layout-disease .items-rows{gap:2pt}
+.layout-disease .items-rows .item{padding-top:4pt}
+.layout-checklist .items-matrix{gap:18pt 28pt}
+.layout-checklist .items-matrix .item-label{font-size:16pt;grid-column:auto;grid-row:auto}
+.layout-checklist .items-matrix .item-body{grid-column:auto}
+/* Argon 시각 검수: 연결 화살표는 마지막 열 밖으로 나가지 않는다. */
+.layout-flow .item+.item:before,.layout-roadmap .item+.item:before{content:none}
+.layout-flow .item:not(:last-child):before,.layout-roadmap .item:not(:last-child):before{content:'→';position:absolute;top:16pt;right:1pt;font-size:20pt;color:var(--muted)}
+.word{white-space:nowrap}

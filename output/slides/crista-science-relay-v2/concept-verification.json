@@ -1,0 +1,42 @@
+{
+  "concepts": 19,
+  "slides": [
+    {
+      "slide": 1,
+      "concepts": 3,
+      "sourceMatch": true,
+      "keyboard": true,
+      "cardLink": true
+    },
+    {
+      "slide": 2,
+      "concepts": 3,
+      "sourceMatch": true,
+      "keyboard": true,
+      "cardLink": true
+    },
+    {
+      "slide": 3,
+      "concepts": 5,
+      "sourceMatch": true,
+      "keyboard": true,
+      "cardLink": true
+    },
+    {
+      "slide": 4,
+      "concepts": 4,
+      "sourceMatch": true,
+      "keyboard": true,
+      "cardLink": true
+    },
+    {
+      "slide": 5,
+      "concepts": 4,
+      "sourceMatch": true,
+      "keyboard": true,
+      "cardLink": true
+    }
+  ],
+  "mobileFits": true,
+  "pageErrors": []
+}

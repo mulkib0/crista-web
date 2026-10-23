@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CRISTA 신약 개발의 여정 — Relay체</title>
+  <style>
+    @font-face{font-family:'Relay체';src:url('./fonts/relay/Relay-Regular.woff2') format('woff2');font-weight:100 500;font-style:normal;font-display:block}
+    @font-face{font-family:'Relay체';src:url('./fonts/relay/Relay-SemiBold.woff2') format('woff2');font-weight:600 900;font-style:normal;font-display:block}
+    *{box-sizing:border-box}
+    html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#f1f1e9}
+    body{font-family:'Relay체',sans-serif;font-synthesis:none;color:#080b09;-webkit-font-smoothing:antialiased}
+    .slide{position:relative;width:1920px;height:1080px;overflow:hidden;background:#f1f1e9 url('./crista-pipeline-background.png') center/100% 100% no-repeat}
+    .brand{position:absolute;left:54px;top:33px;display:flex;align-items:center;gap:16px;font-size:60px;line-height:1;font-weight:600;letter-spacing:-1px}
+    .brand svg{width:64px;height:64px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+    h1{position:absolute;left:54px;top:128px;margin:0;font-size:82px;line-height:1.12;font-weight:600;letter-spacing:-1.3px}
+    .subtitle{position:absolute;left:56px;top:246px;margin:0;font-size:30px;line-height:1.3;color:#42483f;font-weight:400}
+    .pipeline{position:absolute;left:44px;right:44px;top:314px;height:704px;display:grid;grid-template-columns:repeat(4,1fr);gap:36px}
+    .card{position:relative;border:1px solid #5d645a;border-radius:13px;background:rgba(251,251,246,.65)}
+    .number{height:84px;border-radius:12px 12px 0 0;padding:5px 27px 0;font-size:66px;line-height:1.1;font-weight:600;letter-spacing:-2px}
+    .c1 .number{background:linear-gradient(105deg,#f8ddea 0%,#f4e9ed 50%,#eaf6f7 100%)}
+    .c2 .number{background:linear-gradient(105deg,#cfe8f4 0%,#dfeef2 55%,#f0f4e0 100%)}
+    .c3 .number{background:linear-gradient(105deg,#e8f8d3 0%,#f4f7e7 56%,#ede5f2 100%)}
+    .c4 .number{background:linear-gradient(105deg,#fde7cf 0%,#f6eade 50%,#e9e2f6 100%)}
+    .arrow{position:absolute;top:38px;right:-32px;width:72px;height:23px;z-index:2;fill:none;stroke:#252b23;stroke-width:1.6}
+    .content{position:absolute;inset:84px 27px 0}
+    .phase{height:114px;border-bottom:1px solid #a5aa9e;padding-top:14px}
+    h2{font-size:43px;line-height:1.15;letter-spacing:-.3px;font-weight:600;margin:0 0 6px}
+    .english{font-size:24px;line-height:1.2;font-weight:400;margin:0;white-space:nowrap;color:#293026}
+    .question{height:143px;padding-top:14px;border-bottom:1px solid #a5aa9e}
+    .label{font-size:20px;line-height:1.2;font-weight:600;margin:0 0 7px;color:#353d31}
+    .question p{margin:0;font-size:28px;font-weight:600;line-height:1.3;letter-spacing:-.15px;white-space:nowrap}
+    .industry{height:157px;padding-top:14px;border-bottom:1px solid #a5aa9e}
+    .industry p{margin:0;font-size:25px;font-weight:400;line-height:1.31;letter-spacing:-.1px;white-space:nowrap}
+    .activities{padding-top:13px}
+    .activities .label{margin-bottom:12px}
+    .activity{display:grid;grid-template-columns:76px 1fr;gap:0 15px;align-items:center;margin-bottom:10px}
+    .code{display:flex;align-items:center;justify-content:center;height:35px;border-radius:7px;background:#080b09;color:#fbfbf6;font-size:24px;font-weight:600;line-height:1;padding-bottom:2px;font-variant-numeric:tabular-nums}
+    .name{font-size:26px;line-height:1.2;font-weight:600;white-space:nowrap}
+    .detail{grid-column:2;font-size:22px;line-height:1.25;margin-top:2px;white-space:nowrap;color:#42483f}
+    .detail.wide{grid-column:1 / -1;padding-top:3px;font-size:22px}
+    .c3 .activity{margin-bottom:6px}
+    .c3 .name{font-size:25px}
+    .c3 .code{height:30px}
+    .c3 .detail{font-size:20px;line-height:1.1}
+    .c3 .activities .label{margin-bottom:8px}
+    .footer{position:absolute;left:44px;right:44px;top:1036px;border-top:1px solid #777f70;padding-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:17px;line-height:1.2;color:#454d40}
+    .footer .wordmark{letter-spacing:3px;font-size:16px}
+  </style>
+</head>
+<body>
+<main class="slide" aria-label="신약 개발, 네 단계의 여정">
+  <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M31.5 7.5A15.5 15.5 0 1 0 31.5 32.5"/><path d="M27.2 12.2A10.7 10.7 0 1 0 27.2 27.8"/><path d="M22.8 16.8A6 6 0 1 0 22.8 23.2"/></svg><span>CRISTA</span></div>
+  <h1>신약 개발, 네 단계의 여정</h1>
+  <p class="subtitle">제약산업의 실제 과정과 CRISTA 수업을 연결합니다.</p>
+  <div class="pipeline">
+    <section class="card c1">
+      <div class="number">01</div>
+      <svg class="arrow" viewBox="0 0 72 23" aria-hidden="true"><path d="M0 11.5H68M57 1L68 11.5 57 22"/></svg>
+      <div class="content">
+        <header class="phase"><h2>발견</h2><p class="english">Discovery</p></header>
+        <div class="question"><h3 class="label">핵심 질문</h3><p>어떤 단백질을 겨냥하고,<br>어떤 분자부터 시험할까?</p></div>
+        <div class="industry"><h3 class="label">실제 제약산업</h3><p>질환의 원인 단백질(표적)을 찾고,<br>수많은 화합물에서 유망한 분자를<br>컴퓨터로 선별합니다.</p></div>
+        <div class="activities"><h3 class="label">CRISTA 활동</h3>
+          <div class="activity"><span class="code">1.1</span><span class="name">질환·표적 선정</span></div>
+          <div class="activity"><span class="code">1.2</span><span class="name">화합물 스크리닝</span><span class="detail wide">6개 기준 회의·투표 → 분자 쇼핑</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="card c2">
+      <div class="number">02</div>
+      <svg class="arrow" viewBox="0 0 72 23" aria-hidden="true"><path d="M0 11.5H68M57 1L68 11.5 57 22"/></svg>
+      <div class="content">
+        <header class="phase"><h2>최적화</h2><p class="english">Optimization</p></header>
+        <div class="question"><h3 class="label">핵심 질문</h3><p>표적에 잘 붙고,<br>몸속에서도 안전할까?</p></div>
+        <div class="industry"><h3 class="label">실제 제약산업</h3><p>도킹과 구조 개선으로 결합력을<br>높이고, 흡수율·독성 등 약물 특성<br>(ADMET)을 예측합니다.</p></div>
+        <div class="activities"><h3 class="label">CRISTA 활동</h3>
+          <div class="activity"><span class="code">2.1</span><span class="name">분자 도킹·구조 변형</span></div>
+          <div class="activity"><span class="code">2.2</span><span class="name">ADMET 예측</span><span class="detail">특허 후보 선정</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="card c3">
+      <div class="number">03</div>
+      <svg class="arrow" viewBox="0 0 72 23" aria-hidden="true"><path d="M0 11.5H68M57 1L68 11.5 57 22"/></svg>
+      <div class="content">
+        <header class="phase"><h2>개발·규제</h2><p class="english">Development &amp; Regulatory</p></header>
+        <div class="question"><h3 class="label">핵심 질문</h3><p>특허로 보호하고,<br>사람에게 처음 써도 안전할까?</p></div>
+        <div class="industry"><h3 class="label">실제 제약산업</h3><p>물질특허를 내고 전임상으로<br>안전한 시작 용량(MRSD)을 정한 뒤,<br>임상시험 계획(IND)을 신청합니다.</p></div>
+        <div class="activities"><h3 class="label">CRISTA 활동</h3>
+          <div class="activity"><span class="code">3.1</span><span class="name">선언·물질특허</span><span class="detail">학급 특허 원장</span></div>
+          <div class="activity"><span class="code">3.2</span><span class="name">전임상·동물실험</span><span class="detail">3R 윤리·MRSD</span></div>
+          <div class="activity"><span class="code">3.3</span><span class="name">제형·IND 신청</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="card c4">
+      <div class="number">04</div>
+      <div class="content">
+        <header class="phase"><h2>임상·허가</h2><p class="english">Clinical &amp; Approval</p></header>
+        <div class="question"><h3 class="label">핵심 질문</h3><p>실제 환자에게 안전하고,<br>치료 효과가 있을까?</p></div>
+        <div class="industry"><h3 class="label">실제 제약산업</h3><p>임상 1상(안전성) → 2상(효능) →<br>3상(확증)을 거쳐 최종 판매 허가<br>(NDA)를 받습니다.</p></div>
+        <div class="activities"><h3 class="label">CRISTA 활동</h3>
+          <div class="activity"><span class="code">4.1</span><span class="name">임상 1·2·3상</span><span class="detail">실패 시 백업 교체</span></div>
+          <div class="activity"><span class="code">4.2</span><span class="name">최종 허가</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer class="footer"><span class="wordmark">CRISTA PIPELINE LAB</span><span>발견 → 최적화 → 개발·규제 → 임상·허가</span></footer>
+</main>
+</body>
+</html>

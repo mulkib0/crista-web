@@ -1,0 +1,48 @@
+Use case: scientific-educational / productivity-visual.
+Create a finished premium Korean educational presentation slide image in 16:9 landscape, preferably 3840x2160. This is a flat full-bleed slide, not a photograph of a slide, not a screen or device mockup.
+
+STYLE REFERENCE: /Users/mulkib/Desktop/repo/crista-web/.review/landing/new-1440.png is the actual CRISTA landing page. Reference its warm paper ivory #f1f1e9, near-black #080b09, huge bold clean typography, calm generous whitespace, optically clear protein ribbon sculpture with narrow thin-film rainbow edges and faint soft shadows. Use a restrained scientific editorial layout, contemporary Korean sans-serif with precise legible Hangul. No neon gradient backgrounds, no dark science-fiction aesthetic, no cartoon clipart, no UI dashboard controls, no website buttons, no decorative text. Small CRISTA wordmark with 3 nested open-C curves may appear as a brand mark. Keep rainbow color confined to glass optical edges and small accents.
+
+All visible copy is provided by Gemini 4 Argon (High) in the COPY JSON supplied below. Use its visible-copy fields VERBATIM, preserving all characters, numerals, Latin tool names, units, symbols and punctuation. Do not invent, rephrase, paraphrase, translate, add, or omit text. Do not render the JSON field names, ids, author_model or illustration_brief. illustration_brief is an illustration direction only. Do not print the author model on the slide. Avoid hyphenating Korean or breaking a Korean word across lines.
+
+LAYOUT: editorial header with small eyebrow, large decisive title and smaller subtitle. Organize panels in the provided order; each panel includes title, tool, body and highlight once. For overview: four generous columns under the header, linked subtly left to right, each with a different iridescent scientific object above its copy. For detail slides: one large, conceptually accurate scientific glass illustration on the right 40%; left 55% holds 3-4 clearly separated editorial rows with title and tool, readable body, and a distinct numerical highlight. Use thin rules and generous vertical spacing, no heavy card shadows. Integrate a wide quiet analogy callout near the bottom, then a smaller but readable footnote along the lower edge. All copy belongs on a calm plain ivory surface, never on top of complex glass objects. Do not reuse an object's decorative design where it could imply empirical scientific data. Illustrations are conceptual rather than actual measured structures. Keep a comfortable safe margin of at least 5% on all edges.
+
+QUALITY: flawless Korean text, coherent hierarchy, no clipped or overlapped text, no tiny densely packed paragraphs, no invented numeric chart results, no watermark. Strong contrast. Designed for projection in a classroom.
+
+Additional style reference: image 2 is the completed overview from the same set; maintain the same type, ink contrast and glass material. Its text/content is NOT copy for this slide. Image 1 is the landing style reference.
+COPY JSON (all text by Gemini 4 Argon High):
+{
+  "id": "03-docking",
+  "eyebrow": "CRISTA · STEP 03 · 3D MOLECULAR DOCKING",
+  "title": "3D 분자 도킹 탐색과 결합 상호작용 분석",
+  "subtitle": "단백질 포켓 내 최적 결합 자세와 도킹 점수를 구하고 아미노산 결합을 확인합니다.",
+  "panels": [
+    {
+      "title": "3D 포켓 내 결합 자세 탐색",
+      "tool": "AutoDock Vina 1.2.7",
+      "body": "단백질 활성 포켓 3D 상자 안에서 후보 분자의 위치·방향과 단일 결합 회전(Torsion)을 몬테카를로 및 국소 최적화로 탐색합니다.",
+      "highlight": "Monte Carlo + 국소 최적화"
+    },
+    {
+      "title": "도킹 점수(친화도 추정치) 해석",
+      "tool": "AutoDock Vina 1.2.7 (점수 함수)",
+      "body": "물리·경험적 점수 함수로 결합 친화도를 kcal/mol 단위로 추정하며, 음수 절댓값이 클수록 포켓 안에서 더 안정된 결합 자세를 뜻합니다.",
+      "highlight": "예: -10.5 kcal/mol"
+    },
+    {
+      "title": "열역학 평형 식과 10배 계단",
+      "tool": "열역학 원리 · 2.1 10배 계단 (§5.6)",
+      "body": "열역학 식(ΔG = RT ln K_d)상 상온에서 ΔG가 -1.36 kcal/mol 낮아질 때 이론적 해리 상수가 10배씩 감소하는 원리를 익힙니다.",
+      "highlight": "ΔG = RT ln K_d"
+    },
+    {
+      "title": "아미노산 잔기 상호작용 지도",
+      "tool": "PLIP",
+      "body": "도킹된 3D 좌표에서 아미노산 잔기(TRP86, SER203 등)와의 거리를 재어 수소 결합, 소수성 상호작용, π-스태킹, 염다리를 분석합니다.",
+      "highlight": "TRP86 · SER203 잔기"
+    }
+  ],
+  "analogy": "3차원 자물쇠 구멍(포켓)에 열쇠(분자)를 돌려 끼워 안정된 자세를 찾고, 어느 아미노산이 붙잡는지 확인합니다.",
+  "footnote": "Vina 도킹 점수는 실측 ΔG가 아닌 결합 친화도 추정치이므로, 점수 차이만으로 실제 생체 약효 배수를 단정할 수 없습니다.",
+  "illustration_brief": "A 16:9 scientific catalog close-up on warm ivory paper (#f1f1e9) with deep charcoal structural accents (#080b09). Inside a translucent glass protein binding cavity, a small ligand molecule with curved rotation arrows around its rotatable single bonds settles into a low-energy pose, accompanied by two faint ghosted alternative poses. Surrounding amino acid side chains—including an aromatic indole ring and a hydroxyl group—connect to the ligand via fine iridescent dashed rods representing hydrogen bonds, pi-stacking, and salt bridges within a subtle 3D search box wireframe. No text, letters, or numbers."
+}

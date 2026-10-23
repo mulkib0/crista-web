@@ -1,0 +1,53 @@
+{
+  "errors": [],
+  "requests": [],
+  "fonts": {
+    "regular": true,
+    "semibold": true,
+    "count": 2
+  },
+  "results": [
+    {
+      "index": 35,
+      "k": "0.96",
+      "boxes": [
+        {
+          "class": "top",
+          "top": 70,
+          "bottom": 108,
+          "height": 38,
+          "width": 1700
+        },
+        {
+          "class": "title",
+          "top": 129,
+          "bottom": 196,
+          "height": 67,
+          "width": 1690
+        },
+        {
+          "class": "sub",
+          "top": 213,
+          "bottom": 252,
+          "height": 38,
+          "width": 1680
+        },
+        {
+          "class": "cgrid",
+          "top": 276,
+          "bottom": 807,
+          "height": 531,
+          "width": 1700
+        },
+        {
+          "class": "cfoot",
+          "top": 826,
+          "bottom": 942,
+          "height": 116,
+          "width": 1700
+        }
+      ],
+      "textOverflow": []
+    }
+  ]
+}

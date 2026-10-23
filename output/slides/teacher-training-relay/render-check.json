@@ -1,0 +1,403 @@
+{
+  "summary": {
+    "slides": 37,
+    "layoutIssues": [],
+    "pageErrors": [],
+    "remoteRequests": [],
+    "keyboard": true,
+    "contents": true,
+    "notes": true,
+    "mobileFits": true,
+    "printSlides": 37
+  },
+  "slides": [
+    {
+      "slide": 1,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-protein.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 2,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 3,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 4,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 5,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-protein.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 6,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-protein.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 7,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-molecules.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 8,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-docking.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 9,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-review.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 10,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 11,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 12,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 13,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 14,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 15,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 16,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 17,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 18,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-protein.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 19,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 20,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 21,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-docking.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 22,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-review.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 23,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 24,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 25,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 26,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 27,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 28,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 29,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 30,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 31,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-review.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "slide": 32,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 33,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 34,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 35,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 36,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": []
+    },
+    {
+      "slide": 37,
+      "outside": [],
+      "crossing": [],
+      "clipped": [],
+      "font": "Relay체, sans-serif",
+      "fontReady": true,
+      "images": [
+        {
+          "src": "./assets/glass-molecules.png",
+          "ok": true
+        }
+      ]
+    }
+  ]
+}

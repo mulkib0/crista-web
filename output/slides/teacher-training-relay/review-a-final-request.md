@@ -1,0 +1,7 @@
+앞서 검수한 CRISTA 교사 연수 HTML을 지적대로 수정했고 새로운 PNG를 모두 다시 렌더했다. 지금의 최종 파일을 읽기 전용으로 재검수한다.
+작업 경로는 /Users/mulkib/Desktop/repo/crista-web/output/slides/teacher-training-relay 이다.
+수정: 8번 kcal/mol·상온 표기, 16번 제목/질환목록/로마숫자, 1·2·13·14의 강제 참여 보장 표현, 17·18의 조사 분리, 흐름도 화살표(:not(:last-child)), 중복 원문자 제거, 12번 3열 구성, 한국어 어절을 보존하는 nowrap span을 적용했다. 네 내용 검수에서 확인한 최신 학습/투자/시장/사옥/교사전광판 기능도 4·12·27·28·29와 발표자노트에 반영했다. HTML은 Relay 글꼴과 그림을 내장하며 같은 이미지 데이터는 한 번만 저장하도록 정리했다.
+최신 문구: argon-copy.json. 검증: validation.json, render-check.json. 장별 HTML: slide-01.html~slide-32.html. 최신 PNG: .slides-grab/gate-preview/slide-01.png~slide-32.png. 지문: slide-fingerprints.json.
+현재 코드 범위를 처음부터 다시 광범위하게 조사하지 말고 이미 확인한 사실과 반영된 교정·신규 문제를 집중 검수한다. 실제 이미지 열람 없이 PASS하지 마라. 파일은 수정하지 마라. 필요한 문구 수정은 완성된 copy_patches로 제안한다.
+출력은 이전과 같은 JSON 구조: role, verdict(PASS|REVISE|FAIL), confidence, image_viewing_method, inspected_images, checks, findings, copy_patches, summary. 해결된 과거 문제를 미해결로 반복하지 말고 현재 파일만 판정하라. PASS는 실제 최종 상태에서 Critical/Major 문제가 없을 때만 한다.
+이번은 Pass A 재검수. argon-copy.json과 최신 스냅샷을 읽고 내용/스타일 계약을 확인한다. 최소 PNG 01,02,04,08,09,10,12,13,14,16,21,24,27,28,29,30,31,32를 직접 열어 수정이 반영됐는지 확인한다. 확인하지 않은 장을 새로 확인했다고 하지 마라. checks: System consistency, Color discipline, AI slop tropes, Content discipline. 최신 교사 기능 중 시계/수동심사 UI가 아직 연결 중인 사실은 유지되어야 한다.

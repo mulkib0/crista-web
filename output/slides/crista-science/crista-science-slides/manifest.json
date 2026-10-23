@@ -1,0 +1,53 @@
+{
+  "문구 작성": "Antigravity CLI · gemini-4-argon-high · Gemini 4 Argon (High)",
+  "이미지 제작": "Codex 내장 image_gen",
+  "참조": ".review/landing/new-1440.png",
+  "구성": "전체 개요 1장 + 단계별 4장",
+  "파일": [
+    {
+      "id": "00-overview",
+      "title": "데이터와 AI로 탐구하는 신약 개발 4단계",
+      "source": "/Users/mulkib/.codex/generated_images/01a1697f-d1a3-7eb1-8555-f86bbb7d7950/exec-602913a3-d034-44b2-b359-7cd5953179bb.png",
+      "destination": "/Users/mulkib/Desktop/repo/crista-web/output/slides/crista-science/00-overview.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1786820
+    },
+    {
+      "id": "01-target",
+      "title": "질병 코드와 3D 실측 단백질 표적 탐색",
+      "source": "/Users/mulkib/.codex/generated_images/01a1697f-d1a3-7eb1-8555-f86bbb7d7950/exec-1b167b40-355f-4d25-927c-11fcc32dfce7.png",
+      "destination": "/Users/mulkib/Desktop/repo/crista-web/output/slides/crista-science/01-target.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1815096
+    },
+    {
+      "id": "02-compounds",
+      "title": "화합물 라이브러리 탐색과 분자 물성 계산",
+      "source": "/Users/mulkib/.codex/generated_images/01a1697f-d1a3-7eb1-8555-f86bbb7d7950/exec-8f07ecfe-2a21-4758-acdc-0668d26c76be.png",
+      "destination": "/Users/mulkib/Desktop/repo/crista-web/output/slides/crista-science/02-compounds.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1855246
+    },
+    {
+      "id": "03-docking",
+      "title": "3D 분자 도킹 탐색과 결합 상호작용 분석",
+      "source": "/Users/mulkib/.codex/generated_images/01a1697f-d1a3-7eb1-8555-f86bbb7d7950/exec-f5ea8945-c39c-4063-8d83-debc8e72aec4.png",
+      "destination": "/Users/mulkib/Desktop/repo/crista-web/output/slides/crista-science/03-docking.png",
+      "width": 1672,
+      "height": 940,
+      "bytes": 1851786
+    },
+    {
+      "id": "04-admet-review",
+      "title": "약동학·독성 예측과 2단계 이중 서류 심사",
+      "source": "/Users/mulkib/.codex/generated_images/01a1697f-d1a3-7eb1-8555-f86bbb7d7950/exec-5ecce602-3d05-4bf9-bc33-7de301b71f1f.png",
+      "destination": "/Users/mulkib/Desktop/repo/crista-web/output/slides/crista-science/04-admet-review.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1861659
+    }
+  ]
+}

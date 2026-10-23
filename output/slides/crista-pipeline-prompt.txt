@@ -1,0 +1,89 @@
+제작 방식: 기본 내장 이미지 생성 도구(image_gen)
+용도: 교사 연수·수업 소개용 16:9 단일 슬라이드 이미지
+참조: 사용자 제공 신약 개발 단계 표 및 .review/landing/new-1440.png
+
+Use case: productivity-visual / scientific-educational
+Create one polished, finished Korean presentation slide, 16:9 landscape, ideally 3840x2160 pixels. This is a presentation image, not a screenshot of a browser, not a mockup in a frame. Full-bleed flat slide, no perspective, no devices.
+
+Input image 1 is the source content table. Preserve its four phase groups and all nine numbered CRISTA activities; use the exact shortened copy below. Input image 2 is the visual style reference of the actual CRISTA landing page. Adopt its warm paper ivory #f1f1e9, near-black #080b09, striking heavy sans-serif typography, generous whitespace and transparent folded protein ribbon with thin iridescent rainbow edges. Do not copy the website buttons. The content table is NOT a style reference.
+
+Composition: one restrained editorial academic slide. Top header: CRISTA brand with its nested three open-C arc symbol at upper left, tasteful medium scale. Large Korean title to its right or underneath: 신약 개발, 네 단계의 여정. One small subtitle: 제약산업의 실제 과정과 CRISTA 수업을 연결합니다. A delicate glass protein ribbon curls in the upper-right header only, about 15% of the slide area, using the same transparent rainbow film look as the landing page. Keep it out of the text. Main body: four equal-width tall columns/cards across the slide, left-to-right numbered 01, 02, 03, 04, linked by a fine horizontal line and subtle directional arrows. Use very pale almost-white panels on warm ivory, restrained thin dark keylines, modest corner radius. Maintain perfect common alignment for each tier across all columns. No heavy shadows. Do not use vivid colored card backgrounds. Only the numbers or a narrow header accent may use extremely pale iridescent film gradients (#ffd3ea, #cdeaff, #e4ffc0, #ffe2c2, #e6d4ff). Each column has a bold Korean phase title, a small English translation, then an emphatic two-line question, then a readable industry paragraph, then the CRISTA numbered activities. Separate the question, industry and activity areas with whitespace and hairline dividers. Use black filled rounded rectangular number badges for the activity codes with ivory numerals. Tiny English monospace labels may be used only for the supplied English phase translations. Korean typography should be a refined contemporary sans-serif like IBM Plex Sans KR or Pretendard. Use bold for hierarchy, body readable at presentation scale. Do not use handwritten, pixel, calligraphic, serif or spaced-out Korean letters. Keep paragraphs left aligned and Korean words intact.
+
+All visible text must use this exact Korean copy, with correct spelling, numbers, and symbols. Do not display literal backslash-n. Do not add any unsupplied paragraphs, labels or fabricated scientific claims.
+
+HEADER
+CRISTA
+신약 개발, 네 단계의 여정
+제약산업의 실제 과정과 CRISTA 수업을 연결합니다.
+
+COLUMN 01
+01
+발견
+Discovery
+핵심 질문
+어떤 단백질을 겨냥하고,
+어떤 분자부터 시험할까?
+실제 제약산업
+질환의 원인 단백질(표적)을 찾고,
+수많은 화합물에서 유망한 분자를
+컴퓨터로 선별합니다.
+CRISTA 활동
+1.1 질환·표적 선정
+1.2 화합물 스크리닝
+6개 기준 회의·투표 → 분자 쇼핑
+
+COLUMN 02
+02
+최적화
+Optimization
+핵심 질문
+표적에 잘 붙고,
+몸속에서도 안전할까?
+실제 제약산업
+도킹과 구조 개선으로 결합력을
+높이고, 흡수율·독성 등 약물 특성
+(ADMET)을 예측합니다.
+CRISTA 활동
+2.1 분자 도킹·구조 변형
+2.2 ADMET 예측
+특허 후보 선정
+
+COLUMN 03
+03
+개발·규제
+Development & Regulatory
+핵심 질문
+특허로 보호하고,
+사람에게 처음 써도 안전할까?
+실제 제약산업
+물질특허를 내고 전임상으로
+안전한 시작 용량(MRSD)을 정한 뒤,
+임상시험 계획(IND)을 신청합니다.
+CRISTA 활동
+3.1 선언·물질특허
+학급 특허 원장
+3.2 전임상·동물실험
+3R 윤리·MRSD
+3.3 제형·IND 신청
+
+COLUMN 04
+04
+임상·허가
+Clinical & Approval
+핵심 질문
+실제 환자에게 안전하고,
+치료 효과가 있을까?
+실제 제약산업
+임상 1상(안전성) → 2상(효능) →
+3상(확증)을 거쳐 최종 판매 허가
+(NDA)를 받습니다.
+CRISTA 활동
+4.1 임상 1·2·3상
+실패 시 백업 교체
+4.2 최종 허가
+
+FOOTER
+CRISTA PIPELINE LAB
+발견 → 최적화 → 개발·규제 → 임상·허가
+
+Quality requirements: slide-ready graphic design, no clipped text, no cropped border, no overlapping text, no tiny unreadable blocks, no spelling mistakes, no watermark. Make this feel like a natural educational slide from the same brand as the landing reference, calm and minimal with iridescent scientific elegance. One final image only.

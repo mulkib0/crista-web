@@ -1,0 +1,47 @@
+Use case: scientific-educational / productivity-visual.
+Create a finished premium Korean educational presentation slide image in 16:9 landscape, preferably 3840x2160. This is a flat full-bleed slide, not a photograph of a slide, not a screen or device mockup.
+
+STYLE REFERENCE: /Users/mulkib/Desktop/repo/crista-web/.review/landing/new-1440.png is the actual CRISTA landing page. Reference its warm paper ivory #f1f1e9, near-black #080b09, huge bold clean typography, calm generous whitespace, optically clear protein ribbon sculpture with narrow thin-film rainbow edges and faint soft shadows. Use a restrained scientific editorial layout, contemporary Korean sans-serif with precise legible Hangul. No neon gradient backgrounds, no dark science-fiction aesthetic, no cartoon clipart, no UI dashboard controls, no website buttons, no decorative text. Small CRISTA wordmark with 3 nested open-C curves may appear as a brand mark. Keep rainbow color confined to glass optical edges and small accents.
+
+All visible copy is provided by Gemini 4 Argon (High) in the COPY JSON supplied below. Use its visible-copy fields VERBATIM, preserving all characters, numerals, Latin tool names, units, symbols and punctuation. Do not invent, rephrase, paraphrase, translate, add, or omit text. Do not render the JSON field names, ids, author_model or illustration_brief. illustration_brief is an illustration direction only. Do not print the author model on the slide. Avoid hyphenating Korean or breaking a Korean word across lines.
+
+LAYOUT: editorial header with small eyebrow, large decisive title and smaller subtitle. Organize panels in the provided order; each panel includes title, tool, body and highlight once. For overview: four generous columns under the header, linked subtly left to right, each with a different iridescent scientific object above its copy. For detail slides: one large, conceptually accurate scientific glass illustration on the right 40%; left 55% holds 3-4 clearly separated editorial rows with title and tool, readable body, and a distinct numerical highlight. Use thin rules and generous vertical spacing, no heavy card shadows. Integrate a wide quiet analogy callout near the bottom, then a smaller but readable footnote along the lower edge. All copy belongs on a calm plain ivory surface, never on top of complex glass objects. Do not reuse an object's decorative design where it could imply empirical scientific data. Illustrations are conceptual rather than actual measured structures. Keep a comfortable safe margin of at least 5% on all edges.
+
+QUALITY: flawless Korean text, coherent hierarchy, no clipped or overlapped text, no tiny densely packed paragraphs, no invented numeric chart results, no watermark. Strong contrast. Designed for projection in a classroom.
+
+COPY JSON (all text by Gemini 4 Argon High):
+{
+  "id": "01-target",
+  "eyebrow": "CRISTA · STEP 01 · TARGET DISCOVERY",
+  "title": "질병 코드와 3D 실측 단백질 표적 탐색",
+  "subtitle": "표준 질병 온톨로지와 연관성 근거 점수로 표적을 고르고 실측 3D 구조를 불러옵니다.",
+  "panels": [
+    {
+      "title": "국제 질병 표준 분류",
+      "tool": "MONDO 온톨로지",
+      "body": "병원과 연구소마다 다른 질병 명칭을 국제 표준 분류 코드로 통일하여 알츠하이머병이나 비소세포폐암 같은 대상 질환을 명확히 정의합니다.",
+      "highlight": "MONDO_0004975 등"
+    },
+    {
+      "title": "유전자·질병 연관성 근거",
+      "tool": "Open Targets v4",
+      "body": "EMBL-EBI와 제약사 컨소시엄 데이터로 유전학(GWAS), 학술 문헌, 기존 약물, 조직 발현의 4대 근거를 0~1점 점수로 제시합니다.",
+      "highlight": "4대 근거 · 0~1점"
+    },
+    {
+      "title": "원자 좌표 실측 3D 구조",
+      "tool": "PDB (Protein Data Bank)",
+      "body": "X선 회절이나 극저온전자현미경(Cryo-EM) 실험으로 측정한 원자별 3차원(x, y, z) 좌표를 옹스트롬 단위로 기록한 구조 지도입니다.",
+      "highlight": "1 Å = 10⁻¹⁰ m"
+    },
+    {
+      "title": "엄선된 12종 표적과 보조인자",
+      "tool": "PDB 3D 구조 12종 (§6.1.1)",
+      "body": "ACHE(4EY7), EGFR(1M17), MAOB(2V5Z) 등 12종 표적에 활성에 필수적인 보조인자(FAD)와 금속 이온까지 보존했습니다.",
+      "highlight": "FAD · Zn²⁺ · Mg²⁺"
+    }
+  ],
+  "analogy": "질병과 단백질의 족보로 유력한 표적을 좁히고, 실측 3D 자물쇠 모형(PDB)을 준비하는 단계입니다.",
+  "footnote": "MONDO는 질병 분류 표준이고 연관성 점수는 단독 원인 확정이 아니며, PDB는 X선 회절·Cryo-EM 등 실험 구조를 포함합니다.",
+  "illustration_brief": "A 16:9 scientific catalog composition on textured ivory background (#f1f1e9) with crisp charcoal linework (#080b09). At the center, a translucent sculpted glass protein structure made of alpha-helices and beta-strands rests inside a delicate three-dimensional coordinate grid marking x, y, and z axes at angstrom scale. Inside the protein's active gorge, a luminous amber FAD cofactor molecule and tiny metallic spheres representing zinc and magnesium ions are suspended in place, while four subtle radar-like evidence rings project onto the base plane. Thin-film rainbow interference highlights the glass folds, with no text or symbols."
+}

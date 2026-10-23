@@ -1,0 +1,18 @@
+{
+  "slides": 5,
+  "copyFragments": 125,
+  "copyMismatch": 0,
+  "overflow": [],
+  "outside": [],
+  "overlap": [],
+  "relayLoaded": true,
+  "imagesLoaded": true,
+  "pageErrors": [],
+  "networkRequests": [],
+  "keyboard": true,
+  "contents": true,
+  "notes": true,
+  "fullscreen": true,
+  "mobileFits": true,
+  "printSlides": 5
+}

@@ -1,0 +1,50 @@
+{
+  "apps/web/src/board/steps/index.ts": {
+    "sha256": "3ddf9bc95bd88b6d563b0f12247526cfc90723022ef2a4a8e93774e2cf2eee19",
+    "lines": 31
+  },
+  "apps/web/src/board/steps/s12.tsx": {
+    "sha256": "a23908d44677a8cdb2be50f8205d75c37e01a3f7bcaf8a6db1ea7f322d791a48",
+    "lines": 1050
+  },
+  "apps/web/src/board/steps/s31.tsx": {
+    "sha256": "0abaa3294d63480a84772e3d7384096fd4965a722352185db58813f5bbe49463",
+    "lines": 578
+  },
+  "apps/web/src/board/steps/s32.tsx": {
+    "sha256": "d4c9a89da98a8d82ac356f635855c2aa4769d1d5933ee5c188a25b63d99bf75f",
+    "lines": 814
+  },
+  "apps/web/src/board/steps/s33.tsx": {
+    "sha256": "951af152e9d2b3520a08a993fbdd2aafb789625f9dc8848fa8e499dee0fdbaf3",
+    "lines": 447
+  },
+  "apps/web/src/board/steps/s41.tsx": {
+    "sha256": "23d5bcc6523c3777971b34136cbfb5f6f17df959f41309f47800f8205a7800eb",
+    "lines": 600
+  },
+  "apps/web/src/board/steps/s42.tsx": {
+    "sha256": "b955ae85f0ccb7b242f62e768e72ec6d88585eb513aef589d5e48ab6918dad3b",
+    "lines": 681
+  },
+  "apps/web/src/board/learn/StepLearn.tsx": {
+    "sha256": "b46d4afbd5a9ff4f875a8c71c8e16215bac2dcc81a1f2caca885b7996f23a17b",
+    "lines": 429
+  },
+  "apps/web/src/board/learn/PitchButton.tsx": {
+    "sha256": "31cd0d43ae28a88a1e8419253c52fe286ce7e16c13269a31ce440cd104715dce",
+    "lines": 275
+  },
+  "apps/web/src/board/market/RankButton.tsx": {
+    "sha256": "f7cd135024bf54826253e741e78c2c57d675211749146c996762e170e162792e",
+    "lines": 29
+  },
+  "apps/web/src/board/market/LedBand.tsx": {
+    "sha256": "e54465d1c708b852f8af1d2551c503979c54d165624c4676f21e0342513fbf40",
+    "lines": 92
+  },
+  "apps/web/src/screens/Teacher.tsx": {
+    "sha256": "2bcd5e6e41e441bd0ec11cf4c8be44b537bf9a3ca992dc4b4979282258a893d7",
+    "lines": 182
+  }
+}
