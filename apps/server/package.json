@@ -13,6 +13,8 @@
     "teacher:create": "node scripts/teacher-create.ts"
   },
   "dependencies": {
+    "@crista/game-rules": "*",
+    "@crista/shared-types": "*",
     "@crista-web/web-contract": "*",
     "pg": "^8.23.1",
     "ws": "^8.22.0"

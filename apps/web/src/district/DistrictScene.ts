@@ -187,7 +187,8 @@ export class DistrictScene extends Phaser.Scene {
       this.setLook(this.me, char, name, inkNo);
       return { x: this.me.sprite.x, y: this.me.sprite.y };
     }
-    const pos = at ?? SPAWN;
+    // 광장 안에서 조금씩 흩어 놓는다 — 같은 자리에 겹쳐 서면 이름표가 가려진다.
+    const pos = at ?? { x: SPAWN.x + Math.round((Math.random() - 0.5) * 160), y: SPAWN.y - Math.round(Math.random() * 24) };
     this.me = this.makeActor(pos.x, pos.y, char, name, inkNo, true);
     this.cameras.main.startFollow(this.me.sprite, true, 0.12, 0.12);
     return pos;

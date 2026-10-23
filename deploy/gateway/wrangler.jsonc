@@ -1,0 +1,17 @@
+{
+  // crista-web 게이트웨이 — `cf deploy`(deploy/README.md). 비밀 GATEWAY_SECRET 은 여기 적지 않는다(--secrets-file 로만).
+  "name": "crista-web-gateway",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-20",
+  "observability": { "enabled": true },
+  "workers_dev": false,
+  // mulk.codes 의 /crista 아래만 맡는다. 슬래시 없는 주소도 받아야 해서 두 줄. 다른 경로(/2026synapse 등)는 건드리지 않는다.
+  "routes": [
+    { "pattern": "mulk.codes/crista", "zone_name": "mulk.codes" },
+    { "pattern": "mulk.codes/crista/*", "zone_name": "mulk.codes" }
+  ],
+  "vars": {
+    "API_ORIGIN": "https://crista-web-production.up.railway.app",
+    "WEB_ORIGIN": "https://crista-web.vercel.app"
+  }
+}

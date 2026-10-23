@@ -17,3 +17,7 @@ dist/
 apps/web/public/assets/
 apps/web/public/campus/
 apps/web/dist/
+.vercel
+
+# wrangler 로컬 상태(deploy/gateway)
+.wrangler/

@@ -1,0 +1,8 @@
+{
+  "name": "crista-web-gateway",
+  "private": true,
+  "type": "module",
+  "description": "mulk.codes/crista 게이트웨이 Worker — 루트 워크스페이스에 넣지 않는다(cf deploy 가 이 폴더의 wrangler 를 쓴다)",
+  "scripts": { "deploy": "cf deploy" },
+  "devDependencies": { "wrangler": "^4.42.0" }
+}

@@ -1,0 +1,12 @@
+# Vercel 에는 화면(apps/web)만 올린다 — 빌드에 필요 없는 큰 폴더와 비밀값은 업로드하지 않는다.
+# 빌드에 필요한 것: package*.json · apps/*/package.json · apps/web · packages/* · assets/crista · tools/gen-campus-assets.mjs
+.env*
+.review/
+graft/
+design/
+docs/
+certs/
+deploy/
+apps/web/dist/
+apps/web/public/assets/
+apps/web/public/campus/
