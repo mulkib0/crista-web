@@ -1,0 +1,1853 @@
+<title>Crista 학급 전광판</title>
+<meta name="description" content="05 4단계 로드맵 위에 다른 모둠의 주가 · 임상 소식을 띄우는 학급 전광판 시안 30종.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@700&display=swap">
+<style>
+  /* 레이아웃: 왼쪽 사이드바에 번호 단계(1.~8.), 오른쪽에 그 단계의 실제 작업 화면. 아래 띠는 시안 30종을 고르는 미리보기 도구.
+     색은 Crista 브랜드(잉크 · 페이퍼 · 라임)와 시안 20.02 '박막 무지개'의 얇은 막 간섭색. 모서리는 각지게. */
+  :root {
+    --bg: #f1f1e9; --surface: #f8f8f2; --raise: #e7e8de; --fg: #080b09; --muted: #5b6358;
+    --line: rgba(8, 11, 9, 0.13); --line-strong: rgba(8, 11, 9, 0.32);
+    --acc: #080b09; --acc-fg: #f1f1e9; --hi: #c6ff4a; --hi-fg: #080b09;
+    --good: #2f6f2a; --good-bg: rgba(47, 111, 42, 0.12); --warn: #8a5a00; --warn-bg: rgba(176, 120, 0, 0.14);
+    --bad: #b2361b; --bad-bg: rgba(178, 54, 27, 0.11);
+    --film: linear-gradient(115deg, #ffd3ea 0%, #cdeaff 28%, #e4ffc0 52%, #ffe2c2 76%, #e6d4ff 100%);
+    --film-ink: #080b09;
+    --side-bg: transparent; --side-fg: var(--fg); --side-muted: var(--muted); --side-line: var(--line); --side-on: var(--film); --side-on-fg: var(--film-ink);
+    --sans: "IBM Plex Sans KR", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --side-w: 272px; --log-w: 0px; --fs: 14px;
+    color-scheme: light;
+  }
+  html[data-tone="fog"] { --bg: #e3e6dd; --surface: #edefe8; --raise: #d7dbd0; --muted: #545d52; }
+  html[data-tone="film"] { --bg: #f1f1e9; --surface: #fbfbf6; --acc: #080b09; }
+  html[data-tone="ink"], html[data-tone="night"] {
+    --bg: #080b09; --surface: #0f140f; --raise: #182018; --fg: #f1f1e9; --muted: #9da59a;
+    --line: rgba(241, 241, 233, 0.12); --line-strong: rgba(241, 241, 233, 0.32);
+    --acc: #c6ff4a; --acc-fg: #080b09;
+    --good: #9fe07a; --good-bg: rgba(159, 224, 122, 0.12); --warn: #f2c66b; --warn-bg: rgba(242, 198, 107, 0.13);
+    --bad: #ff8a6b; --bad-bg: rgba(255, 138, 107, 0.13);
+    --film: linear-gradient(115deg, #ff9fd4 0%, #8fd4ff 28%, #c6ff4a 52%, #ffc98f 76%, #c9a6ff 100%);
+    color-scheme: dark;
+  }
+  html[data-tone="night"] { --bg: #0f140f; --surface: #151c15; --raise: #1d261d; --acc: #f1f1e9; --acc-fg: #080b09; }
+  /* 사이드바 채움 */
+  .shell[data-fill="ink"] { --side-bg: #080b09; --side-fg: #f1f1e9; --side-muted: #9da59a; --side-line: rgba(241,241,233,0.14); --side-on: #c6ff4a; --side-on-fg: #080b09; }
+  .shell[data-fill="lime"] { --side-bg: #c6ff4a; --side-fg: #080b09; --side-muted: #3c4a1c; --side-line: rgba(8,11,9,0.18); --side-on: #080b09; --side-on-fg: #c6ff4a; }
+  .shell[data-fill="film"] { --side-bg: var(--film); --side-fg: #080b09; --side-muted: #3d4540; --side-line: rgba(8,11,9,0.16); --side-on: #080b09; --side-on-fg: #f1f1e9; }
+  .shell[data-fill="surface"] { --side-bg: var(--surface); }
+  .shell[data-scale="lg"] { --fs: 16px; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: var(--fs); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--hi); color: var(--hi-fg); }
+  :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .page { height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+  .shell {
+    font-size: var(--fs);
+    display: grid; min-height: 0;
+    grid-template-columns: var(--side-w) minmax(0, 1fr) var(--log-w);
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "top top top" "board board board" "side main log" "side strip log";
+  }
+  .shell[data-log="drawer"], .shell.log-open { --log-w: 300px; }
+  .shell[data-side="chip"] { --side-w: 112px; }
+  .shell[data-side="ledger"] { --side-w: 320px; }
+  .shell[data-side="numeral"] { --side-w: 286px; }
+
+  /* ── 위 띠: 회사 · 연구비 ── */
+  .top {
+    grid-area: top; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+    border-bottom: 1px solid var(--line-strong); background: var(--bg);
+  }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: -0.03em; font-size: 17px; }
+  .brand svg { width: 20px; height: 20px; }
+  .brand small { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .co { display: flex; align-items: center; gap: 6px; padding-left: 14px; border-left: 1px solid var(--line); min-width: 0; }
+  .co input { width: 9.5em; border: 1px solid transparent; background: transparent; padding: 4px 6px; font-weight: 600; }
+  .co input:hover, .co input:focus { border-color: var(--line-strong); background: var(--surface); }
+  .co .tick { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; padding: 2px 6px; border: 1px solid var(--line-strong); }
+  .top-r { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .kv { display: grid; line-height: 1.2; }
+  .kv span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .kv b { font-family: var(--mono); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .shell[data-top="hud"] .kv.cash { padding: 6px 12px; background: var(--fg); color: var(--bg); }
+  .shell[data-top="hud"] .kv.cash span { color: inherit; opacity: 0.7; }
+  .shell[data-top="hud"] .kv.cash b { font-size: 20px; }
+  .shell[data-top="quiet"] .kv.day, .shell[data-top="quiet"] .co .tick { display: none; }
+  .btn {
+    appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 38px; padding: 0 16px;
+    border: 1px solid var(--line-strong); background: transparent; border-radius: 0; font-weight: 600; font-size: 0.93em; white-space: nowrap;
+    transition: border-color .15s ease, background-color .15s ease;
+  }
+  .btn:hover:not(:disabled) { border-color: var(--fg); }
+  .btn.pri { background: var(--acc); color: var(--acc-fg); border-color: var(--acc); }
+  .btn.pri:hover:not(:disabled) { box-shadow: inset 0 0 0 999px rgba(128,128,128,0.16); }
+  .btn.film { background: var(--film); color: var(--film-ink); border-color: transparent; }
+  .btn:disabled { opacity: 0.42; }
+  .btn.sm { min-height: 30px; padding: 0 10px; font-size: 0.84em; }
+  .btn .cost { font-family: var(--mono); font-weight: 500; font-size: 0.9em; opacity: 0.8; }
+
+  /* ── 사이드바 공통 ── */
+  .side {
+    grid-area: side; overflow: auto; background: var(--side-bg); color: var(--side-fg);
+    border-right: 1px solid var(--line-strong); display: flex; flex-direction: column;
+    padding: 18px 14px 18px max(16px, env(safe-area-inset-left, 0px));
+  }
+  .side-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--side-muted); margin: 0 0 12px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .st {
+    appearance: none; width: 100%; text-align: left; border: 0; background: transparent; color: inherit; border-radius: 0;
+    display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 8px; padding: 10px 10px 10px 6px; position: relative;
+  }
+  .st:hover:not([data-s="lock"]) { background: rgba(128,128,128,0.10); }
+  .st-n { font-family: var(--mono); font-weight: 600; font-size: 15px; grid-row: span 3; line-height: 1.35; }
+  .st-t { font-weight: 600; line-height: 1.35; }
+  .st-s { font-family: var(--mono); font-size: 10.5px; color: var(--side-muted); line-height: 1.4; margin-top: 2px; }
+  .st-m { display: flex; gap: 8px; margin-top: 6px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--side-muted); }
+  .st-m .ok { color: inherit; }
+  .st[data-s="cur"] { background: var(--side-on); color: var(--side-on-fg); }
+  .st[data-s="cur"] .st-s, .st[data-s="cur"] .st-m { color: inherit; opacity: 0.78; }
+  .st[data-s="lock"] { opacity: 0.45; cursor: not-allowed; }
+  .st[data-s="done"] .st-n::after { content: " ✓"; }
+  .side-foot { margin-top: auto; padding-top: 18px; display: grid; gap: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--side-muted); }
+  .prog { height: 4px; background: var(--side-line); position: relative; }
+  .prog i { position: absolute; inset: 0 auto 0 0; background: var(--side-fg); }
+  .conn { display: grid; gap: 4px; }
+  .conn span::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 7px; background: currentColor; vertical-align: 1px; }
+
+  /* 큰 번호 */
+  .shell[data-side="numeral"] .st { grid-template-columns: 62px minmax(0,1fr); padding: 12px 10px 12px 4px; }
+  .shell[data-side="numeral"] .st-n { font-family: var(--sans); font-size: 42px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.95; }
+  .shell[data-side="numeral"] .st[data-s="lock"] .st-n, .shell[data-side="numeral"] .st[data-s="open"] .st-n { color: transparent; -webkit-text-stroke: 1px var(--side-fg); }
+  .shell[data-side="numeral"] .st[data-s="lock"] { opacity: 0.6; }
+  .shell[data-side="numeral"] .st[data-s="done"] .st-n::after { content: ""; }
+  .shell[data-side="numeral"] .st[data-s="done"] .st-t::after { content: "  ✓"; font-family: var(--mono); font-size: 12px; }
+
+  /* 레일 */
+  .shell[data-side="rail"] .steps { gap: 0; position: relative; }
+  .shell[data-side="rail"] .steps::before { content: ""; position: absolute; left: 20px; top: 16px; bottom: 16px; width: 1px; background: var(--side-line); }
+  .shell[data-side="rail"] .st { padding: 10px 8px 14px 4px; grid-template-columns: 34px minmax(0,1fr); }
+  .shell[data-side="rail"] .st[data-s="cur"] { background: transparent; color: inherit; }
+  .shell[data-side="rail"] .st[data-s="cur"] .st-t { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+  .shell[data-side="rail"] .st-n {
+    width: 32px; height: 32px; display: grid; place-items: center; font-size: 13px; position: relative; z-index: 1;
+    border: 1px solid var(--side-line); background: var(--bg); color: var(--fg);
+  }
+  .shell[data-side="rail"][data-fill="film"] .st-n { background: #f1f1e9; color: #080b09; }
+  .shell[data-side="rail"] .st[data-s="done"] .st-n { background: var(--side-fg); color: var(--side-bg, var(--bg)); border-color: var(--side-fg); }
+  .shell[data-side="rail"]:not([data-fill]) .st[data-s="done"] .st-n, .shell[data-side="rail"][data-fill="none"] .st[data-s="done"] .st-n { color: var(--bg); }
+  .shell[data-side="rail"] .st[data-s="done"] .st-n::after { content: ""; }
+  .shell[data-side="rail"] .st[data-s="cur"] .st-n { background: var(--film); color: #080b09; border-color: transparent; }
+
+  /* 4단계 묶음 */
+  .grp { display: grid; gap: 2px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--side-line); }
+  .grp:last-child { border-bottom: 0; }
+  .grp-h { display: flex; align-items: baseline; gap: 8px; margin: 0 0 4px; font-size: 1.12em; font-weight: 700; letter-spacing: -0.02em; }
+  .grp-h b { font-family: var(--mono); font-size: 0.9em; }
+  .grp-h span { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--side-muted); letter-spacing: 0.06em; margin-left: auto; }
+  .shell[data-side="phase"] .st { grid-template-columns: 38px minmax(0,1fr); padding: 7px 8px 7px 14px; }
+  .shell[data-side="phase"] .st-n { font-size: 12px; }
+  .shell[data-side="phase"] .st-m { display: none; }
+
+  /* 원장 */
+  .shell[data-side="ledger"] .side { padding-right: 0; }
+  .lg-head, .shell[data-side="ledger"] .st { display: grid; grid-template-columns: 30px minmax(0,1fr) 54px 62px; column-gap: 8px; align-items: center; }
+  .lg-head { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--side-muted); padding: 0 10px 8px 6px; border-bottom: 1px solid var(--side-line); }
+  .shell[data-side="ledger"] .steps { gap: 0; }
+  .shell[data-side="ledger"] .st { border-bottom: 1px solid var(--side-line); padding: 11px 10px 11px 6px; }
+  .shell[data-side="ledger"] .st-n { grid-row: auto; font-size: 13px; }
+  .shell[data-side="ledger"] .st-s { display: none; }
+  .shell[data-side="ledger"] .st-m { display: contents; }
+  .shell[data-side="ledger"] .st-m span { margin: 0; font-size: 10px; }
+  .shell[data-side="ledger"] .st-m span:last-child { text-align: right; }
+
+  /* 바인더 인덱스 */
+  .shell[data-side="index"] .side { padding-right: 0; }
+  .shell[data-side="index"] .steps { gap: 6px; }
+  .shell[data-side="index"] .st { border: 1px solid var(--side-line); border-right: 0; background: var(--surface); color: var(--fg); grid-template-columns: 44px minmax(0,1fr); padding: 0; }
+  .shell[data-side="index"] .st-n { grid-row: span 3; display: grid; place-items: center; font-size: 20px; border-right: 1px solid var(--side-line); align-self: stretch; }
+  .shell[data-side="index"] .st-t { padding: 9px 10px 0; }
+  .shell[data-side="index"] .st-s { padding: 0 10px; }
+  .shell[data-side="index"] .st-m { padding: 0 10px 9px; }
+  .shell[data-side="index"] .st[data-s="cur"] { background: var(--bg); color: var(--fg); margin-right: -1px; border-color: var(--line-strong); }
+  .shell[data-side="index"] .st[data-s="cur"] .st-n { background: var(--film); color: #080b09; }
+  .shell[data-side="index"] .st[data-s="done"] .st-n { background: var(--fg); color: var(--bg); }
+  .shell[data-side="index"] .st[data-s="done"] .st-n::after { content: ""; }
+
+  /* 칩 */
+  .shell[data-side="chip"] .side { padding: 14px 10px 14px max(10px, env(safe-area-inset-left, 0px)); }
+  .shell[data-side="chip"] .side-h { text-align: center; }
+  .shell[data-side="chip"] .steps { gap: 6px; }
+  .shell[data-side="chip"] .st { grid-template-columns: 1fr; justify-items: center; text-align: center; padding: 10px 4px; border: 1px solid var(--side-line); }
+  .shell[data-side="chip"] .st-n { font-size: 22px; grid-row: auto; line-height: 1; font-family: var(--sans); font-weight: 700; }
+  .shell[data-side="chip"] .st-t { font-size: 11.5px; margin-top: 4px; }
+  .shell[data-side="chip"] .st-s, .shell[data-side="chip"] .st-m, .shell[data-side="chip"] .side-foot .conn { display: none; }
+  .shell[data-side="chip"] .st[data-s="done"] .st-n::after { content: ""; }
+  .shell[data-side="chip"] .st[data-s="done"] { border-color: var(--side-fg); }
+
+  /* ── 오른쪽 작업 화면 ── */
+  .main { grid-area: main; overflow: auto; min-width: 0; background: var(--bg); }
+  .wrap { max-width: 1180px; padding: 26px max(16px, env(safe-area-inset-right, 0px)) 40px 30px; display: grid; gap: 20px; }
+  .blk { min-width: 0; }
+  .sh { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; align-items: start; }
+  .sh-n { font-size: 64px; font-weight: 700; letter-spacing: -0.06em; line-height: 0.82; grid-row: span 4; padding-top: 4px; }
+  .sh-n.film { background: var(--film); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px var(--fg); }
+  .eyebrow { margin: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .sh h1 { margin: 0; font-size: 28px; line-height: 1.15; letter-spacing: -0.035em; text-wrap: balance; }
+  .lede { margin: 2px 0 0; max-width: 64ch; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.02em; padding: 3px 7px; border: 1px solid var(--line-strong); white-space: nowrap; }
+  .chip.src { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .lab { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .panel { border: 1px solid var(--line-strong); background: var(--surface); padding: 16px; min-width: 0; }
+  .panel + .panel { margin-top: 14px; }
+  .ptitle { display: flex; align-items: baseline; gap: 10px; margin: 0 0 12px; font-size: 15px; letter-spacing: -0.01em; }
+  .ptitle small { font-family: var(--mono); font-size: 10.5px; font-weight: 400; color: var(--muted); margin-left: auto; }
+  .fld + .fld { margin-top: 16px; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .opt { appearance: none; text-align: left; border: 1px solid var(--line-strong); background: var(--bg); padding: 10px 12px; display: grid; gap: 2px; border-radius: 0; }
+  .opt:hover { border-color: var(--fg); }
+  .opt b { font-size: 1em; }
+  .opt span { font-size: 11.5px; }
+  .opt[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .opt[aria-pressed="true"] .muted { color: inherit; opacity: 0.7; }
+  .rng { display: grid; grid-template-columns: minmax(0, 1fr) 64px; gap: 10px; align-items: center; }
+  .rng input { width: 100%; accent-color: var(--fg); }
+  .rng output { font-family: var(--mono); font-size: 12.5px; text-align: right; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .seg { display: inline-flex; border: 1px solid var(--line-strong); }
+  .seg button { border: 0; background: transparent; padding: 6px 12px; font-family: var(--mono); font-size: 12px; border-radius: 0; }
+  .seg button + button { border-left: 1px solid var(--line-strong); }
+  .seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+  .chk { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+  .chk input { accent-color: var(--fg); width: 15px; height: 15px; }
+  .txt { width: 100%; border: 1px solid var(--line-strong); background: var(--bg); padding: 9px 11px; border-radius: 0; }
+  .txt:focus { outline: none; border-color: var(--fg); }
+  select.txt { appearance: auto; }
+  .hint { font-size: 12px; margin-top: 6px; color: var(--muted); }
+  .hint.bad { color: var(--bad); }
+  .hint.good { color: var(--good); }
+  .acts { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .acts .note { font-size: 12px; color: var(--muted); }
+  .empty { border: 1px dashed var(--line-strong); padding: 26px 18px; color: var(--muted); text-align: center; }
+
+  /* 표 */
+  .tbl-w { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th { text-align: left; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+  td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  tr.pick { cursor: pointer; }
+  tr.pick:hover td { background: rgba(128,128,128,0.08); }
+  tr.on td { background: var(--hi); color: var(--hi-fg); }
+  html[data-tone="ink"] tr.on td, html[data-tone="night"] tr.on td { background: rgba(198,255,74,0.16); color: var(--fg); }
+  tr.dis td { opacity: 0.5; }
+  .bar { position: relative; height: 8px; background: var(--line); min-width: 60px; }
+  .bar i { position: absolute; inset: 0 auto 0 0; background: var(--fg); }
+  .bar.film i { background: var(--film); }
+  .tag { display: inline-block; font-family: var(--mono); font-size: 10.5px; padding: 1px 6px; border: 1px solid currentColor; white-space: nowrap; }
+  .sig { display: inline-block; font-size: 11.5px; padding: 2px 7px; white-space: nowrap; font-weight: 600; }
+  .sig.g { color: var(--good); background: var(--good-bg); }
+  .sig.w { color: var(--warn); background: var(--warn-bg); }
+  .sig.b { color: var(--bad); background: var(--bad-bg); }
+
+  /* 깔때기 */
+  .fun { display: grid; gap: 6px; }
+  .fun-r { display: grid; grid-template-columns: 112px minmax(0,1fr) 46px; gap: 10px; align-items: center; font-size: 12.5px; }
+  .fun-r .bar { height: 18px; }
+  .fun-r .bar i { background: var(--fg); }
+  .fun-r:last-child .bar i { background: var(--film); outline: 1px solid var(--fg); }
+  .fun-r b { font-family: var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* 도킹 막대 */
+  .dk { display: grid; gap: 4px; }
+  .dk-r { display: grid; grid-template-columns: minmax(90px, 160px) minmax(0,1fr) 76px 52px; gap: 10px; align-items: center; font-size: 12.5px; padding: 4px 0; cursor: pointer; border: 0; background: transparent; text-align: left; width: 100%; }
+  .dk-r[aria-pressed="true"] { background: rgba(128,128,128,0.12); }
+  .dk-r .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dk-t { position: relative; height: 16px; background: var(--line); }
+  .dk-t i { position: absolute; inset: 0 auto 0 0; background: var(--fg); }
+  .dk-t i.ref { background: repeating-linear-gradient(45deg, var(--fg) 0 3px, transparent 3px 6px); outline: 1px solid var(--fg); }
+  .dk-t em { position: absolute; top: -4px; bottom: -4px; width: 0; border-left: 1px dashed var(--muted); }
+  .dk-axis { display: grid; grid-template-columns: minmax(90px, 160px) minmax(0,1fr) 76px 52px; gap: 10px; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .dk-axis div { display: flex; justify-content: space-between; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .legend i { display: inline-block; width: 14px; height: 8px; margin-right: 6px; background: var(--fg); vertical-align: 0; }
+  .legend i.ref { background: repeating-linear-gradient(45deg, var(--fg) 0 3px, transparent 3px 6px); outline: 1px solid var(--fg); }
+  .legend i.ln { width: 0; height: 12px; border-left: 1px dashed var(--muted); background: none; margin: 0 8px 0 4px; vertical-align: -2px; }
+
+  /* 구조식 */
+  .mol { display: block; width: 100%; height: 100%; max-width: 100%; }
+  .molbox { max-width: 100%; width: 100%; }
+  .molbox.thumb { width: 64px; }
+  .molbox { border: 1px solid var(--line); background: var(--bg); display: grid; place-items: center; overflow: hidden; }
+  .molbox .fallback { font-family: var(--mono); font-size: 10.5px; color: var(--muted); padding: 8px; word-break: break-all; }
+  .thumb { width: 64px; height: 44px; }
+  .twin { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; }
+  .smi { font-family: var(--mono); font-size: 11px; word-break: break-all; color: var(--muted); }
+
+  /* 점수 게이지 */
+  .gauge { display: grid; gap: 6px; }
+  .gauge-h { display: flex; justify-content: space-between; align-items: baseline; }
+  .gauge-h b { font-family: var(--mono); font-size: 26px; letter-spacing: -0.02em; }
+  .gauge-t { position: relative; height: 14px; background: var(--line); }
+  .gauge-t i { position: absolute; inset: 0 auto 0 0; background: var(--film); outline: 1px solid var(--fg); }
+  .gauge-t em { position: absolute; top: -5px; bottom: -5px; border-left: 1.5px solid var(--fg); }
+  .gauge-t em span { position: absolute; top: 20px; left: -14px; font-family: var(--mono); font-size: 9.5px; font-style: normal; color: var(--muted); white-space: nowrap; }
+  .gauge-sp { height: 14px; }
+  .why { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 3px; font-size: 12px; color: var(--muted); }
+  .why li { padding-left: 14px; position: relative; }
+  .why li::before { content: "·"; position: absolute; left: 4px; }
+  .why li:last-child { color: var(--fg); font-family: var(--mono); font-size: 11.5px; }
+
+  /* 서류 · 도장 */
+  .doc { border: 1px solid var(--fg); background: var(--surface); padding: 20px 22px; position: relative; overflow: hidden; }
+  .doc h3 { margin: 0 0 4px; font-size: 18px; letter-spacing: -0.02em; }
+  .doc dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 14px 0 0; font-size: 13px; }
+  .doc dt { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+  .doc dd { margin: 0; min-width: 0; word-break: break-word; }
+  .stamp {
+    position: absolute; right: 18px; top: 18px; width: 108px; height: 108px; border-radius: 50%; display: grid; place-items: center; text-align: center;
+    transform: rotate(-12deg); font-weight: 700; font-size: 13px; line-height: 1.2; color: #080b09;
+    background: var(--film); box-shadow: inset 0 0 0 3px #080b09, inset 0 0 0 6px rgba(255,255,255,0.6), inset 0 0 0 7.5px #080b09;
+  }
+  .stamp small { display: block; font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 0.08em; }
+  .stamp.bad { background: var(--bad-bg); color: var(--bad); box-shadow: inset 0 0 0 3px var(--bad); }
+
+  /* 임상 */
+  .ph { display: grid; gap: 10px; }
+  .ph-r { display: grid; grid-template-columns: 90px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 14px; border: 1px solid var(--line-strong); background: var(--bg); }
+  .ph-r b { font-size: 15px; }
+  .ph-r .res { font-size: 12.5px; }
+  .ph-r[data-r="pass"] { border-color: var(--good); }
+  .ph-r[data-r="fail"] { border-color: var(--bad); }
+
+  /* 포장 */
+  .pk { display: grid; place-items: center; height: 168px; background: var(--raise); border: 1px solid var(--line); }
+  .pill { position: relative; display: grid; place-items: center; font-family: var(--mono); font-size: 11px; font-weight: 600; color: #080b09; letter-spacing: 0.04em; }
+  .pill.tablet { width: 104px; height: 104px; border-radius: 50%; box-shadow: inset 0 -6px 0 rgba(0,0,0,0.12), 0 0 0 1px #080b09; }
+  .pill.tablet::after { content: ""; position: absolute; left: 14px; right: 14px; top: 50%; border-top: 1px solid rgba(8,11,9,0.4); }
+  .pill.capsule { width: 150px; height: 58px; border-radius: 29px; box-shadow: 0 0 0 1px #080b09; overflow: hidden; }
+  .pill.capsule::before { content: ""; position: absolute; inset: 0 50% 0 0; background: var(--film); }
+  .pill.capsule span { position: relative; }
+  .pill.vial { width: 64px; height: 120px; box-shadow: 0 0 0 1px #080b09; margin-top: 14px; }
+  .pill.vial::before { content: ""; position: absolute; top: -18px; left: 10px; right: 10px; height: 18px; background: #080b09; }
+  .pill.patch { width: 120px; height: 96px; box-shadow: 0 0 0 1px #080b09, inset 0 0 0 10px rgba(255,255,255,0.45); }
+
+  /* 진행 중 작업 */
+  .job { border: 1px solid var(--fg); padding: 12px 14px; display: grid; gap: 8px; background: var(--surface); }
+  .job-h { display: flex; justify-content: space-between; gap: 10px; font-family: var(--mono); font-size: 12px; }
+  .job .bar { height: 6px; }
+  .job .bar i { background: var(--film); transition: width .12s linear; outline: 1px solid var(--fg); }
+
+  /* 배치: 시트 · 분할 · 콘솔 · 노트 · 결과 먼저 · 데크 */
+  .m-split { display: grid; grid-template-columns: minmax(300px, 0.85fr) minmax(0, 1.15fr); gap: 20px; align-items: start; }
+  .m-split .col-a { display: grid; gap: 20px; position: sticky; top: 0; }
+  .m-split .col-b { display: grid; gap: 14px; min-width: 0; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--line-strong); }
+  .tabs button { border: 0; border-bottom: 2px solid transparent; background: transparent; padding: 10px 16px; font-weight: 600; margin-bottom: -1px; border-radius: 0; }
+  .tabs button[aria-selected="true"] { border-bottom-color: var(--fg); }
+  .tabs button .mono { font-size: 10.5px; color: var(--muted); margin-left: 6px; }
+  .dock { position: sticky; bottom: 0; background: var(--bg); border-top: 1px solid var(--line-strong); padding: 12px 0; }
+  .cell { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 14px; }
+  .cell-g { font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 14px; text-align: right; border-right: 1px solid var(--line-strong); padding-right: 12px; }
+  .cell-g b { display: block; color: var(--fg); font-weight: 600; }
+  .m-board .ctl-strip { border-top: 1px solid var(--line-strong); padding-top: 18px; }
+  .m-board .ctl-strip .panel { background: transparent; border-style: dashed; }
+  .m-deck { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .m-deck .wide { grid-column: 1 / -1; }
+  .m-deck .card { border: 1px solid var(--line-strong); background: var(--surface); padding: 18px; min-width: 0; }
+  .m-deck .card .panel { border: 0; padding: 0; background: transparent; }
+  .m-deck .card-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; display: flex; justify-content: space-between; }
+
+  /* 로그 */
+  .log { grid-area: log; border-left: 1px solid var(--line-strong); background: var(--surface); display: none; min-height: 0; flex-direction: column; }
+  .shell[data-log="drawer"] .log, .shell.log-open .log { display: flex; }
+  .strip { grid-area: strip; display: none; border-top: 1px solid var(--line-strong); background: var(--surface); max-height: 132px; overflow: auto; }
+  .shell[data-log="strip"]:not(.log-open) .strip { display: block; }
+  .log-h { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .log-b { overflow: auto; padding: 8px 0; flex: 1; min-height: 0; }
+  .ln { display: grid; grid-template-columns: 50px 36px minmax(0, 1fr); gap: 6px; padding: 3px 14px; font-family: var(--mono); font-size: 10.5px; line-height: 1.45; }
+  .ln .d { color: var(--muted); }
+  .ln .dir { font-weight: 600; }
+  .ln .dir.s { color: var(--good); }
+  .ln .ev { word-break: break-word; }
+  .ln .ev i { font-style: normal; color: var(--muted); }
+  .strip .ln { padding-left: 30px; }
+
+  .toast { position: fixed; z-index: 30; left: 50%; transform: translateX(-50%); top: calc(14px + env(safe-area-inset-top, 0px)); max-width: calc(100% - 32px); padding: 10px 16px; background: var(--fg); color: var(--bg); font-size: 13px; }
+
+  /* ── 미리보기 도구(시안 고르기) ── */
+  .tools {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #080b09; color: #f1f1e9; border-top: 1px solid rgba(241,241,233,0.32);
+    padding: 9px max(16px, env(safe-area-inset-right, 0px)) calc(9px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+  }
+  .tool-btn { background: transparent; color: #f1f1e9; border: 1px solid rgba(241,241,233,0.32); padding: 6px 11px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; border-radius: 0; }
+  .tool-btn:hover { border-color: #f1f1e9; }
+  .tools :focus-visible { outline-color: #c6ff4a; }
+  .pick-w { position: relative; flex: 0 1 300px; min-width: 0; }
+  .pick-w::after { content: "▾"; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #9da59a; pointer-events: none; }
+  #vpick { appearance: none; -webkit-appearance: none; width: 100%; padding: 6px 28px 6px 10px; border: 1px solid rgba(241,241,233,0.32); border-radius: 0; background: transparent; color: #f1f1e9; font-family: var(--mono); font-size: 12px; text-overflow: ellipsis; }
+  #vpick option { background: #0f140f; color: #f1f1e9; }
+  .vcount { color: #9da59a; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .videa { color: #c9cfc4; font-family: var(--sans); font-size: 12px; letter-spacing: 0; min-width: 0; flex: 1 1 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .keys { display: flex; gap: 12px; color: #9da59a; font-size: 10px; text-transform: uppercase; white-space: nowrap; }
+  .keys kbd { font-family: var(--mono); font-size: 10px; color: #f1f1e9; border: 1px solid rgba(241,241,233,0.32); padding: 1px 5px; margin-right: 4px; }
+
+  /* ── 학급 전광판: 다른 모둠의 공개 소식(market:news) ── */
+  .board { grid-area: board; position: relative; display: flex; align-items: stretch; min-width: 0; border-bottom: 1px solid var(--line-strong); background: var(--surface); color: var(--fg); --b-line: var(--line); --b-muted: var(--muted); --up: var(--good); --dn: var(--bad); }
+  .board.dk { --bg: #0b0d0a; --surface: #121711; --fg: #f1f1e9; --muted: #9da59a; --line: rgba(241,241,233,0.14); --line-strong: rgba(241,241,233,0.3);
+    --b-line: rgba(241,241,233,0.16); --b-muted: #9da59a; --up: #8dff5a; --dn: #ff6b4a; --hi: #c6ff4a; background: #0b0d0a; color: #f1f1e9; }
+  .board.dk.bd-floor { background: #0d1f14; }
+  .board.bd-film { background: var(--film); color: #080b09; --b-muted: #3d4540; }
+  .board.bd-crawl { background: var(--bg); }
+  .bd-in { flex: 1; min-width: 0; padding: 9px 0 9px max(16px, env(safe-area-inset-left, 0px)); display: grid; gap: 6px; align-content: center; }
+  .bd-ctl { flex: none; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 5px; padding: 6px max(16px, env(safe-area-inset-right, 0px)) 6px 12px; border-left: 1px solid var(--b-line); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; }
+  .live { display: inline-flex; align-items: center; gap: 6px; color: var(--b-muted); text-transform: uppercase; }
+  .live i { width: 7px; height: 7px; background: var(--dn); border-radius: 50%; }
+  .board:not(.paused) .live i { animation: blink 1.4s steps(2) infinite; }
+  .tool { background: transparent; color: inherit; border: 1px solid var(--line-strong); padding: 3px 8px; font-family: var(--mono); font-size: 10.5px; border-radius: 0; white-space: nowrap; }
+  .tool:hover { border-color: currentColor; }
+  .up { color: var(--up); }
+  .dn { color: var(--dn); }
+  .inkd { display: inline-block; width: 9px; height: 9px; flex: none; margin-right: 6px; }
+  .mq { overflow: hidden; min-width: 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
+  .mq.static { overflow-x: auto; display: flex; gap: 22px; -webkit-mask-image: none; mask-image: none; }
+  .mq-track { display: flex; width: max-content; animation: mq 40s linear infinite; }
+  .mq-track.rev { animation-direction: reverse; }
+  .mq-seg { display: flex; align-items: center; gap: 28px; padding-right: 28px; }
+  .board.paused .mq-track, .mq:hover .mq-track, .mq:focus-within .mq-track { animation-play-state: paused; }
+  @keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes blink { 50% { opacity: 0.2; } }
+  .ni { appearance: none; border: 0; background: transparent; color: inherit; padding: 2px 0; display: inline-flex; align-items: baseline; gap: 8px; white-space: nowrap; text-align: left; font-size: 13px; border-radius: 0; min-width: 0; max-width: 100%; }
+  .ni b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+  .ni-t { font-family: var(--mono); font-size: 11px; color: var(--b-muted, var(--muted)); }
+  .ni-c { font-family: var(--mono); font-size: 11.5px; white-space: nowrap; }
+  .ni.bad b { color: var(--dn, var(--bad)); }
+  .ni.fresh { background: var(--hi); color: #080b09; padding-inline: 6px; }
+  .ni.fresh b, .ni.fresh .ni-c, .ni.fresh .ni-t { color: #080b09; }
+  .ni:hover b { text-decoration: underline; text-underline-offset: 3px; }
+  .b-sub { min-width: 0; overflow: hidden; display: flex; }
+  .thin .ni, .thin .tp { font-size: 12.5px; }
+  .tp { appearance: none; border: 0; background: transparent; color: inherit; display: inline-flex; gap: 8px; align-items: baseline; font-family: var(--mono); font-size: 13px; white-space: nowrap; padding: 2px 0; }
+  .tp b { font-weight: 600; }
+
+  .led { font-family: var(--mono); font-weight: 600; letter-spacing: 0.06em;
+    -webkit-mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); -webkit-mask-size: 3px 3px; mask-image: radial-gradient(circle, #000 0.95px, transparent 1.3px); mask-size: 3px 3px; }
+  .bd-led .bd-in { padding-block: 14px; }
+  .led-i { appearance: none; border: 0; background: transparent; color: #ffb21a; font-size: 22px; padding: 0; white-space: nowrap; text-shadow: 0 0 8px rgba(255,178,26,0.55); }
+  .led-i.r { color: #ff5a3c; text-shadow: 0 0 8px rgba(255,90,60,0.55); }
+  .led-i.g { color: #8dff5a; text-shadow: 0 0 8px rgba(141,255,90,0.5); }
+
+  .flap { display: grid; gap: 3px; padding-right: 8px; }
+  .fl-r { appearance: none; border: 0; background: transparent; color: inherit; display: grid; grid-template-columns: 104px 92px minmax(0, 1fr) 84px; gap: 10px; align-items: center; text-align: left; padding: 0; font-size: 13px; }
+  .fl-h { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; color: var(--b-muted); text-transform: uppercase; }
+  .fc { display: inline-grid; place-items: center; width: 18px; height: 22px; margin-right: 2px; background: #1c211b; border-top: 1px solid #2f362d; font-style: normal; font-family: var(--mono); font-weight: 600; font-size: 13px; color: #f6f1d0; position: relative; }
+  .fc::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid #0b0d0a; }
+  .fl-txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #f6f1d0; }
+  .fl-r.bad .fl-txt { color: var(--dn); }
+  .fl-r.flip .fc { animation: flip 0.45s steps(4) 2; }
+  @keyframes flip { 50% { transform: scaleY(0.1); } }
+
+  .brk { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; padding-right: 8px; }
+  .brk-l { background: var(--fg); color: var(--bg); font-weight: 700; padding: 8px 12px; font-size: 13px; white-space: nowrap; }
+  .brk.bad .brk-l { background: var(--bad); color: #fff; }
+  .brk-b { appearance: none; border: 0; background: transparent; color: inherit; text-align: left; display: grid; gap: 2px; padding: 0; min-width: 0; }
+  .brk-b b { font-size: 20px; letter-spacing: -0.02em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .brk-b span { font-size: 12px; color: var(--b-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .brk-d { display: flex; gap: 4px; }
+  .brk-d i { width: 16px; height: 3px; background: var(--line-strong); }
+  .brk-d i.on { background: var(--fg); }
+
+  .fm { display: flex; align-items: center; gap: 12px; min-width: 0; padding-right: 8px; }
+  .fm-b { appearance: none; border: 0; background: transparent; color: inherit; display: flex; gap: 10px; align-items: baseline; min-width: 0; flex: 1; text-align: left; padding: 4px 0; white-space: nowrap; overflow: hidden; }
+  .fm-b b { font-size: 15px; }
+  .fm-b .muted { overflow: hidden; text-overflow: ellipsis; color: #3d4540; }
+  .fm .muted { color: #3d4540; }
+
+  .rk { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding-right: 8px; }
+  .rk-c { appearance: none; border: 1px solid var(--line-strong); background: var(--bg); color: inherit; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 10px; padding: 8px 10px; text-align: left; border-radius: 0; min-width: 0; }
+  .rk-c.me, .cd.me, .vs-s.me { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+  .rk-n { font-size: 26px; font-weight: 700; line-height: 1; grid-row: span 2; letter-spacing: -0.04em; }
+  .rk-t { display: flex; align-items: center; gap: 2px; min-width: 0; white-space: nowrap; overflow: hidden; }
+  .rk-t small { font-family: var(--mono); color: var(--b-muted); margin-left: 6px; }
+  .rk-v { display: flex; gap: 10px; font-size: 12px; }
+
+  .race { display: grid; gap: 4px; padding-right: 8px; }
+  .race-h { display: grid; grid-template-columns: 152px repeat(8, minmax(0, 1fr)) 232px; font-family: var(--mono); font-size: 9.5px; color: var(--b-muted); letter-spacing: 0.04em; }
+  .race-h span { border-left: 1px dashed var(--line-strong); padding-left: 4px; white-space: nowrap; overflow: hidden; }
+  .race-h span:first-child, .race-h span:last-child { border: 0; }
+  .lane { appearance: none; border: 0; background: transparent; color: inherit; display: grid; grid-template-columns: 140px minmax(0, 1fr) 220px; gap: 12px; align-items: center; padding: 2px 0; text-align: left; font-size: 12.5px; }
+  .lane.me .lane-n { font-weight: 700; }
+  .lane-n { display: flex; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lane-t { position: relative; height: 10px; border: 1px solid var(--line); background: repeating-linear-gradient(90deg, var(--line-strong) 0 1px, transparent 1px 12.5%); }
+  .lane-t em { position: absolute; inset: 0 auto 0 0; opacity: 0.35; }
+  .lane-t i { position: absolute; top: 50%; width: 14px; height: 14px; transform: translate(-50%, -50%); box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--fg); transition: left 0.6s ease; }
+  .lane-l { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--b-muted); font-size: 12px; }
+  .race.sm .lane { padding: 0; }
+  .race.sm .lane-t { height: 7px; }
+  .race.sm .lane-t i { width: 10px; height: 10px; }
+
+  .dual { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 18px; padding-right: 8px; align-items: start; }
+  .qt { font-size: 12.5px; }
+  .qt td, .qt th { padding: 3px 8px; }
+  .feed, .mx-news, .fo-list, .td-list { display: grid; }
+  .feed .ni, .mx-news .ni, .fo-list .ni, .td-list .ni { display: flex; width: 100%; overflow: hidden; }
+
+  .lb { appearance: none; border: 0; background: transparent; display: flex; gap: 22px; align-items: center; padding: 10px 8px 10px 0; width: 100%; text-align: left; color: #ffb21a; min-width: 0; }
+  .lb .led { font-size: 34px; line-height: 1.1; white-space: nowrap; }
+  .lb-h { overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; text-shadow: 0 0 10px rgba(255,178,26,0.5); }
+  .lb.r .lb-h, .lb.r .lb-c { color: #ff5a3c; }
+
+  .np { padding-right: 8px; display: grid; gap: 6px; font-family: "Noto Serif KR", "Nanum Myeongjo", serif; }
+  .np-k { display: flex; justify-content: space-between; gap: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--b-muted); border-bottom: 2px solid var(--fg); padding-bottom: 4px; }
+  .np-g { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 18px; }
+  .np-main, .np-side button { appearance: none; border: 0; background: transparent; color: inherit; text-align: left; padding: 0; display: grid; gap: 3px; font-family: inherit; }
+  .np-main b { font-size: 24px; line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
+  .np-kick { font-family: var(--mono); font-size: 11px; color: var(--b-muted); }
+  .np-main > span:last-child { font-family: var(--sans); font-size: 13px; color: var(--b-muted); }
+  .np-side { display: grid; gap: 8px; border-left: 1px solid var(--line-strong); padding-left: 14px; align-content: start; }
+  .np-side b { font-size: 14px; line-height: 1.3; }
+  .np-side span { font-family: var(--mono); font-size: 10.5px; color: var(--b-muted); }
+
+  .cds { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding-right: 8px; }
+  .cd { appearance: none; border: 1px solid var(--line-strong); background: var(--bg); color: inherit; text-align: left; display: grid; gap: 4px; padding: 10px; border-radius: 0; min-width: 0; }
+  .cd-h { display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
+  .cd-h small { margin-left: auto; font-family: var(--mono); color: var(--b-muted); }
+  .cd-p { display: flex; gap: 10px; align-items: baseline; }
+  .cd-p b { font-size: 18px; }
+  .cd-l { font-size: 11.5px; color: var(--b-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .spk { max-width: 100%; height: auto; display: block; }
+
+  .spk-t { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 26px; padding-right: 8px; }
+  .spk-r { appearance: none; border: 0; background: transparent; color: inherit; display: grid; grid-template-columns: 74px minmax(0, 1fr) 60px 64px; gap: 10px; align-items: center; text-align: left; padding: 2px 0; font-size: 12.5px; }
+  .spk-r > span:first-child { display: flex; align-items: center; }
+
+  .heat { display: flex; gap: 4px; padding-right: 8px; min-height: 66px; }
+  .ht { appearance: none; border: 0; color: var(--fg); display: grid; align-content: center; gap: 1px; padding: 8px 10px; text-align: left; border-radius: 0; flex-basis: 0; min-width: 0; overflow: hidden; transition: flex-grow 0.6s ease; }
+  .ht b { font-family: var(--mono); font-size: 15px; }
+  .ht small { font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .tl { display: flex; gap: 16px; align-items: center; min-width: 0; }
+  .tl .ni { min-width: 0; overflow: hidden; }
+  .tl > .muted { margin-left: auto; font-size: 10.5px; white-space: nowrap; padding-right: 8px; }
+  .btoast { position: absolute; z-index: 25; right: max(16px, env(safe-area-inset-right, 0px)); top: calc(100% + 10px); width: min(340px, calc(100vw - 32px)); background: var(--fg); color: var(--bg); padding: 14px 16px; display: grid; gap: 4px; box-shadow: 0 10px 30px rgba(8,11,9,0.22); animation: pop 0.25s ease-out; }
+  .btoast .lab { color: inherit; opacity: 0.7; margin: 0; }
+  .btoast b { font-size: 16px; }
+  .btoast.bad { box-shadow: inset 4px 0 0 #ff6b4a, 0 10px 30px rgba(8,11,9,0.22); }
+  .btoast .up { color: #8dff5a; }
+  .btoast .dn { color: #ff8a6b; }
+  @keyframes pop { from { transform: translateY(-6px); opacity: 0; } }
+
+  .fl { font-size: 12.5px; }
+  .fl th { color: #8fb79a; border-bottom-color: rgba(143,183,154,0.4); }
+  .fl td { border-bottom-color: rgba(241,241,233,0.08); padding: 4px 8px; }
+  .fl tr.flash td { animation: flash 1.2s ease-out 2; }
+  @keyframes flash { 0% { background: rgba(198,255,74,0.35); } 100% { background: transparent; } }
+  .fl-n { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .mx-w { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 18px; padding-right: 8px; align-items: center; }
+  .mx { display: grid; grid-template-columns: 130px repeat(8, minmax(0, 1fr)); gap: 3px; align-items: center; }
+  .mx-h { font-family: var(--mono); font-size: 10px; color: var(--b-muted); text-align: center; }
+  .mx-n { appearance: none; border: 0; background: transparent; color: inherit; display: flex; align-items: center; font-size: 12px; text-align: left; padding: 0; white-space: nowrap; overflow: hidden; }
+  .mx-c { height: 14px; border: 1px solid var(--line-strong); }
+  .mx-c.on { background: var(--ink); border-color: var(--ink); }
+  .mx-c.cur { background: repeating-linear-gradient(45deg, var(--ink) 0 2px, transparent 2px 5px); border-color: var(--ink); }
+
+  .tln { display: grid; gap: 20px; padding-right: 8px; }
+  .tln-ax { position: relative; height: 34px; border-bottom: 1px solid var(--line-strong); margin: 0 30px 0 26px; }
+  .tln-d { position: absolute; bottom: 6px; width: 12px; height: 12px; border-radius: 50%; border: 0; padding: 0; transform: translateX(-50%); box-shadow: 0 0 0 2px var(--surface); }
+  .tln-d.bad { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--bad); }
+  .tln-d.last { width: 16px; height: 16px; bottom: 4px; }
+  .tln-k { position: absolute; bottom: -17px; transform: translateX(-50%); font-family: var(--mono); font-size: 9.5px; color: var(--b-muted); white-space: nowrap; }
+
+  .lmp { display: grid; gap: 3px; padding-right: 8px; }
+  .lmp-r { appearance: none; border: 0; background: transparent; color: inherit; display: grid; grid-template-columns: 90px repeat(4, max-content) minmax(0, 1fr); gap: 6px; align-items: center; padding: 1px 0; text-align: left; }
+  .lmp-n { display: flex; align-items: center; font-family: var(--mono); }
+  .lamp { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; padding: 3px 7px; border: 1px solid rgba(241,241,233,0.18); color: rgba(241,241,233,0.35); }
+  .lamp.on { color: #080b09; border-color: transparent; }
+  .lamp.on.STRONG_BUY { background: #8dff5a; box-shadow: 0 0 10px rgba(141,255,90,0.6); }
+  .lamp.on.BUY { background: #c6ff4a; box-shadow: 0 0 8px rgba(198,255,74,0.45); }
+  .lamp.on.HOLD { background: #ffb21a; }
+  .lamp.on.SHORT_WARNING { background: #ff5a3c; box-shadow: 0 0 10px rgba(255,90,60,0.55); }
+  .lmp-l { font-size: 12px; color: var(--b-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-left: 8px; }
+
+  .dg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-right: 8px; }
+  .dg-c { appearance: none; border: 0; border-left: 1px solid var(--b-line); background: transparent; color: #f1f1e9; display: grid; padding: 2px 12px; text-align: left; }
+  .dg-tk { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; }
+  .dg-n { font-size: 40px; line-height: 1; color: #f1f1e9; }
+  .dg-n.up { color: #8dff5a; }
+  .dg-n.dn { color: #ff5a3c; }
+  .dg-ch { font-family: var(--mono); font-size: 11.5px; }
+
+  .cap { appearance: none; border: 0; background: transparent; color: inherit; display: grid; grid-template-columns: 6px minmax(0, 1fr) 120px; gap: 14px; align-items: center; width: 100%; text-align: left; padding: 4px 8px 4px 0; }
+  .cap-bar { align-self: stretch; }
+  .cap-tx { display: grid; gap: 2px; min-width: 0; }
+  .cap-tx b { font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cap-tx span { font-size: 12.5px; color: var(--b-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cap.bad .cap-tx b { color: var(--dn); }
+  .cap-p { height: 3px; background: var(--line); position: relative; overflow: hidden; }
+  .cap-p i { position: absolute; inset: 0; background: var(--fg); transform-origin: left; animation: capt 5s linear forwards; }
+  .board.paused .cap-p i { animation-play-state: paused; }
+  @keyframes capt { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  .sc { font-size: 12.5px; }
+  .sc th, .sc td { padding: 3px 14px; border-bottom-color: var(--b-line); }
+  .sc thead th { font-size: 11px; color: #f1f1e9; }
+  .sc tbody th { font-family: var(--sans); font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--b-muted); }
+  .sc td { font-family: var(--mono); font-size: 16px; }
+  .sc td.lead { color: #ffb21a; font-weight: 700; }
+
+  .nt { display: grid; padding-right: 8px; }
+  .nt-r { appearance: none; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: inherit; display: grid; grid-template-columns: auto 44px 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 3px 0; text-align: left; font-size: 12.5px; }
+  .nt-r b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nt-r.bad b { color: var(--dn); }
+  .nt-r.fresh { background: var(--hi); color: #080b09; }
+  .nt-r .tag { font-size: 9.5px; }
+
+  .sp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px; padding-right: 8px; }
+  .sp-a { appearance: none; border: 0; background: var(--film); color: #080b09; text-align: left; display: grid; gap: 2px; padding: 10px 14px; border-radius: 0; }
+  .sp-a b { font-size: 22px; letter-spacing: -0.02em; }
+  .sp-a .lab, .sp-a .muted { margin: 0; color: #3d4540; }
+  .sp-a .muted { font-size: 12px; }
+  .sp-r { display: grid; gap: 4px; align-content: center; }
+  .sp-i { appearance: none; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: inherit; display: grid; grid-template-columns: 20px auto minmax(0, 1fr) auto auto; gap: 8px; align-items: center; text-align: left; padding: 4px 0; font-size: 13px; }
+  .sp-i.me b { text-decoration: underline; text-underline-offset: 3px; }
+
+  .mr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; padding-right: 8px; }
+  .mr-c { appearance: none; border: 1px solid var(--fg); background: var(--bg); color: inherit; display: grid; gap: 1px; padding: 6px 12px; text-align: left; border-radius: 0; max-width: 420px; }
+  .mr-c b { font-size: 15px; }
+  .mr-c .muted { font-size: 11.5px; }
+
+  .cr { appearance: none; border: 0; background: transparent; color: inherit; font-size: 13px; white-space: nowrap; padding: 2px 0; }
+  .cr-sep { color: var(--b-muted); }
+
+  .gr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 26px; padding-right: 8px; }
+  .gr-r { appearance: none; border: 0; background: transparent; color: #ffb21a; display: grid; grid-template-columns: 70px 90px 96px minmax(0, 1fr); gap: 8px; text-align: left; padding: 2px 0; font-size: 17px; white-space: pre; }
+  .gr-r .up { color: #8dff5a; }
+  .gr-r .dn { color: #ff5a3c; }
+  .gr-rt { font-size: 12px; align-self: center; overflow: hidden; }
+  .gr-m { grid-column: 1 / -1; appearance: none; border: 0; border-top: 1px dashed rgba(255,178,26,0.3); background: transparent; color: #ffb21a; text-align: left; padding: 6px 0 0; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gr-m.r { color: #ff5a3c; }
+
+  .vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 14px; align-items: stretch; padding-right: 8px; }
+  .vs-s { appearance: none; border: 1px solid var(--line-strong); background: var(--bg); color: inherit; display: grid; gap: 3px; padding: 8px 12px; text-align: left; border-radius: 0; min-width: 0; }
+  .vs-s .lab { margin: 0; }
+  .vs-s b { display: flex; align-items: center; font-size: 15px; }
+  .vs-s .muted { font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vs-bar { height: 5px; background: var(--line); position: relative; }
+  .vs-bar i { position: absolute; inset: 0 auto 0 0; }
+  .vs-m { display: grid; align-content: center; justify-items: center; text-align: center; }
+  .vs-m b { font-size: 20px; }
+  .vs-m .muted { font-size: 11px; }
+
+  .fo { display: grid; gap: 8px; padding-right: 8px; }
+  .fo-l { display: flex; gap: 12px; align-items: center; justify-content: space-between; min-width: 0; }
+  .fo-l .ni { overflow: hidden; min-width: 0; }
+  .fo-p { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 8px; }
+  .fo-list { max-height: 200px; overflow: auto; }
+
+  .al { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; padding-right: 8px; }
+  .al-r { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; max-width: 46vw; }
+  .al-k { appearance: none; border: 1px solid var(--line-strong); background: var(--bg); color: inherit; display: inline-flex; gap: 6px; align-items: center; padding: 4px 8px; font-size: 12px; border-radius: 0; white-space: nowrap; }
+  .al-k.me { border-color: var(--fg); }
+  .bd-all .brk-b b { font-size: 17px; }
+  .bd-all .brk { padding-right: 0; }
+
+  /* 모둠 공개 정보 */
+  .tdraw { position: fixed; z-index: 28; right: 0; top: calc(env(safe-area-inset-top, 0px) + 64px); bottom: 52px; width: min(380px, 100vw); overflow: auto; background: var(--surface); color: var(--fg); border-left: 1px solid var(--line-strong); border-top: 1px solid var(--line-strong); box-shadow: -12px 0 32px rgba(8,11,9,0.14); padding: 16px max(16px, env(safe-area-inset-right, 0px)) 20px 18px; display: grid; align-content: start; gap: 10px; }
+  .td-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .td-h > span { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .td-h b { font-size: 17px; }
+  .td-p { display: flex; gap: 12px; align-items: baseline; }
+  .td-p b { font-size: 28px; }
+  .td-dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; margin: 6px 0 0; font-size: 13px; }
+  .td-dl dt { font-family: var(--mono); font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding-top: 2px; }
+  .td-dl dd { margin: 0; min-width: 0; }
+  .td-steps { display: flex; gap: 3px; margin-top: 6px; }
+  .td-steps i { flex: 1; height: 8px; border: 1px solid var(--line-strong); }
+  .td-steps i.on { background: var(--ink); border-color: var(--ink); }
+  .rankc { appearance: none; border: 1px solid var(--line-strong); background: transparent; color: inherit; padding: 4px 10px; text-align: left; border-radius: 0; }
+  .rankc:hover { border-color: var(--fg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live i, .fl-r.flip .fc, .cap-p i, .fl tr.flash td, .btoast, .lane-t i, .ht { animation: none !important; transition: none !important; }
+  }
+  @media (max-width: 900px) {
+    .bd-ctl { padding-left: 8px; }
+    .bd-ctl .live { display: none; }
+    .rk, .cds, .dg { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .race-h, .lane-l { display: none; }
+    .lane { grid-template-columns: 96px minmax(0, 1fr); }
+    .dual, .mx-w, .np-g, .sp, .spk-t, .gr, .vs, .mr, .al { grid-template-columns: minmax(0, 1fr); }
+    .np-side { border-left: 0; padding-left: 0; }
+    .np-main b { font-size: 19px; }
+    .fl-r { grid-template-columns: 82px minmax(0, 1fr) 66px; }
+    .fl-r > span:nth-child(2) { display: none; }
+    .brk { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .brk-l { justify-self: start; padding: 4px 10px; }
+    .brk-d { display: none; }
+    .lmp-r { grid-template-columns: 64px repeat(4, max-content); }
+    .lmp-l { display: none; }
+    .lamp { font-size: 8px; padding: 2px 4px; }
+    .al-r { flex-wrap: wrap; }
+    .cap { grid-template-columns: 6px minmax(0, 1fr); }
+    .cap-p { display: none; }
+    .lb .led { font-size: 24px; }
+    .led-i { font-size: 18px; }
+    .dg-n { font-size: 28px; }
+    .nt-r { grid-template-columns: auto 40px minmax(0, 1fr); }
+    .nt-r > span:nth-child(3), .nt-r > span:last-child { display: none; }
+    .spk-r { grid-template-columns: 64px minmax(0, 1fr) 56px; }
+    .spk-r > span:last-child { display: none; }
+    .gr-r { grid-template-columns: 60px 80px 84px; font-size: 15px; }
+    .gr-rt { display: none; }
+    .vs-m { justify-items: start; text-align: left; }
+    .tdraw { top: auto; bottom: 0; height: 72vh; width: 100%; border-left: 0; }
+    .rankc { display: none; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn.film, .stamp, .st[data-s="cur"] { background-size: 220% 100%; animation: film 9s ease-in-out infinite alternate; }
+    .shell[data-fill="lime"] .st[data-s="cur"], .shell[data-fill="ink"] .st[data-s="cur"], .shell[data-fill="film"] .st[data-s="cur"] { animation: none; }
+    @keyframes film { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+  }
+
+  @media (max-width: 1100px) {
+    .m-split { grid-template-columns: minmax(0, 1fr); }
+    .m-split .col-a { position: static; }
+    .shell[data-log="drawer"]:not(.log-open) { --log-w: 0px; }
+    .shell[data-log="drawer"]:not(.log-open) .log { display: none; }
+  }
+  @media (max-width: 900px) {
+    body { overflow: auto; }
+    .page { height: auto; min-height: 100%; }
+    .shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; grid-template-areas: "top" "board" "side" "main" "strip" "log"; --log-w: 0px; }
+    .shell.log-open .log { max-height: 280px; border-left: 0; border-top: 1px solid var(--line-strong); }
+    .main { overflow: visible; }
+    .side { flex-direction: column; border-right: 0; border-bottom: 1px solid var(--line-strong); padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); overflow: visible; }
+    .side-h, .side-foot, .lg-head { display: none; }
+    .steps, .shell[data-side] .steps { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+    .steps::before { display: none; }
+    .grp { display: contents; }
+    .grp-h { display: none; }
+    .side nav { display: flex; gap: 6px; overflow-x: auto; }
+    .shell[data-side] .st { flex: 0 0 auto; width: auto; display: flex; align-items: baseline; gap: 6px; padding: 8px 12px; border: 1px solid var(--side-line); margin: 0; }
+    .shell[data-side] .st-n { width: auto; height: auto; font-size: 14px; font-family: var(--mono); -webkit-text-stroke: 0; color: inherit; border: 0; background: none; display: inline; grid-row: auto; }
+    .shell[data-side] .st[data-s="lock"] .st-n, .shell[data-side] .st[data-s="open"] .st-n { color: inherit; -webkit-text-stroke: 0; }
+    .shell[data-side] .st-t { font-size: 13px; padding: 0; margin: 0; white-space: nowrap; }
+    .shell[data-side] .st-s, .shell[data-side] .st-m { display: none; }
+    .wrap { padding: 20px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); }
+    .sh-n { font-size: 46px; }
+    .sh h1 { font-size: 23px; }
+    .m-deck { grid-template-columns: minmax(0, 1fr); }
+    .twin { grid-template-columns: minmax(0, 1fr); }
+    .cell { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .cell-g { text-align: left; border-right: 0; padding: 0; display: flex; gap: 8px; }
+    .keys { display: none; }
+    .videa { flex-basis: 100%; order: 9; white-space: normal; }
+    .dk-r, .dk-axis { grid-template-columns: 90px minmax(0,1fr) 64px 40px; }
+    .fun-r { grid-template-columns: 92px minmax(0,1fr) 40px; }
+    .ph-r { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .stamp { width: 84px; height: 84px; font-size: 11px; right: 10px; top: 10px; }
+    .co input { width: 7.5em; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 40 40">
+      <path d="M31.5 7.5A15.5 15.5 0 1 0 31.5 32.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M27.2 12.2A10.7 10.7 0 1 0 27.2 27.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M22.8 16.8A6 6 0 1 0 22.8 23.2" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="page">
+  <div class="shell" id="shell">
+    <header class="top" id="top"></header>
+    <section class="board" id="board" aria-label="학급 전광판 · 다른 모둠 소식"></section>
+    <aside class="side" id="side" aria-label="파이프라인 단계"></aside>
+    <main class="main" id="main"></main>
+    <aside class="log" id="log" aria-label="서버 메시지 기록"></aside>
+    <div class="strip" id="strip" aria-label="서버 메시지 기록"></div>
+  </div>
+  <div class="tools">
+    <button type="button" class="tool-btn" id="vprev" aria-label="이전 전광판">← 이전</button>
+    <button type="button" class="tool-btn" id="vnext" aria-label="다음 전광판">다음 →</button>
+    <div class="pick-w"><label class="sr" for="vpick">전광판 고르기</label><select id="vpick"></select></div>
+    <span class="vcount" id="vcount" aria-live="polite">01 / 30</span>
+    <span class="videa" id="videa"></span>
+    <span class="keys" aria-hidden="true"><span><kbd>←</kbd><kbd>→</kbd>전광판 이동</span></span>
+    <button type="button" class="tool-btn" id="vreset">처음부터</button>
+  </div>
+</div>
+<p class="toast" id="toast" role="status" hidden></p>
+<aside class="tdraw" id="tdraw" aria-label="모둠 공개 정보" hidden></aside>
+
+<script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const D = window.DD || { diseases: [], compounds: [], meta: {} };
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const pad = (n) => String(n).padStart(2, "0");
+  const M = (v) => `$${v.toFixed(1)}M`;
+  const MX = (v) => `$${v.toFixed(3)}M`;
+  const f2 = (v) => Number(v).toFixed(2);
+  const CMP = new Map(D.compounds.map((c) => [c.id, c]));
+
+  /* ── 실제 저장소 값(packages/shared-types · game-rules)을 옮긴 것 ── */
+  const TARGETS = {
+    "ache-4ey7": { gene: "ACHE", label: "아세틸콜린에스테라아제", pdb: "4EY7", disease: "알츠하이머병", ref: "도네페질", refSmiles: "COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2", cns: true, refKcal: -11.84, rmsd: 0.82 },
+    "egfr-1m17": { gene: "EGFR", label: "상피세포 성장인자 수용체", pdb: "1M17", disease: "비소세포폐암", ref: "엘로티닙", refSmiles: "C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1", cns: false, refKcal: -7.24, rmsd: 1.33 },
+    "dpp4-1x70": { gene: "DPP4", label: "디펩티딜 펩티다아제-4", pdb: "1X70", disease: "2형 당뇨병", ref: "시타글립틴", refSmiles: "NC(CC(=O)N1CCn2c(nnc2C(F)(F)F)C1)Cc1cc(F)c(F)cc1F", cns: false, refKcal: -9.02, rmsd: 0.8 },
+    "cox2-3ln1": { gene: "PTGS2", label: "사이클로옥시게나아제-2", pdb: "3LN1", disease: "류마티스 관절염", ref: "세레콕시브", refSmiles: "Cc1ccc(-c2cc(C(F)(F)F)nn2-c2ccc(S(N)(=O)=O)cc2)cc1", cns: false, refKcal: -12.26, rmsd: 0.51 }
+  };
+  const TRIAL = {
+    "ache-4ey7": { pops: ["경도 알츠하이머병 환자", "중등도~중증 알츠하이머병 환자", "경도인지장애(MCI) 환자"], eps: ["인지 기능 점수(ADAS-Cog) 변화", "일상 생활 기능(ADCS-ADL) 변화", "임상의 종합 평가(CIBIC-plus)"] },
+    "egfr-1m17": { pops: ["EGFR 변이 양성 국소진행성 · 전이성 비소세포폐암 환자", "백금 기반 화학요법 후 재발 비소세포폐암 환자", "뇌전이를 동반한 EGFR 변이 비소세포폐암 환자"], eps: ["무진행 생존기간(PFS)", "객관적 반응률(ORR · RECIST 1.1)", "전체 생존기간(OS)"], brain: ["뇌전이를 동반한 EGFR 변이 비소세포폐암 환자"] },
+    "dpp4-1x70": { pops: ["메트포르민 단독요법으로 혈당이 조절되지 않는 2형 당뇨병 환자", "신기능 저하를 동반한 2형 당뇨병 환자", "식이 · 운동요법 중인 초기 2형 당뇨병 환자"], eps: ["24주 시점 당화혈색소(HbA1c) 변화량", "공복 혈장 포도당(FPG) 변화량", "식후 2시간 혈당(PPG) 변화량"] },
+    "cox2-3ln1": { pops: ["중등도~중증 활동성 류마티스 관절염 성인 환자", "기존 NSAID 위장관 부작용 위험군 관절염 환자", "급성 염증성 관절 통증 환자"], eps: ["ACR20 반응 달성률(24주)", "관절 통증 시각아날로그척도(VAS) 변화", "건강평가설문 장애지수(HAQ-DI) 변화"] }
+  };
+  const R = {
+    cost: { htvs: 0.05, docking: 0.05, admet: 0.05, patent: 0.05, ind: 0.1, phase1: 0.3, phase2: 0.6, phase3: 1.2, final: 0.1 },
+    days: { ind: 30, phase1: 90, phase2: 180, phase3: 360, final: 60 },
+    absorption: { oral: { good: 1, moderate: 0.75, poor: 0.45 }, iv: 1, transdermal: { suitable: 0.85, unsuitable: 0.4 } },
+    bbb: { high: 1, moderate: 0.7, low: 0.35 },
+    doseE: { 10: 0.6, 50: 0.85, 100: 1 }, doseT: { 10: 10, 50: 30, 100: 55 },
+    risk: { herg: { low: 0, moderate: 0.3, high: 0.6 }, hep: { low: 0, moderate: 0.25, high: 0.6 } },
+    peak: { oral: 1, iv: 1.25, transdermal: 0.75 },
+    th: { ind: { e: null, s: 35 }, phase1: { e: null, s: 50 }, phase2: { e: 40, s: null }, phase3: { e: 45, s: 55 } },
+    noise: { phase1: 6, phase2: 6, phase3: 4 },
+    approvalMult: { oral: 1.3, iv: 1, transdermal: 1.15 }
+  };
+  const FORM = { oral: "경구용 정제 · 캡슐", iv: "정맥주사제", transdermal: "경피 패치 · 비강 스프레이" };
+  const ALERT = { aromatic_amine: "방향족 아민", nitro_aromatic: "방향족 니트로" };
+  const LV = { good: "좋음", moderate: "보통", poor: "나쁨", high: "높음", low: "낮음", suitable: "적합", unsuitable: "부적합" };
+
+  function signals(p) {
+    const v = (p.mw > 500) + (p.logp > 5) + (p.hbd > 5) + (p.hba > 10);
+    const oral = v === 0 && p.tpsa <= 140 && p.rotb <= 10 ? "good" : v <= 1 && p.tpsa <= 140 ? "moderate" : "poor";
+    const bbb = p.tpsa <= 90 && p.mw <= 450 && p.hbd <= 3 ? "high" : p.tpsa <= 120 && p.mw <= 500 ? "moderate" : "low";
+    const herg = p.ba > 0 && p.logp >= 3.7 ? "high" : p.ba > 0 && p.logp >= 2.5 ? "moderate" : "low";
+    const hep = p.al.length ? "high" : p.logp > 3 && p.tpsa < 75 ? "moderate" : "low";
+    const td = p.mw <= 500 && p.logp >= 1 && p.logp <= 4 ? "suitable" : "unsuitable";
+    return { ro5: v, oral, bbb, herg, hep, td };
+  }
+  function notes(p, s) {
+    return {
+      ro5: s.ro5 === 0 ? `Ro5 위반 0 — MW ${p.mw.toFixed(1)} · cLogP ${f2(p.logp)} · HBD ${p.hbd} · HBA ${p.hba}` : `Ro5 위반 ${s.ro5} — MW ${p.mw.toFixed(1)} · cLogP ${f2(p.logp)} · HBD ${p.hbd} · HBA ${p.hba}`,
+      oral: `경구 흡수 ${LV[s.oral]} — TPSA ${p.tpsa.toFixed(1)} · RotB ${p.rotb} · Ro5 위반 ${s.ro5}`,
+      bbb: `뇌 노출 ${LV[s.bbb]} — TPSA ${p.tpsa.toFixed(1)} · MW ${p.mw.toFixed(1)} · HBD ${p.hbd}`,
+      herg: p.ba === 0 ? "hERG 위험 낮음 — 염기성 아민 없음" : `hERG 위험 ${LV[s.herg]} — 염기성 아민 ${p.ba} · cLogP ${f2(p.logp)}`,
+      hep: s.hep === "high" ? `간독성 위험 높음 — 구조 경고(${p.al.map((a) => ALERT[a] || a).join(" · ")})` : `간독성 위험 ${LV[s.hep]} — 구조 경고 없음 · cLogP ${f2(p.logp)} · TPSA ${p.tpsa.toFixed(1)}`,
+      td: `경피 투과 ${LV[s.td]} — MW ${p.mw.toFixed(1)} · cLogP ${f2(p.logp)} (1~4)`
+    };
+  }
+  const strength = (kcal, ref) => Math.min(1, Math.max(0, (ref + 4.5 - kcal) / 5));
+  function score(c, kcal, tid, form, dose, pop) {
+    const t = TARGETS[tid], s = signals(c), n = notes(c, s);
+    const brainPop = !!(TRIAL[tid].brain && TRIAL[tid].brain.includes(pop));
+    const cns = t.cns || brainPop;
+    const p = strength(kcal, t.refKcal);
+    const A = form === "iv" ? 1 : form === "oral" ? R.absorption.oral[s.oral] : R.absorption.transdermal[s.td];
+    const B = cns ? R.bbb[s.bbb] : 1;
+    const De = R.doseE[dose], Dt = R.doseT[dose];
+    const Rk = 1 + R.risk.herg[s.herg] + R.risk.hep[s.hep];
+    const K = R.peak[form];
+    const E = Math.round(100 * (0.3 + 0.7 * p) * A * B * De * 10) / 10;
+    const S = Math.round(Math.max(0, 100 - Dt * Rk * K) * 10) / 10;
+    return {
+      E, S, s,
+      eWhy: [
+        `결합 자유에너지 ${f2(kcal)} kcal/mol → 결합력 p ${p.toFixed(3)} (기준 리간드 ${t.ref} ${f2(t.refKcal)} 대비)`,
+        form === "iv" ? `정맥주사 — 흡수 A ${A.toFixed(2)}` : `${form === "oral" ? n.oral : n.td} → 흡수 A ${A.toFixed(2)}`,
+        cns ? `${brainPop ? "뇌 병변 환자군 · " : ""}${n.bbb} → 뇌 노출 B ${B.toFixed(2)}` : `CNS 표적 아님 — 뇌 노출 B 1.00`,
+        `용량 ${dose} mg — 용량 효능 De ${De.toFixed(2)}`,
+        `E = 100 × (0.30 + 0.70 × ${p.toFixed(3)}) × ${A.toFixed(2)} × ${B.toFixed(2)} × ${De.toFixed(2)} = ${E.toFixed(1)}`
+      ],
+      sWhy: [
+        `용량 ${dose} mg — 용량 독성 Dt ${Dt}`,
+        `${n.herg} (R +${R.risk.herg[s.herg].toFixed(2)})`,
+        `${n.hep} (R +${R.risk.hep[s.hep].toFixed(2)})`,
+        `${{ oral: "경구 제형 피크", iv: "정맥주사 혈중 피크", transdermal: "경피 지속 방출" }[form]} ×${K.toFixed(2)}`,
+        `S = max(0, 100 − ${Dt} × ${Rk.toFixed(2)} × ${K.toFixed(2)}) = ${S.toFixed(1)}`
+      ]
+    };
+  }
+
+  /* ── 단계 ── */
+  const STEPS = [
+    { n: 1, t: "질환 · 표적 선정", short: "표적", sub: "Open Targets · 표적 탐색실", ph: 1, cost: 0 },
+    { n: 2, t: "화합물 스크리닝", short: "스크리닝", sub: "ChEMBL · RDKit 깔때기", ph: 1, cost: R.cost.htvs },
+    { n: 3, t: "분자 도킹", short: "도킹", sub: "AutoDock Vina · 서버실", ph: 2, cost: R.cost.docking },
+    { n: 4, t: "ADMET 예측 · 리드", short: "ADMET", sub: "ADMET-AI v2 · ADMET실", ph: 2, cost: R.cost.admet },
+    { n: 5, t: "선언 · 물질특허", short: "특허", sub: "시청 · 특허청 창구", ph: 3, cost: R.cost.patent },
+    { n: 6, t: "제형 · IND 신청", short: "IND", sub: "FDA 규제심사청", ph: 3, cost: R.cost.ind },
+    { n: 7, t: "임상 1 · 2 · 3상", short: "임상", sub: "대학병원 임상센터", ph: 4, cost: R.cost.phase1 + R.cost.phase2 + R.cost.phase3 },
+    { n: 8, t: "최종 허가", short: "허가", sub: "FDA 규제심사청", ph: 4, cost: R.cost.final }
+  ];
+  const PHASES = [{ n: 1, t: "발견" }, { n: 2, t: "최적화" }, { n: 3, t: "개발 · 규제" }, { n: 4, t: "임상 · 허가" }];
+
+  /* ── 바탕 디자인: 05 4단계 로드맵(박막 · 4묶음 사이드바 · 분할 본문) ── */
+  const V = [{ id: "v05", name: "4단계 로드맵", tone: "film", side: "phase", main: "split", top: "quiet", log: "off", fill: "none", scale: "" }];
+
+  /* ── 전광판 30종 ── */
+  const BOARDS = [
+    ["LED 흐르는 띠", "led", 1, "검은 띠 위 호박색 LED 점 글자로 모둠 소식이 흘러갑니다. 가장 '전광판'다운 기본형."],
+    ["시세 테이프", "tape", 0, "증권사 시세 테이프처럼 네 모둠 주가가 흐르고, 아래 줄에 최신 소식 한 건."],
+    ["공항 스플릿 플랩", "flap", 1, "공항 출발 안내판처럼 글자판이 넘어가며 최근 소식 네 줄이 바뀝니다."],
+    ["속보 배너", "breaking", 0, "가장 최근 소식 다섯 건을 큰 제목으로 돌려 보여 줍니다. 실패 소식은 빨간 '악재' 표시."],
+    ["박막 한 줄", "film", 0, "05의 박막 색 띠에 소식 한 줄. 이전 · 다음으로 넘겨 볼 수 있는 조용한 형태."],
+    ["시가총액 순위", "rank", 0, "네 모둠 순위 카드가 가로로 늘어서고, 순위가 바뀌면 바로 자리를 바꿉니다."],
+    ["파이프라인 경주", "race", 0, "모둠마다 한 줄씩, 8단계 경주 트랙 위에서 누가 앞서는지 보입니다."],
+    ["시세와 소식 2단", "dual", 0, "왼쪽은 시세표, 오른쪽은 최근 소식 다섯 건. 정보가 가장 많은 기본 배치."],
+    ["LED 큰 글자", "ledbig", 1, "한 번에 소식 하나를 크게. 교실 뒷자리에서도 읽히는 LED 한 줄."],
+    ["신문 1면", "paper", 0, "학급 경제 신문 1면처럼 머리기사 하나와 옆 기사 두 건."],
+    ["모둠 카드", "cards", 0, "모둠마다 카드 한 장: 주가 · 추세선 · 마지막 소식. 순위대로 정렬."],
+    ["추세선 시세판", "spark", 0, "모둠별 주가 추세선을 길게 그린 시세판과 흐르는 소식."],
+    ["시가총액 타일", "heat", 0, "타일 너비가 시가총액, 색이 오늘 등락. 판세를 한눈에."],
+    ["알림 팝업", "toast", 0, "평소엔 얇은 한 줄, 새 소식이 오면 오른쪽 위에 알림 카드가 뜹니다."],
+    ["거래소 객장판", "floor", 1, "증권거래소 객장의 녹색 시세판. 공시가 오면 그 줄이 번쩍입니다."],
+    ["단계 매트릭스", "matrix", 0, "모둠 × 8단계 칸. 누가 몇 단계까지 왔는지와 최신 소식을 함께."],
+    ["시간 축", "timeline", 0, "지난 60분 동안의 소식을 시간 축 위 점으로. 점을 누르면 그 모둠."],
+    ["투자의견 램프", "lamps", 1, "애널리스트 의견 STRONG BUY · BUY · HOLD · SHORT WARNING 램프가 모둠마다 켜집니다."],
+    ["디지털 숫자판", "digits", 1, "큰 디지털 숫자로 주가만. 숫자가 오르내리는 긴장감 위주."],
+    ["방송 자막", "caption", 0, "뉴스 자막처럼 두 줄 소식이 차례로 바뀌고, 다음 소식까지 남은 시간이 줄로 보입니다."],
+    ["스포츠 점수판", "score", 1, "특허 · 임상 통과 · 실패 · 시가총액을 경기 점수판처럼 모둠별로 비교합니다."],
+    ["공시 게시판", "notice", 0, "거래소 공시 목록처럼 시각 · 출처 · 제목 · 등락이 한 줄씩."],
+    ["오늘의 1위", "spot", 0, "1위 모둠을 크게 비추고 나머지는 작게. 1위를 노리게 만드는 형태."],
+    ["우리 순위 띠", "myrank", 0, "흐르는 소식 옆에 우리 모둠 순위와 1위 · 바로 위 모둠과의 차이를 늘 보여 줍니다."],
+    ["두 줄 흐름", "twin", 0, "윗줄은 소식이 왼쪽으로, 아랫줄은 시세가 오른쪽으로 흐르는 이중 띠."],
+    ["조용한 한 줄", "crawl", 0, "장식 없이 잉크 글자 한 줄만 천천히 흐릅니다. 수업 방해가 가장 적은 형태."],
+    ["LED 격자판", "grid", 1, "LED 격자에 종목 · 가격 · 등락을 칸 맞춰 띄우고, 맨 아래 줄에 소식이 돕니다."],
+    ["바로 위 모둠과 겨루기", "versus", 0, "우리와 바로 위 순위 모둠을 맞대어 시가총액 · 진도 · 최근 소식을 비교합니다."],
+    ["접이식 전광판", "fold", 0, "평소엔 한 줄로 접혀 있고, 펼치면 통과 · 실패 · 주가 필터가 있는 전체 기록."],
+    ["종합 상황판", "all", 0, "시세 테이프 · 머리기사 · 순위 · 경주 트랙을 한 판에 모은 최대 구성."]
+  ].map((b, i) => ({ id: "b" + pad(i + 1), name: b[0], type: b[1], dark: !!b[2], idea: b[3] }));
+
+  /* ── 학급 증권거래소(market:news) — 값은 market/rules.ts · 균형안 §9.3 · §10.7 그대로 ── */
+  const RIVALS = [
+    { tk: "SEUM", name: "세움제약", ink: "#007868", inkL: "#3fd6c0", code: "SEU", tid: "egfr-1m17", brands: ["에르비아", "세움틴"] },
+    { tk: "DAON", name: "다온테라퓨틱스", ink: "#A048C8", inkL: "#d9a2ff", code: "DAO", tid: "cox2-3ln1", brands: ["다온콕스", "류마렉스"] },
+    { tk: "MIRP", name: "미르파마", ink: "#D88828", inkL: "#ffbe5c", code: "MIR", tid: "dpp4-1x70", brands: ["미르글립", "당큐어"] }
+  ];
+  const ME = { ink: "#183080", inkL: "#8ea8ff" };
+  const KEYS = ["me", "SEUM", "DAON", "MIRP"];
+  const RATING = { STRONG_BUY: "STRONG BUY", BUY: "BUY", HOLD: "HOLD", SHORT_WARNING: "SHORT WARNING" };
+  const rateOf = (chg) => (chg >= 8 ? "STRONG_BUY" : chg > 0 ? "BUY" : chg >= -4 ? "HOLD" : "SHORT_WARNING");
+  const PHN = { phase1: "1상", phase2: "2상", phase3: "3상" };
+  /* [최소, 최대, 기본값] % */
+  const DELTA = {
+    patent: [0, 5, 2], indPass: [0, 5, 2], indHold: [-8, 0, -4],
+    phase1Pass: [0, 8, 4], phase1Fail: [-12, -2, -6], phase2Pass: [3, 15, 8], phase2Fail: [-18, -5, -12], phase3Pass: [5, 18, 10], phase3Fail: [-20, -8, -15],
+    investment: [5, 15, 8], seriesB: [5, 15, 12], offering: [-10, 5, -3], facility: [0, 4, 2], grant: [-5, 5, 2]
+  };
+  const jit = (k, fixed) => { const [lo, hi, d] = DELTA[k]; return fixed ? d : Math.round(Math.min(hi, Math.max(lo, d + (Math.random() * 2 - 1) * 1.5)) * 10) / 10; };
+  const dockDelta = (kcal) => Math.round((2 + 8 * Math.min(1, Math.max(0, (-kcal - 7) / 5))) * 10) / 10;
+  const josa = (w, a, b) => { const c = w.charCodeAt(w.length - 1) - 0xac00; return c >= 0 && c <= 11171 && c % 28 ? a : b; };
+  const rival = (k) => RIVALS.find((r) => r.tk === k);
+  const rcode = (r, st) => `${r.code}-${(2 + st.n) * 100 + (r.tk === "SEUM" ? 4 : r.tk === "DAON" ? 17 : 10)}`;
+
+  function headline(tk, kind, o) {
+    const nm = tk === "me" ? o.name : rival(tk).name, code = o.code || "";
+    const ph = PHN[kind.slice(0, 6)];
+    if (kind === "patent") return [`${nm} 물질특허 등록`, `${code} · ${o.dis} 후보 물질이 특허 원장에 올랐습니다`];
+    if (kind === "indPass") return [`${nm} ${code} IND 승인`, "FDA가 임상 1상 시작을 허락했습니다"];
+    if (kind === "indHold") return [`${nm} ${code} 임상 보류`, "FDA가 안전성 자료 보완을 요구했습니다"];
+    if (/Pass$/.test(kind)) return [`${nm} ${code} 임상 ${ph} 통과`, { phase1: "안전성 기준을 넘었습니다", phase2: "효능 기준을 넘었습니다", phase3: "효능 · 안전 모두 통과 — 허가 신청만 남았습니다" }[kind.slice(0, 6)]];
+    if (/Fail$/.test(kind)) return [`${nm} ${code} 임상 ${ph} 실패`, "재시험 또는 용량 변경을 검토하고 있습니다"];
+    if (kind === "approval") return [`${nm} 「${o.brand}」 최종 허가`, `${o.dis} 신약 출시 · 시장 점유 기본값 ${Math.min(20, 12 * (o.mult || 1.3)).toFixed(1)}%`];
+    if (kind === "docking") return [`${nm} 도킹 신기록 ${f2(o.kcal)} kcal/mol`, `${o.gene} 표적 결합력을 새로 썼습니다`];
+    if (kind === "investment") return [`${nm} 시리즈 A 투자 유치`, "VC 샌드힐 밸리에서 연구비를 받았습니다"];
+    if (kind === "seriesB") return [`${nm} 시리즈 B 투자 유치`, "임상 단계 진입으로 추가 투자를 받았습니다"];
+    if (kind === "offering") return [`${nm} 유상증자 공시`, "새 주식을 발행해 연구비를 모읍니다 — 희석 우려"];
+    if (kind === "facility") return [`${nm} 연구 설비 건설`, "사옥에 새 연구실을 열었습니다"];
+    if (kind === "grant") return [`${nm} 정부 신약 과제 선정`, "과제 연구비를 받았습니다"];
+    return o.text;
+  }
+  function applyNews(mk, tk, kind, o) {
+    const at = o.at || Date.now();
+    let chg = 0;
+    if (kind === "approval") chg = Math.round(Math.min(20, 12 * (o.mult || 1.3)) * 10) / 10;
+    else if (kind === "docking") chg = dockDelta(o.kcal);
+    else if (kind !== "rank") chg = jit(kind, o.fixed);
+    if (kind !== "rank") {
+      mk.px[tk] = Math.max(0.1, Math.round(mk.px[tk] * (1 + chg / 100) * 100) / 100);
+      mk.hist[tk].push(mk.px[tk]); if (mk.hist[tk].length > 40) mk.hist[tk].shift();
+      mk.rate[tk] = rateOf(chg);
+      const c = mk.cnt[tk];
+      if (/Pass$/.test(kind) || kind === "indPass") c.pass++;
+      if (/Fail$/.test(kind) || kind === "indHold") c.fail++;
+      if (kind === "patent") c.patent++;
+      if (kind === "approval") c.appr++;
+    }
+    const [head, sub] = headline(tk, kind, o);
+    mk.news.unshift({ id: ++mk.seq, at, tk, kind, head, sub, chg, good: kind === "rank" ? null : chg > 0 ? true : chg < 0 ? false : null, rate: mk.rate[tk], px: mk.px[tk], src: o.src || "rules" });
+    mk.news = mk.news.slice(0, 40);
+    if (kind === "rank") return;
+    const lead = KEYS.slice().sort((a, b) => mk.px[b] - mk.px[a])[0];
+    if (mk.leader && lead !== mk.leader) {
+      const nmOf = (k) => (k === "me" ? o.myName || "우리 모둠" : rival(k).name);
+      const was = nmOf(mk.leader);
+      applyNews(mk, lead, "rank", { at: at + 1, text: [`시가총액 1위 바뀜 — ${nmOf(lead)}`, `${was}${josa(was, "을", "를")} 제치고 학급 1위에 올랐습니다`] });
+    }
+    mk.leader = lead;
+  }
+  function seedMarket() {
+    const now = Date.now();
+    const mk = { px: {}, hist: {}, rate: {}, open: {}, best: {}, cnt: {}, riv: {}, news: [], seq: 0, leader: null };
+    for (const k of KEYS) { mk.px[k] = 10; mk.hist[k] = [10]; mk.rate[k] = "HOLD"; mk.open[k] = 10; mk.best[k] = null; mk.cnt[k] = { pass: 0, fail: 0, patent: 0, appr: 0 }; }
+    mk.riv.SEUM = { step: 7, ph: "phase2", n: 0, sa: true, sb: false };
+    mk.riv.DAON = { step: 4, ph: null, n: 0, sa: true, sb: false };
+    mk.riv.MIRP = { step: 6, ph: null, n: 0, sa: false, sb: false };
+    const info = (k) => { const r = rival(k), t = TARGETS[r.tid]; return { code: rcode(r, mk.riv[k]), dis: t.disease, gene: t.gene, fixed: true }; };
+    const script = [[-52, "DAON", "investment"], [-47, "SEUM", "patent"], [-43, "MIRP", "patent"], [-39, "SEUM", "indPass"], [-34, "DAON", "docking", -10.3],
+      [-29, "MIRP", "offering"], [-23, "SEUM", "phase1Pass"], [-16, "MIRP", "indHold"], [-9, "DAON", "docking", -10.9], [-4, "SEUM", "facility"]];
+    for (const [m, k, kind, kcal] of script) { if (kind === "docking") mk.best[k] = kcal; applyNews(mk, k, kind, Object.assign(info(k), { at: now + m * 60000, kcal })); }
+    return mk;
+  }
+  /* 다른 모둠 한 곳이 한 걸음 나아간다 — 실제 학급에선 서버가 market:news 로 보내는 공개 소식 */
+  function rivalTick() {
+    const mk = S.mk, r = RIVALS[Math.floor(Math.random() * RIVALS.length)], st = mk.riv[r.tk], t = TARGETS[r.tid];
+    const o = { code: rcode(r, st), dis: t.disease, gene: t.gene, myName: S.company };
+    const dock = () => { const k = Math.round(((mk.best[r.tk] ?? -8.6) - (0.15 + Math.random() * 0.8)) * 100) / 100; mk.best[r.tk] = k; o.kcal = k; return "docking"; };
+    let kind;
+    if (Math.random() < 0.28) {
+      const opts = ["facility"];
+      if (!st.sa) opts.push("investment");
+      if (st.sa && !st.sb && st.step >= 7) opts.push("seriesB");
+      if (Math.random() < 0.5) opts.push("offering");
+      kind = opts[Math.floor(Math.random() * opts.length)];
+      if (kind === "investment") st.sa = true;
+      if (kind === "seriesB") st.sb = true;
+    } else if (st.step <= 4) {
+      kind = Math.random() < 0.55 ? dock() : (st.step = 6, "patent");
+    } else if (st.step === 6) {
+      const pass = Math.random() < 0.75; kind = pass ? "indPass" : "indHold"; if (pass) { st.step = 7; st.ph = "phase1"; }
+    } else if (st.step === 7) {
+      const pass = Math.random() < { phase1: 0.72, phase2: 0.58, phase3: 0.6 }[st.ph]; kind = st.ph + (pass ? "Pass" : "Fail");
+      if (pass) { if (st.ph === "phase3") { st.step = 8; st.ph = null; } else st.ph = st.ph === "phase1" ? "phase2" : "phase3"; }
+    } else {
+      kind = "approval"; o.brand = r.brands[st.n % 2]; st.n++; st.step = 4; mk.best[r.tk] = null;
+    }
+    applyNews(mk, r.tk, kind, o);
+    markFresh();
+  }
+  function myNews(kind, o = {}) {
+    applyNews(S.mk, "me", kind, Object.assign({ name: S.company, myName: S.company, code: S.code || "", dis: T().disease, gene: T().gene }, o));
+    markFresh();
+  }
+
+  /* ── 전광판 그리기 ── */
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let BV = BOARDS[0], rot = 0, freshId = 0, freshUntil = 0, toastId = 0, openTeam = null, bPaused = false, bOpen = false, bFilter = "all";
+  const mqT0 = performance.now();
+  function markFresh() { freshId = S.mk.news[0].id; freshUntil = Date.now() + 3500; }
+  const isFresh = (n) => n && n.id === freshId && Date.now() < freshUntil;
+  const nmK = (k) => (k === "me" ? S.company : rival(k).name);
+  const tkK = (k) => (k === "me" ? S.ticker : k);
+  const inkK = (k) => { const x = k === "me" ? ME : rival(k); return BV.dark ? x.inkL : x.ink; };
+  const pxK = (k) => S.mk.px[k];
+  const dchg = (k) => (S.mk.px[k] / S.mk.open[k] - 1) * 100;
+  const pct = (v) => `${v > 0 ? "▲" : v < 0 ? "▼" : "−"} ${Math.abs(v).toFixed(1)}%`;
+  const ud = (v) => (v > 0 ? "up" : v < 0 ? "dn" : "");
+  const hhmm = (t) => { const d = new Date(t); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+  const ago = (t) => { const s = (Date.now() - t) / 1000; return s < 60 ? "방금" : s < 3600 ? `${Math.floor(s / 60)}분 전` : hhmm(t); };
+  const ranked = () => KEYS.slice().sort((a, b) => S.mk.px[b] - S.mk.px[a]);
+  const rankOf = (k) => ranked().indexOf(k) + 1;
+  const NEWS = () => S.mk.news;
+  const dot = (k) => `<i class="inkd" style="background:${inkK(k)}"></i>`;
+  const posK = (k) => {
+    if (k === "me") return STEPS.filter((s) => S.done[s.n]).length;
+    const st = S.mk.riv[k]; return st.step - 1 + (st.step === 7 ? { phase1: 0, phase2: 0.33, phase3: 0.66 }[st.ph] : 0);
+  };
+  const statusK = (k) => {
+    if (k === "me") return S.done[8] ? "최종 허가 완료" : `${STEPS[S.step - 1].n}. ${STEPS[S.step - 1].t}`;
+    const st = S.mk.riv[k]; return st.step <= 4 ? "후보 탐색 · 도킹" : st.step === 6 ? "IND 심사 준비" : st.step === 7 ? `임상 ${PHN[st.ph]} 진행` : "최종 허가 심사";
+  };
+  const codeK = (k) => (k === "me" ? (S.declared ? S.code : "선언 전") : rcode(rival(k), S.mk.riv[k]));
+  const tgtK = (k) => (k === "me" ? T() : TARGETS[rival(k).tid]);
+  function spark(k, w, h) {
+    const a = S.mk.hist[k].slice(-24); if (a.length < 2) a.unshift(a[0]);
+    const lo = Math.min(...a), hi = Math.max(...a), sp = hi - lo || 1;
+    const pts = a.map((v, i) => [(i / (a.length - 1)) * (w - 6) + 3, h - 3 - ((v - lo) / sp) * (h - 6)]);
+    const [ex, ey] = pts[pts.length - 1];
+    return `<svg class="spk" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><polyline points="${pts.map((p) => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}" fill="none" stroke="${inkK(k)}" stroke-width="1.6"/><circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="2.8" fill="${inkK(k)}"/></svg>`;
+  }
+  const mq = (html, rev = false, cls = "") => reduced
+    ? `<div class="mq static ${cls}">${html}</div>`
+    : `<div class="mq ${cls}"><div class="mq-track ${rev ? "rev" : ""}"><span class="mq-seg">${html}</span><span class="mq-seg" aria-hidden="true" inert>${html}</span></div></div>`;
+  const ni = (n, extra = "") => n ? `<button type="button" class="ni ${n.good === false ? "bad" : ""} ${isFresh(n) ? "fresh" : ""} ${extra}" data-team="${n.tk}">${dot(n.tk)}<span class="ni-t">${hhmm(n.at)}</span><b>${esc(n.head)}</b>${n.chg ? `<span class="ni-c ${ud(n.chg)}">${esc(tkK(n.tk))} ${pct(n.chg)}</span>` : ""}</button>` : "";
+  const chars = (s) => [...s].map((c) => `<i class="fc">${c === " " ? "&nbsp;" : esc(c)}</i>`).join("");
+  const quoteBtn = (k) => `<button type="button" class="tp" data-team="${k}">${dot(k)}<b>${esc(tkK(k))}</b><span>$${pxK(k).toFixed(2)}</span><span class="${ud(dchg(k))}">${pct(dchg(k))}</span></button>`;
+  const raceRows = (compact) => `<div class="race ${compact ? "sm" : ""}"><div class="race-h"><span></span>${STEPS.map((s) => `<span>${s.n}. ${compact ? "" : s.short}</span>`).join("")}<span></span></div>
+    ${ranked().map((k) => { const p = posK(k), last = NEWS().find((n) => n.tk === k && n.kind !== "rank"); return `<button type="button" class="lane ${k === "me" ? "me" : ""}" data-team="${k}"><span class="lane-n">${dot(k)}${esc(nmK(k))}</span><span class="lane-t"><em style="width:${(p / 8) * 100}%;background:${inkK(k)}"></em><i style="left:${(p / 8) * 100}%;background:${inkK(k)}"></i></span><span class="lane-l">${last ? esc(last.head) : ""}</span></button>`; }).join("")}</div>`;
+
+  const BR = {
+    led: () => mq(NEWS().slice(0, 10).map((n) => `<button type="button" class="led-i ${n.good === false ? "r" : n.kind === "rank" ? "g" : ""}" data-team="${n.tk}"><span class="led">◆ ${esc(tkK(n.tk))} ${esc(n.head)}${n.chg ? " " + pct(n.chg) : ""}</span></button>`).join(""), false, "led-mq"),
+    tape: () => `${mq(KEYS.map(quoteBtn).join(""), false, "tape-mq")}<div class="b-sub">${ni(NEWS()[0])}</div>`,
+    flap: () => `<div class="flap"><div class="fl-r fl-h"><span>시각</span><span>종목</span><span>소식</span><span>등락</span></div>${NEWS().slice(0, 4).map((n, i) => `<button type="button" class="fl-r ${i === 0 && isFresh(n) ? "flip" : ""} ${n.good === false ? "bad" : ""}" data-team="${n.tk}"><span>${chars(hhmm(n.at))}</span><span>${chars(tkK(n.tk).padEnd(4).slice(0, 4))}</span><span class="fl-txt">${esc(n.head)}</span><span class="${ud(n.chg)}">${n.chg ? pct(n.chg) : "—"}</span></button>`).join("")}</div>`,
+    breaking: () => {
+      const L = Math.min(5, NEWS().length), i = rot % L, n = NEWS()[i];
+      return `<div class="brk ${n.good === false ? "bad" : ""}"><span class="brk-l">${n.good === false ? "속보 · 악재" : "속보"}</span><button type="button" class="brk-b" data-team="${n.tk}"><b>${esc(n.head)}</b><span>${esc(n.sub || "")} · ${esc(tkK(n.tk))}${n.chg ? " " + pct(n.chg) : ""} · ${ago(n.at)}</span></button><span class="brk-d" aria-hidden="true">${Array.from({ length: L }, (_, j) => `<i class="${j === i ? "on" : ""}"></i>`).join("")}</span></div>`;
+    },
+    film: () => {
+      const L = Math.min(8, NEWS().length), i = rot % L, n = NEWS()[i];
+      return `<div class="fm"><button type="button" class="tool" data-act="brot" data-v="-1" aria-label="이전 소식">←</button><button type="button" class="fm-b" data-team="${n.tk}">${dot(n.tk)}<span class="mono">${hhmm(n.at)}</span><b>${esc(n.head)}</b><span class="muted">${esc(n.sub || "")}</span>${n.chg ? `<span class="mono ${ud(n.chg)}">${pct(n.chg)}</span>` : ""}</button><span class="mono muted">${i + 1} / ${L}</span><button type="button" class="tool" data-act="brot" data-v="1" aria-label="다음 소식">→</button></div>`;
+    },
+    rank: () => `<div class="rk">${ranked().map((k, i) => `<button type="button" class="rk-c ${k === "me" ? "me" : ""}" data-team="${k}"><span class="rk-n">${i + 1}</span><span class="rk-t">${dot(k)}<b>${esc(nmK(k))}</b><small>${esc(tkK(k))}</small></span><span class="rk-v"><span class="mono">$${pxK(k).toFixed(2)}M</span><span class="mono ${ud(dchg(k))}">${pct(dchg(k))}</span></span></button>`).join("")}</div><div class="b-sub">${ni(NEWS()[0])}</div>`,
+    race: () => raceRows(false),
+    dual: () => `<div class="dual"><div class="tbl-w"><table class="qt"><thead><tr><th>종목</th><th class="num">주가</th><th class="num">오늘</th><th>투자의견</th></tr></thead><tbody>${ranked().map((k) => `<tr class="pick ${k === "me" ? "on" : ""}" data-team="${k}"><td>${dot(k)}<b>${esc(tkK(k))}</b> <span class="muted">${esc(nmK(k))}</span></td><td class="num">$${pxK(k).toFixed(2)}</td><td class="num ${ud(dchg(k))}">${pct(dchg(k))}</td><td class="mono">${RATING[S.mk.rate[k]]}</td></tr>`).join("")}</tbody></table></div><div class="feed">${NEWS().slice(0, 5).map((n) => ni(n)).join("")}</div></div>`,
+    ledbig: () => { const n = NEWS()[rot % Math.min(4, NEWS().length)]; return `<button type="button" class="lb ${n.good === false ? "r" : ""}" data-team="${n.tk}"><span class="led lb-tk" style="color:${inkK(n.tk)}">${esc(tkK(n.tk))}</span><span class="led lb-h">${esc(n.head)}</span><span class="led lb-c">${n.chg ? pct(n.chg) : ""}</span></button>`; },
+    paper: () => {
+      const [a, b, c] = NEWS();
+      return `<div class="np"><div class="np-k"><span>Crista 경제 · 학급 증권면</span><span>${hhmm(Date.now())} 현재 · 공개 소식</span></div><div class="np-g"><button type="button" class="np-main" data-team="${a.tk}"><span class="np-kick">${esc(nmK(a.tk))} · ${esc(tkK(a.tk))}${a.chg ? " " + pct(a.chg) : ""}</span><b>${esc(a.head)}</b><span>${esc(a.sub || "")}</span></button>
+        <div class="np-side">${[b, c].filter(Boolean).map((n) => `<button type="button" data-team="${n.tk}"><b>${esc(n.head)}</b><span>${ago(n.at)}${n.chg ? " · " + pct(n.chg) : ""}</span></button>`).join("")}</div></div></div>`;
+    },
+    cards: () => `<div class="cds">${ranked().map((k) => { const l = NEWS().find((n) => n.tk === k && n.kind !== "rank"); return `<button type="button" class="cd ${k === "me" ? "me" : ""}" data-team="${k}"><span class="cd-h">${dot(k)}<b>${esc(nmK(k))}</b><small>${rankOf(k)}위</small></span><span class="cd-p"><b class="mono">$${pxK(k).toFixed(2)}</b><span class="mono ${ud(dchg(k))}">${pct(dchg(k))}</span></span>${spark(k, 180, 30)}<span class="cd-l">${l ? esc(l.head) : "아직 소식이 없습니다"}</span></button>`; }).join("")}</div>`,
+    spark: () => `<div class="spk-t">${ranked().map((k) => `<button type="button" class="spk-r" data-team="${k}"><span>${dot(k)}<b>${esc(tkK(k))}</b></span>${spark(k, 260, 26)}<span class="mono">$${pxK(k).toFixed(2)}</span><span class="mono ${ud(dchg(k))}">${pct(dchg(k))}</span></button>`).join("")}</div>${mq(NEWS().slice(0, 8).map((n) => ni(n)).join(""), false, "thin")}`,
+    heat: () => `<div class="heat">${ranked().map((k) => { const v = dchg(k), a = Math.min(60, Math.abs(v) * 3 + 8); return `<button type="button" class="ht" data-team="${k}" style="flex-grow:${pxK(k).toFixed(2)};background:color-mix(in srgb, ${v >= 0 ? "var(--good)" : "var(--bad)"} ${a}%, var(--surface))"><b>${esc(tkK(k))}</b><span class="mono">${pct(v)}</span><small class="mono">$${pxK(k).toFixed(2)}M · ${esc(nmK(k))}</small></button>`; }).join("")}</div><div class="b-sub">${ni(NEWS()[0])}</div>`,
+    toast: () => { const n = NEWS()[0]; return `<div class="tl">${ni(n)}<span class="muted mono">새 소식이 오면 알림이 뜹니다</span></div>${toastId === n.id ? `<div class="btoast ${n.good === false ? "bad" : ""}" role="status"><span class="lab">${esc(nmK(n.tk))} · ${ago(n.at)}</span><b>${esc(n.head)}</b><span>${esc(n.sub || "")}</span>${n.chg ? `<span class="mono ${ud(n.chg)}">${esc(tkK(n.tk))} ${pct(n.chg)}</span>` : ""}</div>` : ""}`; },
+    floor: () => `<div class="tbl-w"><table class="fl"><thead><tr><th>종목</th><th>회사</th><th class="num">현재가</th><th class="num">오늘</th><th class="num">시가총액</th><th>투자의견</th><th>최근 공시</th></tr></thead><tbody>${ranked().map((k) => { const l = NEWS().find((n) => n.tk === k && n.kind !== "rank"); return `<tr class="pick ${l && isFresh(l) ? "flash" : ""}" data-team="${k}"><td class="mono"><b>${esc(tkK(k))}</b></td><td>${esc(nmK(k))}</td><td class="num">${pxK(k).toFixed(2)}</td><td class="num ${ud(dchg(k))}">${pct(dchg(k))}</td><td class="num">$${pxK(k).toFixed(2)}M</td><td class="mono">${RATING[S.mk.rate[k]]}</td><td class="fl-n">${l ? esc(l.head) : "—"}</td></tr>`; }).join("")}</tbody></table></div>`,
+    matrix: () => `<div class="mx-w"><div class="mx"><span></span>${STEPS.map((s) => `<span class="mx-h">${s.n}.</span>`).join("")}${ranked().map((k) => { const p = posK(k); return `<button type="button" class="mx-n" data-team="${k}">${dot(k)}${esc(nmK(k))}</button>${STEPS.map((s) => `<span class="mx-c ${s.n <= Math.floor(p) ? "on" : s.n === Math.floor(p) + 1 ? "cur" : ""}" style="--ink:${inkK(k)}" title="${s.n}. ${esc(s.t)}"></span>`).join("")}`; }).join("")}</div><div class="mx-news">${NEWS().slice(0, 3).map((n) => ni(n)).join("")}</div></div>`,
+    timeline: () => {
+      const now = Date.now(), span = 60 * 60000, list = NEWS().filter((n) => now - n.at < span);
+      const n0 = NEWS()[0];
+      return `<div class="tln"><div class="tln-ax">${list.map((n) => `<button type="button" class="tln-d ${n.good === false ? "bad" : ""} ${n.id === n0.id ? "last" : ""}" data-team="${n.tk}" style="left:${((n.at - (now - span)) / span) * 100}%;background:${inkK(n.tk)}" title="${hhmm(n.at)} ${esc(n.head)}" aria-label="${hhmm(n.at)} ${esc(n.head)}"></button>`).join("")}<span class="tln-k" style="left:0">60분 전</span><span class="tln-k" style="left:50%">30분 전</span><span class="tln-k" style="left:100%">지금</span></div><div class="b-sub">${ni(n0)}</div></div>`;
+    },
+    lamps: () => `<div class="lmp">${ranked().map((k) => `<button type="button" class="lmp-r" data-team="${k}"><span class="lmp-n">${dot(k)}<b>${esc(tkK(k))}</b></span>${Object.keys(RATING).map((r) => `<span class="lamp ${S.mk.rate[k] === r ? "on " + r : ""}">${RATING[r]}</span>`).join("")}<span class="lmp-l">${esc((NEWS().find((n) => n.tk === k && n.kind !== "rank") || {}).head || "")}</span></button>`).join("")}</div>`,
+    digits: () => `<div class="dg">${ranked().map((k) => `<button type="button" class="dg-c" data-team="${k}"><span class="dg-tk" style="color:${inkK(k)}">${esc(tkK(k))}</span><span class="led dg-n ${ud(dchg(k))}">${pxK(k).toFixed(2)}</span><span class="dg-ch ${ud(dchg(k))}">${pct(dchg(k))}</span></button>`).join("")}</div>`,
+    caption: () => { const n = NEWS()[rot % Math.min(6, NEWS().length)]; return `<button type="button" class="cap ${n.good === false ? "bad" : ""}" data-team="${n.tk}"><span class="cap-bar" style="background:${inkK(n.tk)}"></span><span class="cap-tx"><b>${esc(n.head)}</b><span>${esc(n.sub || "")} · ${esc(tkK(n.tk))}${n.chg ? " " + pct(n.chg) : ""}</span></span><span class="cap-p" aria-hidden="true"><i data-rot="${rot}"></i></span></button>`; },
+    score: () => {
+      const R2 = ranked(), rows = [["특허", (k) => S.mk.cnt[k].patent], ["통과", (k) => S.mk.cnt[k].pass], ["실패", (k) => S.mk.cnt[k].fail], ["허가", (k) => S.mk.cnt[k].appr], ["시총 $M", (k) => pxK(k).toFixed(2)]];
+      return `<div class="tbl-w"><table class="sc"><thead><tr><th></th>${R2.map((k) => `<th data-team="${k}" class="pick"><span style="color:${inkK(k)}">■</span> ${esc(tkK(k))}</th>`).join("")}</tr></thead><tbody>${rows.map(([lab, f]) => { const vals = R2.map((k) => +f(k)), best = lab === "실패" ? Math.min(...vals) : Math.max(...vals); return `<tr><th>${lab}</th>${R2.map((k, i) => `<td class="num ${vals[i] === best ? "lead" : ""}">${f(k)}</td>`).join("")}</tr>`; }).join("")}</tbody></table></div>`;
+    },
+    notice: () => `<div class="nt">${NEWS().slice(0, 5).map((n) => `<button type="button" class="nt-r ${n.good === false ? "bad" : ""} ${isFresh(n) ? "fresh" : ""}" data-team="${n.tk}"><span class="tag">공시</span><span class="mono muted">${hhmm(n.at)}</span><span class="mono muted">${n.src === "rules" ? "규칙" : n.src}</span><b>${esc(n.head)}</b><span class="mono ${ud(n.chg)}">${n.chg ? esc(tkK(n.tk)) + " " + pct(n.chg) : ""}</span></button>`).join("")}</div>`,
+    spot: () => { const [a, ...rest] = ranked(); const l = NEWS().find((n) => n.tk === a && n.kind !== "rank"); return `<div class="sp"><button type="button" class="sp-a" data-team="${a}"><span class="lab">오늘의 1위</span><b>${esc(nmK(a))}</b><span class="mono">$${pxK(a).toFixed(2)}M <span class="${ud(dchg(a))}">${pct(dchg(a))}</span></span>${spark(a, 220, 40)}<span class="muted">${l ? esc(l.head) : ""}</span></button><div class="sp-r">${rest.map((k, i) => `<button type="button" class="sp-i ${k === "me" ? "me" : ""}" data-team="${k}"><span>${i + 2}</span>${dot(k)}<b>${esc(nmK(k))}</b><span class="mono">$${pxK(k).toFixed(2)}M</span><span class="mono muted">1위와 $${(pxK(a) - pxK(k)).toFixed(2)}M</span></button>`).join("")}</div></div>`; },
+    myrank: () => { const R2 = ranked(), r = R2.indexOf("me"), up = R2[r - 1], lead = R2[0]; return `<div class="mr">${mq(NEWS().slice(0, 8).map((n) => ni(n)).join(""), false, "thin")}<button type="button" class="mr-c" data-team="me"><b>우리 모둠 ${r + 1}위</b><span class="mono">$${pxK("me").toFixed(2)}M</span>${r ? `<span class="muted">1위 ${esc(nmK(lead))}와 $${(pxK(lead) - pxK("me")).toFixed(2)}M 차 · 바로 위 ${esc(nmK(up))}와 $${(pxK(up) - pxK("me")).toFixed(2)}M 차</span>` : `<span class="muted">1위를 지키는 중 · 2위와 $${(pxK("me") - pxK(R2[1])).toFixed(2)}M 차</span>`}</button></div>`; },
+    twin: () => `${mq(NEWS().slice(0, 8).map((n) => ni(n)).join(""), false, "thin")}${mq(KEYS.map(quoteBtn).join(""), true, "thin tape-mq")}`,
+    crawl: () => mq(NEWS().slice(0, 8).map((n) => `<button type="button" class="cr" data-team="${n.tk}">${esc(n.head)}${n.chg ? ` <span class="${ud(n.chg)}">${pct(n.chg)}</span>` : ""}</button>`).join('<span class="cr-sep">/</span>'), false, "thin"),
+    grid: () => { const n = NEWS()[rot % Math.min(5, NEWS().length)]; return `<div class="gr">${ranked().map((k) => `<button type="button" class="gr-r" data-team="${k}"><span class="led">${esc(tkK(k).padEnd(4))}</span><span class="led">${pxK(k).toFixed(2).padStart(6)}</span><span class="led ${ud(dchg(k))}">${pct(dchg(k))}</span><span class="led gr-rt">${RATING[S.mk.rate[k]]}</span></button>`).join("")}<button type="button" class="gr-m ${n.good === false ? "r" : ""}" data-team="${n.tk}"><span class="led">▶ ${esc(n.head)}</span></button></div>`; },
+    versus: () => {
+      const R2 = ranked(), r = R2.indexOf("me"), o = r ? R2[r - 1] : R2[1];
+      const side = (k) => { const l = NEWS().find((n) => n.tk === k && n.kind !== "rank"); return `<button type="button" class="vs-s ${k === "me" ? "me" : ""}" data-team="${k}"><span class="lab">${k === "me" ? "우리 모둠" : r ? "바로 위 모둠" : "바로 아래 모둠"} · ${rankOf(k)}위</span><b>${dot(k)}${esc(nmK(k))}</b><span class="mono">$${pxK(k).toFixed(2)}M <span class="${ud(dchg(k))}">${pct(dchg(k))}</span></span><span class="vs-bar"><i style="width:${(posK(k) / 8) * 100}%;background:${inkK(k)}"></i></span><span class="muted">${esc(statusK(k))}${l ? " · " + esc(l.head) : ""}</span></button>`; };
+      const gap = pxK(o) - pxK("me");
+      return `<div class="vs">${side("me")}<div class="vs-m"><b class="mono">${gap > 0 ? "−" : "+"}$${Math.abs(gap).toFixed(2)}M</b><span class="muted">${gap > 0 ? "따라잡을 차이" : "앞선 차이"}</span></div>${side(o)}</div><div class="b-sub">${ni(NEWS()[0])}</div>`;
+    },
+    fold: () => {
+      const F = { all: () => true, pass: (n) => /Pass$|indPass|approval/.test(n.kind), fail: (n) => n.good === false, price: (n) => ["rank", "investment", "seriesB", "offering", "docking"].includes(n.kind) };
+      const L = { all: "전체", pass: "통과 · 허가", fail: "실패 · 악재", price: "주가 · 투자" };
+      return `<div class="fo"><div class="fo-l">${ni(NEWS()[0])}<button type="button" class="btn sm" data-act="bfold" aria-expanded="${bOpen}">${bOpen ? "접기" : `펼치기 · ${NEWS().length}건`}</button></div>${bOpen ? `<div class="fo-p"><div class="seg">${Object.keys(F).map((k) => `<button type="button" data-act="bfilter" data-v="${k}" aria-pressed="${bFilter === k}">${L[k]}</button>`).join("")}</div><div class="fo-list">${NEWS().filter(F[bFilter]).map((n) => ni(n)).join("") || `<p class="muted">이 조건의 소식이 아직 없습니다.</p>`}</div></div>` : ""}</div>`;
+    },
+    all: () => `${mq(KEYS.map(quoteBtn).join(""), false, "thin tape-mq")}<div class="al"><div class="al-h">${BR.breaking()}</div><div class="al-r">${ranked().map((k, i) => `<button type="button" class="al-k ${k === "me" ? "me" : ""}" data-team="${k}"><span class="mono">${i + 1}</span>${dot(k)}<b>${esc(tkK(k))}</b><span class="mono">$${pxK(k).toFixed(2)}M</span></button>`).join("")}</div></div>${raceRows(true)}`
+  };
+  const ROT = new Set(["breaking", "film", "ledbig", "caption", "grid", "all"]);
+
+  function renderBoard() {
+    const el = $("board");
+    el.className = `board bd-${BV.type} ${BV.dark ? "dk" : ""} ${bPaused ? "paused" : ""}`;
+    el.innerHTML = `<div class="bd-in">${BR[BV.type]()}</div><div class="bd-ctl"><span class="live" aria-hidden="true"><i></i>${bPaused ? "멈춤" : "LIVE"}</span><button type="button" class="tool" data-act="bpause" aria-pressed="${bPaused}">${bPaused ? "다시 흐르기" : "멈추기"}</button></div>`;
+    if (!reduced) {
+      const now = performance.now();
+      for (const t of el.querySelectorAll(".mq-track")) {
+        const w = t.scrollWidth / 2, dur = Math.max(18, w / (t.closest(".led-mq") ? 70 : 55));
+        t.style.animationDuration = dur + "s";
+        t.style.animationDelay = -(((now - mqT0) / 1000) % dur) + "s";
+      }
+    }
+  }
+  function renderDrawer() {
+    const el = $("tdraw");
+    if (!openTeam) { el.hidden = true; return; }
+    const k = openTeam, c = S.mk.cnt[k], t = tgtK(k), list = NEWS().filter((n) => n.tk === k).slice(0, 8);
+    el.hidden = false;
+    el.innerHTML = `<div class="td-h"><span>${dot(k)}<b>${esc(nmK(k))}</b> <span class="mono muted">${esc(tkK(k))}</span>${k === "me" ? ' <span class="tag">우리 모둠</span>' : ""}</span><button type="button" class="btn sm" data-act="tclose">닫기</button></div>
+      <div class="td-p"><b class="mono">$${pxK(k).toFixed(2)}</b><span class="mono ${ud(dchg(k))}">${pct(dchg(k))}</span><span class="tag">${RATING[S.mk.rate[k]]}</span></div>
+      <div class="td-s">${spark(k, 320, 64)}</div>
+      <dl class="td-dl"><dt>시가총액</dt><dd class="mono">$${pxK(k).toFixed(2)}M · ${rankOf(k)}위 / 4</dd><dt>프로그램</dt><dd class="mono">${esc(codeK(k))}</dd><dt>표적 · 질환</dt><dd>${esc(t.gene)} · ${esc(t.disease)}</dd>
+      <dt>진행</dt><dd>${esc(statusK(k))}<div class="td-steps">${STEPS.map((s) => `<i class="${s.n <= Math.floor(posK(k)) ? "on" : ""}" style="--ink:${inkK(k)}" title="${s.n}. ${esc(s.t)}"></i>`).join("")}</div></dd>
+      <dt>기록</dt><dd class="mono">특허 ${c.patent} · 통과 ${c.pass} · 실패 ${c.fail} · 허가 ${c.appr}</dd></dl>
+      <p class="lab" style="margin-top:16px">최근 공개 소식</p><div class="td-list">${list.map((n) => ni(n)).join("") || `<p class="muted">아직 소식이 없습니다.</p>`}</div>
+      <p class="hint">공개 범위: 특허 원장 · 단계 결과 · 허가 뒤 브랜드만 보입니다. 후보 분자와 점수는 그 회사 구성원과 교사만 봅니다.</p>`;
+  }
+
+
+  /* ── 상태 ── */
+  const fresh = () => ({
+    company: "한빛바이오", ticker: "HNBT", cash: 6.0, day: 0, grants: 0, step: 1, done: {},
+    disease: "알츠하이머", target: "ACHE", tid: "ache-4ey7",
+    lib: { "ChEMBL 승인약": true, "ZINC 소형": true, "사내 합성 후보": true }, mwMax: 500, tpsaMax: 140, ro5Max: 1, noAlerts: true, qedMin: 0.3, topN: 10,
+    screen: null, pick: [], dock: null, focus: null, admet: false, lead: null,
+    code: "", mech: "", plabel: "", declared: false, patent: null,
+    form: "oral", dose: 50, pop: null, ep: null, ind: null, trials: { phase1: null, phase2: null, phase3: null }, p1dose: null,
+    brand: "", shape: "tablet", color: "ivory", final: null, log: [], mk: seedMarket()
+  });
+  let S = fresh();
+  try { const raw = localStorage.getItem("crista-board-state"); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch (e) {}
+  const save = () => { try { localStorage.setItem("crista-board-state", JSON.stringify(S)); } catch (e) {} };
+  let VAR = V[0], tab = "set", busy = null, logOpen = false;
+
+  const unlocked = (n) => n === 1 || !!S.done[n - 1];
+  const state = (n) => (S.step === n ? "cur" : S.done[n] ? "done" : unlocked(n) ? "open" : "lock");
+  const stLabel = { cur: "진행 중", done: "완료", open: "열림", lock: "잠김" };
+
+  function log(dir, ev, msg) {
+    S.log.unshift({ d: "D+" + S.day, dir, ev, msg });
+    S.log = S.log.slice(0, 60);
+  }
+  let toastT = 0;
+  function toast(m) { const t = $("toast"); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (t.hidden = true), 2800); }
+  function pay(v, what) {
+    if (S.cash + 1e-9 < v) { toast(`연구비가 모자랍니다. ${what}에 ${MX(v)}가 필요해요. 위의 '연구비 신청'으로 받을 수 있습니다.`); return false; }
+    S.cash = Math.round((S.cash - v) * 1000) / 1000; return true;
+  }
+  function finish(n) { S.done[n] = true; }
+  function resetFrom(n) {
+    for (let k = n; k <= 8; k++) delete S.done[k];
+    if (n <= 2) { S.screen = null; S.pick = []; }
+    if (n <= 3) { S.dock = null; S.focus = null; }
+    if (n <= 4) { S.admet = false; S.lead = null; }
+    if (n <= 5) { S.declared = false; S.patent = null; }
+    if (n <= 6) { S.ind = null; }
+    if (n <= 7) { S.trials = { phase1: null, phase2: null, phase3: null }; }
+    if (n <= 8) { S.final = null; }
+  }
+
+  /* 작업 진행 — game-server 가 job:update 로 보내는 단계를 흉내 낸다 */
+  function runJob(label, phases, ms, done) {
+    if (busy) return;
+    busy = { label, pct: 0, ph: phases[0] };
+    tab = "res";
+    render();
+    const t0 = performance.now();
+    const tick = () => {
+      const k = Math.min(1, (performance.now() - t0) / ms);
+      busy.pct = Math.round(k * 100);
+      busy.ph = phases[Math.min(phases.length - 1, Math.floor(k * phases.length))];
+      for (const el of document.querySelectorAll("[data-job-bar]")) el.style.width = busy.pct + "%";
+      for (const el of document.querySelectorAll("[data-job-ph]")) el.textContent = `${busy.ph} · ${busy.pct}%`;
+      if (k < 1) requestAnimationFrame(tick);
+      else { busy = null; done(); save(); render(); }
+    };
+    requestAnimationFrame(tick);
+  }
+  const jobBox = () => busy ? `<div class="job" role="status"><div class="job-h"><b>${esc(busy.label)}</b><span data-job-ph>${esc(busy.ph)} · ${busy.pct}%</span></div><div class="bar"><i data-job-bar style="width:${busy.pct}%"></i></div></div>` : "";
+
+  /* ── 구조식(SmilesDrawer) ── */
+  const molCache = new Map();
+  const dark = () => VAR.tone === "ink" || VAR.tone === "night";
+  function mol(smiles, w, h, cls = "") {
+    const key = smiles + "|" + w + "|" + h + "|" + dark();
+    const box = `<div class="molbox ${cls}" style="aspect-ratio:${w} / ${h}">`;
+    if (molCache.has(key)) return `${box}${molCache.get(key)}</div>`;
+    return `${box}<svg class="mol" data-smiles="${esc(smiles)}" data-w="${w}" data-h="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="구조식"></svg></div>`;
+  }
+  function drawMols() {
+    const SD = window.SmilesDrawer;
+    for (const el of document.querySelectorAll("svg[data-smiles]")) {
+      const smi = el.getAttribute("data-smiles"), w = +el.dataset.w, h = +el.dataset.h;
+      const key = smi + "|" + w + "|" + h + "|" + dark();
+      el.removeAttribute("data-smiles");
+      if (!SD) { el.outerHTML = `<span class="fallback">${esc(smi)}</span>`; continue; }
+      try {
+        const sd = new SD.SmiDrawer({ width: w, height: h, padding: 6, bondThickness: 1.1, compactDrawing: false, fontSizeLarge: 7, fontSizeSmall: 5 });
+        sd.draw(smi, el, dark() ? "dark" : "light", () => {
+          el.removeAttribute("style"); el.removeAttribute("width"); el.removeAttribute("height"); el.setAttribute("class", "mol");
+          /* 그린 분자의 실제 범위로 viewBox 를 다시 잡아 상자 안에 맞춘다 */
+          try { const b = el.getBBox(); if (b.width && b.height) el.setAttribute("viewBox", `${b.x - 6} ${b.y - 6} ${b.width + 12} ${b.height + 12}`); } catch (e) {}
+          el.setAttribute("preserveAspectRatio", "xMidYMid meet");
+          molCache.set(key, el.outerHTML);
+        }, () => { el.outerHTML = `<span class="fallback">${esc(smi)}</span>`; });
+      } catch (e) { el.outerHTML = `<span class="fallback">${esc(smi)}</span>`; }
+    }
+  }
+
+  /* ── 위 띠 · 사이드바 · 기록 ── */
+  function renderTop() {
+    $("top").innerHTML = `
+      <div class="brand"><svg aria-hidden="true"><use href="#mark"></use></svg>CRISTA <small>파이프라인 랩</small></div>
+      <div class="co"><label class="sr" for="co-name">제약회사 이름</label><input id="co-name" value="${esc(S.company)}" maxlength="14" title="눌러서 회사 이름 바꾸기"><span class="tick">${esc(S.ticker)}</span></div>
+      <div class="top-r">
+        <button type="button" class="kv rankc" data-team="me"><span>시가총액 순위</span><b>${rankOf("me")}위 · $${pxK("me").toFixed(2)}M</b></button>
+        <div class="kv cash"><span>연구비</span><b>${M(S.cash)}</b></div>
+        <div class="kv day"><span>게임 날짜</span><b>D+${S.day}</b></div>
+        <button type="button" class="btn sm" data-act="grant">연구비 신청</button>
+        <button type="button" class="btn sm" data-act="logtoggle" aria-pressed="${logOpen}">메시지 기록</button>
+      </div>`;
+  }
+  function stepBtn(st, numLabel) {
+    const s = state(st.n);
+    const meta = `<span class="st-m"><span class="${s === "done" ? "ok" : ""}">${stLabel[s]}</span><span>${st.cost ? MX(st.cost) : "무료"}</span></span>`;
+    return `<li><button type="button" class="st" data-go="${st.n}" data-s="${s}" ${s === "cur" ? 'aria-current="step"' : ""} aria-label="${st.n}단계 ${esc(st.t)} · ${stLabel[s]}">
+      <span class="st-n">${numLabel}</span><span class="st-t">${esc(st.t)}</span><span class="st-s">${esc(st.sub)}</span>${meta}</button></li>`;
+  }
+  function renderSide() {
+    const doneN = STEPS.filter((s) => S.done[s.n]).length;
+    let nav;
+    if (VAR.side === "phase") {
+      nav = PHASES.map((p) => {
+        const items = STEPS.filter((s) => s.ph === p.n);
+        const d = items.filter((s) => S.done[s.n]).length;
+        return `<div class="grp"><p class="grp-h"><b>${p.n}.</b>${p.t}<span>${d}/${items.length}</span></p><ol class="steps">${items.map((s, i) => stepBtn(s, `${p.n}.${i + 1}`)).join("")}</ol></div>`;
+      }).join("");
+    } else {
+      const head = VAR.side === "ledger" ? `<div class="lg-head"><span>No.</span><span>단계</span><span>상태</span><span style="text-align:right">비용</span></div>` : "";
+      nav = head + `<ol class="steps">${STEPS.map((s) => stepBtn(s, VAR.side === "chip" ? String(s.n) : s.n + ".")).join("")}</ol>`;
+    }
+    $("side").innerHTML = `
+      <p class="side-h">${VAR.side === "chip" ? "단계" : "신약 개발 파이프라인 · 8단계"}</p>
+      <nav>${nav}</nav>
+      <div class="side-foot">
+        <span>진행 ${doneN} / 8</span>
+        <div class="prog" aria-hidden="true"><i style="width:${(doneN / 8) * 100}%"></i></div>
+        <div class="conn"><span>game-server · ws 미리보기</span><span>bio-worker · 저장된 계산 재생</span></div>
+      </div>`;
+  }
+  function renderLog() {
+    const lines = S.log.length ? S.log.map((l) => `<div class="ln"><span class="d">${esc(l.d)}</span><span class="dir ${l.dir === "S2C" ? "s" : ""}">${l.dir === "S2C" ? "← S" : "→ C"}</span><span class="ev">${esc(l.ev)} <i>${esc(l.msg)}</i></span></div>`).join("")
+      : `<div class="ln"><span></span><span></span><span class="ev"><i>단계를 실행하면 game-server와 주고받는 메시지가 여기에 쌓입니다.</i></span></div>`;
+    $("log").innerHTML = `<div class="log-h"><span>서버 메시지 기록</span><span>${S.log.length}</span></div><div class="log-b">${lines}</div>`;
+    $("strip").innerHTML = lines;
+  }
+
+  /* ── 단계별 화면: head · ctl · res · act ── */
+  const T = () => TARGETS[S.tid];
+  const disease = () => D.diseases.find((d) => d.name === S.disease) || D.diseases[0];
+  function head(n, eyebrow, lede, chips) {
+    const st = STEPS[n - 1];
+    const num = VAR.side === "phase" ? `${st.ph}.${STEPS.filter((s) => s.ph === st.ph).indexOf(st) + 1}` : n + ".";
+    return `<header class="sh"><div class="sh-n ${VAR.tone === "film" ? "film" : ""}" aria-hidden="true">${num}</div>
+      <p class="eyebrow">${esc(eyebrow)}</p><h1>${esc(st.t)}</h1><p class="lede">${lede}</p>
+      <div class="chips">${chips.map((c, i) => `<span class="chip ${i === 0 ? "src" : ""}">${esc(c)}</span>`).join("")}</div></header>`;
+  }
+
+  function funnel() {
+    const all = D.compounds, tid = S.tid;
+    const lib = all.filter((c) => S.lib[c.lib]);
+    const mt = lib.filter((c) => c.mw <= S.mwMax && c.tpsa <= S.tpsaMax);
+    const r5 = mt.filter((c) => c.ro5 <= S.ro5Max);
+    const al = S.noAlerts ? r5.filter((c) => !c.al.length) : r5;
+    const q = al.filter((c) => c.qed >= S.qedMin).sort((a, b) => (b.sc[tid] || 0) - (a.sc[tid] || 0));
+    const sel = q.slice(0, S.topN);
+    return { total: all.length, library: lib.length, mwTpsa: mt.length, ro5: r5.length, alerts: al.length, selected: sel.length, sel: sel.map((c) => c.id) };
+  }
+  const leadC = () => CMP.get(S.lead);
+  const leadKcal = () => { const r = S.dock && S.dock.find((d) => d.id === S.lead); return r ? r.kcal : null; };
+
+  const STEP = {
+    1: {
+      head: () => head(1, "Stage 1 · 표적 탐색실", "질환을 고르면 Open Targets가 매긴 연관 표적 순위가 나옵니다. 결정구조가 준비된 표적이어야 3단계에서 도킹할 수 있어요.",
+        ["source: dataset", "experiment:request · stage 1", "Open Targets Platform v4", `수집 ${(D.meta.dat || "").slice(0, 10)}`]),
+      ctl: () => `<div class="panel"><span class="lab">질환</span><div class="opts">${D.diseases.map((d) => `
+        <button type="button" class="opt" data-act="disease" data-v="${esc(d.name)}" aria-pressed="${S.disease === d.name}">
+          <b>${esc(d.name)}</b><span class="mono muted">${esc(d.mondo)}</span><span class="muted">${esc(d.en)}</span><span class="mono muted">연관 표적 ${d.assoc.toLocaleString("ko-KR")}</span></button>`).join("")}</div></div>`,
+      res: () => {
+        const d = disease();
+        return `<div class="panel"><p class="ptitle">${esc(d.name)} 연관 표적 상위 ${d.targets.length} <small>행을 눌러 표적 고르기</small></p><div class="tbl-w"><table>
+          <thead><tr><th class="num">순위</th><th>유전자</th><th>이름</th><th>종합 점수</th><th class="num">유전</th><th class="num">약물</th><th class="num">문헌</th><th>결정구조</th><th>도킹</th></tr></thead><tbody>
+          ${d.targets.map((t) => {
+            const ok = !!t.dockingTargetId;
+            return `<tr class="pick ${S.target === t.symbol ? "on" : ""}" data-act="target" data-v="${esc(t.symbol)}" tabindex="0">
+              <td class="num">${t.rank}</td><td><b class="mono">${esc(t.symbol)}</b></td><td>${esc(t.name)}</td>
+              <td><div class="bar"><i style="width:${(t.overallScore * 100).toFixed(1)}%"></i></div><span class="mono muted">${t.overallScore.toFixed(3)}</span></td>
+              <td class="num">${(t.geneticScore ?? 0).toFixed(2)}</td><td class="num">${(t.drugScore ?? 0).toFixed(2)}</td><td class="num">${(t.literatureScore ?? 0).toFixed(2)}</td>
+              <td class="mono">${esc(t.pdbId || "—")}</td><td>${ok ? `<span class="sig g">준비됨</span>` : `<span class="sig w">구조 없음</span>`}</td></tr>`;
+          }).join("")}</tbody></table></div></div>`;
+      },
+      act: () => {
+        const t = disease().targets.find((x) => x.symbol === S.target);
+        const ok = t && t.dockingTargetId;
+        return `<div class="acts"><button type="button" class="btn pri" data-act="s1" ${ok && !busy ? "" : "disabled"}>표적 확정하고 2단계로</button>
+          <span class="note">${!t ? "표에서 표적을 고르세요." : ok ? `${t.symbol} · PDB ${t.pdbId} · 무료` : `${t.symbol}은 결정구조가 없어 도킹할 수 없습니다. '준비됨' 표적을 고르세요.`}</span></div>`;
+      }
+    },
+    2: {
+      head: () => head(2, "Stage 2 · 화합물 HTVS · 합성실", `라이브러리 ${D.meta.total}종에서 물성 조건으로 걸러 ${T().gene} 표적 스크리닝 점수 순으로 후보를 고릅니다. 조건을 바꾸면 깔때기가 바로 바뀌고, 실행해야 후보가 저장돼요.`,
+        ["source: dataset", "experiment:request · stage 2", "ChEMBL v34 · RDKit", `비용 ${MX(R.cost.htvs)}`]),
+      ctl: () => `<div class="panel">
+        <div class="fld"><span class="lab">라이브러리</span>${Object.entries(D.meta.counts || {}).map(([k, v], i) => `<label class="chk"><input type="checkbox" id="lib${i}" data-act="lib" data-v="${esc(k)}" ${S.lib[k] ? "checked" : ""}> ${esc(k)} <span class="mono muted">${v}</span></label>`).join("")}</div>
+        <div class="fld"><label class="lab" for="mw">분자량 최대 (Da)</label><div class="rng"><input type="range" id="mw" min="250" max="650" step="10" value="${S.mwMax}" data-num="mwMax"><output>${S.mwMax}</output></div></div>
+        <div class="fld"><label class="lab" for="tpsa">TPSA 최대 (Å²)</label><div class="rng"><input type="range" id="tpsa" min="40" max="180" step="5" value="${S.tpsaMax}" data-num="tpsaMax"><output>${S.tpsaMax}</output></div></div>
+        <div class="fld"><label class="lab" for="qed">QED 최소</label><div class="rng"><input type="range" id="qed" min="0" max="0.9" step="0.05" value="${S.qedMin}" data-num="qedMin"><output>${S.qedMin.toFixed(2)}</output></div></div>
+        <div class="fld"><span class="lab">Lipinski Ro5 위반 허용</span><div class="seg">${[0, 1, 2].map((v) => `<button type="button" data-act="ro5" data-v="${v}" aria-pressed="${S.ro5Max === v}">${v}개까지</button>`).join("")}</div></div>
+        <div class="fld"><label class="chk"><input type="checkbox" id="noal" data-act="noal" ${S.noAlerts ? "checked" : ""}> 구조 경고(방향족 아민 · 니트로) 빼기</label></div>
+        <div class="fld"><span class="lab">상위 몇 개</span><div class="seg">${[5, 10, 20].map((v) => `<button type="button" data-act="topn" data-v="${v}" aria-pressed="${S.topN === v}">${v}</button>`).join("")}</div></div>
+      </div>`,
+      res: () => {
+        const f = funnel();
+        const rows = [["전체", f.total], ["라이브러리", f.library], ["MW · TPSA", f.mwTpsa], ["Ro5", f.ro5], ["구조 경고", f.alerts], ["QED · 선정", f.selected]];
+        const ids = S.screen ? S.screen.sel : f.sel;
+        return `${jobBox()}<div class="panel" data-live="fun"><p class="ptitle">스크리닝 깔때기 <small>통과한 분자 수</small></p><div class="fun">${rows.map(([k, v]) => `<div class="fun-r"><span>${k}</span><div class="bar"><i style="width:${(v / f.total) * 100}%"></i></div><b>${v}</b></div>`).join("")}</div></div>
+        <div class="panel" data-live="cand"><p class="ptitle">${S.screen ? "저장된 후보" : "고를 후보 미리보기"} · ${T().gene} <small>${S.screen ? "실행 결과 · 3단계로 넘어감" : "실행해야 저장됩니다"}</small></p>
+        ${ids.length ? `<div class="tbl-w"><table><thead><tr><th class="num">#</th><th>구조</th><th>화합물</th><th>라이브러리</th><th class="num">점수</th><th class="num">MW</th><th class="num">QED</th></tr></thead><tbody>
+        ${ids.map((id, i) => { const c = CMP.get(id); return `<tr><td class="num">${i + 1}</td><td>${mol(c.s, 128, 88, "thumb")}</td><td><b>${esc(c.n)}</b><div class="mono muted" style="font-size:10.5px">${esc(c.id)}</div></td><td>${esc(c.lib)}</td><td class="num">${(c.sc[S.tid] || 0).toFixed(3)}</td><td class="num">${c.mw.toFixed(1)}</td><td class="num">${c.qed.toFixed(2)}</td></tr>`; }).join("")}
+        </tbody></table></div>` : `<div class="empty">조건을 모두 통과한 분자가 없습니다. 분자량이나 TPSA 상한을 올려 보세요.</div>`}</div>`;
+      },
+      act: () => `<div class="acts"><button type="button" class="btn pri" data-act="s2" ${busy ? "disabled" : ""}>스크리닝 실행 <span class="cost">${MX(R.cost.htvs)}</span></button>
+        ${S.screen ? `<button type="button" class="btn" data-go="3">3단계 도킹으로 →</button>` : `<span class="note">다시 실행하면 비용이 다시 듭니다.</span>`}</div>`
+    },
+    3: {
+      head: () => head(3, "Stage 3 · AI 도킹 서버실", `${T().label}(${T().pdb}) 포켓에 후보를 넣어 결합 자유에너지를 잽니다. 기준 리간드 ${T().ref}와 견주어 결합력 p를 매겨요.`,
+        ["source: vina", "experiment:request · stage 3", "bio-worker · AutoDock Vina", `비용 ${MX(R.cost.docking)}`]),
+      ctl: () => {
+        const t = T(), cands = S.screen ? S.screen.sel : [];
+        return `<div class="panel"><p class="ptitle">표적 구조</p><dl class="mono" style="display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0;font-size:12px">
+          <dt class="muted">PDB</dt><dd style="margin:0">${t.pdb} · ${t.gene}</dd><dt class="muted">기준 리간드</dt><dd style="margin:0">${t.ref} · ${f2(t.refKcal)} kcal/mol</dd>
+          <dt class="muted">재도킹 RMSD</dt><dd style="margin:0">${t.rmsd.toFixed(2)} Å ${t.rmsd <= 2 ? "· 방법 검증 통과" : ""}</dd><dt class="muted">CNS 표적</dt><dd style="margin:0">${t.cns ? "예 — 뇌 노출이 효능에 들어감" : "아니오"}</dd></dl></div>
+          <div class="panel"><p class="ptitle">도킹할 후보 <small>${S.pick.length} / 5</small></p>
+          ${cands.map((id, i) => { const c = CMP.get(id); return `<label class="chk"><input type="checkbox" id="pk${i}" data-act="pick" data-v="${id}" ${S.pick.includes(id) ? "checked" : ""}> ${esc(c.n)} <span class="mono muted">${(c.sc[S.tid] || 0).toFixed(3)}</span></label>`; }).join("")}
+          <p class="hint">기준 리간드 ${t.ref}는 비교를 위해 늘 함께 도킹합니다.</p></div>`;
+      },
+      res: () => {
+        if (!S.dock) return `${jobBox()}<div class="empty">후보를 골라 도킹을 실행하면 결합 자유에너지(kcal/mol)와 결합력 p가 여기에 나옵니다.</div>`;
+        const t = T(), lo = -14, hi = -4, x = (k) => Math.max(0, Math.min(100, ((hi - k) / (hi - lo)) * 100));
+        const rows = S.dock.slice().sort((a, b) => a.kcal - b.kcal);
+        const fc = CMP.get(S.focus) || null;
+        const focusSmiles = fc ? fc.s : t.refSmiles;
+        return `${jobBox()}<div class="panel"><p class="ptitle">결합 자유에너지 <small>막대가 길수록 강하게 결합</small></p>
+          <div class="dk-axis"><span></span><div><span>${hi}</span><span>${(hi + lo) / 2}</span><span>${lo} kcal/mol</span></div><span style="text-align:right">ΔG</span><span style="text-align:right">p</span></div>
+          <div class="dk">${rows.map((r) => `<button type="button" class="dk-r" data-act="focus" data-v="${r.id}" aria-pressed="${S.focus === r.id}">
+            <span class="nm">${esc(r.name)}</span><span class="dk-t"><i class="${r.ref ? "ref" : ""}" style="width:${x(r.kcal)}%"></i><em style="left:${x(t.refKcal)}%"></em><em style="left:${x(t.refKcal + 4.5)}%"></em></span>
+            <span class="mono" style="text-align:right">${f2(r.kcal)}</span><span class="mono" style="text-align:right">${strength(r.kcal, t.refKcal).toFixed(2)}</span></button>`).join("")}</div>
+          <div class="legend"><span><i></i>후보</span><span><i class="ref"></i>기준 리간드 ${t.ref}</span><span><i class="ln"></i>왼쪽 점선 ${f2(t.refKcal + 4.5)} 효능 바닥 · 오른쪽 ${f2(t.refKcal)} 기준</span></div></div>
+          <div class="panel"><div class="twin"><div>${mol(focusSmiles, 300, 200)}</div><div><p class="ptitle" style="margin-bottom:6px">${esc(fc ? fc.n : t.ref + " (기준)")}</p>
+          <p class="smi">${esc(focusSmiles)}</p><p class="hint">${fc ? esc(fc.mech || fc.lib) : "결정구조 리간드"}</p><p class="hint">미리보기는 오프라인 1회 도킹 값(vinaKcalByTarget)을 재생합니다. 실서버는 bio-worker가 Vina로 새로 계산해요.</p></div></div></div>`;
+      },
+      act: () => `<div class="acts"><button type="button" class="btn pri" data-act="s3" ${S.pick.length && !busy ? "" : "disabled"}>도킹 실행 <span class="cost">${MX(R.cost.docking)}</span></button>
+        ${S.dock ? `<button type="button" class="btn" data-go="4">4단계 ADMET으로 →</button>` : `<span class="note">${S.pick.length ? `${S.pick.length}개 + 기준 리간드` : "후보를 하나 이상 고르세요."}</span>`}</div>`
+    },
+    4: {
+      head: () => head(4, "Stage 4 · 전임상 ADMET실", "도킹한 분자의 흡수 · 뇌 노출 · 심장 독성(hERG) · 간독성을 예측합니다. 결합력과 안전 신호를 함께 보고 리드 하나를 고르세요.",
+        ["source: admet-ai", "experiment:request · stage 4 · predict", "ADMET-AI v2", `비용 ${MX(R.cost.admet)}`]),
+      ctl: () => `<div class="panel"><p class="ptitle">평가할 분자 <small>${(S.dock || []).filter((d) => !d.ref).length}개</small></p>
+        ${(S.dock || []).filter((d) => !d.ref).map((d) => `<div class="row" style="justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line)"><span>${esc(d.name)}</span><span class="mono muted">${f2(d.kcal)} kcal/mol</span></div>`).join("")}
+        <p class="hint">신호 규칙은 game-rules의 물성 신호(균형안 §10.3)와 같습니다.</p></div>`,
+      res: () => {
+        if (!S.admet) return `${jobBox()}<div class="empty">ADMET 예측을 실행하면 분자마다 위험 신호가 표로 나옵니다.</div>`;
+        const t = T(), cls = { good: "g", high: "g", suitable: "g", moderate: "w", poor: "b", low: "b", unsuitable: "b" };
+        const risk = { low: "g", moderate: "w", high: "b" };
+        const rows = S.dock.filter((d) => !d.ref);
+        const lc = leadC();
+        return `${jobBox()}<div class="panel"><p class="ptitle">ADMET 신호 <small>행의 '리드'를 눌러 고르기</small></p><div class="tbl-w"><table>
+          <thead><tr><th>분자</th><th class="num">ΔG</th><th class="num">Ro5</th><th>경구 흡수</th><th>뇌 노출${t.cns ? "*" : ""}</th><th>hERG</th><th>간독성</th><th>경피</th><th></th></tr></thead><tbody>
+          ${rows.map((d) => { const c = CMP.get(d.id), s = signals(c); return `<tr class="${S.lead === d.id ? "on" : ""}"><td><b>${esc(c.n)}</b></td><td class="num">${f2(d.kcal)}</td><td class="num">${s.ro5}</td>
+            <td><span class="sig ${cls[s.oral]}">${LV[s.oral]}</span></td><td><span class="sig ${t.cns ? cls[s.bbb] : ""}">${LV[s.bbb]}</span></td>
+            <td><span class="sig ${risk[s.herg]}">${LV[s.herg]}</span></td><td><span class="sig ${risk[s.hep]}">${LV[s.hep]}</span></td><td><span class="sig ${cls[s.td]}">${LV[s.td]}</span></td>
+            <td><button type="button" class="btn sm" data-act="lead" data-v="${d.id}" aria-pressed="${S.lead === d.id}">${S.lead === d.id ? "리드 ✓" : "리드"}</button></td></tr>`; }).join("")}
+          </tbody></table></div>${t.cns ? `<p class="hint">* ${t.gene}는 중추신경계 표적이라 뇌 노출이 효능에 곱해집니다.</p>` : ""}</div>
+          ${lc ? `<div class="panel"><div class="twin"><div>${mol(lc.s, 300, 200)}</div><div><p class="ptitle">리드 · ${esc(lc.n)}</p><ul class="why" style="color:var(--fg)">${Object.values(notes(lc, signals(lc))).map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div></div></div>` : ""}`;
+      },
+      act: () => `<div class="acts">${!S.admet ? `<button type="button" class="btn pri" data-act="s4" ${S.dock && !busy ? "" : "disabled"}>ADMET 예측 실행 <span class="cost">${MX(R.cost.admet)}</span></button>`
+        : `<button type="button" class="btn pri" data-act="s4lead" ${S.lead ? "" : "disabled"}>리드 확정하고 5단계로</button><span class="note">${S.lead ? esc(leadC().n) : "표에서 리드를 고르세요."}</span>`}</div>`
+    },
+    5: {
+      head: () => head(5, "pipeline:declare → pipeline:patent", "리드에 코드명과 기전을 붙여 사내 프로그램으로 선언하고, 시청 · 특허청 창구에 물질특허를 냅니다. 특허 원장은 학급 모두에게 공개돼요.",
+        ["pipeline:declare", "pipeline:patent", "시청 · 특허청 창구", `특허 ${MX(R.cost.patent)}`]),
+      ctl: () => {
+        const okCode = /^[A-Z]{2,4}-\d{3}$/.test(S.code);
+        return `<div class="panel">
+          <div class="fld"><label class="lab" for="code">코드명</label><input class="txt mono" id="code" data-txt="code" value="${esc(S.code)}" placeholder="${esc(S.ticker.slice(0, 3))}-101" maxlength="8" autocomplete="off" ${S.declared ? "disabled" : ""}>
+            <p class="hint ${S.code ? (okCode ? "good" : "bad") : ""}" data-hint="code">${!S.code ? "영문 대문자 2~4자 + '-' + 숫자 3자리 (예: CRX-101)" : okCode ? "쓸 수 있는 코드명입니다." : "형식이 맞지 않습니다. 예: CRX-101"}</p></div>
+          <div class="fld"><label class="lab" for="mech">기전 한 줄</label><input class="txt" id="mech" data-txt="mech" value="${esc(S.mech)}" maxlength="80" placeholder="${esc(T().gene)} 선택적 억제제" ${S.declared ? "disabled" : ""}></div>
+          <div class="fld"><label class="lab" for="plabel">특허 이름표 (선택)</label><input class="txt" id="plabel" data-txt="plabel" value="${esc(S.plabel)}" maxlength="40" placeholder="${esc(leadC() ? leadC().n.split(" ")[0] : "")} 유도체" ${S.patent ? "disabled" : ""}></div></div>`;
+      },
+      res: () => {
+        const c = leadC(); if (!c) return "";
+        return `${jobBox()}<div class="doc"><p class="eyebrow">물질특허 출원서 · 특허 원장</p><h3>${esc(S.plabel || c.n)}</h3>
+          ${S.patent ? `<div class="stamp"><div>출원<small>${esc(S.patent.no)}</small></div></div>` : ""}
+          <dl><dt>출원번호</dt><dd class="mono">${S.patent ? esc(S.patent.no) : "출원 전"}</dd><dt>출원인</dt><dd>${esc(S.company)} (${esc(S.ticker)})</dd>
+          <dt>프로그램</dt><dd class="mono">${esc(S.code || "—")} · ${S.declared ? "선언됨" : "선언 전"}</dd><dt>기전</dt><dd>${esc(S.mech || "—")}</dd>
+          <dt>표적</dt><dd>${esc(T().gene)} · ${esc(T().disease)}</dd><dt>SMILES</dt><dd class="smi">${esc(c.s)}</dd>
+          <dt>결합 근거</dt><dd class="mono">${f2(leadKcal())} kcal/mol · AutoDock Vina · ${T().pdb}</dd><dt>출원일</dt><dd class="mono">${S.patent ? "D+" + S.patent.day : "—"}</dd></dl>
+          <div style="max-width:260px;margin-top:14px">${mol(c.s, 260, 150)}</div></div>`;
+      },
+      act: () => {
+        const okCode = /^[A-Z]{2,4}-\d{3}$/.test(S.code), okMech = S.mech.trim().length > 0;
+        if (!S.declared) return `<div class="acts"><button type="button" class="btn pri" data-act="declare" ${okCode && okMech ? "" : "disabled"}>프로그램 선언 <span class="cost">무료</span></button><span class="note">${okCode && okMech ? "선언하면 코드명은 바꿀 수 없습니다." : "코드명과 기전을 채우세요."}</span></div>`;
+        if (!S.patent) return `<div class="acts"><button type="button" class="btn film" data-act="patent" ${busy ? "disabled" : ""}>물질특허 출원 <span class="cost">${MX(R.cost.patent)}</span></button></div>`;
+        return `<div class="acts"><button type="button" class="btn" data-go="6">6단계 제형 · IND로 →</button></div>`;
+      }
+    },
+    6: {
+      head: () => head(6, "pipeline:formulate → pipeline:ind", "ADMET실에서 제형을 정하고, FDA 창구에 용량 · 환자군 · 1차 평가지표를 담아 IND를 냅니다. 고를 때마다 효능 E와 안전 S가 다시 계산돼요.",
+        ["pipeline:formulate", "pipeline:ind", "FDA 규제심사청", `IND ${MX(R.cost.ind)} · ${R.days.ind}일`]),
+      ctl: () => {
+        const c = leadC(), s = signals(c), tr = TRIAL[S.tid];
+        const A = { oral: R.absorption.oral[s.oral], iv: 1, transdermal: R.absorption.transdermal[s.td] };
+        return `<div class="panel">
+          <div class="fld"><span class="lab">제형</span><div class="opts">${Object.keys(FORM).map((k) => `<button type="button" class="opt" data-act="form" data-v="${k}" aria-pressed="${S.form === k}"><b>${FORM[k]}</b><span class="mono muted">흡수 A ${A[k].toFixed(2)} · 피크 ×${R.peak[k].toFixed(2)}</span></button>`).join("")}</div></div>
+          <div class="fld"><span class="lab">용량</span><div class="seg">${[10, 50, 100].map((v) => `<button type="button" data-act="dose" data-v="${v}" aria-pressed="${S.dose === v}">${v} mg</button>`).join("")}</div></div>
+          <div class="fld"><label class="lab" for="pop">환자군</label><select class="txt" id="pop" data-sel="pop">${tr.pops.map((p) => `<option ${S.pop === p ? "selected" : ""}>${esc(p)}</option>`).join("")}</select></div>
+          <div class="fld"><label class="lab" for="ep">1차 평가지표</label><select class="txt" id="ep" data-sel="ep">${tr.eps.map((p) => `<option ${S.ep === p ? "selected" : ""}>${esc(p)}</option>`).join("")}</select></div></div>`;
+      },
+      res: () => {
+        const sc = score(leadC(), leadKcal(), S.tid, S.form, S.dose, S.pop);
+        const g = (label, v, ths) => `<div class="gauge"><div class="gauge-h"><span class="lab" style="margin:0">${label}</span><b>${v.toFixed(1)}</b></div>
+          <div class="gauge-t"><i style="width:${v}%"></i>${ths.map(([k, x]) => `<em style="left:${x}%"><span>${k} ${x}</span></em>`).join("")}</div><div class="gauge-sp"></div></div>`;
+        return `${jobBox()}${S.ind ? `<div class="doc"><p class="eyebrow">IND 심사 결과 · D+${S.ind.day}</p><h3>${S.ind.pass ? "IND 승인 — 임상 1상을 시작할 수 있습니다" : "임상 보류(Clinical Hold)"}</h3>
+          <div class="stamp ${S.ind.pass ? "" : "bad"}"><div>${S.ind.pass ? "승인" : "보류"}<small>IND · FDA</small></div></div>
+          <p class="muted" style="max-width:52ch">안전 S ${S.ind.S.toFixed(1)} ${S.ind.pass ? "≥" : "<"} 35. ${S.ind.pass ? "" : "용량을 낮추거나 제형을 바꿔 다시 내세요."}</p></div>` : ""}
+          <div class="panel"><p class="ptitle">예상 점수 · ${esc(S.code)} <small>판정 기준선 표시</small></p>
+          ${g("효능 E", sc.E, [["2상", 40], ["3상", 45]])}<ul class="why">${sc.eWhy.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+          <div style="height:14px"></div>
+          ${g("안전 S", sc.S, [["IND", 35], ["1상", 50], ["3상", 55]])}<ul class="why">${sc.sWhy.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+      },
+      act: () => S.ind && S.ind.pass ? `<div class="acts"><button type="button" class="btn" data-go="7">7단계 임상으로 →</button><span class="note">제형을 바꾸면 IND를 새로 내야 합니다.</span></div>`
+        : `<div class="acts"><button type="button" class="btn pri" data-act="ind" ${busy ? "disabled" : ""}>제형 확정 · IND 신청 <span class="cost">${MX(R.cost.ind)}</span></button><span class="note">심사 ${R.days.ind}일 · 안전 S 35 이상이면 승인</span></div>`
+    },
+    7: {
+      head: () => head(7, "pipeline:trial · 대학병원 임상센터", "같은 프로토콜로 1상(안전) → 2상(효능) → 3상(둘 다)을 차례로 진행합니다. 단계마다 흔들림이 더해져요. 떨어지면 다시 하거나 FDA에서 용량을 바꿉니다.",
+        ["pipeline:trial", "대학병원 임상센터", "흔들림 1·2상 ±6 · 3상 ±4", `합계 ${MX(R.cost.phase1 + R.cost.phase2 + R.cost.phase3)}`]),
+      ctl: () => `<div class="panel"><p class="ptitle">프로토콜 <small>IND 승인본</small></p><dl class="mono" style="display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0;font-size:12px">
+        <dt class="muted">프로그램</dt><dd style="margin:0">${esc(S.code)} · ${esc(leadC().n)}</dd><dt class="muted">제형 · 용량</dt><dd style="margin:0">${FORM[S.form]} · ${S.dose} mg</dd>
+        <dt class="muted">환자군</dt><dd style="margin:0">${esc(S.pop)}</dd><dt class="muted">평가지표</dt><dd style="margin:0">${esc(S.ep)}</dd></dl>
+        <div class="acts" style="margin-top:12px"><button type="button" class="btn sm" data-act="amend">FDA에서 용량 바꾸기 (무료)</button></div></div>`,
+      res: () => {
+        const base = score(leadC(), leadKcal(), S.tid, S.form, S.dose, S.pop);
+        const nm = { phase1: "임상 1상", phase2: "임상 2상", phase3: "임상 3상" };
+        const rule = { phase1: "안전 S ≥ 50", phase2: "효능 E ≥ 40", phase3: "E ≥ 45 · S ≥ 55" };
+        return `${jobBox()}<div class="ph">${["phase1", "phase2", "phase3"].map((k) => {
+          const r = S.trials[k];
+          return `<div class="ph-r" data-r="${r ? (r.pass ? "pass" : "fail") : ""}"><div><b>${nm[k]}</b><div class="mono muted" style="font-size:10.5px">${R.days[k]}일 · ${MX(R.cost[k])}</div></div>
+            <div class="res">${r ? `E ${r.E.toFixed(1)} · S ${r.S.toFixed(1)} <span class="muted">(흔들림 ${r.n >= 0 ? "+" : ""}${r.n})</span> — 기준 ${rule[k]}` : `<span class="muted">기준 ${rule[k]} · 지금 예상 E ${base.E.toFixed(1)} · S ${base.S.toFixed(1)}</span>`}</div>
+            <div>${r ? `<span class="sig ${r.pass ? "g" : "b"}">${r.pass ? "통과" : "실패"}</span>` : `<span class="sig">대기</span>`}</div></div>`;
+        }).join("")}</div>`;
+      },
+      act: () => {
+        const next = ["phase1", "phase2", "phase3"].find((k) => !S.trials[k] || !S.trials[k].pass);
+        if (!next) return `<div class="acts"><button type="button" class="btn" data-go="8">8단계 최종 허가로 →</button></div>`;
+        const failed = S.trials[next] && !S.trials[next].pass;
+        const nm = { phase1: "1상", phase2: "2상", phase3: "3상" }[next];
+        return `<div class="acts"><button type="button" class="btn pri" data-act="trial" data-v="${next}" ${busy ? "disabled" : ""}>${failed ? `같은 프로토콜로 ${nm} 다시` : `임상 ${nm} 시작`} <span class="cost">${MX(R.cost[next])}</span></button><span class="note">${failed ? "또는 왼쪽에서 용량을 바꿔 보세요." : `${R.days[next]}일 걸립니다.`}</span></div>`;
+      }
+    },
+    8: {
+      head: () => head(8, "pipeline:final · FDA 규제심사청", "브랜드 이름과 포장을 정해 최종 허가를 신청합니다. 허가가 나면 브랜드 이름이 학급에 공개되고, 증권거래소에 허가 리포트가 올라가요.",
+        ["pipeline:final", "FDA 규제심사청", `${R.days.final}일`, `비용 ${MX(R.cost.final)}`]),
+      ctl: () => `<div class="panel">
+        <div class="fld"><label class="lab" for="brand">브랜드 이름</label><input class="txt" id="brand" data-txt="brand" value="${esc(S.brand)}" maxlength="20" placeholder="예: 메모렉스" ${S.final ? "disabled" : ""}><p class="hint" data-hint="brand">${S.brand.trim() ? `${S.brand.trim().length} / 20자` : "1~20자"}</p></div>
+        <div class="fld"><span class="lab">포장 모양</span><div class="seg">${[["tablet", "정제"], ["capsule", "캡슐"], ["vial", "바이알"], ["patch", "패치"]].map(([k, l]) => `<button type="button" data-act="shape" data-v="${k}" aria-pressed="${S.shape === k}">${l}</button>`).join("")}</div></div>
+        <div class="fld"><span class="lab">포장 색</span><div class="seg">${[["ivory", "아이보리"], ["sage", "세이지"], ["sand", "샌드"]].map(([k, l]) => `<button type="button" data-act="color" data-v="${k}" aria-pressed="${S.color === k}">${l}</button>`).join("")}</div></div></div>`,
+      res: () => {
+        const bg = { ivory: "#efe9d8", sage: "#b9c8ad", sand: "#d9c3a0" }[S.color];
+        const pack = `<div class="pk" data-live="pk"><div class="pill ${S.shape}" style="background-color:${bg}"><span>${esc((S.brand || S.code).slice(0, 10))}</span></div></div>`;
+        if (!S.final) return `${jobBox()}<div class="panel"><p class="ptitle">포장 미리보기</p>${pack}</div>`;
+        const sc = S.final;
+        const share = Math.min(20, 12 * R.approvalMult[S.form]);
+        return `${jobBox()}<div class="doc"><p class="eyebrow">품목 허가증 · D+${sc.day}</p><h3>${esc(S.brand)} <span class="mono muted" style="font-size:13px">${esc(S.code)}</span></h3>
+          <div class="stamp"><div>허가<small>FDA · NDA</small></div></div>
+          <dl><dt>회사</dt><dd>${esc(S.company)} (${esc(S.ticker)})</dd><dt>적응증</dt><dd>${esc(T().disease)} — ${esc(S.pop)}</dd><dt>표적 · 기전</dt><dd>${esc(T().gene)} · ${esc(S.mech)}</dd>
+          <dt>성분</dt><dd>${esc(leadC().n)}</dd><dt>제형 · 용량</dt><dd>${FORM[S.form]} · ${S.dose} mg</dd><dt>결합</dt><dd class="mono">${f2(leadKcal())} kcal/mol (${T().pdb})</dd>
+          <dt>쓴 연구비</dt><dd class="mono">${MX(sc.spent)}</dd><dt>걸린 기간</dt><dd class="mono">${sc.day}일</dd><dt>시장 점유 기본값</dt><dd class="mono">${share.toFixed(1)}% (12% × 제형 배율 ${R.approvalMult[S.form]})</dd></dl></div>
+          <div class="panel">${pack}</div>`;
+      },
+      act: () => S.final ? `<div class="acts"><span class="sig g">파이프라인 완료</span><button type="button" class="btn" data-act="again">새 프로그램 시작</button></div>`
+        : `<div class="acts"><button type="button" class="btn film" data-act="final" ${S.brand.trim() && !busy ? "" : "disabled"}>최종 허가 신청 <span class="cost">${MX(R.cost.final)}</span></button><span class="note">최종 심사는 판정 없이 서류만 봅니다.</span></div>`
+    }
+  };
+
+  /* ── 배치 ── */
+  function compose() {
+    const P = STEP[S.step], h = P.head(), c = P.ctl(), r = P.res(), a = P.act();
+    const B = (k, html) => `<section class="blk" data-blk="${k}">${html}</section>`;
+    const n = S.step;
+    switch (VAR.main) {
+      case "split": return `${h}<div class="m-split"><div class="col-a">${B("ctl", c)}${B("act", a)}</div><div class="col-b">${B("res", r)}</div></div>`;
+      case "console": return `${h}<div><div class="tabs" role="tablist">
+          <button type="button" role="tab" data-act="tab" data-v="set" aria-selected="${tab === "set"}">설정<span class="mono">입력</span></button>
+          <button type="button" role="tab" data-act="tab" data-v="res" aria-selected="${tab === "res"}">결과<span class="mono">${busy ? "실행 중" : "출력"}</span></button></div>
+          <div style="padding-top:18px">${tab === "set" ? B("ctl", c) : B("res", r)}</div></div><div class="dock">${B("act", a)}</div>`;
+      case "notebook": return `${h}
+          <div class="cell"><div class="cell-g"><b>In [${n}.1]</b>입력</div>${B("ctl", c)}</div>
+          <div class="cell"><div class="cell-g"><b>Run [${n}.2]</b>실행</div><div style="padding-top:8px">${B("act", a)}</div></div>
+          <div class="cell"><div class="cell-g"><b>Out [${n}.3]</b>출력</div>${B("res", r)}</div>`;
+      case "board": return `<div class="m-board" style="display:grid;gap:20px">${h}${B("res", r)}${B("act", a)}<div class="ctl-strip"><span class="lab">조건 바꾸기</span>${B("ctl", c)}</div></div>`;
+      case "deck": return `${h}<div class="m-deck"><div class="card"><p class="card-h"><span>입력</span><span>${n}.1</span></p>${B("ctl", c)}</div>
+          <div class="card"><p class="card-h"><span>실행</span><span>${n}.2</span></p>${B("act", a)}<p class="hint" style="margin-top:14px">${esc(STEPS[n - 1].sub)} · 결과는 아래 카드에 남습니다.</p></div>
+          <div class="card wide"><p class="card-h"><span>결과</span><span>${n}.3</span></p>${B("res", r)}</div></div>`;
+      default: return `${h}${B("ctl", c)}${B("res", r)}${B("act", a)}`;
+    }
+  }
+  function renderMain(keepScroll) {
+    const m = $("main"), st = m.scrollTop;
+    m.innerHTML = `<div class="wrap">${compose()}</div>`;
+    if (keepScroll) m.scrollTop = st;
+    drawMols();
+  }
+  function render(keep = true) {
+    const ae = document.activeElement, fid = ae && ae.id;
+    renderTop(); renderSide(); renderMain(keep); renderLog();
+    if (fid && $(fid) && !$(fid).disabled) $(fid).focus({ preventScroll: true });
+  }
+  /* 슬라이더 · 글자 입력은 결과 칸만 다시 그려 입력 중인 칸을 지킨다 */
+  function refresh(k) {
+    const P = STEP[S.step];
+    for (const el of document.querySelectorAll(`[data-blk="${k}"]`)) el.innerHTML = P[k]();
+    drawMols();
+  }
+
+  function go(n) {
+    if (!unlocked(n)) { toast(`${n - 1}단계를 먼저 끝내야 ${n}단계가 열립니다.`); return; }
+    if (busy) { toast("실행 중인 작업이 끝나면 옮겨 갈 수 있어요."); return; }
+    S.step = n; tab = "set"; save(); render(false); $("main").scrollTop = 0;
+  }
+
+  /* ── 행동 ── */
+  function act(a, v, el) {
+    switch (a) {
+      case "grant": {
+        const G = [["VC 샌드힐 밸리 시드 투자", 1.0], ["정부 신약 과제 연구비", 1.5]];
+        if (S.grants >= G.length) { toast("이 미리보기에서 받을 수 있는 연구비를 다 받았습니다."); return; }
+        const [what, amt] = G[S.grants++]; S.cash = Math.round((S.cash + amt) * 1000) / 1000;
+        log("S2C", "funds:granted", `${what} +${M(amt)}`); myNews(S.grants === 1 ? "investment" : "grant"); toast(`${what} ${M(amt)}를 받았습니다.`); break;
+      }
+      case "logtoggle": logOpen = !logOpen; $("shell").classList.toggle("log-open", logOpen); break;
+      case "tab": tab = v; break;
+      case "bpause": bPaused = !bPaused; break;
+      case "brot": rot = Math.max(0, rot + (+v) + 40); rotAt = Date.now() + 8000; break;
+      case "bfold": bOpen = !bOpen; break;
+      case "bfilter": bFilter = v; break;
+      case "tclose": openTeam = null; break;
+      case "disease": {
+        if (S.disease === v) return;
+        S.disease = v; const d = disease(); const t = d.targets.find((x) => x.dockingTargetId) || d.targets[0];
+        S.target = t.symbol; S.tid = t.dockingTargetId || S.tid; S.pop = null; S.ep = null; resetFrom(1); break;
+      }
+      case "target": {
+        const t = disease().targets.find((x) => x.symbol === v); S.target = v;
+        if (t.dockingTargetId && t.dockingTargetId !== S.tid) { S.tid = t.dockingTargetId; S.pop = null; S.ep = null; resetFrom(1); }
+        break;
+      }
+      case "s1": {
+        log("C2S", "experiment:request", `stage 1 · ${S.disease} → ${S.target}`);
+        runJob("Stage 1 · 표적 근거 조회", ["queued", "dataset 조회", "결과 정리"], 700, () => {
+          log("S2C", "job:result", `source dataset · ${S.target} · PDB ${T().pdb}`); finish(1); S.step = 2; tab = "set";
+        });
+        return;
+      }
+      case "lib": S.lib[v] = el.checked; break;
+      case "noal": S.noAlerts = el.checked; break;
+      case "ro5": S.ro5Max = +v; break;
+      case "topn": S.topN = +v; break;
+      case "s2": {
+        if (!pay(R.cost.htvs, "스크리닝")) { render(); return; }
+        const f = funnel();
+        log("C2S", "experiment:request", `stage 2 · ${T().gene} · MW≤${S.mwMax} TPSA≤${S.tpsaMax} Ro5≤${S.ro5Max}`);
+        runJob("Stage 2 · RDKit 물성 깔때기", ["queued", "물성 계산", "필터", "점수 정렬"], 1100, () => {
+          resetFrom(2); S.screen = f; S.pick = f.sel.slice(0, 3); finish(2);
+          log("S2C", "job:result", `source dataset · ${f.total} → ${f.selected} · funnel`);
+        });
+        return;
+      }
+      case "pick": {
+        if (el.checked) { if (S.pick.length >= 5) { el.checked = false; toast("한 번에 5개까지 도킹할 수 있어요."); return; } S.pick.push(v); }
+        else S.pick = S.pick.filter((x) => x !== v);
+        break;
+      }
+      case "s3": {
+        if (!pay(R.cost.docking, "도킹")) { render(); return; }
+        const t = T();
+        log("C2S", "experiment:request", `stage 3 · ${t.pdb} · ${S.pick.length}+1 ligands`);
+        runJob(`Stage 3 · Vina 도킹 · ${t.pdb}`, ["queued", "수용체 준비", "리간드 3D 생성", "Vina 탐색 exhaustiveness 8", "포즈 정리"], 1800, () => {
+          resetFrom(3);
+          S.dock = [{ id: "__ref", name: t.ref + " (기준)", kcal: t.refKcal, ref: true }].concat(S.pick.map((id) => { const c = CMP.get(id); return { id, name: c.n, kcal: c.vk[S.tid] ?? -6 }; }));
+          S.focus = S.pick[0]; finish(3);
+          const best = Math.min(...S.dock.filter((d) => !d.ref).map((d) => d.kcal));
+          if (best <= -7 && (S.mk.best.me == null || best < S.mk.best.me)) { S.mk.best.me = best; myNews("docking", { kcal: best }); }
+          log("S2C", "job:result", `source vina · best ${f2(Math.min(...S.dock.filter((d) => !d.ref).map((d) => d.kcal)))} kcal/mol`);
+        });
+        return;
+      }
+      case "focus": S.focus = v === "__ref" ? null : v; break;
+      case "s4": {
+        if (!pay(R.cost.admet, "ADMET 예측")) { render(); return; }
+        log("C2S", "experiment:request", `stage 4 · predict · ${S.dock.length - 1} molecules`);
+        runJob("Stage 4 · ADMET-AI v2 예측", ["queued", "predict", "신호 정리"], 1300, () => {
+          S.admet = true; const best = S.dock.filter((d) => !d.ref).sort((a, b) => a.kcal - b.kcal)[0]; S.lead = best && best.id;
+          log("S2C", "job:result", "source admet-ai · signals ready");
+        });
+        return;
+      }
+      case "lead": S.lead = v; resetFrom(5); delete S.done[4]; break;
+      case "s4lead": {
+        finish(4); S.step = 5; tab = "set";
+        if (!S.code) S.code = (S.ticker.replace(/[^A-Z]/g, "").slice(0, 3) || "CRX") + "-101";
+        if (!S.mech) S.mech = `${T().gene} 억제제 — ${T().disease}`;
+        break;
+      }
+      case "declare": S.declared = true; log("C2S", "pipeline:declare", `${S.code} · ${S.mech}`); log("S2C", "pipeline:program", `${S.code} 선언됨`); toast(`${S.code} 프로그램을 선언했습니다.`); break;
+      case "patent": {
+        if (!pay(R.cost.patent, "특허 출원")) { render(); return; }
+        log("C2S", "pipeline:patent", `${S.code} · ${leadC().n}`);
+        runJob("물질특허 출원 · 시청 · 특허청", ["접수", "선행 특허 대조", "원장 등록"], 900, () => {
+          S.patent = { no: `KR-${10 + S.day % 90}-${String(1000 + Math.floor(Math.random() * 8999))}`, day: S.day }; finish(5); myNews("patent");
+          log("S2C", "pipeline:patent-ledger", `${S.patent.no} 공개 원장 등록`);
+        });
+        return;
+      }
+      case "form": if (S.form !== v) { S.form = v; if (S.ind) { S.ind = null; resetFrom(6); toast("제형을 바꿔 IND를 새로 내야 합니다."); } } break;
+      case "dose": {
+        const nd = +v; if (S.dose === nd) return;
+        if (S.ind && S.ind.pass && S.p1dose && nd > S.p1dose) { S.trials = { phase1: null, phase2: null, phase3: null }; delete S.done[7]; toast("1상 통과 용량보다 올려서 1상부터 다시 합니다."); }
+        S.dose = nd; break;
+      }
+      case "ind": {
+        if (!pay(R.cost.ind, "IND 신청")) { render(); return; }
+        const sc = score(leadC(), leadKcal(), S.tid, S.form, S.dose, S.pop);
+        log("C2S", "pipeline:formulate", `${FORM[S.form]}`); log("C2S", "pipeline:ind", `${S.dose} mg · ${S.pop}`);
+        runJob("IND 심사 · FDA", ["접수", "전임상 자료 검토", "판정"], 1100, () => {
+          S.day += R.days.ind; S.ind = { pass: sc.S >= 35, S: sc.S, day: S.day };
+          if (S.ind.pass) { finish(6); S.p1dose = null; }
+          myNews(S.ind.pass ? "indPass" : "indHold");
+          log("S2C", "pipeline:step-result", `IND ${S.ind.pass ? "승인" : "임상 보류"} · S ${sc.S.toFixed(1)}`);
+        });
+        return;
+      }
+      case "amend": S.step = 6; delete S.done[7]; toast("용량을 바꾼 뒤 7단계로 돌아오세요. 용량 변경은 무료입니다."); break;
+      case "trial": {
+        const k = v; if (!pay(R.cost[k], "임상")) { render(); return; }
+        log("C2S", "pipeline:trial", `${S.code} · ${k}`);
+        runJob(`${{ phase1: "임상 1상", phase2: "임상 2상", phase3: "임상 3상" }[k]} · 대학병원`, ["등록", "투약", "추적 관찰", "판정"], 1500, () => {
+          const sc = score(leadC(), leadKcal(), S.tid, S.form, S.dose, S.pop), r = R.noise[k], n = Math.floor(Math.random() * (2 * r + 1)) - r;
+          const E = Math.max(0, sc.E + n), Sv = Math.max(0, sc.S + n), th = R.th[k];
+          const pass = (th.e == null || E >= th.e) && (th.s == null || Sv >= th.s);
+          S.day += R.days[k]; S.trials[k] = { pass, E, S: Sv, n };
+          if (k === "phase1" && pass) S.p1dose = S.dose;
+          if (k === "phase3" && pass) finish(7);
+          myNews(k + (pass ? "Pass" : "Fail"));
+          log("S2C", "pipeline:step-result", `${k} ${pass ? "통과" : "실패"} · E ${E.toFixed(1)} S ${Sv.toFixed(1)} (n ${n})`);
+        });
+        return;
+      }
+      case "shape": S.shape = v; break;
+      case "color": S.color = v; break;
+      case "final": {
+        if (!pay(R.cost.final, "최종 허가")) { render(); return; }
+        log("C2S", "pipeline:final", `${S.brand} · ${S.shape}/${S.color}`);
+        runJob("최종 허가 심사 · FDA", ["접수", "서류 검토", "허가"], 1200, () => {
+          S.day += R.days.final; S.final = { day: S.day, spent: Math.round((6 + [1, 1.5].slice(0, S.grants).reduce((a, b) => a + b, 0) - S.cash) * 1000) / 1000 }; finish(8);
+          myNews("approval", { brand: S.brand, mult: R.approvalMult[S.form] });
+          log("S2C", "pipeline:approved", `${S.brand} 허가 · 증권거래소 리포트`);
+        });
+        return;
+      }
+      case "again": { const keep = { company: S.company, ticker: S.ticker, cash: S.cash, day: S.day, grants: S.grants, log: S.log, mk: S.mk }; S = Object.assign(fresh(), keep); log("C2S", "pipeline:new", "새 프로그램"); break; }
+    }
+    save(); render();
+  }
+
+  /* ── 이벤트 ── */
+  document.addEventListener("click", (e) => {
+    const g = e.target.closest("[data-go]");
+    if (g && !g.disabled) { go(+g.dataset.go); return; }
+    const tm = e.target.closest("[data-team]");
+    if (tm && !e.target.closest("[data-act]")) { openTeam = tm.dataset.team; renderDrawer(); return; }
+    const a = e.target.closest("[data-act]");
+    if (!a || a.disabled || a.tagName === "INPUT") return;
+    act(a.dataset.act, a.dataset.v, a);
+  });
+  document.addEventListener("keydown", (e) => {
+    if ((e.key === "Enter" || e.key === " ") && e.target.matches("tr[data-act]")) { e.preventDefault(); act(e.target.dataset.act, e.target.dataset.v, e.target); }
+  });
+  document.addEventListener("change", (e) => {
+    const t = e.target;
+    if (t.matches("input[type=checkbox][data-act]")) act(t.dataset.act, t.dataset.v, t);
+    else if (t.matches("select[data-sel]")) { S[t.dataset.sel] = t.value; save(); refresh("res"); }
+    else if (t.id === "co-name") { S.company = t.value.trim() || "한빛바이오"; save(); }
+  });
+  document.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.num) {
+      const v = +t.value; S[t.dataset.num] = v;
+      const o = t.parentElement.querySelector("output"); if (o) o.textContent = t.dataset.num === "qedMin" ? v.toFixed(2) : v;
+      save(); refresh("res");
+    } else if (t.dataset.txt) {
+      S[t.dataset.txt] = t.dataset.txt === "code" ? t.value.toUpperCase() : t.value;
+      if (t.dataset.txt === "code") t.value = S.code;
+      save(); refresh("res"); refresh("act");
+      const h = document.querySelector(`[data-hint="${t.dataset.txt}"]`);
+      if (h && t.dataset.txt === "code") { const ok = /^[A-Z]{2,4}-\d{3}$/.test(S.code); h.className = "hint " + (S.code ? (ok ? "good" : "bad") : ""); h.textContent = !S.code ? "영문 대문자 2~4자 + '-' + 숫자 3자리 (예: CRX-101)" : ok ? "쓸 수 있는 코드명입니다." : "형식이 맞지 않습니다. 예: CRX-101"; }
+      if (h && t.dataset.txt === "brand") h.textContent = S.brand.trim() ? `${S.brand.trim().length} / 20자` : "1~20자";
+    } else if (t.id === "co-name") {
+      S.company = t.value; const lat = t.value.replace(/[^A-Za-z]/g, "").toUpperCase();
+      S.ticker = lat.length >= 3 ? lat.slice(0, 4) : S.ticker; const tk = document.querySelector(".tick"); if (tk) tk.textContent = S.ticker; save();
+    }
+  });
+
+  /* ── 전광판 고르기 ── */
+  const pick = $("vpick");
+  pick.innerHTML = BOARDS.map((b, i) => `<option value="${b.id}">${pad(i + 1)} ${esc(b.name)}</option>`).join("");
+  function applyBase() {
+    const sh = $("shell");
+    document.documentElement.dataset.tone = VAR.tone;
+    Object.assign(sh.dataset, { side: VAR.side, main: VAR.main, top: VAR.top, log: VAR.log, fill: VAR.fill, scale: VAR.scale });
+  }
+  function show(id) {
+    BV = BOARDS.find((b) => b.id === id) || BOARDS[0];
+    pick.value = BV.id;
+    $("vcount").textContent = `${BV.id.slice(1)} / ${BOARDS.length}`;
+    $("videa").textContent = BV.idea;
+    rot = 0;
+    try { history.replaceState(null, "", "#" + BV.id); } catch (e) {}
+    try { localStorage.setItem("crista-board-variant", BV.id); } catch (e) {}
+    renderBoard(); renderDrawer();
+  }
+  const step = (d) => { const i = BOARDS.indexOf(BV); show(BOARDS[(i + d + BOARDS.length) % BOARDS.length].id); };
+  $("vprev").addEventListener("click", () => step(-1));
+  $("vnext").addEventListener("click", () => step(1));
+  pick.addEventListener("change", () => show(pick.value));
+  $("vreset").addEventListener("click", () => { if (busy) return; S = fresh(); save(); tab = "set"; openTeam = null; render(false); toast("처음부터 다시 시작합니다. 연구비 $6.0M · 주가 $10.00"); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && openTeam) { openTeam = null; renderDrawer(); return; }
+    if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest("input, select, textarea")) return;
+    if (e.key === "ArrowRight") step(1); else if (e.key === "ArrowLeft") step(-1);
+  });
+
+  /* 다른 모둠 소식은 7~11초마다, 돌려 보는 전광판은 5초마다 넘어간다. 멈추기 · 탭 숨김이면 쉰다. */
+  let nextAt = Date.now() + 4000, rotAt = Date.now() + 5000;
+  setInterval(() => {
+    if (bPaused || document.hidden) return;
+    const now = Date.now();
+    let dirty = false;
+    if (now >= nextAt) {
+      rivalTick(); save(); nextAt = now + 7000 + Math.random() * 4000; dirty = true;
+      if (BV.type === "toast") { toastId = S.mk.news[0].id; setTimeout(() => { toastId = 0; renderBoard(); }, 4500); }
+      renderTop();
+      if (openTeam) renderDrawer();
+    }
+    if (now >= rotAt) { rotAt = now + 5000; if (ROT.has(BV.type)) { rot++; dirty = true; } }
+    if (dirty) renderBoard();
+  }, 500);
+
+  if (!S.mk || !S.mk.cnt) S.mk = seedMarket();
+  if (!S.pop) S.pop = TRIAL[S.tid].pops[0];
+  if (!S.ep) S.ep = TRIAL[S.tid].eps[0];
+  const _render = render;
+  render = function (k) {
+    if (!S.pop || !TRIAL[S.tid].pops.includes(S.pop)) S.pop = TRIAL[S.tid].pops[0];
+    if (!S.ep || !TRIAL[S.tid].eps.includes(S.ep)) S.ep = TRIAL[S.tid].eps[0];
+    _render(k); renderBoard(); renderDrawer();
+  };
+  applyBase();
+  render(false);
+  let saved = null; try { saved = localStorage.getItem("crista-board-variant"); } catch (e) {}
+  const h = location.hash.slice(1);
+  show(BOARDS.some((b) => b.id === h) ? h : BOARDS.some((b) => b.id === saved) ? saved : BOARDS[0].id);
+})();
+</script>

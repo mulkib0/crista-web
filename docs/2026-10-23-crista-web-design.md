@@ -3,7 +3,8 @@
 > **상태**: 설계안(구현 전). 저장소를 세우고 필요한 파일을 옮긴 첫날의 기준 문서다.
 > **사용자 결정(2026-10-23)**: ① 새 저장소 `~/Desktop/repo/crista-web`, GitHub 비공개 ② 연결 방식 **(가)** — 이 저장소는 화면 + 작은 서버만 갖고, 계산은 crista 의 bio-worker 를 HTTP 로 부르며 판정 규칙은 crista 에서 가져온다
 > ③ DB 는 **지금 crista Supabase 프로젝트를 같이 쓰되 게임과 겹치지 않게**.
-> **화면 출발점**: crista 옆 세션의 시안 30종 중 **05 '4단계 로드맵'** + 상단 **전광판**(다른 모둠 소식 — 팀 간 경쟁). 전광판 시안 30종은 그 세션에서 만드는 중이다.
+> **화면 출발점**: crista 옆 세션의 시안 30종 중 **05 '4단계 로드맵'**([`design/pipeline-lab-30-variants.html`](../design/pipeline-lab-30-variants.html) · [게시본 #v05](https://claude.ai/artifact/TPg2WfjBjjHSEDCuCD2Ekc))
+> + 상단 **전광판**(다른 모둠 소식 — 팀 간 경쟁). 전광판 시안 30종은 [`design/pipeline-board-30-variants.html`](../design/pipeline-board-30-variants.html) · [게시본](https://claude.ai/artifact/GETqFjoHDn8sYqkoqaWA7a) — 아직 고르지 않았다.
 > **앞선 초안**: crista 안에 '랩 화면'을 붙이는 설계([`history/2026-10-23-pipeline-lab-in-crista-draft.md`](history/2026-10-23-pipeline-lab-in-crista-draft.md)) — 그중 단계 상태 · 완료 조건 · 넘기기 · 리드 최적화 · 연구 노트 · 결함 4건은 이 문서로 옮겼고,
 > 월드와의 공존(학급 모드 · 가상 지점 · `LabRoom`)은 월드가 없으므로 버렸다. Gemini 4 Argon (High) · GPT-6-Astra (xhigh) 교차 의견 원문은 [`.review/2026-10-23-pipeline-lab/`](../.review/2026-10-23-pipeline-lab/).
 
@@ -233,7 +234,7 @@ crista-web/
 
 | 단계 | 범위 | 완료 기준 |
 | --- | --- | --- |
-| **W0 저장소**(오늘) | 저장소 · `.gitignore` · `.env.local` 복사 · CA · crista 패키지 사본 · 05 시안 · 이 설계 · 비공개 GitHub | 비밀값 미커밋 확인 · 원격 push |
+| **W0 저장소**(오늘 — 완료) | 저장소 · `.gitignore` · `.env.local` 복사 · CA · crista 패키지 사본 · 05 · 전광판 시안 · 이 설계 · 비공개 GitHub | 스테이징 파일 전부에 `.env.local` 값 10개 · 비밀값 패턴 4종 대조 0건 · `mulkib0/crista-web`(PRIVATE) push. 사본 패키지의 타입체크 · 테스트는 `npm install` 전이라 W1 에서 |
 | **W1 서버 뼈대** | npm workspace · `apps/server`(HTTP · WS · 정적) · `web-contract` · `db/migrate.mjs` + `0000_bootstrap` · `0001_core` · 로컬 Supabase 적용 · 로그인(`@web.crista.test`) · 학급 · 모둠 · 원장 | 로컬에서 교사 1 · 모둠 2 로그인, 원장 한 줄, 게임 표 무변경(`public` 행 수 그대로) |
 | **W2 화면 뼈대** | 05 레이아웃(사이드바 1.~4. + 하위 단계) · 단계 상태 · 1.1 → 1.2 → 2.1 실제 연결(fixture 워커 8790) · 전광판 자리 | 1.1 표적 확정 → 1.2 후보 → 2.1 도킹 입력 자동 채움 · 실행 · 결과 |
 | **W3 파이프라인 끝까지** | 2.2 · 2.3 · 3.1 · 3.2 · 4.1~4.4 · 게임 시계 · 판정(game-rules) · 재도전 3경로 · 교사 일시정지 · 정정 | 시간 건너뛰기로 1.1 → 4.4 완주 · 재전송 무과금 · 보류 뒤 재도전 |
