@@ -1,0 +1,74 @@
+[llm] claude-opus-5-5 · effort medium · fallbacks default
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3403/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[http] GET /api/board 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadProgramRow (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:195:18)
+    at async Promise.all (index 3)
+    at async loadBoard (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:523:77)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] GET /api/board 500 20ms
+[http] GET /api/patents 200 47ms
+[http] POST /api/auth/login 200 67ms
+[http] POST /api/classes 201 16ms
+[http] POST /api/auth/signup 201 140ms
+[http] POST /api/teams/d53a3bdb-b08b-4505-9d4e-cea1801d6ef2/join 200 5ms
+[http] POST /api/teams/d53a3bdb-b08b-4505-9d4e-cea1801d6ef2/registration 201 3ms
+[http] GET /api/board 200 13ms
+[http] POST /api/program/picks 200 3ms
+[http] POST /api/program/target 200 6ms
+[http] GET /api/board 200 7ms
+[http] POST /api/patents/applications 201 13ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/code 200 4ms
+[http] GET /api/patents 200 7ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/code_tick 200 5ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/code_num 200 3ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/mech_how 200 4ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/mech_action 200 4ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/mech_why 200 4ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/title 200 3ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/field 200 3ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/background 200 5ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/claim1 200 4ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/claim2 200 4ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/effect 200 3ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/summary 200 5ms
+[http] PUT /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/sections/inventors 200 4ms
+[http] GET /api/patents 200 8ms
+[http] POST /api/patents/applications/46b76fd4-d08e-48ef-b27e-154f18ceffde/review 201 17ms
+[http] GET /api/patents 200 22ms
+[http] GET /api/patents 200 47ms
+[http] GET /api/patents 200 36ms
+[http] GET /api/patents 200 12ms
+[http] GET /api/patents 200 15ms
+[http] GET /api/patents 200 32ms
+[http] GET /api/patents 200 26ms
+[http] GET /api/patents 200 12ms
+[http] GET /api/patents 200 9ms
+[clinical] 틱 9c351171-aaaa-48f3-aebc-0ba2af38df0b 오류: 크리스타는 정수여야 해요(5214.395833333352).
+[http] GET /api/me 401 0ms
+[http] GET /api/me 200 10ms
+[http] GET /api/board 200 51ms
+[http] GET /api/patents 200 58ms
+[http] GET /api/board 200 26ms
+[http] GET /api/patents 200 45ms
+[server] SIGTERM — 닫는 중

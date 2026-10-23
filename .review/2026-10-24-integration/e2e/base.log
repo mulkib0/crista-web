@@ -1,0 +1,13 @@
+
+> crista-web@0.1.0 e2e:base
+> node tools/with-local-env.mjs node apps/server/scripts/e2e-base.ts
+
+✓ 화면 한 장 — 9단계 · 새 모둠 10,000,000 크리스타(= 200,000,000 센트) · 게임 시계 · 특허 상한 3 · 4.1/4.2 잠김
+✓ 시계 — 학생 보기 200 · 바꾸기 403 · 교사 일시정지 → 게임 일 고정 · 배속 → 학급 WS clock
+✓ 규칙 fail → LLM 없이 보완 · 처리기 1회 · 같은 판 다시 = 같은 심사(created false)
+✓ 사전 인젝션 필터 → 보완 · 교사 채널 알림
+✓ LLM 꺼짐 → pending(잠그지 않음) → 교사 수동 통과 · 처리기 manual
+- 실제 Claude 심사 건너뜀(ANTHROPIC_API_KEY 없음)
+✓ 전광판 소식 — 동시 4건 class_seq 연속 4개 · 같은 idemKey 한 줄 · 처리기 같은 트랜잭션 · 커밋 뒤 학급 WS
+
+기반 점검 통과

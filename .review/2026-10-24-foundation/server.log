@@ -1,0 +1,3053 @@
+
+> crista-web@0.1.0 dev:server
+> node tools/with-local-env.mjs npm run dev -w @crista-web/server
+
+
+> @crista-web/server@0.1.0 dev
+> node --watch src/index.ts
+
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[http] POST /api/auth/login 200 194ms
+[http] POST /api/classes 201 21ms
+[http] POST /api/auth/signup 201 381ms
+[http] POST /api/teams/051905d4-1e13-4176-a4a5-720cc39ee347/join 200 38ms
+[http] POST /api/teams/051905d4-1e13-4176-a4a5-720cc39ee347/registration 201 13ms
+[http] POST /api/auth/signup 201 333ms
+[http] POST /api/teams/051905d4-1e13-4176-a4a5-720cc39ee347/join 200 16ms
+[http] GET /api/me 401 1ms
+[http] GET /api/me 401 1ms
+[http] GET /api/me 401 0ms
+[http] GET /api/me 401 0ms
+[http] POST /api/auth/login 200 107ms
+[http] GET /api/me 200 11ms
+[http] GET /api/me 200 11ms
+[http] GET /api/board 200 35ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 15ms
+[http] GET /api/health 200 0ms
+[http] GET /api/me 200 16ms
+[http] GET /api/me 200 9ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 13ms
+[http] GET /api/me 200 18ms
+[http] GET /api/me 200 9ms
+[http] GET /api/board 200 11ms
+[http] GET /api/board 200 11ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 67ms
+[http] GET /api/board 200 29ms
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/api.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[http] GET /api/me 200 25ms
+[http] GET /api/me 200 11ms
+[http] GET /api/board 200 42ms
+[http] GET /api/board 200 18ms
+[http] GET /api/board 200 20ms
+[http] GET /api/me 200 26ms
+[http] GET /api/me 200 24ms
+[http] GET /api/me 200 19ms
+[http] GET /api/me 200 14ms
+[http] GET /api/board 200 29ms
+[http] GET /api/board 200 38ms
+[http] GET /api/board 200 75ms
+[http] GET /api/me 200 22ms
+[http] GET /api/me 200 14ms
+[http] GET /api/board 200 20ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 14ms
+[http] GET /api/me 200 15ms
+[http] GET /api/me 200 9ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 28ms
+[http] GET /api/board 200 21ms
+[http] GET /api/me 200 7ms
+[http] GET /api/me 200 8ms
+[http] GET /api/board 200 11ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 12ms
+[http] GET /api/me 200 13ms
+[http] GET /api/me 200 14ms
+[http] GET /api/board 200 22ms
+[http] GET /api/board 200 15ms
+[http] GET /api/board 200 19ms
+[http] GET /api/me 200 10ms
+[http] GET /api/me 200 12ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 24ms
+[http] GET /api/board 200 45ms
+[http] GET /api/me 200 19ms
+[http] GET /api/me 200 10ms
+[http] GET /api/board 200 35ms
+[http] GET /api/board 200 44ms
+[http] GET /api/board 200 34ms
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/jobs.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[http] GET /api/board 200 57ms
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/jobs.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[http] GET /api/board 200 45ms
+[http] PUT /api/notes/1.1/why 200 32ms
+[http] GET /api/board 200 17ms
+[server] SIGTERM — 닫는 중
+Completed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/context.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[http] GET /api/health 200 1ms
+[http] GET /api/health 200 0ms
+[http] GET /api/health 200 0ms
+[http] POST /api/auth/login 200 127ms
+[http] POST /api/classes 201 38ms
+[http] POST /api/auth/signup 201 491ms
+[http] POST /api/auth/signup 201 647ms
+[http] POST /api/auth/signup 201 268ms
+[http] POST /api/auth/signup 201 262ms
+[http] POST /api/auth/signup 404 128ms
+[http] POST /api/auth/signup 409 134ms
+[http] POST /api/auth/signup 409 132ms
+[http] POST /api/auth/login 401 164ms
+[http] POST /api/auth/login 200 174ms
+[http] GET /api/classes 403 8ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/join 403 0ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/join 200 30ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/join 200 18ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/join 200 17ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/join 409 15ms
+[http] POST /api/teams/338abfb5-1723-4785-85f0-fd55cc7b7eeb/join 200 29ms
+[http] POST /api/teams/338abfb5-1723-4785-85f0-fd55cc7b7eeb/join 200 31ms
+[http] POST /api/teams/338abfb5-1723-4785-85f0-fd55cc7b7eeb/join 409 62ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 201 52ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 44ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 35ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 42ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 57ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 46ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 57ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 44ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 53ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 56ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 64ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 409 53ms
+[http] GET /api/classes/57e66467-7ad8-4bca-a56e-e201b34b4e6e 200 13ms
+[http] POST /api/teams/338abfb5-1723-4785-85f0-fd55cc7b7eeb/registration 409 16ms
+[http] POST /api/teams/338abfb5-1723-4785-85f0-fd55cc7b7eeb/registration 409 10ms
+[http] POST /api/teams/338abfb5-1723-4785-85f0-fd55cc7b7eeb/registration 409 12ms
+[http] POST /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 403 7ms
+[http] POST /api/teams/338abfb5-1723-4785-85f0-fd55cc7b7eeb/registration 400 2ms
+[http] POST /api/teams/338abfb5-1723-4785-85f0-fd55cc7b7eeb/registration 201 14ms
+[http] GET /api/me 200 10ms
+[http] PATCH /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 200 15ms
+[http] PATCH /api/teams/0ff8f5ac-d721-485e-ad02-5a35075a7760/registration 403 7ms
+[http] POST /api/classes 201 17ms
+[http] POST /api/auth/signup 201 306ms
+[http] POST /api/teams/605aa47d-bb3e-4921-a316-0e551415d448/join 403 15ms
+[http] PUT /api/classes/4552523f-44c4-4098-a1b0-cd71fd9e4a67/members/86709f45-8b19-4d32-bf58-5d7cbe5248ce/team 200 21ms
+[http] POST /api/teams/53807f37-44cf-448f-8bb9-c1cd0b5d01b8/join 409 14ms
+[http] POST /api/teams/605aa47d-bb3e-4921-a316-0e551415d448/join 200 16ms
+[http] POST /api/teams/605aa47d-bb3e-4921-a316-0e551415d448/registration 201 22ms
+[http] POST /api/classes/4552523f-44c4-4098-a1b0-cd71fd9e4a67/code 200 16ms
+[http] POST /api/auth/signup 403 127ms
+[http] POST /api/classes/4552523f-44c4-4098-a1b0-cd71fd9e4a67/code 200 8ms
+[http] POST /api/auth/signup 404 311ms
+[http] POST /api/classes 201 153ms
+[http] POST /api/auth/signup 201 1084ms
+[http] POST /api/auth/signup 201 1096ms
+[signup] GoTrue 사용자 되돌리기 실패: 인증 서비스(Supabase Auth)에 닿지 않습니다. 잠시 뒤 다시 시도하세요.
+[http] POST /api/auth/signup 409 11102ms
+[signup] GoTrue 사용자 되돌리기 실패: 인증 서비스(Supabase Auth)에 닿지 않습니다. 잠시 뒤 다시 시도하세요.
+[http] POST /api/auth/signup 409 21123ms
+[http] POST /api/teams/7b2ee0b0-644b-4033-b8d6-c663f2b10d75/join 200 26ms
+[http] POST /api/teams/7b2ee0b0-644b-4033-b8d6-c663f2b10d75/join 409 29ms
+[http] GET /api/classes/805a4aad-e66a-41c7-a0fb-0a4770073f0d 200 12ms
+[http] GET /api/classes/57e66467-7ad8-4bca-a56e-e201b34b4e6e 200 11ms
+[http] POST /api/auth/logout 200 6ms
+[http] GET /api/me 401 3ms
+[http] GET /api/health 200 2ms
+[http] POST /api/auth/login 200 2345ms
+[http] POST /api/classes 201 865ms
+[http] POST /api/auth/signup 201 1833ms
+[http] POST /api/teams/e3a33044-a5a6-4d47-9da7-286ffcf021f4/join 200 28ms
+[http] POST /api/teams/e3a33044-a5a6-4d47-9da7-286ffcf021f4/registration 201 32ms
+[http] GET /api/board 200 270ms
+[http] GET /api/classes/888bbc21-4ac8-4f12-90d1-6bc68092e907/clock 200 246ms
+[http] POST /api/classes/888bbc21-4ac8-4f12-90d1-6bc68092e907/clock 403 66ms
+[http] POST /api/classes/888bbc21-4ac8-4f12-90d1-6bc68092e907/clock 200 232ms
+[http] GET /api/classes/888bbc21-4ac8-4f12-90d1-6bc68092e907/clock 200 84ms
+[http] POST /api/classes/888bbc21-4ac8-4f12-90d1-6bc68092e907/clock 200 68ms
+[http] POST /api/classes/888bbc21-4ac8-4f12-90d1-6bc68092e907/clock 200 74ms
+[http] POST /api/classes/888bbc21-4ac8-4f12-90d1-6bc68092e907/clock 400 43ms
+[clock] 틱 오류: canceling statement due to statement timeout
+[jobs] 폴러 오류: canceling statement due to statement timeout
+[jobs] 폴러 오류: canceling statement due to statement timeout
+[clock] 틱 오류: canceling statement due to user request
+[clock] 틱 오류: canceling statement due to statement timeout
+[jobs] 폴러 오류: Connection terminated due to connection timeout
+[clock] 틱 오류: canceling statement due to statement timeout
+[jobs] 폴러 오류: Connection terminated due to connection timeout
+[http] GET /api/health 200 2ms
+[http] GET /api/health 200 0ms
+[http] POST /api/auth/login 200 133ms
+[http] POST /api/classes 201 81ms
+[http] POST /api/auth/signup 201 370ms
+[http] POST /api/teams/3e9267c3-1028-44c5-ac36-3b506cf7e564/join 200 21ms
+[http] POST /api/auth/signup 201 268ms
+[http] POST /api/teams/3e9267c3-1028-44c5-ac36-3b506cf7e564/join 200 9ms
+[http] POST /api/auth/signup 201 219ms
+[http] POST /api/teams/3e9267c3-1028-44c5-ac36-3b506cf7e564/join 200 10ms
+[http] POST /api/auth/signup 201 442ms
+[http] POST /api/teams/3e9267c3-1028-44c5-ac36-3b506cf7e564/join 200 19ms
+[http] POST /api/teams/3e9267c3-1028-44c5-ac36-3b506cf7e564/registration 201 19ms
+[http] GET /api/board 200 76ms
+[http] POST /api/program/picks 200 74ms
+[http] POST /api/program/picks 200 80ms
+[http] POST /api/program/picks 200 82ms
+[http] POST /api/program/picks 200 86ms
+[http] GET /api/board 200 22ms
+[http] POST /api/program/target 200 18ms
+[http] POST /api/program/target 200 21ms
+[http] POST /api/program/target 200 25ms
+[http] POST /api/program/target 200 28ms
+[http] GET /api/board 200 21ms
+[http] PUT /api/notes/1.1/why 200 18ms
+[http] POST /api/jobs 201 35ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 25ms
+[http] GET /api/board 200 16ms
+[http] GET /api/board 200 46ms
+[http] GET /api/board 200 15ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 19ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 15ms
+[http] GET /api/board 200 18ms
+[http] POST /api/claims 처리 중 오류: error: null value in column "reason" of relation "claims" violates not-null constraint
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg/lib/client.js:694:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:793:24
+    at async withTx (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:34:20)
+    at async claimCandidate (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:777:5)
+    at async Object.handler (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts:130:20)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 491,
+  severity: 'ERROR',
+  code: '23502',
+  detail: 'Failing row contains (3e9267c3-1028-44c5-ac36-3b506cf7e564, CHEMBL502, 도네페질 (Donepezil), COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2, 33b52ab8-14f8-4b5b-b4ef-0f1c3f4234ec, 7c77a4c1-824d-4e45-b95e-29e13f3fd50f, -11.84, 0.887, 379.5, 0.75, 2026-10-23 16:20:36.351873+00, f8a8ab0f-570a-4d16-b099-d0bbcbe21ffc, 1, null).',
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: 'web',
+  table: 'claims',
+  column: 'reason',
+  dataType: undefined,
+  constraint: undefined,
+  file: 'execMain.c',
+  line: '1981',
+  routine: 'ExecConstraints'
+}
+[http] POST /api/claims 500 26ms
+[http] POST /api/claims 처리 중 오류: error: null value in column "reason" of relation "claims" violates not-null constraint
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg/lib/client.js:694:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:793:24
+    at async withTx (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:34:20)
+    at async claimCandidate (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:777:5)
+    at async Object.handler (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts:130:20)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 491,
+  severity: 'ERROR',
+  code: '23502',
+  detail: 'Failing row contains (3e9267c3-1028-44c5-ac36-3b506cf7e564, CHEMBL502, 도네페질 (Donepezil), COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2, 33b52ab8-14f8-4b5b-b4ef-0f1c3f4234ec, 59daa398-a2a2-4a2b-8c76-c309edd693b4, -11.84, 0.887, 379.5, 0.75, 2026-10-23 16:20:36.351795+00, f8a8ab0f-570a-4d16-b099-d0bbcbe21ffc, 1, null).',
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: 'web',
+  table: 'claims',
+  column: 'reason',
+  dataType: undefined,
+  constraint: undefined,
+  file: 'execMain.c',
+  line: '1981',
+  routine: 'ExecConstraints'
+}
+[http] POST /api/claims 500 26ms
+[http] POST /api/claims 처리 중 오류: error: null value in column "reason" of relation "claims" violates not-null constraint
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg/lib/client.js:694:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:793:24
+    at async withTx (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:34:20)
+    at async claimCandidate (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:777:5)
+    at async Object.handler (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts:130:20)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 491,
+  severity: 'ERROR',
+  code: '23502',
+  detail: 'Failing row contains (3e9267c3-1028-44c5-ac36-3b506cf7e564, CHEMBL502, 도네페질 (Donepezil), COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2, 33b52ab8-14f8-4b5b-b4ef-0f1c3f4234ec, b22550d4-f583-4564-9ec4-c6fb5ebab038, -11.84, 0.887, 379.5, 0.75, 2026-10-23 16:20:36.351838+00, f8a8ab0f-570a-4d16-b099-d0bbcbe21ffc, 1, null).',
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: 'web',
+  table: 'claims',
+  column: 'reason',
+  dataType: undefined,
+  constraint: undefined,
+  file: 'execMain.c',
+  line: '1981',
+  routine: 'ExecConstraints'
+}
+[http] POST /api/claims 500 26ms
+[http] POST /api/claims 처리 중 오류: error: null value in column "reason" of relation "claims" violates not-null constraint
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg/lib/client.js:694:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:793:24
+    at async withTx (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:34:20)
+    at async claimCandidate (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts:777:5)
+    at async Object.handler (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts:130:20)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 491,
+  severity: 'ERROR',
+  code: '23502',
+  detail: 'Failing row contains (3e9267c3-1028-44c5-ac36-3b506cf7e564, CHEMBL502, 도네페질 (Donepezil), COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2, 33b52ab8-14f8-4b5b-b4ef-0f1c3f4234ec, 61f1548d-9d64-4cb6-ae7c-40e65f2788be, -11.84, 0.887, 379.5, 0.75, 2026-10-23 16:20:36.351889+00, f8a8ab0f-570a-4d16-b099-d0bbcbe21ffc, 1, null).',
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: 'web',
+  table: 'claims',
+  column: 'reason',
+  dataType: undefined,
+  constraint: undefined,
+  file: 'execMain.c',
+  line: '1981',
+  routine: 'ExecConstraints'
+}
+[http] POST /api/claims 500 28ms
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[http] GET /api/health 200 2ms
+[http] GET /api/health 200 1ms
+[http] POST /api/auth/login 200 108ms
+[http] POST /api/classes 201 21ms
+[http] POST /api/auth/signup 201 197ms
+[http] POST /api/teams/3283fb03-ffe0-4ac3-aa38-d02b4b6bd3cb/join 200 9ms
+[http] POST /api/auth/signup 201 214ms
+[http] POST /api/teams/3283fb03-ffe0-4ac3-aa38-d02b4b6bd3cb/join 200 10ms
+[http] POST /api/auth/signup 201 211ms
+[http] POST /api/teams/3283fb03-ffe0-4ac3-aa38-d02b4b6bd3cb/join 200 8ms
+[http] POST /api/auth/signup 201 194ms
+[http] POST /api/teams/3283fb03-ffe0-4ac3-aa38-d02b4b6bd3cb/join 200 17ms
+[http] POST /api/teams/3283fb03-ffe0-4ac3-aa38-d02b4b6bd3cb/registration 201 17ms
+[http] GET /api/board 200 41ms
+[http] POST /api/program/picks 200 5ms
+[http] POST /api/program/picks 200 6ms
+[http] POST /api/program/picks 200 5ms
+[http] POST /api/program/picks 200 5ms
+[http] GET /api/board 200 8ms
+[http] POST /api/program/target 200 10ms
+[http] POST /api/program/target 200 12ms
+[http] POST /api/program/target 200 14ms
+[http] POST /api/program/target 200 15ms
+[http] GET /api/board 200 8ms
+[http] PUT /api/notes/1.1/why 200 8ms
+[http] POST /api/jobs 201 29ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 11ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 11ms
+[http] POST /api/claims 201 15ms
+[http] POST /api/claims 409 17ms
+[http] POST /api/claims 409 17ms
+[http] POST /api/claims 409 17ms
+[http] POST /api/claims 201 23ms
+[http] POST /api/claims 201 23ms
+[http] POST /api/claims 201 25ms
+[http] POST /api/claims 409 24ms
+[http] POST /api/claims 201 29ms
+[http] POST /api/claims 201 27ms
+[http] POST /api/claims 201 30ms
+[http] POST /api/claims 409 32ms
+[http] POST /api/claims 409 31ms
+[http] POST /api/claims 201 32ms
+[http] POST /api/claims 409 32ms
+[http] GET /api/board 200 7ms
+[http] DELETE /api/claims/CRX-ACHE-03 200 2ms
+[http] POST /api/claims 201 7ms
+[http] GET /api/board 200 5ms
+[http] POST /api/jobs 201 41ms
+[http] POST /api/jobs 201 52ms
+[http] POST /api/jobs 201 61ms
+[http] POST /api/jobs 201 68ms
+[http] GET /api/board 200 5ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 121ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 77ms
+[http] GET /api/board 200 20ms
+[http] GET /api/board 200 16ms
+[http] GET /api/board 200 57ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 6ms
+[http] POST /api/jobs 201 33ms
+[http] POST /api/jobs 201 45ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 43ms
+[http] GET /api/board 200 58ms
+[http] GET /api/board 200 18ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 15ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 18ms
+[http] GET /api/board 200 13ms
+[http] PUT /api/program/lead 200 17ms
+[http] PUT /api/program/lead 409 18ms
+[http] GET /api/board 200 13ms
+[http] PUT /api/program/lead 409 19ms
+[http] PUT /api/program/lead 400 10ms
+[http] PUT /api/program/lead 200 39ms
+[http] GET /api/board 200 21ms
+[http] PUT /api/notes/2.1/why 200 20ms
+[http] PUT /api/notes/2.1/unknown 200 20ms
+[http] PUT /api/notes/2.1/fallback 200 20ms
+[http] GET /api/board 200 17ms
+[http] PUT /api/notes/2.1/why 200 10ms
+[http] PUT /api/notes/2.1/why 409 12ms
+[http] PUT /api/notes/2.2/why 200 9ms
+[http] PUT /api/notes/2.2/why 409 11ms
+[http] PUT /api/notes/2.1/why 409 11ms
+[http] PUT /api/notes/2.1/why 200 14ms
+[http] GET /api/board 200 9ms
+[http] POST /api/program/target 200 14ms
+[http] GET /api/board 200 14ms
+[http] POST /api/jobs 409 26ms
+[http] POST /api/jobs 409 12ms
+[http] POST /api/claims 409 20ms
+[http] PUT /api/program/lead 409 50ms
+[http] POST /api/program/target 200 28ms
+[http] GET /api/board 200 19ms
+[http] GET /api/health 200 1ms
+[http] POST /api/auth/login 200 192ms
+[http] POST /api/classes 201 17ms
+[http] POST /api/auth/signup 201 318ms
+[http] POST /api/teams/72c3a8c1-c86d-4f04-955f-942b851e4925/join 200 21ms
+[http] POST /api/auth/signup 201 388ms
+[http] POST /api/teams/72c3a8c1-c86d-4f04-955f-942b851e4925/join 200 14ms
+[http] POST /api/auth/signup 201 337ms
+[http] POST /api/teams/72c3a8c1-c86d-4f04-955f-942b851e4925/join 200 22ms
+[http] POST /api/auth/signup 201 612ms
+[http] POST /api/teams/72c3a8c1-c86d-4f04-955f-942b851e4925/join 200 12ms
+[http] POST /api/teams/72c3a8c1-c86d-4f04-955f-942b851e4925/registration 201 19ms
+[http] GET /api/board 200 31ms
+[http] POST /api/program/picks 200 8ms
+[http] POST /api/program/picks 200 9ms
+[http] POST /api/program/picks 200 10ms
+[http] POST /api/program/picks 200 11ms
+[http] GET /api/board 200 23ms
+[http] POST /api/program/target 200 23ms
+[http] POST /api/program/target 200 28ms
+[http] POST /api/program/target 200 34ms
+[http] POST /api/program/target 200 40ms
+[http] GET /api/board 200 20ms
+[http] PUT /api/notes/1.1/why 200 14ms
+[http] POST /api/jobs 201 42ms
+[http] GET /api/board 200 16ms
+[http] GET /api/board 200 19ms
+[http] GET /api/board 200 30ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 25ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 26ms
+[http] GET /api/board 200 27ms
+[http] GET /api/board 200 21ms
+[http] GET /api/board 200 22ms
+[http] GET /api/board 200 95ms
+[http] GET /api/board 200 92ms
+[http] POST /api/claims 201 59ms
+[http] POST /api/claims 409 63ms
+[http] POST /api/claims 409 64ms
+[http] POST /api/claims 409 68ms
+[http] POST /api/claims 201 81ms
+[http] POST /api/claims 201 92ms
+[http] POST /api/claims 201 93ms
+[http] POST /api/claims 409 97ms
+[http] POST /api/claims 201 97ms
+[http] POST /api/claims 201 102ms
+[http] POST /api/claims 409 104ms
+[http] POST /api/claims 201 108ms
+[http] POST /api/claims 201 123ms
+[http] POST /api/claims 409 123ms
+[http] POST /api/claims 409 125ms
+[http] GET /api/board 200 18ms
+[http] DELETE /api/claims/CRX-ACHE-03 200 14ms
+[http] POST /api/claims 201 24ms
+[http] GET /api/board 200 17ms
+[http] POST /api/jobs 201 290ms
+[http] POST /api/jobs 201 328ms
+[http] POST /api/jobs 201 360ms
+[http] POST /api/jobs 201 390ms
+[http] GET /api/board 200 22ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 37ms
+[http] GET /api/board 200 20ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 25ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 11ms
+[http] GET /api/board 200 18ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 5ms
+[http] POST /api/jobs 201 12ms
+[http] POST /api/jobs 201 20ms
+[http] GET /api/board 200 5ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 8ms
+[http] PUT /api/program/lead 200 9ms
+[http] PUT /api/program/lead 409 9ms
+[http] GET /api/board 200 4ms
+[http] PUT /api/program/lead 409 7ms
+[http] PUT /api/program/lead 400 1ms
+[http] PUT /api/program/lead 200 4ms
+[http] GET /api/board 200 5ms
+[http] PUT /api/notes/2.1/fallback 200 6ms
+[http] PUT /api/notes/2.1/unknown 200 7ms
+[http] PUT /api/notes/2.1/why 200 8ms
+[http] GET /api/board 200 5ms
+[http] PUT /api/notes/2.1/why 200 5ms
+[http] PUT /api/notes/2.1/why 409 6ms
+[http] PUT /api/notes/2.2/why 200 4ms
+[http] PUT /api/notes/2.2/why 409 4ms
+[http] PUT /api/notes/2.1/why 409 4ms
+[http] PUT /api/notes/2.1/why 200 5ms
+[http] GET /api/board 200 5ms
+[http] POST /api/program/target 200 5ms
+[http] GET /api/board 200 5ms
+[http] POST /api/jobs 409 4ms
+[http] POST /api/jobs 409 2ms
+[http] POST /api/claims 409 5ms
+[http] PUT /api/program/lead 409 4ms
+[http] POST /api/program/target 200 6ms
+[http] GET /api/board 200 5ms
+[http] GET /api/health 200 0ms
+[http] POST /api/auth/login 200 80ms
+[http] POST /api/classes 201 10ms
+[http] POST /api/auth/signup 201 190ms
+[http] POST /api/auth/signup 201 194ms
+[http] POST /api/auth/signup 201 211ms
+[http] POST /api/auth/signup 201 215ms
+[http] POST /api/auth/signup 404 164ms
+[http] POST /api/auth/signup 409 114ms
+[http] POST /api/auth/signup 409 118ms
+[http] POST /api/auth/login 401 101ms
+[http] POST /api/auth/login 200 145ms
+[http] GET /api/classes 403 1ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/join 403 1ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/join 200 28ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/join 200 11ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/join 200 8ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/join 409 14ms
+[http] POST /api/teams/94c11c73-b836-4501-9b6e-4903793f2262/join 200 28ms
+[http] POST /api/teams/94c11c73-b836-4501-9b6e-4903793f2262/join 200 18ms
+[http] POST /api/teams/94c11c73-b836-4501-9b6e-4903793f2262/join 409 11ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 201 20ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 24ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 23ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 23ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 26ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 24ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 26ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 27ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 29ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 31ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 33ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 409 35ms
+[http] GET /api/classes/b92b0dcc-810b-4326-b361-46a7ed331b00 200 6ms
+[http] POST /api/teams/94c11c73-b836-4501-9b6e-4903793f2262/registration 409 15ms
+[http] POST /api/teams/94c11c73-b836-4501-9b6e-4903793f2262/registration 409 13ms
+[http] POST /api/teams/94c11c73-b836-4501-9b6e-4903793f2262/registration 409 10ms
+[http] POST /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 403 6ms
+[http] POST /api/teams/94c11c73-b836-4501-9b6e-4903793f2262/registration 400 3ms
+[http] POST /api/teams/94c11c73-b836-4501-9b6e-4903793f2262/registration 201 10ms
+[http] GET /api/me 200 7ms
+[http] PATCH /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 200 11ms
+[http] PATCH /api/teams/67b85989-448d-4487-b050-8bf58dcee27a/registration 403 5ms
+[http] POST /api/classes 201 15ms
+[http] POST /api/auth/signup 201 229ms
+[http] POST /api/teams/eb78027c-5704-4814-9f34-72c041896575/join 403 4ms
+[http] PUT /api/classes/48e115b3-fe3c-43f2-a4bd-e5bb10bc67a2/members/887afca3-2645-464e-9eb2-7c42039b692f/team 200 8ms
+[http] POST /api/teams/a01dcba3-5aa6-4a64-ba87-d77bab5d8eb2/join 409 5ms
+[http] POST /api/teams/eb78027c-5704-4814-9f34-72c041896575/join 200 7ms
+[http] POST /api/teams/eb78027c-5704-4814-9f34-72c041896575/registration 201 6ms
+[http] POST /api/classes/48e115b3-fe3c-43f2-a4bd-e5bb10bc67a2/code 200 4ms
+[http] POST /api/auth/signup 403 86ms
+[http] POST /api/classes/48e115b3-fe3c-43f2-a4bd-e5bb10bc67a2/code 200 6ms
+[http] POST /api/auth/signup 404 79ms
+[http] POST /api/classes 201 6ms
+[http] POST /api/auth/signup 201 225ms
+[http] POST /api/auth/signup 201 229ms
+[signup] GoTrue 사용자 되돌리기 실패: 인증 서비스(Supabase Auth)에 닿지 않습니다. 잠시 뒤 다시 시도하세요.
+[http] POST /api/auth/signup 409 10232ms
+[signup] GoTrue 사용자 되돌리기 실패: 인증 서비스(Supabase Auth)에 닿지 않습니다. 잠시 뒤 다시 시도하세요.
+[http] POST /api/auth/signup 409 20238ms
+[http] POST /api/teams/47365856-8ff7-4521-8899-137fe3785fc4/join 200 9ms
+[http] POST /api/teams/47365856-8ff7-4521-8899-137fe3785fc4/join 409 9ms
+[http] GET /api/classes/c878266a-1bfa-48e5-8296-0e920db938bb 200 4ms
+[http] GET /api/classes/b92b0dcc-810b-4326-b361-46a7ed331b00 200 5ms
+[http] POST /api/auth/logout 200 3ms
+[http] GET /api/me 401 1ms
+[http] GET /api/health 200 1ms
+[http] POST /api/auth/login 200 64ms
+[http] POST /api/classes 201 6ms
+[http] POST /api/auth/signup 201 163ms
+[http] POST /api/teams/ba358587-e5b4-445f-8106-94c8c9422e64/join 200 3ms
+[http] POST /api/teams/ba358587-e5b4-445f-8106-94c8c9422e64/registration 201 5ms
+[http] GET /api/board 200 10ms
+[http] GET /api/classes/5e445bf5-aa70-4f93-a938-bfacf5cd4fe8/clock 200 2ms
+[http] POST /api/classes/5e445bf5-aa70-4f93-a938-bfacf5cd4fe8/clock 403 1ms
+[http] POST /api/classes/5e445bf5-aa70-4f93-a938-bfacf5cd4fe8/clock 200 4ms
+[http] GET /api/classes/5e445bf5-aa70-4f93-a938-bfacf5cd4fe8/clock 200 7ms
+[http] POST /api/classes/5e445bf5-aa70-4f93-a938-bfacf5cd4fe8/clock 200 14ms
+[http] POST /api/classes/5e445bf5-aa70-4f93-a938-bfacf5cd4fe8/clock 200 17ms
+[http] POST /api/classes/5e445bf5-aa70-4f93-a938-bfacf5cd4fe8/clock 400 13ms
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/jobs.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/jobs.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/jobs.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[http] GET /api/health 200 4ms
+[http] POST /api/auth/login 200 209ms
+[http] POST /api/classes 201 60ms
+[http] POST /api/auth/signup 201 503ms
+[http] POST /api/teams/1a61c404-76d7-47bb-9b33-16b943b30811/join 200 14ms
+[http] POST /api/teams/1a61c404-76d7-47bb-9b33-16b943b30811/registration 201 26ms
+[http] GET /api/board 200 118ms
+[http] GET /api/classes/404b1f15-5d6f-4131-a24d-f725b62c1631/clock 200 6ms
+[http] POST /api/classes/404b1f15-5d6f-4131-a24d-f725b62c1631/clock 403 4ms
+[http] POST /api/classes/404b1f15-5d6f-4131-a24d-f725b62c1631/clock 200 10ms
+[http] GET /api/classes/404b1f15-5d6f-4131-a24d-f725b62c1631/clock 200 7ms
+[http] POST /api/classes/404b1f15-5d6f-4131-a24d-f725b62c1631/clock 200 16ms
+[http] POST /api/classes/404b1f15-5d6f-4131-a24d-f725b62c1631/clock 200 24ms
+[http] POST /api/classes/404b1f15-5d6f-4131-a24d-f725b62c1631/clock 400 6ms
+[http] GET /api/health 200 1ms
+[http] POST /api/auth/login 200 114ms
+[http] POST /api/classes 201 19ms
+[http] POST /api/auth/signup 201 295ms
+[http] POST /api/teams/7333e562-5cfd-46a2-bfe3-3ad693ace5db/join 200 11ms
+[http] POST /api/auth/signup 201 400ms
+[http] POST /api/teams/7333e562-5cfd-46a2-bfe3-3ad693ace5db/join 200 23ms
+[http] POST /api/auth/signup 201 452ms
+[http] POST /api/teams/7333e562-5cfd-46a2-bfe3-3ad693ace5db/join 200 44ms
+[http] POST /api/auth/signup 201 681ms
+[http] POST /api/teams/7333e562-5cfd-46a2-bfe3-3ad693ace5db/join 200 34ms
+[http] POST /api/teams/7333e562-5cfd-46a2-bfe3-3ad693ace5db/registration 201 50ms
+[http] GET /api/board 200 65ms
+[http] POST /api/program/picks 200 42ms
+[http] POST /api/program/picks 200 42ms
+[http] POST /api/program/picks 200 41ms
+[http] POST /api/program/picks 200 41ms
+[http] GET /api/board 200 27ms
+[http] POST /api/program/target 200 16ms
+[http] POST /api/program/target 200 21ms
+[http] POST /api/program/target 200 25ms
+[http] POST /api/program/target 200 28ms
+[http] GET /api/board 200 35ms
+[http] PUT /api/notes/1.1/why 200 65ms
+[http] POST /api/jobs 201 81ms
+[http] GET /api/board 200 25ms
+[http] GET /api/board 200 29ms
+[http] GET /api/board 200 23ms
+[http] GET /api/board 200 22ms
+[http] GET /api/board 200 22ms
+[http] GET /api/board 200 76ms
+[http] GET /api/board 200 38ms
+[http] GET /api/board 200 24ms
+[http] GET /api/board 200 18ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 25ms
+[http] POST /api/claims 201 80ms
+[http] POST /api/claims 409 84ms
+[http] POST /api/claims 409 87ms
+[http] POST /api/claims 409 86ms
+[http] POST /api/claims 201 74ms
+[http] POST /api/claims 201 80ms
+[http] POST /api/claims 409 85ms
+[http] POST /api/claims 201 82ms
+[http] POST /api/claims 201 92ms
+[http] POST /api/claims 201 104ms
+[http] POST /api/claims 201 113ms
+[http] POST /api/claims 409 117ms
+[http] POST /api/claims 409 123ms
+[http] POST /api/claims 201 129ms
+[http] POST /api/claims 409 132ms
+[http] GET /api/board 200 25ms
+[http] DELETE /api/claims/CRX-ACHE-03 200 12ms
+[http] POST /api/claims 201 61ms
+[http] GET /api/board 200 36ms
+[http] POST /api/jobs 201 189ms
+[http] POST /api/jobs 201 237ms
+[http] POST /api/jobs 201 262ms
+[http] POST /api/jobs 201 289ms
+[http] GET /api/board 200 27ms
+[http] GET /api/board 200 64ms
+[http] GET /api/board 200 59ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 14ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 7ms
+[http] POST /api/jobs 201 16ms
+[http] POST /api/jobs 201 23ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 23ms
+[http] GET /api/board 200 28ms
+[http] GET /api/board 200 21ms
+[http] PUT /api/program/lead 200 30ms
+[http] PUT /api/program/lead 409 32ms
+[http] GET /api/board 200 23ms
+[http] PUT /api/program/lead 409 15ms
+[http] PUT /api/program/lead 400 3ms
+[http] PUT /api/program/lead 200 14ms
+[http] GET /api/board 200 13ms
+[http] PUT /api/notes/2.1/why 200 18ms
+[http] PUT /api/notes/2.1/fallback 200 18ms
+[http] PUT /api/notes/2.1/unknown 200 18ms
+[http] GET /api/board 200 13ms
+[http] PUT /api/notes/2.1/why 200 12ms
+[http] PUT /api/notes/2.1/why 409 16ms
+[http] PUT /api/notes/2.2/why 200 13ms
+[http] PUT /api/notes/2.2/why 409 15ms
+[http] PUT /api/notes/2.1/why 409 14ms
+[http] PUT /api/notes/2.1/why 200 11ms
+[http] GET /api/board 200 13ms
+[http] POST /api/program/target 200 15ms
+[http] GET /api/board 200 13ms
+[http] POST /api/jobs 409 7ms
+[http] POST /api/jobs 409 7ms
+[http] POST /api/claims 409 13ms
+[http] PUT /api/program/lead 409 13ms
+[http] POST /api/program/target 200 17ms
+[http] GET /api/board 200 13ms
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[http] GET /api/health 200 1ms
+[http] GET /api/health 200 1ms
+[http] POST /api/auth/login 200 57ms
+[http] POST /api/classes 201 6ms
+[http] POST /api/auth/signup 201 130ms
+[http] POST /api/teams/22787f89-8834-437f-9b27-74f5d9f81499/join 200 3ms
+[http] POST /api/auth/signup 201 124ms
+[http] POST /api/teams/22787f89-8834-437f-9b27-74f5d9f81499/join 200 3ms
+[http] POST /api/auth/signup 201 123ms
+[http] POST /api/teams/22787f89-8834-437f-9b27-74f5d9f81499/join 200 4ms
+[http] POST /api/auth/signup 201 120ms
+[http] POST /api/teams/22787f89-8834-437f-9b27-74f5d9f81499/join 200 3ms
+[http] POST /api/teams/22787f89-8834-437f-9b27-74f5d9f81499/registration 201 3ms
+[http] GET /api/board 200 13ms
+[http] POST /api/program/picks 200 3ms
+[http] POST /api/program/picks 200 3ms
+[http] POST /api/program/picks 200 3ms
+[http] POST /api/program/picks 200 3ms
+[http] GET /api/board 200 5ms
+[http] POST /api/program/target 200 4ms
+[http] POST /api/program/target 200 5ms
+[http] POST /api/program/target 200 6ms
+[http] POST /api/program/target 200 7ms
+[http] GET /api/board 200 4ms
+[http] PUT /api/notes/1.1/why 200 4ms
+[http] POST /api/jobs 201 12ms
+[http] GET /api/board 200 5ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 18ms
+[http] GET /api/board 200 16ms
+[http] GET /api/board 200 5ms
+[http] GET /api/board 200 12ms
+[http] GET /api/board 200 11ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 18ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 11ms
+[http] GET /api/board 200 12ms
+[http] POST /api/claims 201 10ms
+[http] POST /api/claims 409 12ms
+[http] POST /api/claims 409 12ms
+[http] POST /api/claims 409 12ms
+[http] POST /api/claims 201 14ms
+[http] POST /api/claims 201 16ms
+[http] POST /api/claims 201 17ms
+[http] POST /api/claims 201 17ms
+[http] POST /api/claims 201 19ms
+[http] POST /api/claims 409 18ms
+[http] POST /api/claims 409 20ms
+[http] POST /api/claims 201 18ms
+[http] POST /api/claims 409 19ms
+[http] POST /api/claims 201 21ms
+[http] POST /api/claims 409 21ms
+[http] GET /api/board 200 5ms
+[http] DELETE /api/claims/CRX-ACHE-02 200 2ms
+[http] POST /api/claims 201 5ms
+[http] GET /api/board 200 5ms
+[http] POST /api/jobs 201 24ms
+[http] POST /api/jobs 201 29ms
+[http] POST /api/jobs 201 33ms
+[http] POST /api/jobs 201 39ms
+[http] GET /api/board 200 4ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 11ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 16ms
+[http] GET /api/board 200 9ms
+[http] GET /api/board 200 5ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 10ms
+[http] GET /api/board 200 8ms
+[http] POST /api/jobs 201 14ms
+[http] POST /api/jobs 201 68ms
+[http] GET /api/board 200 5ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 15ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 17ms
+[http] GET /api/board 200 7ms
+[http] GET /api/board 200 18ms
+[http] GET /api/board 200 13ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 8ms
+[http] GET /api/board 200 6ms
+[http] GET /api/board 200 5ms
+[http] PUT /api/program/lead 200 6ms
+[http] PUT /api/program/lead 409 6ms
+[http] GET /api/board 200 4ms
+[http] PUT /api/program/lead 409 3ms
+[http] PUT /api/program/lead 400 0ms
+[http] PUT /api/program/lead 200 5ms
+[http] GET /api/board 200 5ms
+[http] PUT /api/notes/2.1/fallback 200 4ms
+[http] PUT /api/notes/2.1/unknown 200 4ms
+[http] PUT /api/notes/2.1/why 200 4ms
+[http] GET /api/board 200 4ms
+[http] PUT /api/notes/2.1/why 200 4ms
+[http] PUT /api/notes/2.1/why 409 4ms
+[http] PUT /api/notes/2.2/why 200 3ms
+[http] PUT /api/notes/2.2/why 409 4ms
+[http] PUT /api/notes/2.1/why 409 4ms
+[http] PUT /api/notes/2.1/why 200 3ms
+[http] GET /api/board 200 4ms
+[http] POST /api/program/target 200 5ms
+[http] GET /api/board 200 4ms
+[http] POST /api/jobs 409 2ms
+[http] POST /api/jobs 409 2ms
+[http] POST /api/claims 409 5ms
+[http] PUT /api/program/lead 409 4ms
+[http] POST /api/program/target 200 5ms
+[http] GET /api/board 200 4ms
+[http] GET /api/health 200 0ms
+[http] POST /api/auth/login 200 55ms
+[http] POST /api/classes 201 4ms
+[http] POST /api/auth/signup 201 120ms
+[http] POST /api/auth/signup 201 129ms
+[http] POST /api/auth/signup 201 120ms
+[http] POST /api/auth/signup 201 123ms
+[http] POST /api/auth/signup 404 52ms
+[http] POST /api/auth/signup 409 52ms
+[http] POST /api/auth/signup 409 52ms
+[http] POST /api/auth/login 401 50ms
+[http] POST /api/auth/login 200 53ms
+[http] GET /api/classes 403 1ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/join 403 0ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/join 200 5ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/join 200 3ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/join 200 2ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/join 409 1ms
+[http] POST /api/teams/c5f009d8-612b-4691-9134-e194c984e7da/join 200 4ms
+[http] POST /api/teams/c5f009d8-612b-4691-9134-e194c984e7da/join 200 4ms
+[http] POST /api/teams/c5f009d8-612b-4691-9134-e194c984e7da/join 409 2ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 201 5ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 6ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 6ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 6ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 6ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 7ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 7ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 7ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 8ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 8ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 8ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 409 9ms
+[http] GET /api/classes/31573706-048c-487e-8d46-e6575f3de0de 200 2ms
+[http] POST /api/teams/c5f009d8-612b-4691-9134-e194c984e7da/registration 409 3ms
+[http] POST /api/teams/c5f009d8-612b-4691-9134-e194c984e7da/registration 409 2ms
+[http] POST /api/teams/c5f009d8-612b-4691-9134-e194c984e7da/registration 409 2ms
+[http] POST /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 403 1ms
+[http] POST /api/teams/c5f009d8-612b-4691-9134-e194c984e7da/registration 400 0ms
+[http] POST /api/teams/c5f009d8-612b-4691-9134-e194c984e7da/registration 201 3ms
+[http] GET /api/me 200 2ms
+[http] PATCH /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 200 3ms
+[http] PATCH /api/teams/1927a94a-3503-4d97-9fdb-694edc7eda38/registration 403 2ms
+[http] POST /api/classes 201 3ms
+[http] POST /api/auth/signup 201 121ms
+[http] POST /api/teams/44026e8b-191a-47dd-b588-a3e538706a7a/join 403 2ms
+[http] PUT /api/classes/1e452894-de4c-4204-b1f2-29348fb60f60/members/6ba8d6e0-8cdb-4ef7-b6f0-50f4027c04bc/team 200 3ms
+[http] POST /api/teams/b1cc9689-9595-41e5-9868-31213c5a1679/join 409 2ms
+[http] POST /api/teams/44026e8b-191a-47dd-b588-a3e538706a7a/join 200 2ms
+[http] POST /api/teams/44026e8b-191a-47dd-b588-a3e538706a7a/registration 201 2ms
+[http] POST /api/classes/1e452894-de4c-4204-b1f2-29348fb60f60/code 200 2ms
+[http] POST /api/auth/signup 403 52ms
+[http] POST /api/classes/1e452894-de4c-4204-b1f2-29348fb60f60/code 200 2ms
+[http] POST /api/auth/signup 404 53ms
+[http] POST /api/classes 201 6ms
+[http] POST /api/auth/signup 201 136ms
+[http] POST /api/auth/signup 201 138ms
+[signup] GoTrue 사용자 되돌리기 실패: 인증 서비스(Supabase Auth)에 닿지 않습니다. 잠시 뒤 다시 시도하세요.
+[http] POST /api/auth/signup 409 10142ms
+[signup] GoTrue 사용자 되돌리기 실패: 인증 서비스(Supabase Auth)에 닿지 않습니다. 잠시 뒤 다시 시도하세요.
+[http] POST /api/auth/signup 409 20146ms
+[http] POST /api/teams/8ecd056e-599f-4ba3-9ff1-78ec462ae8aa/join 200 6ms
+[http] POST /api/teams/8ecd056e-599f-4ba3-9ff1-78ec462ae8aa/join 409 6ms
+[http] GET /api/classes/84428814-240b-4285-aedd-619a4e5a8f89 200 3ms
+[http] GET /api/classes/31573706-048c-487e-8d46-e6575f3de0de 200 2ms
+[http] POST /api/auth/logout 200 2ms
+[http] GET /api/me 401 1ms
+[http] GET /api/health 200 0ms
+[http] POST /api/auth/login 200 52ms
+[http] POST /api/classes 201 4ms
+[http] POST /api/auth/signup 201 123ms
+[http] POST /api/teams/d9fdaa6f-f2f0-42dc-ab27-0631d78dca98/join 200 6ms
+[http] POST /api/teams/d9fdaa6f-f2f0-42dc-ab27-0631d78dca98/registration 201 3ms
+[http] GET /api/board 200 5ms
+[http] GET /api/classes/8eab80a5-0983-4ec7-84b8-945ab3cbd3a6/clock 200 1ms
+[http] POST /api/classes/8eab80a5-0983-4ec7-84b8-945ab3cbd3a6/clock 403 1ms
+[http] POST /api/classes/8eab80a5-0983-4ec7-84b8-945ab3cbd3a6/clock 200 3ms
+[http] GET /api/classes/8eab80a5-0983-4ec7-84b8-945ab3cbd3a6/clock 200 3ms
+[http] POST /api/classes/8eab80a5-0983-4ec7-84b8-945ab3cbd3a6/clock 200 5ms
+[http] POST /api/classes/8eab80a5-0983-4ec7-84b8-945ab3cbd3a6/clock 200 5ms
+[http] POST /api/classes/8eab80a5-0983-4ec7-84b8-945ab3cbd3a6/clock 400 2ms
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/review.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/reviews.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/ind.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/index.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/ws.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/llm.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts:27
+  fillCopy,
+  ^^^^^^^^
+SyntaxError: The requested module '@crista-web/web-contract' contains conflicting star exports for name 'fillCopy'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/pipeline.ts'
+Restarting 'src/index.ts'
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts:27
+  fillCopy,
+  ^^^^^^^^
+SyntaxError: The requested module '@crista-web/web-contract' contains conflicting star exports for name 'fillCopy'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts:27
+  fillCopy,
+  ^^^^^^^^
+SyntaxError: The requested module '@crista-web/web-contract' contains conflicting star exports for name 'fillCopy'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts:27
+  fillCopy,
+  ^^^^^^^^
+SyntaxError: The requested module '@crista-web/web-contract' contains conflicting star exports for name 'fillCopy'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts:27
+  fillCopy,
+  ^^^^^^^^
+SyntaxError: The requested module '@crista-web/web-contract' contains conflicting star exports for name 'fillCopy'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts'
+Restarting 'src/index.ts'
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts:26
+  fillCopy,
+  ^^^^^^^^
+SyntaxError: The requested module '@crista-web/web-contract' contains conflicting star exports for name 'fillCopy'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/ind.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/screen.ts:37
+  fillCopy,
+  ^^^^^^^^
+SyntaxError: The requested module '@crista-web/web-contract' contains conflicting star exports for name 'fillCopy'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/screen.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/preclinical.ts:45
+  REQUEST_ID_PATTERN_SAFE,
+  ^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: The requested module '@crista-web/web-contract' does not provide an export named 'REQUEST_ID_PATTERN_SAFE'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/preclinical.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/ind.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/approval.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical-sim.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/ind.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[jobs] 폴러 오류: too many connections for role "crista_web"
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/approval.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts:2135
+
+async function appeal(deps: Deps, who: TeamMember, raw: unknown): Promise<{ ok: true; id: string }> {
+^^^^^
+  const body = (raw ?? {}) as Record<string, unknown>;
+
+SyntaxError [ERR_INVALID_TYPESCRIPT_SYNTAX]: Expected ',', got 'async'
+    at parseTypeScript (node:internal/modules/typescript:61:36)
+    at processTypeScriptCode (node:internal/modules/typescript:129:37)
+    at Object.stripTypeScriptModuleTypes (node:internal/modules/typescript:172:22)
+    at stripTypeScriptModuleTypes (node:internal/modules/esm/translators:35:49)
+    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:684:29)
+    at #translate (node:internal/modules/esm/loader:441:20)
+    at afterLoad (node:internal/modules/esm/loader:509:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:514:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:567:36)
+    at afterResolve (node:internal/modules/esm/loader:614:52) {
+  code: 'ERR_INVALID_TYPESCRIPT_SYNTAX'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/reviews.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/board-events.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/market.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical-sim.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/selection.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/approval.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/market.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/approval.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[jobs] 작업 c8edbebf-f88b-4194-bc44-84ed74864bee 처리 중 오류: too many connections for role "crista_web"
+[jobs] 작업 842bfc57-5bf2-47af-9db3-46b4907fcb6d 처리 중 오류: too many connections for role "crista_web"
+[jobs] 작업 d72d8fb3-0ee3-4d90-b95f-d2cb4c5027d2 처리 중 오류: too many connections for role "crista_web"
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/market.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[clock] 현실 시간 처리기 market-final 오류: too many connections for role "crista_web"
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/teams.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/approval.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/approval.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/patent.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/market.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/pipeline.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/selection.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/patents.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/ind.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/approval.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/ind.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/market.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/selection.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[market] 과정 평가 점검 실패: Cannot use a pool after calling end on the pool
+[clock] 현실 시간 처리기 market-final 오류: Cannot use a pool after calling end on the pool
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/screen.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/screen.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[jobs] 폴러 오류: too many connections for role "crista_web"
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[clock] 처리기 approval 오류: Cannot use a pool after calling end on the pool
+[clock] 처리기 clinical 오류: Cannot use a pool after calling end on the pool
+[clock] 현실 시간 처리기 market-final 오류: Cannot use a pool after calling end on the pool
+Waiting for graceful termination...
+Gracefully restarted 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/clinical.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical-sim.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/preclinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/market.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+[clock] 틱 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[http] POST /api/auth/login 200 140ms
+[http] POST /api/classes 201 23ms
+[http] POST /api/auth/signup 201 354ms
+[http] POST /api/teams/018a5d64-a869-4e60-8253-ce59822f803c/join 200 19ms
+[http] POST /api/teams/018a5d64-a869-4e60-8253-ce59822f803c/registration 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadTeam (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/views.ts:56:18)
+    at async registerTeam (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/teams.ts:170:25)
+    at async Object.handler (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts:111:20)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] POST /api/teams/018a5d64-a869-4e60-8253-ce59822f803c/registration 500 61ms
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[http] POST /api/auth/login 처리 중 오류: error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async login (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/accounts.ts:133:17)
+    at async Object.handler (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/routes.ts:73:39)
+    at async Server.<anonymous> (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/app.ts:57:20) {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+[http] POST /api/auth/login 500 57ms
+[http] GET /api/me 401 0ms
+[http] GET /api/health 200 1ms
+[jobs] 폴러 오류: too many connections for role "crista_web"
+[http] POST /api/auth/login 200 140ms
+[jobs] 폴러 오류: too many connections for role "crista_web"
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/clinical.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/learn.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[jobs] 워커 fixture 모드 · 0.2.0
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+[llm] 꺼짐(no_key) — 서류 심사 · 채점은 pending 으로 남는다
+[server] crista-web local — http://127.0.0.1:3390/crista/ (정적 /Users/mulkib/Desktop/repo/crista-web/apps/web/dist · 워커 http://127.0.0.1:8790)
+[jobs] 워커 fixture 모드 · 0.2.0
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/learn.ts'
+Restarting 'src/index.ts'
+[server] SIGTERM — 닫는 중
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/approval.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/ind.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/packages/web-contract/src/clinical.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+Change detected in '/Users/mulkib/Desktop/repo/crista-web/apps/server/src/features/market.ts'
+Restarting 'src/index.ts'
+/Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45
+    Error.captureStackTrace(err)
+          ^
+
+error: too many connections for role "crista_web"
+    at /Users/mulkib/Desktop/repo/crista-web/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async assertDatabase (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/db.ts:47:15)
+    at async file:///Users/mulkib/Desktop/repo/crista-web/apps/server/src/index.ts:19:1 {
+  length: 112,
+  severity: 'FATAL',
+  code: '53300',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '872',
+  routine: 'InitializeSessionUserId'
+}
+
+Node.js v26.11.0
+Failed running 'src/index.ts'. Waiting for file changes before restarting...
+npm error Lifecycle script `dev` failed with error:
+npm error code 1
+npm error path /Users/mulkib/Desktop/repo/crista-web/apps/server
+npm error workspace @crista-web/server@0.1.0
+npm error location /Users/mulkib/Desktop/repo/crista-web/apps/server
+npm error command failed
+npm error command sh -c node --watch src/index.ts

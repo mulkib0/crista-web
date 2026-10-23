@@ -1,0 +1,35 @@
+
+> crista-web@0.1.0 e2e:full
+> node tools/with-local-env.mjs node apps/server/scripts/e2e-full.ts
+
+서버 http://127.0.0.1:3450 · 접미 87302 · 1상 시뮬레이션 실제 Claude
+
+✓ 준비 — 교사 · 학급(모둠 2) · 학생 4 가입 · 입사 · 등기(상장 소식) (0.8s)
+✓ 모둠 A 1.1 → 2.2 — 표적 ACHE · 회의 6안건 합의 · 1.2 실행 · 찜 4 · 도킹 4(변형체 2) · 대기열 · ADMET 2 · 특허 후보 2 (28.2s)
+✓ 모둠 B 1.1 → 2.2 — 표적 DPP4 · 같은 흐름 (27.7s)
+✓ FLEARN Series A — 2.2 뒤 열림(3판 번호) · 정량 몫 입금 · 사옥 Tier 2 (0.2s)
+    · 모둠 A 3.1 특허 심사 — revise (상태 done · 모델 claude-opus-5-5 · 지적 title_clear:unclear — 「발명의 명칭」에 표적은 보이니 어떤 화합물 계열인지도 드러나게 덧붙여요. | background_specific:unclear — 「배경기술 · 해결하려는 과제」의 혈중 농도 한계에 근거를 보태고 후보 반감기(7.5h)와 연결해요. | effect_matches_facts:inconsistent — 「발명의 효과」에 후보(-9.7 kcal/mol)가 도네페질(-11.84 kcal/mol)보다 덜 음수인 점을 반영해 고쳐요. · 총평 「이름표의 뜻」과 「번호를 이렇게 붙인 이유」를 앞뒤가 맞게 적은 점이 좋아요. 「발명의 효과」는 결합 에너지(ΔG)가 더 음수일수록 단단히 붙는다는 점에 맞춰 고쳐요. 후보(-9.7 kcal/mol)는 도네페질(-11.84 kcal/mol)보다 덜 음수이니, 기준 약 대비 장점은 다른 근거로 보태요. 「배경기술 · 해결하려는 과제」에는 혈중 농도 한계의 근거를 반감기(7.5h)와 연결해 덧붙여요. 「발명의 명칭」에는 화합물 계열을 드러나게 보태요.)
+✓ 모둠 A 3.1 — 출원서 · 코드명 · 13칸 · 심사 pending → 교사 통과 → 등록 · 출원료 1회 · 3.1 완료 (17.5s)
+    · 모둠 B 3.1 특허 심사 — revise (상태 done · 모델 claude-opus-5-5 · 지적 title_clear:unclear — 「발명의 명칭」에 표적은 보이니 화합물이 어떤 계열인지 드러나는 말을 덧붙여요. | effect_matches_facts:inconsistent — 「발명의 효과」의 ΔG 비교를 원본(-11.6 kcal/mol)과 후보(-10.9 kcal/mol) 값에 맞춰 고쳐요. · 총평 「이름표의 뜻」과 「번호를 이렇게 붙인 이유」를 앞뒤가 맞게 적은 점이 좋아요. 「발명의 효과」는 사실 숫자와 맞춰 고쳐요. 결합 에너지(ΔG)는 더 음수일수록 더 단단히 붙어요. 후보(-10.9 kcal/mol)는 원본 분자(-11.6 kcal/mol)보다 덜 음수이고, 기준 약(-9.02 kcal/mol)보다는 더 음수예요. 심장 · 간 위험도 hERG 억제 IC50 5.61µM, 간독성 위험 49.1% 값에 근거해 다시 써요. 「발명의 명칭」에는 화합물 계열을 덧붙여요.)
+✓ 모둠 B 3.1 — 같은 흐름(다른 표적 · 학급 중복 없음) (14.5s)
+✓ FMARKET — 특허 소식이 두 모둠 기업가치를 움직였어요(결과 소식 · 공개 칸에 SMILES 없음) (0.0s)
+    · 모둠 A 3.2 동물실험계획서 심사 — revise (상태 done · 모델 claude-opus-5-5 · 지적 c_replacement:inconsistent — 「대체(Replacement)」의 세포 실험 서술을 대체 시험을 하지 않은 기록과 맞춰 고쳐요. · 총평 「종 · 이유」에서 랫드와 비글견을 함께 보는 까닭을 잘 짚었어요. 「대체(Replacement)」에는 세포 실험으로 먼저 걸렀다고 적혀 있어요. 그런데 기록에는 대체 시험(동물 없이 하는 실험)을 하지 않은 것으로 나와요. 실제로 한 일과 맞춰 서술을 고쳐요. 몸 전체의 흡수와 대사는 세포로 알 수 없다는 근거는 그대로 살려요.)
+✓ 모둠 A 3.2 — 윤리 이수 2 · 계획서 설정 · 5칸 · 심의 pending → 교사 통과 · 동물실험 · 30게임 일 → 결과 · 계산 칸 · 주력 지정 · 3.2 완료 (10.7s)
+    · 모둠 A 3.3 IND 심사 — revise (상태 done · 모델 claude-opus-5-5 · 지적 nonclinical_consistent:missing — 「동물실험 해석(3~5줄)」에 더 민감한 종이 개라는 점과 간 · QT 소견 해석을 덧붙여요. | consent_clear:missing — 「동의 설명문 핵심 3줄 · IRB」에 이 시험의 목적이 무엇인지 한 줄을 덧붙여요. · 총평 「중단 기준」에 무엇을 재서 얼마가 되면 어느 단계를 멈추는지 또렷하게 적은 점이 좋아요. 「동물실험 해석(3~5줄)」은 한 줄뿐이에요. NOAEL(부작용이 보이지 않은 가장 높은 용량)이 더 낮은 종이 개(18 mg/kg/일)라는 점과 간 · QT 소견의 뜻을 보태요. 「동의 설명문 핵심 3줄 · IRB」에는 위험과 그만둘 권리가 있어요. 여기에 시험 목적을 덧붙여요.)
+✓ 모둠 A 3.3 — IND 신청서 · 조합(MRSD 이하 · S ≥ 35) · 12칸 · 규칙 fail 0 · 심사 pending → 교사 통과 · 접수(수수료 1회) · 30게임 일 → 승인 (18.5s)
+    · 1상 시뮬레이션 ready · 모델 claude-opus-5-5 · 호출 1
+✓ 모둠 A 4.1 1상 — 모집(집중) · 최소 인원 · [임상 시작] 과금 1회 · 끝나는 날 실제 Claude 시뮬레이션 공개 · 전광판 소식 · 보류면 같은 프로토콜로 재도전 (40.3s)
+    · 2상 시뮬레이션 ready · 모델 claude-opus-5-5 · 호출 1
+    · 2상 보류(efficacy · 출처 llm) — 같은 프로토콜로 재도전 1
+    · 2상 시뮬레이션 ready · 모델 claude-opus-5-5 · 호출 1
+    · 2상 보류(efficacy · 출처 llm) — 같은 프로토콜로 재도전 2
+    · 2상 시뮬레이션 ready · 모델 claude-opus-5-5 · 호출 1
+✗ 모둠 A 4.1 2상 — 모집(집중) · 최소 인원 · [임상 시작] 과금 1회 · 끝나는 날 실제 Claude 시뮬레이션 공개 · 전광판 소식 · 보류면 같은 프로토콜로 재도전
+    AssertionError [ERR_ASSERTION]: 재도전 2번에도 보류
+        at file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:682:16
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async stage (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:106:5)
+        at async main (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:679:5)
+
+10개 통과 뒤 실패(접미 87302)
+rc=1

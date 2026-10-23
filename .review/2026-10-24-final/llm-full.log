@@ -1,0 +1,22 @@
+
+> crista-web@0.1.0 e2e:full
+> node tools/with-local-env.mjs node apps/server/scripts/e2e-full.ts
+
+서버 http://127.0.0.1:3450 · 접미 b43a0 · 1상 시뮬레이션 실제 Claude
+
+✓ 준비 — 교사 · 학급(모둠 2) · 학생 4 가입 · 입사 · 등기(상장 소식) (0.7s)
+✓ 모둠 A 1.1 → 2.2 — 표적 ACHE · 회의 6안건 합의 · 1.2 실행 · 찜 4 · 도킹 4(변형체 2) · 대기열 · ADMET 2 · 특허 후보 2 (28.9s)
+✓ 모둠 B 1.1 → 2.2 — 표적 DPP4 · 같은 흐름 (30.1s)
+✓ FLEARN Series A — 2.2 뒤 열림(3판 번호) · 정량 몫 입금 · 사옥 Tier 2 (0.0s)
+[reviews] 심사 6a9455ea-1db9-496e-bcd3-d82a626f1660 처리 중 오류: column "held_verdict" does not exist
+✗ 모둠 A 3.1 — 출원서 · 코드명 · 13칸 · 심사 pending → 교사 통과 → 등록 · 출원료 1회 · 3.1 완료
+    Error: 모둠 A 3.1 특허 심사(다른 서버) — 400000ms 안에 되지 않았어요.
+        at waitFor (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:122:35)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async reviewGate (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:245:73)
+        at async patent (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:438:3)
+        at async stage (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:106:5)
+        at async main (file:///Users/mulkib/Desktop/repo/crista-web/apps/server/scripts/e2e-full.ts:502:3)
+
+4개 통과 뒤 실패(접미 b43a0)
+rc=1
