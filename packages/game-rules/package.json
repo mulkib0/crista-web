@@ -1,0 +1,15 @@
+{
+  "name": "@crista/game-rules",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": { ".": "./src/index.ts", "./world": "./src/world/index.ts" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --experimental-strip-types test/*.test.ts"
+  },
+  "dependencies": { "@crista/shared-types": "*" },
+  "devDependencies": { "typescript": "^5.8.3", "@types/node": "^22.15.0" }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "crista-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "신약 개발 파이프라인 수업 플랫폼 — crista bio-worker 계산 · crista 규칙 사본",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22.18"
+  }
+}
