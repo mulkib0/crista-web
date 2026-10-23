@@ -6,8 +6,8 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { ANTIBODY_STEP_IDS, MARKET_EXTRA_BANDS, cristaToCents } from '@crista-web/web-contract';
-import { bandOf, changePctOf, marketCapCentsOf } from '../src/features/antibody/events.ts';
+import { ANTIBODY_STEP_IDS, MARKET_EXTRA_BANDS, antibodyBand, cristaToCents } from '@crista-web/web-contract';
+import { marketCapCentsOf } from '../src/features/antibody/events.ts';
 import { quorumOf } from '../src/features/antibody/consensus.ts';
 import { segmentsOf } from '../src/features/antibody/runner.ts';
 import {
@@ -115,12 +115,15 @@ test('정족수 — 유효 인원의 과반', () => {
   assert.equal(quorumOf(5), 3);
 });
 
-test('변동률은 밴드 상한 안에서만 — 힌트가 없거나 0 이면 0', () => {
-  assert.equal(changePctOf('antibody_record', 'normal', 0), 0);
-  assert.equal(changePctOf('antibody_record', 'normal', 2), 2);
-  // antibody_record 전용 밴드가 아직 없으면 antibody(0~5%)로 깎인다.
-  assert.equal(changePctOf('antibody_record', 'normal', 10), MARKET_EXTRA_BANDS.antibody.maxPct);
-  assert.equal(bandOf('antibody_fold', 'bad').maxPct, MARKET_EXTRA_BANDS.antibody_bad.maxPct);
+test('변동 폭은 기반 밴드 안에서만 — 힌트가 없거나 0 이면 0 · 설계 기록 경신은 0~10%', () => {
+  // 변동률을 정하는 것은 기반 FMARKET 이다(`antibodyBand` · `moveFor`). 이 저장소는 `public.changeHint` 만 싣는다.
+  assert.equal(antibodyBand('antibody_record', 'normal', 0).maxPct, 0);
+  assert.equal(antibodyBand('antibody_record', 'normal', 2).maxPct, 2);
+  // `antibody_record` 전용 밴드(0~10%)라 10 이 깎이지 않는다.
+  assert.equal(antibodyBand('antibody_record', 'normal', 10).maxPct, MARKET_EXTRA_BANDS.antibody_record.maxPct);
+  // 그 밖의 항체 소식은 0~5% · tone 'bad' 는 −5~0.
+  assert.equal(antibodyBand('antibody_fold', 'normal', 10).maxPct, MARKET_EXTRA_BANDS.antibody.maxPct);
+  assert.equal(antibodyBand('antibody_fold', 'bad', 10).minPct, MARKET_EXTRA_BANDS.antibody_bad.minPct);
 });
 
 test('시가총액 — 상장가 $10.00 × 1,000,000주 = 1,000,000,000 센트', () => {

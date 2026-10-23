@@ -5,6 +5,7 @@ import { createApp } from './app.ts';
 import { ClockRunner } from './clock.ts';
 import { loadConfig } from './config.ts';
 import { createLimits } from './context.ts';
+import { AntibodyRunner } from './features/antibody/runner.ts';
 import { bindTeamFeed } from './features/feed.ts';
 import { assertDatabase, createPool } from './db.ts';
 import { GoTrueClient } from './gotrue.ts';
@@ -23,9 +24,12 @@ const auth = new GoTrueClient({ url: config.supabaseUrl, publishableKey: config.
 const worker = new HttpBioWorker(config.bioWorkerUrl);
 const jobs = new JobRunner(db, worker, hub);
 const llm = new LlmClient(config.llm, db);
-const deps = { config, db, auth, hub, limits: createLimits(), worker, jobs, llm };
+// 항체 설계 랩 러너(트랙 2 · 항체 설계 §5.7) — 별도 표 · 별도 폴러. 어댑터는 하나의 Limiter · DB 캐시를 함께 쓴다.
+const antibody = new AntibodyRunner(db, config, hub);
+const deps = { config, db, auth, hub, limits: createLimits(), worker, jobs, llm, antibody };
 // 작업 성공 처리기(`onJobSucceeded` — 예: FMARKET 도킹 신기록 소식)가 전체 의존성을 쓰게.
 jobs.bindDeps(deps);
+antibody.bindDeps(deps);
 // 모둠 대화방 행적 — 모둠 채널로 나가는 소식(작업 · 노트 · 회의 · 심사 …)을 문장으로 남긴다(features/feed.ts).
 bindTeamFeed(deps);
 // createApp 이 경로표를 만들 때 기능 모듈의 register() 가 onReviewed · onGameDay 처리기를 단다 — 시계 · 심사 루프는 그 뒤에 시작한다.
@@ -42,6 +46,8 @@ if (background) {
 } else {
   console.log('[server] WEB_BACKGROUND=off — 작업 폴러 · 시계 · 심사 루프를 돌리지 않아요(다른 서버가 맡음).');
 }
+// 항체 랩 러너는 `WEB_BACKGROUND` 와 **무관하게 늘 돈다** — 이 저장소만 가진 처리기라 다른 판의 서버가 대신 돌려 주지 않는다(항체 설계 §11.6).
+antibody.start();
 console.log(`[llm] ${llm.available ? `${config.llm.model} · effort ${config.llm.effort}${config.llm.fallbacks ? ' · fallbacks default' : ''}` : `꺼짐(${llm.unavailableReason}) — 서류 심사 · 임상은 규칙 자동 판정(교사 대기 없음) · 학습 채점은 pending`}`);
 
 const sweep = () => sweepExpiredSessions(db).catch((error: Error) => console.error('[session] 만료 세션 정리 실패:', error.message));
@@ -64,6 +70,7 @@ function shutdown(signal: string): void {
   jobs.stop();
   clock.stop();
   reviews.stop();
+  antibody.stop();
   server.close(() => {
     void db.end().then(() => process.exit(0));
   });

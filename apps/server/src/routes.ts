@@ -7,6 +7,7 @@ import { enroll, login, me, openClasses, setAvatar, signup } from './accounts.ts
 import { assignTeam, changeClassCode, classDetail, createClass, listClasses } from './classes.ts';
 import { registerClockRoutes } from './clock.ts';
 import type { Deps } from './context.ts';
+import { registerAntibodyRoutes } from './features/antibody/index.ts';
 import { register as registerApproval } from './features/approval.ts';
 import { register as registerClinical } from './features/clinical.ts';
 import { register as registerFeed } from './features/feed.ts';
@@ -158,6 +159,8 @@ export function buildRouter(): Router<RequestContext> {
   registerFeed(router);
   // 교사 화면 — 모둠별 진행 · 막힌 이유 · 연구 노트(설계 §9).
   registerTeacher(router);
+  // 항체 설계 랩(트랙 2 · 항체 설계 §5.5) — 경로 전부를 이 한 줄로 단다.
+  registerAntibodyRoutes(router, account);
 
   return router;
 }

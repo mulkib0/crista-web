@@ -35,6 +35,8 @@
     "e2e:feed": "node tools/with-local-env.mjs node apps/server/scripts/e2e-feed.ts",
     "e2e:full": "node tools/with-local-env.mjs node apps/server/scripts/e2e-full.ts",
     "e2e:teacher": "node tools/with-local-env.mjs node apps/server/scripts/e2e-teacher.ts",
+    "e2e:antibody": "node tools/with-local-env.mjs node apps/server/scripts/e2e-antibody.ts",
+    "antibody:seed": "node tools/with-local-env.mjs node apps/server/scripts/antibody-seed.ts",
     "dev:web": "npm run dev -w @crista-web/web",
     "build:web": "npm run build -w @crista-web/web",
     "db:status:hosted": "node tools/with-hosted-env.mjs node db/migrate.mjs --status",

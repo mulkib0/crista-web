@@ -41,6 +41,42 @@ export interface Config {
   bioWorkerUrl: string;
   /** 파이프라인 LLM(설계 §5.13) — 키 값은 여기 두지 않는다(SDK 가 `ANTHROPIC_API_KEY` 를 직접 읽는다). */
   llm: LlmConfig;
+  /** 항체 설계 랩(항체 설계 §3.3) — 외부 API 어댑터의 설정 한 덩이. */
+  antibody: AntibodyConfig;
+}
+
+/**
+ * 항체 랩 설정 — 항체 설계 §3.3.
+ * 선택 키(`nvidiaKey` · `boltzKey`)가 없으면 교육용 근사로 **강등**하고 화면이 그 사실을 말한다. 키 값은 로그 · 응답에 싣지 않는다.
+ */
+export interface AntibodyConfig {
+  /** `WEB_ANTIBODY_OFFLINE=1` → 외부 호출 금지. 캐시 → 미리 받아 둔 참고 자료로만 내려간다. */
+  offline: boolean;
+  /** `NVIDIA_API_KEY` — 없으면 규칙 기반 변이 제안. */
+  nvidiaKey: string | null;
+  /** `BOLTZ_API_KEY` — 없으면 교육용 근사 설계 적합도. */
+  boltzKey: string | null;
+  /** 학술 공용 서버 예절 — 연락처를 포함한 User-Agent. */
+  userAgent: string;
+  /** 시드 스크립트 전용 상한(32MB · 180초). 요청 경로 상한을 시드에 쓰면 all-summary(17.5MB · 96초)가 413 을 맞는다. */
+  seedLimits: { maxBytes: number; timeoutMs: number };
+}
+
+export const ANTIBODY_USER_AGENT_DEFAULT = 'crista-web-edu/0.1 (classroom teaching tool; +https://mulk.codes/crista)';
+
+export function loadAntibodyConfig(env: NodeJS.ProcessEnv = process.env): AntibodyConfig {
+  const userAgent = env.WEB_ANTIBODY_USER_AGENT?.trim() || ANTIBODY_USER_AGENT_DEFAULT;
+  if (userAgent.length < 8 || userAgent.length > 200) throw new ConfigError('WEB_ANTIBODY_USER_AGENT 는 8~200자여야 합니다.');
+  return {
+    offline: env.WEB_ANTIBODY_OFFLINE === '1' || env.WEB_ANTIBODY_OFFLINE === 'true',
+    nvidiaKey: env.NVIDIA_API_KEY?.trim() || null,
+    boltzKey: env.BOLTZ_API_KEY?.trim() || null,
+    userAgent,
+    seedLimits: {
+      maxBytes: intEnv(env, 'WEB_ANTIBODY_SEED_MAX_BYTES', 32 * 1024 * 1024, 1024 * 1024, 256 * 1024 * 1024),
+      timeoutMs: intEnv(env, 'WEB_ANTIBODY_SEED_TIMEOUT_MS', 180_000, 10_000, 900_000),
+    },
+  };
 }
 
 export type LlmEffort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
@@ -169,5 +205,6 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     gatewaySecret,
     bioWorkerUrl,
     llm: loadLlmConfig(env),
+    antibody: loadAntibodyConfig(env),
   };
 }

@@ -482,7 +482,7 @@ async function main(): Promise<void> {
       classId: cls.id,
       weights: { binding: 0.5, stability: 0.2, developability: 0.3, humanization: 0.1, novelty: 0.1 },
       thresholds: get.body.thresholds,
-      openTracks: ['small', 'antibody'],
+      openTracks: ['drug', 'antibody'],
       version: get.body.version,
     });
     assert.equal(bad.status, 409, JSON.stringify(bad.body));
@@ -495,15 +495,15 @@ async function main(): Promise<void> {
       classId: cls.id,
       weights: { binding: 0.4, stability: 0.2, developability: 0.2, humanization: 0.1, novelty: 0.1 },
       thresholds: { scoreMargin: 7, confidenceMin: 70 },
-      openTracks: ['small'],
+      openTracks: ['drug'],
       version: get.body.version,
     });
     assert.equal(ok.status, 200, JSON.stringify(ok.body));
-    assert.deepEqual(ok.body.openTracks, ['small']);
+    assert.deepEqual(ok.body.openTracks, ['drug']);
     const me = await A[0]!.call<MeResponse>('GET', API.me);
-    assert.deepEqual(me.body.openTracks, ['small']);
+    assert.deepEqual(me.body.openTracks, ['drug']);
     assert.ok(me.body.labs, 'me() 에 두 랩의 진행이 와야 해요.');
-    assert.equal(me.body.labs!.small.total, 9, '저분자 total 은 STEP_IDS.length(9) 예요.');
+    assert.equal(me.body.labs!.drug.total, 9, '저분자 total 은 STEP_IDS.length(9) 예요.');
     assert.equal(me.body.labs!.antibody.total, 6);
     assert.ok(me.body.labs!.antibody.doneCount >= 1);
     // 다시 열어 둔다(다음 점검 · 수업에 영향이 없게).
@@ -514,7 +514,7 @@ async function main(): Promise<void> {
           classId: cls.id,
           weights: after.body.weights,
           thresholds: after.body.thresholds,
-          openTracks: ['small', 'antibody'],
+          openTracks: ['drug', 'antibody'],
           version: after.body.version,
         })
       ).status,

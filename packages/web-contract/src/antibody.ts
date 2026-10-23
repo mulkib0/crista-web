@@ -18,12 +18,18 @@ import type { TeamView } from './api.ts';
 import { cristaToCents } from './money.ts';
 import type { NoteSection, StepState } from './pipeline.ts';
 import type { Avatar } from './rules.ts';
+// 값은 가져오지 않아요 — `track.ts` 가 `ANTIBODY_TRACK` 을 만들 때 이 파일을 먼저 읽기 때문에 값을 쓰면 순환이 돼요.
+import type { TrackId } from './track.ts';
 
 // ── 트랙 · 단계 ──────────────────────────────────────────────────────────────
 
-/** 랩 트랙 — 기존 `StepId` 를 늘리지 않고 축을 하나 더 둬요(§5.4). */
-export type LabTrack = 'small' | 'antibody';
-export const LAB_TRACKS: readonly LabTrack[] = ['small', 'antibody'];
+/**
+ * 랩 트랙은 기반의 `track.ts` 가 주인이에요(`TrackId` = `'drug' | 'antibody'` · `TRACK_IDS`).
+ * 이 파일이 쓰던 `LabTrack`(`'small' | 'antibody'`)은 **지웠어요** — 같은 뜻의 축이 두 벌이면 화면 · 서버가 어긋나요.
+ * 저장 값은 그대로예요: 0020 `antibody_class_settings.open_tracks` 의 check 가 `{small,antibody}` 라서
+ * 서버가 DB 경계에서만 `small ↔ drug` 로 옮겨요(`features/antibody/service.ts` 의 `trackFromDb` · `trackToDb`).
+ * `TrackId` 는 꾸러미 바깥으로 `track.ts` 가 내보내요 — 여기서 다시 내보내면 `track.ts` ↔ 이 파일이 서로를 참조해요.
+ */
 
 export type AntibodyStepId = 'A1' | 'A2' | 'A3' | 'A4' | 'A5' | 'A6';
 export const ANTIBODY_STEP_IDS: readonly AntibodyStepId[] = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6'];
@@ -68,6 +74,8 @@ export interface AntibodyStepMeta {
   group: 1 | 2 | 3 | 4;
   index: 1 | 2;
   title: string;
+  /** 사이드바 단계 줄의 보조 한 줄 — 기반 `TrackStep.sub` 가 요구하는 칸이에요(단계 화면에는 쓰지 않아요). */
+  sub: string;
   evidence: AntibodySource[];
   costCents: number;
 }
@@ -95,6 +103,7 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 1,
     index: 1,
     title: '표적 항원 · 원본 항체',
+    sub: '치료항체 자료 조회',
     evidence: ['lookup'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A1),
   },
@@ -105,6 +114,7 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     // '보존도' 대신 '레퍼토리 다양성'으로 불러요 — 항체 V 도메인의 MSA 는 진화적 보존이 아니라
     // 같은 계열 항체들 사이의 다양성을 보여 주기 때문이에요(§2.3 · §3.2 · §10 S18).
     title: '구조 읽기 · 레퍼토리 다양성',
+    sub: '구조 · 서열 정렬',
     evidence: ['lookup', 'precomputed', 'edu-approx'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A2),
   },
@@ -113,6 +123,7 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 2,
     index: 1,
     title: '변이 설계',
+    sub: 'CDR 변이 고르기',
     evidence: ['server-calc', 'edu-approx'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A3),
   },
@@ -121,6 +132,7 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 3,
     index: 1,
     title: '접힘 예측',
+    sub: '접힘 모형 · 확신도',
     evidence: ['ai-predict'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A4),
   },
@@ -129,6 +141,7 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 3,
     index: 2,
     title: '복합체 평가',
+    sub: '붙는 힘 · 계면 평가',
     evidence: ['edu-approx', 'ai-predict'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A5),
   },
@@ -137,6 +150,7 @@ export const ANTIBODY_STEP_META: Record<AntibodyStepId, AntibodyStepMeta> = {
     group: 4,
     index: 1,
     title: '보고서 · 상장 평가',
+    sub: '설계 점수 · 기업가치',
     evidence: ['server-calc', 'edu-approx'],
     costCents: cristaToCents(ANTIBODY_STEP_COST_CRISTA.A6),
   },
@@ -556,7 +570,7 @@ export interface AntibodyNewsLine {
   headline: string;
   changePct?: number;
   tone: string;
-  track: LabTrack;
+  track: TrackId;
 }
 
 export interface AntibodyBoardResponse {
@@ -596,7 +610,7 @@ export interface AntibodyBoardResponse {
   /** 선택 키가 설정됐는지 — 값은 보내지 않아요. */
   optional: { proteinmpnn: boolean; boltz: boolean };
   /** 교사 학급 설정(읽기). */
-  settings: { weights: AntibodyScoreWeights; openTracks: LabTrack[] };
+  settings: { weights: AntibodyScoreWeights; openTracks: TrackId[] };
   news: AntibodyNewsLine[];
 }
 
@@ -679,7 +693,7 @@ export interface AntibodySubmitResponse {
 export interface AntibodyTeacherSettings {
   weights: AntibodyScoreWeights;
   thresholds: { scoreMargin: number; confidenceMin: number };
-  openTracks: LabTrack[];
+  openTracks: TrackId[];
   version: number;
 }
 

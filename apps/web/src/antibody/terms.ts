@@ -7,7 +7,7 @@
  * - 단계 화면 카드에는 출처 배지를 두지 않아요 — 어디가 근사인지는 '점수 계산 방법' 페이지 한 곳에서만 말해요.
  *   서버 응답의 출처 칸(`provenance`)은 그대로 들어와요(화면에만 그리지 않아요).
  */
-import type { AntibodyDataMode, AntibodyStepId, LabTrack, NumberingSource, StepId } from '@crista-web/web-contract';
+import type { AntibodyDataMode, AntibodyStepId, NumberingSource, StepId, TrackId } from '@crista-web/web-contract';
 import { ANTIBODY_STEP_IDS, STEP_IDS } from '@crista-web/web-contract';
 
 export interface Term {
@@ -91,7 +91,7 @@ export interface LabStepChip {
 }
 
 export interface LabCardCopy {
-  track: LabTrack;
+  track: TrackId;
   /** 큰 번호 자리. */
   no: string;
   title: string;
@@ -123,7 +123,7 @@ const ANTIBODY_STEP_SHORT: Record<AntibodyStepId, string> = {
 
 export const LAB_CARDS: readonly LabCardCopy[] = [
   {
-    track: 'small',
+    track: 'drug',
     no: '01',
     title: '저분자 신약 랩',
     steps: STEP_IDS.map((id) => ({ id, short: SMALL_STEP_SHORT[id] })),

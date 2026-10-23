@@ -10,14 +10,14 @@ import {
   ANTIBODY_WEIGHT_KEYS,
   CONFIDENCE_MIN_FOR_COMPLEX,
   CORRECTION_MAX_PCT,
-  LAB_TRACKS,
+  TRACK_IDS,
   SCORE_THRESHOLD_MARGIN,
   scoreWeightsOk,
   type AccountView,
   type AntibodyScoreWeights,
   type AntibodyTeacherQueue,
   type AntibodyTeacherSettings,
-  type LabTrack,
+  type TrackId,
   type ScoreView,
 } from '@crista-web/web-contract';
 import { currentGameDay } from '../../clock.ts';
@@ -27,7 +27,7 @@ import { requireTeacherOf } from '../../guard.ts';
 import { ApiError, badRequest } from '../../http.ts';
 import { ANTIBODY_DOMAINS } from './queue.ts';
 import { postAntibodyCorrection } from './events.ts';
-import { loadSettings } from './service.ts';
+import { loadSettings, trackToDb } from './service.ts';
 
 /** 교사가 보는 학급 — 소유한 학급 하나를 고른다(인자가 없으면 첫 학급). */
 async function pickClass(db: Queryable, account: AccountView, raw: string | null): Promise<string> {
@@ -69,8 +69,10 @@ export async function putTeacherSettings(deps: Deps, account: AccountView, raw: 
   const confidenceMin = Number(thresholdsRaw.confidenceMin ?? CONFIDENCE_MIN_FOR_COMPLEX);
   if (!Number.isInteger(scoreMargin) || scoreMargin < 0 || scoreMargin > 20) throw badRequest('문턱 조정은 0~20 사이 정수예요.');
   if (!Number.isInteger(confidenceMin) || confidenceMin < 0 || confidenceMin > 100) throw badRequest('구조 확신도 문턱은 0~100 사이 정수예요.');
-  const tracks = Array.isArray(body.openTracks) ? body.openTracks : [...LAB_TRACKS];
-  const openTracks = tracks.filter((t): t is LabTrack => (LAB_TRACKS as readonly string[]).includes(t as string));
+  const tracks = Array.isArray(body.openTracks) ? body.openTracks : [...TRACK_IDS];
+  const openTracks = TRACK_IDS.filter((t) => tracks.includes(t));
+  // 저장 값은 0020 check 가 정한 `{small,antibody}` 꼴로 돌려 넣는다(service.ts `trackToDb`).
+  const openTracksDb = openTracks.map(trackToDb);
   const expected = Number(body.version);
   if (!Number.isInteger(expected) || expected < 1) throw badRequest('설정 버전을 보내 주세요.');
 
@@ -80,7 +82,7 @@ export async function putTeacherSettings(deps: Deps, account: AccountView, raw: 
       await tx.query(
         `insert into web.antibody_class_settings (class_id, weights, thresholds, open_tracks, version, updated_by)
          values ($1, $2, $3, $4, 2, $5)`,
-        [classId, JSON.stringify(weights), JSON.stringify({ scoreMargin, confidenceMin }), openTracks, account.userId],
+        [classId, JSON.stringify(weights), JSON.stringify({ scoreMargin, confidenceMin }), openTracksDb, account.userId],
       );
       return 2;
     }
@@ -89,7 +91,7 @@ export async function putTeacherSettings(deps: Deps, account: AccountView, raw: 
       `update web.antibody_class_settings
           set weights = $2, thresholds = $3, open_tracks = $4, version = version + 1, updated_by = $5, updated_at = now()
         where class_id = $1 returning version`,
-      [classId, JSON.stringify(weights), JSON.stringify({ scoreMargin, confidenceMin }), openTracks, account.userId],
+      [classId, JSON.stringify(weights), JSON.stringify({ scoreMargin, confidenceMin }), openTracksDb, account.userId],
     );
     return updated.rows[0]!.version;
   });

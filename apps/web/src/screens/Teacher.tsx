@@ -13,6 +13,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { API, type ServerMessage, type TeacherClassDetail, type TeacherClassView } from '@crista-web/web-contract';
 import type { Nav } from '../App.tsx';
+import { TeacherPanel } from '../antibody/TeacherPanel.tsx';
 import { api, message } from '../api.ts';
 import { LedBand } from '../board/market/LedBand.tsx';
 import { Projector, TeacherMarket } from '../board/market/TeacherMarket.tsx';
@@ -205,6 +206,7 @@ export function Teacher({ nav }: { nav: Nav }) {
               {section === 'learn' && <LearnView classId={detail.id} teams={teams} onChanged={progress.reload} />}
               {section === 'ethics' && <EthicsView classId={detail.id} />}
               {section === 'llm' && <LlmUsageView classId={detail.id} />}
+              {section === 'antibody' && <TeacherPanel account={nav.me.account} classId={detail.id} teams={detail.teams} />}
             </div>
           )}
         </main>

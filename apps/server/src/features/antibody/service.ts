@@ -22,7 +22,7 @@ import {
   ANTIBODY_STEP_REQUIRES,
   CONFIDENCE_MIN_FOR_COMPLEX,
   DESIGN_SLOTS_PER_PERSON,
-  LAB_TRACKS,
+  TRACK_IDS,
   NOTE_SECTIONS,
   SCORE_THRESHOLD_MARGIN,
   cristaToCents,
@@ -49,7 +49,7 @@ import {
   type DesignView,
   type DiversityView,
   type FoldView,
-  type LabTrack,
+  type TrackId,
   type NoteSection,
   type PreviewMetrics,
   type Provenance,
@@ -76,7 +76,8 @@ import { findLiabilities } from './liabilities.ts';
 import { resolveNumbering } from './numbering.ts';
 import { antibodyRiskFlags, antibodyScore, effectiveMutations, type ScoreInput } from './score.ts';
 import { suggestVariants } from './suggest.ts';
-import { loadValuation, postAntibodyEvent, postAntibodyProcessScore } from './events.ts';
+import { loadValuation, postAntibodyEvent } from './events.ts';
+import { postAntibodyProcess } from './process.ts';
 
 // ── 상수 ──
 
@@ -221,14 +222,22 @@ export const programView = (r: AbRevision): AntibodyProgramView => ({
 export interface AbSettings {
   weights: AntibodyScoreWeights;
   thresholds: { scoreMargin: number; confidenceMin: number };
-  openTracks: LabTrack[];
+  openTracks: TrackId[];
   version: number;
 }
+
+/**
+ * 트랙 축은 기반 `track.ts` 의 `TrackId`(`drug` · `antibody`) 하나다. 그런데 0020 의
+ * `antibody_class_settings.open_tracks` check 는 `{small,antibody}` 로 굳어 있고 0020 은 고치지 않는 파일이다
+ * (항체 설계 §11.4). 그래서 **DB 경계에서만** 이름을 옮긴다 — 저장 값은 그대로 두고 코드는 한 축만 쓴다.
+ */
+export const trackFromDb = (v: string): TrackId | null => (v === 'small' ? 'drug' : v === 'antibody' ? 'antibody' : null);
+export const trackToDb = (t: TrackId): string => (t === 'drug' ? 'small' : t);
 
 export const DEFAULT_SETTINGS: AbSettings = {
   weights: ANTIBODY_SCORE_WEIGHTS,
   thresholds: { scoreMargin: SCORE_THRESHOLD_MARGIN, confidenceMin: CONFIDENCE_MIN_FOR_COMPLEX },
-  openTracks: [...LAB_TRACKS],
+  openTracks: [...TRACK_IDS],
   version: 1,
 };
 
@@ -246,7 +255,7 @@ export async function loadSettings(db: Queryable, classId: string): Promise<AbSe
       scoreMargin: Number.isFinite(row.thresholds?.scoreMargin) ? Number(row.thresholds.scoreMargin) : SCORE_THRESHOLD_MARGIN,
       confidenceMin: Number.isFinite(row.thresholds?.confidenceMin) ? Number(row.thresholds.confidenceMin) : CONFIDENCE_MIN_FOR_COMPLEX,
     },
-    openTracks: row.open_tracks.filter((t): t is LabTrack => (LAB_TRACKS as readonly string[]).includes(t)),
+    openTracks: row.open_tracks.map(trackFromDb).filter((t): t is TrackId => t !== null),
     version: row.version,
   };
 }
@@ -471,7 +480,9 @@ export async function createDesign(
          values ($1, $2, $3, $4, $5, $6, $7, 'student', $8, $9, $10) returning id`,
         [who.teamId, rev.revisionId, label, vh, vl ?? null, hash, JSON.stringify(mutations), account.userId, used + 1, JSON.stringify(preview)],
       );
-      return { id: inserted.rows[0]!.id, created: true, revisionId: rev.revisionId };
+      // A3 과정 평가 — 설계가 처음 들어온 순간 한 번(§11.3.1).
+      const scored = await postAntibodyProcess(tx, deps, { classId: who.classId, teamId: who.teamId, revisionId: rev.revisionId, step: 'A3' });
+      return { id: inserted.rows[0]!.id, created: true, revisionId: rev.revisionId, after: scored };
     } catch (error) {
       if (isUniqueViolation(error, 'antibody_designs_slot_key')) {
         throw new ApiError(409, 'slot_taken', `한 사람이 올릴 수 있는 설계는 ${DESIGN_SLOTS_PER_PERSON}개예요.`);
@@ -484,6 +495,7 @@ export async function createDesign(
     }
   });
 
+  result.after?.();
   if (result.created) notifyTeam(deps, who.teamId, 'antibody:design', account.displayName);
   const rows = await deps.db.query<DesignRow>(`${DESIGN_SELECT.replace('where d.revision_id = $1', 'where d.id = $1')}`, [result.id]);
   const row = rows.rows[0];
@@ -847,7 +859,7 @@ async function loadNews(db: Queryable, classId: string): Promise<AntibodyNewsLin
     headline: r.headline_ai ?? r.headline,
     ...(r.change_pct !== null ? { changePct: r.change_pct } : {}),
     tone: r.tone,
-    track: (r.kind.startsWith('antibody_') ? 'antibody' : 'small') as LabTrack,
+    track: (r.kind.startsWith('antibody_') ? 'antibody' : 'drug') satisfies TrackId,
   }));
 }
 
@@ -1036,7 +1048,12 @@ export async function postProgramNews(tx: Tx, deps: Deps, who: { teamId: string;
     idemKey: `antibody_program:${rev.revisionId}`,
     gameDay,
   });
-  return posted.after;
+  // A1 과정 평가 — (모둠, 단계)마다 한 번(§11.3.1). 두 번째부터는 기반이 조용히 넘긴다.
+  const scored = await postAntibodyProcess(tx, deps, { classId: who.classId, teamId: who.teamId, revisionId: rev.revisionId, step: 'A1', gameDay });
+  return () => {
+    posted.after();
+    scored();
+  };
 }
 
 export async function putProgram(deps: Deps, account: AccountView, raw: unknown): Promise<AntibodyProgramView> {
@@ -1206,7 +1223,6 @@ export async function submitDesign(deps: Deps, account: AccountView, raw: unknow
     const record = beforeBest === null || view.score > beforeBest;
 
     // 모둠 신기록이 아니면 변동 0(§4.3) — 소식도 신기록만 낸다.
-    let skipped = false;
     let after: () => void = () => {};
     let event: AntibodySubmitResponse['event'] | undefined;
     if (charged.charged && record) {
@@ -1225,9 +1241,8 @@ export async function submitDesign(deps: Deps, account: AccountView, raw: unknow
         idemKey: `antibody_record:${rev.revisionId}:${view.score}`,
         gameDay,
       });
-      skipped = posted.skipped;
       after = posted.after;
-      if (posted.event) event = { headline: posted.event.headline, kind: 'antibody_record', ...(posted.event.id ? {} : {}) };
+      event = { headline: posted.event.headline, kind: 'antibody_record' };
     }
 
     await tx.query(
@@ -1238,7 +1253,7 @@ export async function submitDesign(deps: Deps, account: AccountView, raw: unknow
         rev.revisionId,
         designId,
         view.score,
-        JSON.stringify({ view, eventSkipped: skipped, record, requestId }),
+        JSON.stringify({ view, record, requestId }),
         Math.round(complex.fit),
         fold?.confidenceMean ?? null,
         fold?.confidenceCdrH3 ?? null,
@@ -1249,28 +1264,14 @@ export async function submitDesign(deps: Deps, account: AccountView, raw: unknow
       ],
     );
 
-    // 과정 평가(§11.3.1) — FMARKET 이 있으면 그 함수로, 없으면 건너뛴다.
-    const members = await memberCount(tx, who.teamId);
-    const noteRows = await tx.query<{ n: number; writers: number }>(
-      `select count(*)::int as n, count(distinct updated_by)::int as writers from web.antibody_notes where revision_id = $1 and step = 'A6'`,
-      [rev.revisionId],
-    );
-    await postAntibodyProcessScore(tx, deps, {
-      classId: who.classId,
-      teamId: who.teamId,
-      stepId: 'antibody_A6',
-      revisionId: rev.revisionId,
-      gameDay,
-      components: [
-        { key: 'notes_filled', value: Math.min(1, (noteRows.rows[0]?.n ?? 0) / NOTE_SECTIONS.length), weight: 0.4 },
-        { key: 'notes_shared', value: Math.min(1, (noteRows.rows[0]?.writers ?? 0) / members), weight: 0.3 },
-        { key: 'rationale', value: design.label.length > 0 ? 1 : 0, weight: 0.3 },
-      ],
-    }).catch((error: Error) => {
-      console.warn('[antibody] 과정 평가 건너뜀:', error.message);
-      return false;
-    });
+    // 과정 평가(§11.3.1) — 신호는 `process.ts` 한 곳에서 DB 사실로 센다.
+    const scored = await postAntibodyProcess(tx, deps, { classId: who.classId, teamId: who.teamId, revisionId: rev.revisionId, step: 'A6', gameDay });
 
+    const both = after;
+    after = () => {
+      both();
+      scored();
+    };
     return { view, after, event, record };
   });
 

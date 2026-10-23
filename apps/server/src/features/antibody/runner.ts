@@ -238,7 +238,10 @@ export class AntibodyRunner {
         [jobId, result.provider, JSON.stringify(result.payload), result.approx],
       );
       this.hub.publish(teamChannel(job.team_id), { type: 'antibody.changed', teamId: job.team_id, reason: `antibody:job:${job.step}` });
-      if (this.deps) await this.postJobNews(job.team_id, job.step);
+      if (this.deps) {
+        await this.postJobNews(job.team_id, job.step);
+        await this.postJobProcess(job.team_id, job.step);
+      }
     } catch (error) {
       const message = error instanceof ApiError ? error.message : (error as Error).message;
       await this.finishFailed(jobId, 'failed', message.slice(0, 400));
@@ -298,6 +301,22 @@ export class AntibodyRunner {
       }),
     );
     posted.after();
+  }
+
+  /**
+   * A2 · A4 · A5 의 과정 평가(§11.3.1) — 작업이 처음 성공하는 순간 한 번. 기반 `postProcessScore` 가
+   * (모둠, 단계) PK 로 한 번만 받으므로 뒤 작업이 성공해도 조용히 지나간다.
+   */
+  private async postJobProcess(teamId: string, step: AntibodyJobStep): Promise<void> {
+    const deps = this.deps;
+    if (!deps) return;
+    const { postAntibodyProcess } = await import('./process.ts');
+    const team = await this.db.query<{ class_id: string }>('select class_id from web.teams where id = $1', [teamId]);
+    const classId = team.rows[0]?.class_id;
+    if (!classId) return;
+    const rev = await loadRevision(this.db, teamId);
+    const after = await withTx(this.db, async (tx) => postAntibodyProcess(tx, deps, { classId, teamId, revisionId: rev.revisionId, step }));
+    after();
   }
 
   // ── 단계별 실행 ──

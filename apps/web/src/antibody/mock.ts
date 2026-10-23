@@ -497,7 +497,7 @@ export function mockBoard(me: MeResponse): AntibodyBoardResponse {
     jobs: [],
     dataMode: 'fixture',
     optional: { proteinmpnn: false, boltz: false },
-    settings: { weights: ANTIBODY_SCORE_WEIGHTS, openTracks: ['small', 'antibody'] },
+    settings: { weights: ANTIBODY_SCORE_WEIGHTS, openTracks: ['drug', 'antibody'] },
     news: [
       { seq: 3, ticker: team.ticker ?? 'SEUM', headline: `◆ ${team.ticker ?? 'SEUM'} 표적 확정 — ${row.target} · 원본 ${row.suggestedAntibody.name}`, tone: 'g', track: 'antibody' },
       { seq: 2, ticker: 'NURI', headline: '◆ NURI 접힘 예측 첫 성공', tone: 'n', track: 'antibody' },

@@ -12,6 +12,7 @@ import {
   ANTIBODY_API,
   ANTIBODY_BOLDNESS,
   ANTIBODY_EVENT_KINDS,
+  ANTIBODY_GROUP_TITLE,
   ANTIBODY_GRADE_MIN,
   ANTIBODY_GRADE_WORD,
   ANTIBODY_JOB_STEPS,
@@ -26,13 +27,14 @@ import {
   CENTS_PER_CRISTA,
   CONFIDENCE_MIN_FOR_COMPLEX,
   DESIGN_SLOTS_PER_PERSON,
+  ANTIBODY_TRACK,
   ESMFOLD_MAX_RESIDUES,
-  LAB_TRACKS,
   NOTE_SECTIONS,
   PREVIEW_PER_MIN_PER_TEAM,
   SCFV_LINKER,
   SCORE_THRESHOLD_MARGIN,
   STEP_IDS,
+  TRACK_IDS,
   STEP_META,
   SeqFormatError,
   antibodyGrade,
@@ -238,8 +240,15 @@ describe('저분자 축 무변경', () => {
     }
   });
 
-  test('트랙 축은 두 값이에요', () => {
-    assert.deepEqual([...LAB_TRACKS], ['small', 'antibody']);
+  test('트랙 축은 기반 `track.ts` 것 하나를 쓰고, 항체 등록표가 A1~A6 로 채워져 있어요', () => {
+    assert.deepEqual([...TRACK_IDS], ['drug', 'antibody']);
+    assert.deepEqual(
+      ANTIBODY_TRACK.steps.map((s) => s.id),
+      [...ANTIBODY_STEP_IDS],
+    );
+    assert.equal(ANTIBODY_TRACK.track, 'antibody');
+    assert.deepEqual(ANTIBODY_TRACK.groups, ANTIBODY_GROUP_TITLE);
+    for (const step of ANTIBODY_TRACK.steps) assert.ok(step.sub.length > 0, `${step.id} 의 보조 줄이 비어 있어요`);
   });
 });
 

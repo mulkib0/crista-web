@@ -19,7 +19,7 @@ import {
   ANTIBODY_WEIGHT_KEYS,
   CONFIDENCE_MIN_FOR_COMPLEX,
   CORRECTION_MAX_PCT,
-  LAB_TRACKS,
+  TRACK_IDS,
   SCORE_THRESHOLD_MARGIN,
   scoreWeightsOk,
   scoreWeightsSum,
@@ -27,7 +27,7 @@ import {
   type AntibodyScoreWeights,
   type AntibodyTeacherQueue,
   type AntibodyTeacherSettings,
-  type LabTrack,
+  type TrackId,
   type ScoreView,
   type TeamView,
 } from '@crista-web/web-contract';
@@ -46,7 +46,7 @@ const WEIGHT_WORD: Record<keyof AntibodyScoreWeights, string> = {
 };
 
 /** 랩 이름 — 학생이 '연구소 고르기'에서 보는 이름과 같게. */
-const TRACK_WORD: Record<LabTrack, string> = { small: '저분자 랩', antibody: '항체 설계 랩' };
+const TRACK_WORD: Record<TrackId, string> = { drug: '저분자 랩', antibody: '항체 설계 랩' };
 
 /** 외부 자료 갈래 이름 — 선생님 운영용이라 '무엇을 기다리는 줄인지'로 적습니다. */
 const DOMAIN_WORD: Record<string, string> = {
@@ -166,7 +166,7 @@ function TeacherPanelBody({ classId, teams }: { classId: string | null; teams: r
     });
   }
 
-  function toggleTrack(track: LabTrack, on: boolean) {
+  function toggleTrack(track: TrackId, on: boolean) {
     setSaved(null);
     setDraft((d) => {
       if (!d) return d;
@@ -278,7 +278,7 @@ function TeacherPanelBody({ classId, teams }: { classId: string | null; teams: r
             </p>
 
             <p className="lab" style={{ marginTop: 16 }}>열린 랩 — 학생이 들어갈 수 있는 곳</p>
-            {LAB_TRACKS.map((track) => (
+            {TRACK_IDS.map((track) => (
               <label className="chk" key={track}>
                 <input
                   type="checkbox"

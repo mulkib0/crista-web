@@ -251,45 +251,8 @@ export async function castVote(deps: Deps, account: AccountView, proposalId: str
   return proposalView(rows.rows[0]!, quorum);
 }
 
-/** A1 · A2 의 과정 신호(§11.3.1) — DB 사실에서만 센다. */
-export async function consensusSignals(
-  db: Queryable,
-  revisionId: string,
-  teamId: string,
-  step: AntibodyCardStep,
-): Promise<Array<{ key: string; value: number; weight: number }>> {
-  const members = await memberCount(db, teamId);
-  const cards = await db.query<{ people: number; slots: number; long: number; total: number }>(
-    `select count(distinct submitted_by)::int as people, count(distinct slot)::int as slots,
-            count(*) filter (where char_length(rationale) >= 30)::int as long, count(*)::int as total
-       from web.antibody_card_submissions where revision_id = $1 and step = $2`,
-    [revisionId, step],
-  );
-  const voters = await db.query<{ n: number }>(
-    `select count(distinct v.voter)::int as n from web.antibody_votes v
-       join web.antibody_proposals p on p.id = v.proposal_id
-      where p.revision_id = $1 and p.topic = $2`,
-    [revisionId, step === 'A1' ? 'program' : 'fixed_positions'],
-  );
-  const row = cards.rows[0]!;
-  const rationaleOk = row.total === 0 ? 0 : row.long / row.total;
-  if (step === 'A1') {
-    return [
-      { key: 'cards', value: Math.min(1, row.people / members), weight: 0.4 },
-      { key: 'votes', value: Math.min(1, (voters.rows[0]?.n ?? 0) / members), weight: 0.3 },
-      { key: 'rationale', value: rationaleOk, weight: 0.3 },
-    ];
-  }
-  const passed = await db.query<{ n: number }>(
-    `select count(*)::int as n from web.antibody_proposals where revision_id = $1 and topic = 'fixed_positions' and status = 'passed'`,
-    [revisionId],
-  );
-  return [
-    { key: 'slots', value: Math.min(1, row.slots / A2_SLOTS.length), weight: 0.4 },
-    { key: 'fixed_agreed', value: (passed.rows[0]?.n ?? 0) > 0 ? 1 : 0, weight: 0.3 },
-    { key: 'rationale', value: rationaleOk, weight: 0.3 },
-  ];
-}
+// A1 · A2 의 과정 신호는 `process.ts` 한 곳에 있다(§11.3.1) — 여기 있던 `consensusSignals` 는
+// 아무도 부르지 않는 사본이었어서 지웠다(신호 표가 두 벌이면 어긋난다).
 
 /** 화면이 A2 를 열 수 있나 — 과반이 카드를 올렸는지(완료 조건 §2.2). */
 export async function cardsMajority(db: Queryable, revisionId: string, teamId: string, step: AntibodyCardStep): Promise<boolean> {

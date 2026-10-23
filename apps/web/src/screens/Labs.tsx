@@ -11,19 +11,19 @@
  *   누르면 그 글 위에서도 제목 링크가 받아요. `aria-current="page"` 는 쓰지 않아요(두 섬은 '갈 곳'이에요).
  * - 진행 칩은 `MeResponse.labs` 가 있을 때만 그려요(§1.3). 숨겨도 자리를 비워 둬서 섬 높이가 흔들리지 않아요.
  */
-import type { LabProgress, LabTrack } from '@crista-web/web-contract';
-import { LAB_TRACKS } from '@crista-web/web-contract';
+import type { LabProgress, TrackId } from '@crista-web/web-contract';
+import { TRACK_IDS } from '@crista-web/web-contract';
 import type { Nav } from '../App.tsx';
 import { BASE } from '../api.ts';
 import { LABS_COPY, LAB_CARDS } from '../antibody/terms.ts';
 import '../antibody/antibody.css';
 
-const hrefOf = (track: LabTrack) => `${BASE}/${track === 'antibody' ? 'antibody' : 'board'}?lab=${track}`;
+const hrefOf = (track: TrackId) => `${BASE}/${track === 'antibody' ? 'antibody' : 'board'}?lab=${track}`;
 
-export function Labs({ nav, pickLab }: { nav: Nav; pickLab: (track: LabTrack) => void }) {
+export function Labs({ nav, pickLab }: { nav: Nav; pickLab: (track: TrackId) => void }) {
   const { me, go } = nav;
   const registered = me.next !== 'district';
-  const open: readonly LabTrack[] = me.openTracks ?? LAB_TRACKS;
+  const open: readonly TrackId[] = me.openTracks ?? TRACK_IDS;
 
   return (
     <div className="ab-labs">
