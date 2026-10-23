@@ -1,0 +1,26 @@
+{
+  "name": "@crista-web/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "crista-web 서버 — REST(가입 · 로그인 · 학급 · 입사 · 등기) + WebSocket(학급 · 모둠 채널) + 정적 파일",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "node --watch src/index.ts",
+    "start": "node src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.ts",
+    "teacher:create": "node scripts/teacher-create.ts"
+  },
+  "dependencies": {
+    "@crista-web/web-contract": "*",
+    "pg": "^8.23.1",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/pg": "^8.23.1",
+    "@types/ws": "^8.18.2",
+    "typescript": "^5.9.3"
+  }
+}

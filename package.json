@@ -10,5 +10,19 @@
   ],
   "engines": {
     "node": ">=22.18"
+  },
+  "scripts": {
+    "typecheck": "npm run typecheck -w @crista/shared-types -w @crista/game-rules -w @crista-web/web-contract -w @crista-web/server",
+    "test": "npm run test -w @crista-web/web-contract -w @crista-web/server",
+    "test:rules": "npm run test -w @crista/game-rules",
+    "db:status:local": "node tools/with-local-env.mjs node db/migrate.mjs --status",
+    "db:migrate:local": "node tools/with-local-env.mjs node db/migrate.mjs",
+    "db:check:local": "node tools/with-local-env.mjs node db/check-boundary.mjs",
+    "dev:server": "node tools/with-local-env.mjs npm run dev -w @crista-web/server",
+    "teacher:create": "node tools/with-local-env.mjs npm run teacher:create -w @crista-web/server --",
+    "e2e:w1": "node tools/with-local-env.mjs node apps/server/scripts/e2e-w1.ts"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
   }
 }

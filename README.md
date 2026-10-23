@@ -15,9 +15,29 @@
 
 ## 상태
 
-W0(저장소 · 설계)까지. 서버 · 화면 코드는 아직 없다 — 구현 순서는 설계 §9.
+W1(서버 · 계정)까지 — `apps/server`(REST · WebSocket · 정적) · `packages/web-contract` · `db/`(자체 실행기 · `web` 스키마) · 교사 생성 스크립트.
+화면 코드는 아직 없다(W2). 구현 순서는 설계 §11.
+
+| 경로 | 내용 |
+| --- | --- |
+| `apps/server` | Node(`node:http` + `ws` + `pg`) — 가입 · 로그인(HttpOnly 쿠키 세션) · 학급 · 입사 · 등기 API, `/ws` 학급 · 모둠 채널 |
+| `packages/web-contract` | 입력 규칙(아이디 · 학급 코드 · 스타트업 이름 · 티커 …) · 티커 제안 · API · WebSocket 메시지 모양 |
+| `db/` | `migrate.mjs` · `check-boundary.mjs` · `migrations/0000_bootstrap` · `0001_core` — [`db/README.md`](db/README.md) |
+| `tools/with-local-env.mjs` | crista 의 로컬 Supabase 값만 실어 명령 실행(`.env.local` 의 호스팅 값은 쓰지 않는다) |
 
 ## 시작(로컬)
 
-1. crista 의 `.env.local` 을 이 저장소 루트에 둔다(이미 복사됨, 커밋하지 않는다). 이름 목록은 `.env.example`.
-2. W1 이후: `npm install` → crista 워커를 8790 으로 실행 → `npm run dev`(서버 3390 · 화면 5190).
+준비: crista 의 로컬 Supabase 가 떠 있어야 한다(colima `default` · crista 폴더에서 `supabase status`). 이 저장소에서 `supabase db reset` · `db push` 를 쓰지 않는다.
+
+```sh
+npm install
+npm run db:migrate:local      # web 스키마 · crista_web 역할(로컬, 처음 한 번)
+npm run db:check:local        # crista_web 이 web 밖을 못 건드리는지
+npm run dev:server            # http://127.0.0.1:3390
+npm run teacher:create -- --login teacher01 --name 김선생   # 비밀번호를 한 번만 출력
+npm run e2e:w1                # W1 완료 조건 점검(서버가 떠 있어야 함)
+npm run typecheck && npm test # 타입체크 · 단위 테스트
+npm run test:rules            # crista 사본 game-rules 테스트(287/290 — 실패 3건은 사본 밖 crista 파일 경로, packages/SOURCE.md)
+```
+
+포트: 서버 3390 · 화면 5190(W2) · crista 워커 8790(W3). crista 의 5173/5174 · 2567/2568/2572 · 8787/8788/8796 · 553xx 는 쓰지 않는다.

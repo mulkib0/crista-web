@@ -1,0 +1,15 @@
+{
+  "name": "@crista-web/web-contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "crista-web 서버 · 화면 통신 규격 — 입력 규칙 · API 모양 · WebSocket 메시지",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.ts"
+  },
+  "devDependencies": { "typescript": "^5.9.3", "@types/node": "^22.20.5" }
+}
