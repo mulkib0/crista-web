@@ -14,7 +14,7 @@
  */
 import type { TargetId } from '@crista/shared-types';
 import type { DocReviewView, DocSectionView, ReasonVerdict, ReviewChecklistItem, RuleFinding } from './review.ts';
-import { reasonBlock, reasonOk, reasonWarn, REVIEW_LIMITS } from './review.ts';
+import { reasonBlock, reasonOk, reasonWarn } from './review.ts';
 import type { IndForm } from './ind.ts';
 import { cristaToCents } from './money.ts';
 import { formatGameDay } from './clock.ts';
@@ -788,7 +788,7 @@ export const PRECLINICAL_COPY = {
   ] satisfies readonly EthicsQuestion[],
   ethics: {
     whoNeeds: '동물실험 실행 단추를 누르는 사람만 교육 이수가 필요해요(동물보호법 제47조 ③ — 실험은 윤리적 취급과 과학적 사용의 지식을 갖춘 사람이 해요). 윤리 카드 읽기, 계획서 쓰기, 결과 보기는 모둠원 누구나 할 수 있어요.',
-    retry: '확인 문제는 횟수 제한 없이 다시 풀 수 있어요. 모둠원 중 한 명만 이수해도 우리 모둠이 동물실험을 진행할 수 있어요.',
+    retry: '모둠원 중 한 명만 이수해도 우리 모둠이 동물실험을 진행할 수 있어요.',
     passed: '실험 수행자 윤리 교육을 이수했어요. 모둠 공유 섬에 내 이수 도장이 찍혔고, 이제 계획서의 실험 수행자로 뽑힐 수 있어요. 계획서가 승인되면 동물실험 실행 단추를 누를 수 있어요.',
     wrong: '아직 틀린 문제가 있어요. 윤리 카드 5장을 다시 읽고 확인 문제를 다시 풀어 봐요.',
     dilemma: `동물 수를 절반 가까이 줄이면('적게', 후보당 ${N.low}마리) 자료가 부족해 안전계수(동물 자료를 사람에게 옮길 때 불확실한 만큼 나누는 수)가 ${SF.standard}에서 ${SF.low}으로 올라가요. 그러면 사람 임상 1상의 시작 용량 상한(MRSD)을 절반으로 낮춰 잡아야 해요. 동물을 덜 쓰는 것과, 사람에게 쓸 시작 용량을 넉넉히 확보하는 것 가운데 어느 쪽이 더 윤리적일까요?`,
@@ -905,7 +905,6 @@ export const PRECLINICAL_COPY = {
     approved: '동물실험계획서가 승인되었어요. 승인된 계획서의 후보와 마릿수 수준대로 ④ 동물실험을 실행할 수 있어요.',
   } satisfies Record<IacucStatus, string>,
   calc: {
-    intro: '동물 독성 시험에서 구한 NOAEL(부작용이 보이지 않은 가장 높은 용량)로 HED(사람 등가 용량, 동물 용량을 사람 몸 기준으로 바꾼 값)와 MRSD(사람 첫 투여의 최대 권장 시작 용량)를 직접 계산해 봐요. 모든 칸이 서버 값과 맞으면 3.3 신청서에 근거로 붙어요.',
     formula: [
       `1단계: 종별 HED(mg/kg) = NOAEL(mg/kg/일) ÷ 환산 계수(랫드 ${SPECIES_HED_DIVISOR.rat} · 비글견 ${SPECIES_HED_DIVISOR.dog})`,
       '2단계: 두 종 중 더 낮은 HED(가장 민감한 종)를 골라요.',
@@ -919,7 +918,6 @@ export const PRECLINICAL_COPY = {
     needPatent: '3.1 에서 유효 특허를 먼저 받아야 해요.',
     needEthics: '동물실험 실행 단추는 교육을 이수한 사람만 누를 수 있어요. 먼저 ① 윤리 배우기의 확인 문제를 풀어요.',
     needApproval: '승인된 계획서에 있는 후보만 실행할 수 있어요. 후보를 더하거나 마릿수 수준을 바꾸려면 변경 심의를 다시 받아요.',
-    rerun: '같은 표적 버전 · 분자 · 설계는 언제나 같은 결과가 나와요. 다시 돌려도 결과는 바뀌지 않고 연구비와 동물만 더 들어서, 같은 설계로 다시 실행하면 과금 없이 옛 결과를 그대로 보여 줘요.',
     changed: '승인 뒤에 계획서가 바뀌었어요. 실행은 승인된 판대로 해요. 바꾼 내용은 변경 심의를 받아야 반영돼요.',
     reviewing: '규칙 검사 뒤 AI 심사관(동물실험윤리위원회 역할)이 계획서를 읽고 있어요. 다른 칸이나 걸음은 계속할 수 있어요.',
   },
@@ -929,7 +927,6 @@ export const PRECLINICAL_COPY = {
   ui: {
     loading: '불러오는 중…',
     retry: '다시 불러오기',
-    doneWhen: '승인된 계획서 + 동물실험 1건 이상 + 주력 지정',
     tabSub: { trained: '이수', notTrained: '이수 전', runs: (n: number) => `${n}건`, chosen: '지정함', notChosen: '아직' },
     mine: {
       ethics: '내 작업대 — 윤리 카드 · 확인 문제',
@@ -955,7 +952,6 @@ export const PRECLINICAL_COPY = {
     stamps: '모둠원 교육 이수',
     think: '생각해 볼 거리',
     settings: '계획서 설정(모둠 공유)',
-    settingsHint: '계획서 칸은 모둠원이 나눠 쓸 수 있어요. 후보 · 마릿수 수준 · 고통등급 · 종료시점 · 수행자 설정은 모둠이 함께 저장해요.',
     candidates: '넣을 후보(특허 분자)',
     level: '군당 마릿수 수준',
     perCandidate: '후보당',
@@ -970,28 +966,23 @@ export const PRECLINICAL_COPY = {
     modelGrade: '고통등급(제안)',
     rulesPreview: '규칙 미리 보기(심의 1단계)',
     requestReview: '윤리위원회 심의 요청',
-    reviewFree: `무료 · 계획서 1건당 하루 ${REVIEW_LIMITS.perDocPerDay}회`,
-    aiNotice: '규칙(후보 · 마릿수 수준 · 고통등급 · 종료시점 숫자 · 수행자 · 글자 수)은 서버가 먼저 판정해요. 그다음 AI 심사관(Claude)이 칸마다 빠진 것과 앞뒤가 안 맞는 곳을 봐요. AI 는 규칙 판정을 뒤집지 못해요.',
     review: '심의 결과',
     approvedSnap: '승인된 판',
     noProtocol: '아직 계획서가 없어요. 칸을 쓰거나 설정을 저장하면 만들어져요.',
     verdict: { pending: '심의 중', pass: '승인', revise: '보완 요구', reject: '거절' } as Record<'pending' | 'pass' | 'revise' | 'reject', string>,
     reviewPending: '심의 중 — AI 위원회가 계획서를 읽고 판정을 정리하고 있어요. 그동안 계획서는 잠기지 않아요.',
-    feedback: 'AI 심사관의 종합 피드백',
+    feedback: '심사관의 종합 피드백',
     teacherNote: '선생님 메모',
-    altNote: '대체 시험은 동물을 쓰지 않으며(0마리), 새로운 판정을 따로 만들지 않아요. 2.2 단계의 예측 신호를 실험 값으로 굳혀서 ② 계획서의 대체 칸 근거와 \'이 후보는 동물실험에서 빼자\'는 결정의 근거로 써요.',
     predicted: '2.2 예측',
     measured: '실험 값',
     run: '실행',
     running: '진행 중',
     done: '끝',
     saved: '대체 시험으로 덜 쓴 동물 수',
-    savedHint: "대체 시험 결과를 보고 위험이 큰 후보를 동물실험에서 빼면, 그 후보에 쓰였을 마릿수만큼 '덜 쓴 동물 수'가 결과판과 종료보고서에 남아요.",
     notRun: '아직 안 했어요',
     gameDays: (n: number) => `${n}게임 일`,
     progress: (now: number, end: number) => `${formatGameDay(now)} / ${formatGameDay(end)}`,
     runAnimal: '동물실험 묶음 실행',
-    runInfo: `승인된 계획서대로 특허 분자마다 4종 시험 묶음을 실행해요(후보당 적게 ${N.low} · 알맞게 ${N.standard} · 많이 ${N.high}마리). 후보끼리는 동시에 진행돼요.`,
     bundleTitle: '시험 묶음 4종(알맞게 기준)',
     bundle: [
       '약동학(PK, 몸 안에서 약이 흡수 · 분포 · 대사 · 배설되는 과정) — 랫드 6마리로 경구 생체이용률 F%(먹은 약 가운데 온몸 혈액에 들어가는 비율) · 최고 농도 · 반감기(혈액 속 약 농도가 절반으로 줄어드는 시간)를 봐요. CNS(중추신경계) 표적이면 뇌/혈장 비(혈액에 견준 뇌 속 약 농도의 비)도 봐요.',
@@ -1034,12 +1025,11 @@ export const PRECLINICAL_COPY = {
     report: '동물실험 종료보고서(자동 작성)',
     reportTotal: (animals: number, humane: number, saved: number) => `모둠 합계 — 사용 ${animals}마리 · 인도적 종료 ${humane}마리 · 대체 시험으로 덜 쓴 ${saved}마리`,
     reportNote: '인도적 종료는 고통등급 D 모델에서 위험이 큰 분자일수록 많이 생겨요.',
-    privacy: '사용한 동물 마릿수 · 계획서 · 실험 결과는 우리 모둠과 선생님만 볼 수 있어요(선생님 화면에는 윤리 토론 자료로 학급 합계가 보여요).',
     reflection: '회고 한 줄',
     reflectionGuide: `회고 한 줄(${PRECLINICAL_LIMITS.reflectionMax}자 이하): 이번 전임상에서 대체 시험과 마릿수 선택으로 줄일 수 있었던 동물 수와, 다음 실험에서 바꾸고 싶은 점을 적어 봐요.`,
     noStudy: '동물실험을 끝낸 후보가 아직 없어요. ④ 동물실험에서 먼저 실행해요.',
     forms: { oral: '경구', iv: '정맥', transdermal: '경피' } as Record<IndForm, string>,
-    locked: '3.1 에서 유효 특허를 먼저 받아야 대체 시험과 동물실험이 열려요. 그 전에도 ① 윤리 카드를 읽고 ② 계획서 칸을 미리 써 둘 수 있어요.',
+    locked: '3.1 에서 유효 특허를 먼저 받아야 대체 시험과 동물실험이 열려요.',
     quizNo: (n: number) => `${n}번 문제`,
     quizRight: '맞아요',
     quizWrong: '다시 생각해 봐요',

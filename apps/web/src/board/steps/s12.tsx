@@ -149,7 +149,6 @@ function Screen12(p: ScreenProps) {
     mineTitle = C.ui.mineBrief;
     mine = (
       <>
-        <Overview total={ds.total} cost={money(s.costs.runCents)} />
         <Tabs size="sm" label={C.ui.toolBrief} value={briefTool} onChange={(id) => setBriefTool(id as typeof briefTool)} items={[{ id: 'mission', label: C.ui.toolMission }, { id: 'judge', label: C.judge.title, disabled: !mission }]} />
         {briefTool === 'judge' && mission ? <JudgeCards ds={ds} mission={mission} gene={gene} state={judge} setState={setJudge} /> : <BriefMine c={ctx} />}
       </>
@@ -212,7 +211,6 @@ function Screen12(p: ScreenProps) {
     mine = (
       <>
         {judge.open && mission && <p className="hint">{screenFill(C.judge.hintNote, { n: judgeSame(ds, mission, judge), m: mission.judgeCards.length })}</p>}
-        <p className="mini muted">{C.hand.notesNote}</p>
         <NotesBlock board={board} stepId="1.2" />
       </>
     );
@@ -276,27 +274,6 @@ const dockCrista = (s: ScreenResponse) => centsToCrista(s.costs.dockCents);
 const dockQueue = (s: ScreenResponse, control: ScreenCompound | null) => s.claims.length + (control && s.claims.some((x) => x.compoundId === control.id) ? 0 : 1);
 
 // ── ① 미션 브리핑 ──
-
-/** 이 단계에서 하는 일(3.3 `Overview` 와 같은 꼴 — 한 문장 · 세 줄 · 펼쳐 보기). */
-function Overview({ total, cost }: { total: number; cost: string }) {
-  const [open, setOpen] = useState(false);
-  const O = C.overview;
-  const fill = (t: string) => screenFill(t, { total, cost });
-  return (
-    <Panel title={O.title} className="s12-ov">
-      <p className="s12-one">{fill(O.oneLine)}</p>
-      <ol className="s12-three">{O.summary.map((t) => <li key={t}>{fill(t)}</li>)}</ol>
-      <button type="button" className="btn sm ghost" aria-expanded={open} aria-controls="s12-more" onClick={() => setOpen((v) => !v)}>
-        {open ? O.collapse : O.expand} {open ? '▴' : '▾'}
-      </button>
-      {open && (
-        <dl id="s12-more" className="s12-more">
-          {O.more.map((m) => <div key={m.k}><dt>{m.k}</dt><dd>{fill(m.v)}</dd></div>)}
-        </dl>
-      )}
-    </Panel>
-  );
-}
 
 function BriefMine({ c }: { c: Ctx }) {
   const { mission, control, gene } = c;
@@ -499,7 +476,6 @@ function AgendaBench({ c, agenda }: { c: Ctx; agenda: ScreenAgenda }) {
         />
       )}
       {mineP && !agreed && <p className="mini muted">{C.meeting.reproposeResetNote}</p>}
-      <p className="mini muted">{C.coach.meetingNote}</p>
     </Panel>
   );
 }
@@ -988,7 +964,6 @@ function CompoundDetail({ c, x, rank, onClaim }: { c: Ctx; x: ScreenCompound; ra
           </tbody>
         </table>
       </div>
-      <p className="mini muted">{C.shop.adviceNote}</p>
       {cl ? <p className="hint">{screenFill(C.shop.theirs, { name: cl.byName })}</p> : onClaim && <div className="acts"><button type="button" className="btn pri" onClick={onClaim}>{C.shop.claim}</button></div>}
     </div>
   );
@@ -1074,7 +1049,6 @@ function HandTeam({ c }: { c: Ctx }) {
         <button type="button" className="btn" onClick={() => c.setTab('shop')}>{C.hand.more}</button>
         <button type="button" className="btn film" disabled={step.state !== 'done'} onClick={() => goStep('2.1')}>{C.hand.send} →</button>
       </div>
-      <p className="mini muted">{C.hand.sendNote}</p>
     </>
   );
 }

@@ -22,7 +22,7 @@ export interface StepMeta {
   /** 묶음 안 번호 — 3묶음만 3칸. */
   index: 1 | 2 | 3;
   title: string;
-  /** 사이드바 보조 줄 — 출처 · 도구. */
+  /** 사이드바 보조 줄 — 도구 · 하는 일. '교육용 모의 판정' 같은 성격 표시는 2026-10-24 사용자 지시로 뺐다(성격은 `evidence` 데이터로만 남는다). */
   sub: string;
   evidence: Evidence[];
 }
@@ -34,9 +34,9 @@ export const STEP_META: Record<StepId, StepMeta> = {
   '2.1': { group: 2, index: 1, title: '분자 도킹', sub: 'AutoDock Vina · PLIP', evidence: ['compute'] },
   '2.2': { group: 2, index: 2, title: 'ADMET 예측 · 특허 후보', sub: 'ADMET-AI v2', evidence: ['prediction'] },
   '3.1': { group: 3, index: 1, title: '선언 · 물질특허', sub: 'RDKit 물성 · 서류 심사', evidence: ['compute'] },
-  '3.2': { group: 3, index: 2, title: '전임상 · 동물실험', sub: '윤리 심의 · 교육용 모의 판정', evidence: ['simulation'] },
-  '3.3': { group: 3, index: 3, title: '제형 · IND 신청', sub: '서류 심사 · 교육용 모의 판정', evidence: ['simulation'] },
-  '4.1': { group: 4, index: 1, title: '임상 1 · 2 · 3상', sub: '교육용 모의 판정', evidence: ['simulation'] },
+  '3.2': { group: 3, index: 2, title: '전임상 · 동물실험', sub: '윤리 심의', evidence: ['simulation'] },
+  '3.3': { group: 3, index: 3, title: '제형 · IND 신청', sub: '서류 심사', evidence: ['simulation'] },
+  '4.1': { group: 4, index: 1, title: '임상 1 · 2 · 3상', sub: '프로토콜 · 모집', evidence: ['simulation'] },
   '4.2': { group: 4, index: 2, title: '최종 허가', sub: '규칙 · 서류 심사', evidence: ['simulation'] },
 };
 

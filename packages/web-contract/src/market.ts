@@ -13,7 +13,8 @@
  * 학생에게 보이는 문구는 모두 `MARKET_COPY` 한곳 — §5.12 Gemini 4 Argon (High) 초안 반영(2026-10-24 · 식별자 · 숫자 · 규칙 값은 그 밖).
  */
 import { CENTS_PER_CRISTA } from './money.ts';
-import type { StepId, StepState } from './pipeline.ts';
+import { STEP_META, type StepId, type StepState } from './pipeline.ts';
+import { TRACKS } from './track.ts';
 
 // ── 소식 종류(열린 규칙) ──
 
@@ -437,8 +438,8 @@ export function formatPct(pct: number | null): string {
 }
 
 // ── 학생에게 보이는 문구(§5.12 — Gemini 4 Argon (High) 초안 → Claude 검토 · `.review/2026-10-24-copy-board/copy.md` 반영) ──
-// 이름 규칙: 전광판 화면(위 띠 순위 단추 · LED 띠 · 공개 서랍)은 설계 §5.2 · §5.3 대로 '시가총액' · '주가', 최종 순위 창은 '기업가치'
-// (한 화면 안에서 같은 개념을 두 이름으로 부르지 않는다). 돈은 `formatPrice` · `formatCapM` 결과(단위 포함)만 넣는다.
+// 이름 규칙(2026-10-24 사용자 결정): 순위 이름은 어디서나 '기업가치 순위'(위 띠 순위 단추 · LED 소식 · 서랍 · 최종 순위 · 교사 화면).
+// '주가' · '시가총액' 낱말은 공개 서랍의 숫자 칸과 계산 풀이 줄에서만 쓴다. 돈은 `formatPrice` · `formatCapM` 결과(단위 포함)만 넣는다.
 
 /** 결과 점수 칸 이름(최종 순위 풀이 — `RESULT_POINTS` 에서 점수 · 횟수를 끌어 쓴다). */
 const RESULT_LABEL: Record<string, string> = {
@@ -465,16 +466,13 @@ export const MARKET_COPY = {
     paused: '멈춤',
     pause: '멈추기',
     resume: '다시 흐르기',
-    aiTag: 'AI',
-    aiLabel: 'AI가 다듬은 헤드라인',
     loading: '불러오는 중…',
-    aiTitle: 'AI가 다듬은 헤드라인이에요. 변동률은 규칙이 정하고, 결과 소식 한 줄만 AI(Claude)가 읽기 쉽게 다듬었어요.',
     newsAria: (headline: string) => `새 전광판 소식이에요. ${headline}`,
     finalTag: '마감됨',
   },
   rank: {
-    /** 설계 §5.2 '시가총액 순위 N위 · <formatCapM>'. */
-    label: '시가총액 순위',
+    /** 설계 §5.2 '기업가치 순위 N위 · <formatCapM>'. */
+    label: '기업가치 순위',
     finalLabel: '최종 순위',
     value: (rank: number | null, listed: number, cap: string) => (rank ? `${rank}위 · ${cap}` : `— / ${listed} · ${cap}`),
     title: '누르면 우리 모둠 공개 서랍이 열려요. 다른 모둠이 보는 것과 같은 정보예요.',
@@ -487,7 +485,7 @@ export const MARKET_COPY = {
     cap: '시가총액',
     change24h: '24시간 등락',
     rating: '투자의견',
-    rank: '시가총액 순위',
+    rank: '기업가치 순위',
     program: '프로그램 코드',
     target: '표적',
     disease: '질환',
@@ -503,8 +501,6 @@ export const MARKET_COPY = {
     trendEmpty: '아직 기록이 없어요.',
     listingLine: '상장가',
     mine: ' · 우리 모둠',
-    scope:
-      '여기에 보이는 것은 학급에 공개된 사실과 결과뿐이에요. 3.1에서 등록된 특허 분자의 구조식과 코드명은 학급 특허 원장에 공개되지만, 특허 전 후보 SMILES(분자 구조를 적은 글자) · 물성 · 점수 · 보완 횟수 · 연구 노트 · 출원서 본문 · 심사 결과 · 동물실험 자료 · 허가 전 브랜드는 그 모둠과 선생님만 봐요.',
     none: '없음',
     final: (rank: number) => `최종 ${rank}위`,
     openFinal: '최종 순위 보기',
@@ -534,13 +530,14 @@ export const MARKET_COPY = {
     researchHint: '연구 역량 지수(0~100점)는 학습 평균 점수 × 단계 커버율(끝낸 단계 ÷ 9) × 0.8 + 4인 발굴 다양성(모둠원이 서로 다른 후보를 찾은 정도) × 20으로 계산해요.',
     rankingRule: '최종 순위의 순서는 기업가치(시가총액) 순으로 매겨요. 결과 점수 · 과정 점수 · 연구 역량은 표에 함께 보여 주는 상세 내역이에요.',
     encouragement: '비록 1위가 아니더라도 보류 원인을 분석하고 프로토콜(임상시험 계획서)을 고쳐 다시 도전한 경험이 진짜 신약 개발 역량이에요. 끝까지 함께 연구한 모둠원 모두 수고했어요!',
-    /** 과정 평가 줄의 항체 트랙 단계 이름 — `antibody_A1` → `항체 A1`. */
-    antibodyStep: (step: string) => `항체 ${step}`,
+    /** 항체 트랙 단계 제목을 등록표에서 못 찾았을 때. */
+    antibodyStepFallback: '항체 단계',
     close: '닫기',
   },
   process: {
-    headline: (ticker: string, stepId: string, title: string, facts: string[]) =>
-      `◆ ${ticker} ${stepId} ${title} 과정 평가${facts.length ? ` — ${facts.join(' · ')}` : ''}`,
+    /** `label` = `processStepLabel(stepId)` — 원시 단계 id(`antibody_a5`)를 학생 화면에 흘리지 않는다. */
+    headline: (ticker: string, label: string, facts: string[]) =>
+      `◆ ${ticker} ${label} 과정 평가${facts.length ? ` — ${facts.join(' · ')}` : ''}`,
     facts: {
       notes: (n: number) => `연구 노트 ${n}/3칸`,
       note_authors: (n: number) => `노트 ${n}명 작성`,
@@ -592,10 +589,10 @@ export const MARKET_COPY = {
   },
   docking: (ticker: string, gene: string, kcal: number) => `◆ ${ticker} ${gene} 도킹 결합력 학급 신기록 — ${kcal.toFixed(1).replace('-', '−')} kcal/mol`,
   listing: (ticker: string, name: string) => `◆ ${ticker} 「${name}」 설립 등기 완료 — 상장가 ${formatPrice(LISTING_PRICE_USD)}`,
-  /** 설계 §5.3 표 '◆ SEUM 시가총액 1위 탈환'(위 띠 순위 단추와 같은 이름). */
-  rankLeader: (ticker: string) => `◆ ${ticker} 시가총액 1위 탈환`,
-  finalNotice: (ticker: string | null, cap: string | null) => (ticker && cap ? `◆ ${ticker} 수업 마감 최종 1위 확정 — 시가총액 ${cap}` : '◆ 수업 마감 — 학급 최종 순위 확정'),
-  reopenNotice: '◆ 수업 마감 해제 — 시가총액 변동 재개',
+  /** 순위 변동 소식 — 위 띠 순위 단추와 같은 이름('기업가치', 2026-10-24 사용자 결정). */
+  rankLeader: (ticker: string) => `◆ ${ticker} 기업가치 1위 탈환`,
+  finalNotice: (ticker: string | null, cap: string | null) => (ticker && cap ? `◆ ${ticker} 수업 마감 최종 1위 확정 — 기업가치 ${cap}` : '◆ 수업 마감 — 학급 최종 순위 확정'),
+  reopenNotice: '◆ 수업 마감 해제 — 기업가치 변동 재개',
   teacher: {
     title: '전광판 · 마감 관리',
     projector: '프로젝터 보기',
@@ -630,3 +627,18 @@ export const MARKET_COPY = {
     notFinal: '아직 마감하지 않은 학급이에요.',
   },
 } as const;
+
+/**
+ * 과정 평가 · 최종 순위의 단계 이름 — 저분자 '4.2 최종 허가', 항체 트랙 'A5 복합체 평가'(`antibody_a5` ↔ `ANTIBODY_TRACK.steps[].id` 를 대소문자 무시로 맞춘다).
+ * 항체 등록표에 그 단계가 없으면 영문 식별자 없이 '항체 단계'.
+ */
+export function processStepLabel(stepId: string): string {
+  const drug = (STEP_META as Record<string, { title: string } | undefined>)[stepId];
+  if (drug) return `${stepId} ${drug.title}`;
+  if (stepId.startsWith('antibody_')) {
+    const key = stepId.slice('antibody_'.length).toLowerCase();
+    const step = TRACKS.antibody.steps.find((s) => s.id.toLowerCase() === key);
+    return step ? `${step.id} ${step.title}` : MARKET_COPY.final.antibodyStepFallback;
+  }
+  return stepId;
+}

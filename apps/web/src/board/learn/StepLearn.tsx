@@ -60,7 +60,7 @@ export function StepLearn({ board: _board, stepId }: { board: BoardResponse; ste
       <NoteEval stepId={stepId} state={data.note} onState={(note) => live.setData((prev) => prev && { ...prev, note })} reload={live.reload} />
       <div className="panel">
         <h3 className="ln-h">
-          {C.itemsTitle} <small>{C.itemsSub}</small>
+          {C.itemsTitle}
         </h3>
         <div className="ln-cap">
           <span>{C.capLeft(formatCrista(data.capUsedCrista), formatCrista(data.capCrista))}</span>
@@ -135,11 +135,6 @@ function EvalCard({ e }: { e: LearnNoteEvalView }) {
           <>
             <span className="ln-score">{C.score(e.score ?? 0)}</span>
             <span className="ln-paid">{C.paid(formatCrista(e.crista))}</span>
-            <span className="abadge ai">
-              <i aria-hidden="true">✦</i>
-              {C.aiGraded}
-            </span>
-            {e.overridden && <span className="chip">{C.overridden}</span>}
           </>
         )}
         <span className="mini muted">
@@ -333,13 +328,6 @@ function Attempt({ a }: { a: LearnAttemptView }) {
             {a.correct !== undefined && <span className={a.correct ? 'ln-ok' : 'ln-no'}>{a.correct ? `○ ${C.correct}` : `× ${C.wrong}`}</span>}
             <span className="ln-score">{C.score(a.score ?? 0)}</span>
             <span className="ln-paid">{C.paid(formatCrista(a.crista))}</span>
-            {a.rubric && (
-              <span className="abadge ai">
-                <i aria-hidden="true">✦</i>
-                {C.aiGraded}
-              </span>
-            )}
-            {a.overridden && <span className="chip">{C.overridden}</span>}
           </>
         )}
       </div>

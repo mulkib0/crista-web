@@ -1,6 +1,6 @@
 /**
- * 공개 서랍(설계 §5.3 '누르기') — 주가 · 등락 · 투자의견 · 추세선 · 시가총액 순위 · 프로그램 코드 · 표적 · 질환 · 단계 진행 칸 ·
- * 기록(특허 · 통과 · 보류 · 허가 수) · 최근 공개 소식 8건 · 공개 범위 안내. 다른 모둠이 보는 것과 같은 정보(우리 모둠도).
+ * 공개 서랍(설계 §5.3 '누르기') — 주가 · 등락 · 투자의견 · 추세선 · 기업가치 순위 · 프로그램 코드 · 표적 · 질환 · 단계 진행 칸 ·
+ * 기록(특허 · 통과 · 보류 · 허가 수) · 최근 공개 소식 8건(공개 범위 안내 글은 2026-10-24 사용자 지시로 뺐다). 다른 모둠이 보는 것과 같은 정보(우리 모둠도).
  * 그 모둠의 새 소식이 오면 다시 읽는다. Esc · 바깥 누르기로 닫는다.
  */
 import { useEffect, useRef } from 'react';
@@ -104,7 +104,7 @@ export function MarketDrawer({ classId }: { classId?: string }) {
                 <ul className="mk-news">
                   {d.recent.map((e) => (
                     <li key={e.id} className={e.tone === 'bad' || (e.changePct ?? 0) < 0 ? 'bad' : e.tone === 'rank' ? 'rank' : ''}>
-                      <span>{e.headline}{e.aiHeadline && <sup className="mk-ai" title={MARKET_COPY.board.aiTitle} aria-label={MARKET_COPY.board.aiLabel}>{MARKET_COPY.board.aiTag}</sup>}</span>
+                      <span>{e.headline}</span>
                       {e.changePct !== null && e.changePct !== 0 && <b className="mono">{formatPct(e.changePct)}</b>}
                     </li>
                   ))}
@@ -112,7 +112,6 @@ export function MarketDrawer({ classId }: { classId?: string }) {
               )}
             </section>
 
-            <p className="mk-scope">{C.scope}</p>
             {board?.final && <button type="button" className="btn sm" onClick={() => openFinal(true)}>{C.openFinal}</button>}
           </>
         )}

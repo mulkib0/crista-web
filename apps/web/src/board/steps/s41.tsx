@@ -27,7 +27,7 @@ import {
   type TrialView,
 } from '@crista-web/web-contract';
 import { api, message } from '../../api.ts';
-import { Confirm, HBars, Panel, PreShakeBadge, useLive, useLocalTab } from '../ui/index.ts';
+import { Confirm, HBars, Panel, useLive, useLocalTab } from '../ui/index.ts';
 import { NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
 import {
   AeStacked,
@@ -82,7 +82,7 @@ export function Step41(props: StepProps) {
   ];
 
   if (!data) {
-    return <StepLayout board={board} step={step} question={K.question} doneWhen={K.doneWhen} team={<p className="hint" role={live.error ? 'alert' : 'status'}>{live.error ? live.error.message : U.loading}</p>} />;
+    return <StepLayout board={board} step={step} team={<p className="hint" role={live.error ? 'alert' : 'status'}>{live.error ? live.error.message : U.loading}</p>} />;
   }
 
   if (!data.enabled && data.trials.length === 0) {
@@ -90,12 +90,9 @@ export function Step41(props: StepProps) {
       <StepLayout
         board={board}
         step={step}
-        question={K.question}
-        doneWhen={K.doneWhen}
-        mineTitle={U.lockedMineTitle}
         mine={
           <div className="s41">
-            <Panel title={U.lockedTitle} tone="warn"><p className="mini" style={{ margin: 0 }}>{K.locked} {K.oneLine}</p></Panel>
+            <Panel title={U.lockedTitle} tone="warn"><p className="mini" style={{ margin: 0 }}>{K.locked}</p></Panel>
             <Panel title={U.lockedPatients} plain><PatientIcons oncology={false} /></Panel>
           </div>
         }
@@ -118,9 +115,6 @@ function Step41Body({ board, step, goStep, data, view, tabs, setTab, reload }: S
     <StepLayout
       board={board}
       step={step}
-      question={K.question}
-      doneWhen={K.doneWhen}
-      headExtra={<span className="abadge ai" title={K.aiNotice}><i aria-hidden="true">✦</i>{K.aiBadge}</span>}
       tabs={tabs}
       tab={view}
       onTab={(id) => setTab(id as Tab)}
@@ -152,7 +146,7 @@ function ProtocolTools({ data }: { data: ClinicalResponse }) {
   const onc = data.candidate?.profile.oncology ?? false;
   return (
     <>
-      <Panel title={K.viz.hurdle.title} sub={<PreShakeBadge />} plain>
+      <Panel title={K.viz.hurdle.title} plain>
         <HurdleLadder ladder={data.ladder} />
         <p className="mini muted">{K.viz.hurdle.read}</p>
       </Panel>
@@ -170,7 +164,6 @@ function ProtocolTools({ data }: { data: ClinicalResponse }) {
       </Panel>
       <Panel title={K.viz.patients.title} plain>
         <PatientIcons oncology={onc} />
-        <p className="mini muted">{K.viz.patients.gameNote}</p>
       </Panel>
     </>
   );
@@ -222,7 +215,6 @@ function ProtocolTeam({ data, reload }: { data: ClinicalResponse; reload: () => 
             <p className="mini muted">
               {f(K.protocol.sampleSize, { target: proto.targetN, min: proto.minN, primaryWeek: proto.primaryWeek })} · {f(K.protocol.costDuration, { phase: PHASE_LABEL[proto.phase], cost: c(proto.costCrista), days: proto.gameDays })}
             </p>
-            <p className="mini muted">{K.protocol.scaleNote}</p>
           </>
         )}
       </Panel>
@@ -359,7 +351,6 @@ function StartTeam({ data, reload }: { data: ClinicalResponse; reload: () => voi
             <button className="btn pri" type="button" disabled={!!block || act.busy} onClick={() => setAsk(true)}>{U.startBtn} <span className="cost">{c(cost)}</span></button>
             {block && <span className="note">✕ {block}</span>}
           </div>
-          <p className="mini muted">{K.simTiming}</p>
           {act.error && <p className="err">{act.error}</p>}
         </Panel>
         <Confirm
@@ -372,7 +363,6 @@ function StartTeam({ data, reload }: { data: ClinicalResponse; reload: () => voi
           onConfirm={() => act.run(async () => { await api.post(CLINICAL_API.start(t.id)); setAsk(false); reload(); })}
         >
           <p>{f(K.startConfirm, { n: t.recruit.enrolled, phase, cost: c(cost), days: PHASE_RULES[t.phase].gameDays })}</p>
-          <p className="mini muted">{K.aiNotice}</p>
         </Confirm>
       </>
     );
@@ -385,7 +375,6 @@ function StartTeam({ data, reload }: { data: ClinicalResponse; reload: () => voi
         <ul className="s41-monitor" aria-label={U.monitorLabel}>
           {t.monitoring.map((m) => <li key={m}>◇ {m}</li>)}
         </ul>
-        <p className="mini muted">{K.simTiming} {K.aiNotice}</p>
       </Panel>
       <Panel title={K.viz.gantt.title} plain><TrialGantt trials={data.trials} gameDay={data.gameDay} /></Panel>
     </>
@@ -456,7 +445,7 @@ function ResultTeam({ data, pick }: { data: ClinicalResponse; pick: ResultPick }
           ))}
         </div>
       )}
-      <Panel title={`${trial.verdict === 'pass' ? '✓' : '✕'} ${f(trial.verdict === 'pass' ? K.verdictPass : K.verdictHeld, { phase: PHASE_LABEL[trial.phase] })}${trial.holdKind ? ` — ${K.holdKind[trial.holdKind]}` : ''}`} tone={trial.verdict === 'pass' ? 'good' : 'bad'} sub={trial.resultSource === 'teacher' ? K.teacherMade : trial.resultSource === 'rule' ? K.ruleMade : <span className="abadge ai" title={K.aiNotice}><i aria-hidden="true">✦</i>{K.aiBadge}{trial.resultModel ? <small> · {trial.resultModel}</small> : null}</span>}>
+      <Panel title={`${trial.verdict === 'pass' ? '✓' : '✕'} ${f(trial.verdict === 'pass' ? K.verdictPass : K.verdictHeld, { phase: PHASE_LABEL[trial.phase] })}${trial.holdKind ? ` — ${K.holdKind[trial.holdKind]}` : ''}`} tone={trial.verdict === 'pass' ? 'good' : 'bad'}>
         <p className="mini" style={{ marginTop: 0 }}>
           {trial.holdKind ? `${K.holdWhy[trial.holdKind]} ${K.verdictHeldNext}` : next ? f(K.verdictPassNext, { next: PHASE_LABEL[next] }) : K.done}
         </p>
@@ -474,9 +463,8 @@ function ResultTeam({ data, pick }: { data: ClinicalResponse; pick: ResultPick }
           </table>
         </div>
         <p className="mini muted">{K.read.demographics}</p>
-        <p className="s41-analysis"><b>{trial.resultSource === 'llm' ? U.aiAnalysis : U.teacherAnalysis} · </b>{r.analysis}</p>
-        <p className="mini"><b>{trial.resultSource === 'llm' ? U.aiRec : U.teacherRec} · </b>{r.recommendation}</p>
-        <p className="mini muted">{trial.resultSource === 'teacher' ? K.teacherNote : trial.resultSource === 'rule' ? K.ruleNote : `${K.aiNotice} ${K.verdictNote}`}</p>
+        <p className="s41-analysis"><b>{U.analysis} · </b>{r.analysis}</p>
+        <p className="mini"><b>{U.rec} · </b>{r.recommendation}</p>
       </Panel>
       <Panel title={U.consortTitle} plain><ConsortFlow result={r} arms={arms} /><p className="mini muted">{K.read.consort}</p></Panel>
       <Panel title={U.primaryTitle} plain>
@@ -573,7 +561,7 @@ function RetryTeam({ data, reload }: { data: ClinicalResponse; reload: () => voi
                 </tbody>
               </table>
             </div>
-            <p className="mini muted">{K.resetsToPhase1} <PreShakeBadge /></p>
+            <p className="mini muted">{K.resetsToPhase1}</p>
             <button className="btn" type="button" disabled={!choice || act.busy} onClick={() => choice && run({ route: 'amend', form: choice.form, doseMg: choice.doseMg })}>{U.amendGo}</button>
           </fieldset>
         )}

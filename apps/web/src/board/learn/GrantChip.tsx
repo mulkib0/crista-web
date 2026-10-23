@@ -78,7 +78,6 @@ function LearnDrawer({ data, onClose }: { data: LearnSummaryResponse | null; onC
             ✕
           </button>
           <h2 id={`${id}-h`}>{C.drawerTitle}</h2>
-          <p className="mini muted">{C.drawerLede}</p>
           {!data || !a ? (
             <p className="hint">{C.loading}</p>
           ) : (

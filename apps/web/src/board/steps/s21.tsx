@@ -27,7 +27,7 @@ import {
 } from '@crista-web/web-contract';
 import { api, message, newRequestId } from '../../api.ts';
 import { money } from '../../ink.ts';
-import { By, JobState, SourceChip } from '../parts.tsx';
+import { By, JobState } from '../parts.tsx';
 import { Confirm, Panel, ReasonChips, useBenchState, useLive, useLocalTab } from '../ui/index.ts';
 import { currentTarget, jobsOf, Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
 import './s21.css';
@@ -439,7 +439,6 @@ export function Step21(props: StepProps) {
         <div className="fld">
           <label className="lab" htmlFor="smi">SMILES</label>
           <textarea id="smi" ref={smilesRef} className="txt mono" rows={3} value={bench.smiles} maxLength={200} onChange={(e) => (setBench((b) => ({ ...b, smiles: e.target.value })), setPreview(null))} placeholder="예: COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2" />
-          <p className="hint">{C.s21.edit.smilesGuide}</p>
           <div className="chips sel-edit-chips" role="list" aria-label={C.s21.edit.chipsHead}>
             <span className="mini muted">{C.s21.edit.chipsHead}</span>
             {C.s21.edit.chips.map((t) => <span key={t} role="listitem" className="chip">{t}</span>)}
@@ -464,7 +463,6 @@ export function Step21(props: StepProps) {
             reload();
           })}>{C.s21.ui.dockButton} <span className="cost">{money(board.costs['2.1'])}</span></button>
         </div>
-        <p className="hint">{C.s21.edit.preview} {C.s21.edit.previewLimit}{bench.parentJobId ? ` ${C.s21.edit.redockCost(money(board.costs['2.1']))}` : ''}</p>
         {propErr && <p className="err" style={{ marginTop: 10 }}>{propErr}</p>}
         {act.error && <p className="err" style={{ marginTop: 10 }}>{act.error}</p>}
         {preview && (
@@ -499,7 +497,7 @@ export function Step21(props: StepProps) {
       mine={
         <div className="s21">
           {tab === 'gauge' && hasResults ? readTool((s) => <Gauge sel={s} board={board} />, C.s21.gaugeQ)
-            : tab === 'cards' && hasResults ? readTool((s) => <><Cards sel={s} onPick={pickFromCard} /><p className="mini muted">{C.s21.cardsNote}</p></>, C.s21.cardsQ)
+            : tab === 'cards' && hasResults ? readTool((s) => <Cards sel={s} onPick={pickFromCard} />, C.s21.cardsQ)
               : tab === 'stairs' && hasResults ? readTool((s) => <Stairs sel={s} focus={stairFocus} setFocus={setStairFocus} />, C.s21.stairsQ)
                 : editPanel}
         </div>
@@ -509,7 +507,6 @@ export function Step21(props: StepProps) {
         <div className="s21">
           {sel && <Retro sel={sel} />}
           <Panel title={C.s21.ui.tableTitle(target ? `${target.gene} (PDB ${target.pdbId})` : null)} sub={C.s21.ui.tableSub}>
-            <p className="mini muted">{C.s21.edit.compare}</p>
             <div className="tbl-w"><table>
               <thead><tr><th>{CO.who}</th><th>{CO.mol}</th><th className="num">{CO.dg}</th><th className="num">{CO.vsRef}</th><th>{CO.residues}</th><th>{CO.state}</th><th /></tr></thead>
               <tbody>
@@ -533,7 +530,7 @@ export function Step21(props: StepProps) {
                       <td className="num">{j.affinityKcal != null ? j.affinityKcal.toFixed(2) : '—'}</td>
                       <td className="num">{j.affinityKcal != null && target ? `${Math.round((j.affinityKcal / target.referenceKcal) * 100)}%` : '—'}</td>
                       <td className="mini">{j.status === 'succeeded' ? residues(j) : ''}</td>
-                      <td><JobState job={j} /> {j.status === 'succeeded' && <SourceChip source={j.source} />}</td>
+                      <td><JobState job={j} /></td>
                       <td>{j.status === 'succeeded' && j.smiles && <button className="btn sm" type="button" onClick={() => load(j.smiles!, `${(j.label ?? C.s21.ui.variant).slice(0, 30)}′`, j.id)}>{C.s21.ui.redock}</button>}</td>
                     </tr>
                   );

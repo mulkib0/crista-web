@@ -36,6 +36,6 @@ describe('학생용 문구 — 화폐 하나(크리스타)', () => {
     assert.match(codeProblemText('no_dash', { ticker: 'SEUM' }), /SEUM-101/);
     assert.match(codeProblemText('taken', { ticker: 'SEUM', code: 'SEUM-102' }), /\(SEUM-102\)/);
     assert.equal(fillPatentCopy('{gene} · {disease}', { gene: 'ACHE' }), 'ACHE · {disease}');
-    assert.match(PATENT_COPY.limit.why[4]!, /750,000 크리스타.*10,000,000 크리스타의 7\.5%/);
+    assert.match(PATENT_COPY.abandonConfirm('SEUM-101', formatCrista(250_000)), /SEUM-101 .*출원료 250,000 크리스타는/);
   });
 });

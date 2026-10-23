@@ -17,6 +17,7 @@ import {
   formatPrice,
   formatPct,
   isBoardEventKind,
+  processStepLabel,
   jitteredPct,
   processChangePct,
   processScoreOf,
@@ -120,11 +121,17 @@ describe('표기', () => {
   test('규칙 문구 — 등기 · 도킹 신기록 · 과정 평가 140자 안', () => {
     assert.equal(MARKET_COPY.listing('SEUM', '세움제약'), '◆ SEUM 「세움제약」 설립 등기 완료 — 상장가 50.00 크리스타');
     assert.equal(MARKET_COPY.docking('SEUM', 'ACHE', -12.44), '◆ SEUM ACHE 도킹 결합력 학급 신기록 — −12.4 kcal/mol');
-    assert.equal(MARKET_COPY.rankLeader('SEUM'), '◆ SEUM 시가총액 1위 탈환');
+    assert.equal(MARKET_COPY.rankLeader('SEUM'), '◆ SEUM 기업가치 1위 탈환');
     assert.equal(formatPrice(10, { unit: false }), '50.00');
-    const line = MARKET_COPY.process.headline('SEUM', '1.2', '화합물 스크리닝', ['기준 투표 4/4명', '연구 노트 3/3칸']);
+    const line = MARKET_COPY.process.headline('SEUM', processStepLabel('1.2'), ['기준 투표 4/4명', '연구 노트 3/3칸']);
     assert.ok([...line].length <= 140);
-    assert.ok(line.startsWith('◆ SEUM 1.2'));
+    assert.ok(line.startsWith('◆ SEUM 1.2 화합물 스크리닝 과정 평가'));
+  });
+
+  test('과정 평가 단계 이름 — 항체 트랙은 등록표 제목, 없으면 영문 식별자 없이', () => {
+    assert.equal(processStepLabel('4.2'), '4.2 최종 허가');
+    assert.equal(processStepLabel('antibody_zz'), '항체 단계');
+    assert.ok(!/antibody_/.test(processStepLabel('antibody_a5')));
   });
 });
 

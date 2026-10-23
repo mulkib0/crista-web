@@ -1,7 +1,7 @@
 /**
  * 3.3 제형 · IND 신청 규격(설계 §5.10 · §5.11 · §7.3 ind_applications · §7.4 ⑬) — 기능 F33.
  *
- * - '이 단계에서 하는 일' 뼈대 · 도구 6종(6.02~6.07) 안내 · 신청서 칸 ①~⑦ · 규칙 검사 · 심사 체크리스트 · 화면 모양 · 경로(`IND_API`).
+ * - 도구 6종(6.02~6.07) 안내 · 신청서 칸 ①~⑦ · 규칙 검사 · 심사 체크리스트 · 화면 모양 · 경로(`IND_API`).
  * - 학생에게 보이는 글은 모두 `IND_COPY` 한곳에 둔다(해요체 초안 — §5.12 Gemini 4 Argon (High) 가 한꺼번에 다듬는다).
  *   식별자 · 숫자 · 규칙 값은 그 밖에 둔다. 글 안의 `{mrsd}` 같은 자리표시자는 서버 · 화면이 채운다.
  * - E · S 는 서버가 game-rules `scoreCandidate`(같은 함수)로 9조합 × (뇌 병변 환자군이면 2벌)을 계산해 내려보낸다 —
@@ -14,7 +14,7 @@ import { TRIAL_OPTIONS } from '@crista/shared-types';
 import type { AnimalStudyResult, PreclinicalFinding } from './preclinical.ts';
 import { HUMAN_WEIGHT_KG, SAFETY_FACTOR, SPECIES_HED_DIVISOR } from './preclinical.ts';
 import type { DocReviewView, DocSectionView, RuleFinding } from './review.ts';
-import { cristaToCents, formatCrista } from './money.ts';
+import { cristaToCents } from './money.ts';
 
 export type IndForm = 'oral' | 'iv' | 'transdermal';
 export const IND_FORMS: readonly IndForm[] = ['oral', 'iv', 'transdermal'];
@@ -445,25 +445,6 @@ export const fillIndCopy = fill;
 // ── 학생에게 보이는 글(§5.12 — Gemini 4 Argon (High) 초안 `.review/2026-10-24-copy-3.3/copy.md` 를 반영). 규칙 값은 상수 · 서버 값(`{ind}` 등)으로 끼워 넣는다 ──
 
 export const IND_COPY = {
-  overview: {
-    title: '이 단계에서 하는 일',
-    oneLine: '사람에게 처음으로 우리 약을 써 봐도 되는지, 나라(식약처 · FDA)에 허락을 받는 IND(임상시험 계획 승인 신청) 서류를 내요.',
-    summary: [
-      '정할 것은 세 가지예요. 제형(약을 몸에 넣는 모양), 용량(넣는 양), 그리고 환자군과 1차 평가지표(시험 결과를 판단하는 가장 중요한 잣대)예요.',
-      '가장 중요한 근거는 3.2 동물실험에서 구한 MRSD(최대 권장 시작 용량, 사람에게 처음 줘도 되는 가장 큰 양)예요.',
-      `신청서를 내면 규칙 검사와 AI 심사관(Claude)이 차례로 봐요. 서류가 통과하면 수수료 ${formatCrista(IND_FEE_CRISTA)}를 내고, ${IND_REVIEW_GAME_DAYS}게임 일 뒤에 판정을 받아요.`,
-    ],
-    more: [
-      { k: '한 문장', v: '우리 스타트업이 만든 후보 물질을 사람에게 처음 써 봐도 되는지 나라에 허락을 구하는 단계예요.' },
-      { k: '정할 것 세 가지', v: '① 어떤 모양으로 넣을지 제형(먹는 알약 · 정맥 주사 · 붙이는 패치)을 골라요. ② 얼마나 넣을지 용량(10 · 50 · 100 mg)을 정해요. ③ 누구에게 시험하고 무엇을 잴지 환자군과 1차 평가지표를 골라요.' },
-      { k: '근거 하나', v: '근거는 3.2 동물실험 결과예요. 동물에게서 부작용이 없던 양을 사람 기준으로 바꾸고, 안전하게 더 줄인 값이 MRSD 예요. 시작 용량은 MRSD 를 넘을 수 없어요.' },
-      { k: '비유', v: '새 놀이기구에 사람을 처음 태우기 전에 안전 점검 결과를 내는 것과 비슷해요. 누구를 태우고 어떤 속도로 운행할지 계획도 함께 내서 허락을 받아요.' },
-      { k: '저울', v: '용량을 올리면 효능 E 는 올라가지만 안전 S 는 내려가요. 두 가지를 함께 좋게 만드는 용량은 없어요.' },
-      { k: '흔한 오해', v: 'IND 승인은 약을 팔아도 된다는 허가가 아니에요. 사람에게 시험을 시작해도 된다는 허락일 뿐이에요. 다음 관문인 1상의 안전 기준은 더 높아요.' },
-    ],
-    expand: '자세히 펼쳐 보기',
-    collapse: '접기',
-  },
   forms: {
     oral: { label: '먹는 알약(경구)', short: '경구', mark: '●' },
     iv: { label: '정맥 주사(핏줄에 바로 넣기)', short: '정맥', mark: '■' },
@@ -472,10 +453,9 @@ export const IND_COPY = {
   roles: { lead: '주력', backup: '백업' } as Record<'lead' | 'backup', string>,
   levels: { good: '좋음', moderate: '보통', poor: '나쁨', high: '높음', low: '낮음', suitable: '적합', unsuitable: '부적합' } as Record<string, string>,
   gates: { ind: 'IND', phase1: '1상(참고)', phase2: '2상(참고)', phase3: '3상(참고)' } as Record<'ind' | 'phase1' | 'phase2' | 'phase3', string>,
-  preShake: '도구의 E · S 숫자는 모두 흔들림 전 예상치(교육용으로 단순하게 만든 공식의 값)예요. IND 판정에는 흔들림이 없어요. 임상 단계의 결과는 이 예상과 달라질 수 있어요.',
   /**
    * 도구 6종 — `howTo`(읽는 법) · `question` 의 `{ind}` `{p1}` `{p2e}` `{p3e}` `{p3s}`(기준선) · `{kOral}` `{kIv}` `{kTd}`(피크 K) ·
-   * `{base}` `{w}`(효능 결합력 항)는 화면이 서버 규칙 값(`IndRulesView`)으로 채운다. `lesson` = 배울 점(시안 6.02~6.07).
+   * `{base}` `{w}`(효능 결합력 항)는 화면이 서버 규칙 값(`IndRulesView`)으로 채운다. 시안 6.02~6.07 의 '배울 점'은 2026-10-24 사용자 지시(설명 덩어리 삭제)로 뺐다.
    */
   tools: {
     lab: {
@@ -484,7 +464,6 @@ export const IND_COPY = {
       question: '제형 · 용량 · 후보 · 환자군 손잡이를 바꾸면 효능 E 와 안전 S 예상치가 어떻게 달라질까요?',
       howTo: '손잡이 네 개를 움직여 보세요. E · S 게이지와 관문 신호(IND S ≥ {ind} · 1상 S ≥ {p1} · 2상 E ≥ {p2e} · 3상 E ≥ {p3e} 그리고 S ≥ {p3s})가 바로 바뀌어요. 1상부터는 참고용 신호예요. 그 제형의 MRSD 선도 함께 보여요.',
       fills: '③ 제형 · ⑤ 시작 용량 초안',
-      lesson: '손잡이 네 개의 힘은 서로 달라요. 용량과 분자의 위험 신호가 안전 S 를 크게 흔들어요. 분자의 위험 신호는 hERG 위험(심장 박동을 조절하는 통로를 막아 심장 리듬을 흐트러뜨릴 위험)과 간 위험이에요.',
     },
     seesaw: {
       tab: '효능 · 안전 시소',
@@ -492,7 +471,6 @@ export const IND_COPY = {
       question: '용량과 제형을 바꾸면 효능 E 와 안전 S 중에서 무엇을 얻고 무엇을 잃을까요?',
       howTo: '왼쪽 접시는 효능 E, 오른쪽 접시는 안전 S 예요. 용량(10 · 50 · 100 mg)과 제형 단추를 눌러 시소가 어느 쪽으로 기우는지 비교해 보세요.',
       fills: '⑤ 용량 근거',
-      lesson: '용량은 효능 E 와 안전 S 를 함께 좋게 만들 수 없는 저울이에요. 용량을 올리면 E 는 오르고 S 는 내려가요.',
     },
     peak: {
       tab: '피크 곡선',
@@ -500,7 +478,6 @@ export const IND_COPY = {
       question: '같은 용량이라도 제형에 따라 몸이 한꺼번에 받는 부담의 꼭대기(피크)가 어떻게 다를까요?',
       howTo: '꼭대기 높이는 용량 부담 Dt 에 제형의 피크 K 를 곱한 값이에요. 피크 K 는 경구 ×{kOral} · 정맥 ×{kIv} · 경피 ×{kTd} 예요. 꼭대기가 IND 한계선 아래에 있는지 확인해 보세요.',
       fills: '③ 제형 근거',
-      lesson: '정맥 주사는 약이 한꺼번에 들어가서 꼭대기가 높아요. 경피 패치는 천천히 스며들어 꼭대기가 낮아요. 같은 용량이라도 꼭대기가 한계선을 넘으면 S 가 IND 기준보다 낮아져요.',
     },
     dose: {
       tab: '용량-반응 3장',
@@ -508,7 +485,6 @@ export const IND_COPY = {
       question: '경구 · 정맥 · 경피 세 제형에서 효능 E 선과 안전 S 선은 어디서 엇갈릴까요?',
       howTo: '가로는 용량(mg), 세로는 점수(0~100)예요. 세로 점선은 그 제형의 MRSD 예요. 점선 왼쪽에서 E 와 S 가 함께 높은 곳을 찾아보세요.',
       fills: '③ · ⑤ 비교 근거',
-      lesson: '어느 제형이든 용량이 커지면 E 선은 오르고 S 선은 내려가요. 제형을 바꾸면 두 선의 높이가 달라져서, 둘이 엇갈리는 자리가 옮겨 가요.',
     },
     plane: {
       tab: 'E–S 평면',
@@ -516,20 +492,17 @@ export const IND_COPY = {
       question: '9가지 조합(제형 3 × 용량 3) 가운데 IND 기준선(S {ind})보다 오른쪽에 있는 점은 무엇일까요?',
       howTo: '가로는 안전 S, 세로는 효능 E 예요. 점 모양은 제형이에요(● 경구 · ■ 정맥 · ▲ 경피). 1상부터의 기준선은 참고용이에요(임상 설계는 4.1 에서 해요). 점을 누르면 그 조합을 고를 수 있어요.',
       fills: '고른 제형 · 용량',
-      lesson: '용량을 10 → 50 → 100 mg 으로 올리면 점은 늘 왼쪽 위로 움직여요. 효능 E 를 얻는 대신 안전 S 를 잃기 때문이에요.',
     },
     waterfall: {
       tab: '공식 폭포',
       sub: '⑥ 위험 · 감시',
       question: '우리가 고른 조합의 E 와 S 는 100점에서 출발해 어떤 재료 때문에 깎였을까요?',
-      howTo: "효능 E 는 100점에 결합력 점수({base} + {w} × p) · 흡수 A · 뇌 노출 B · 용량 효능 De 를 차례로 곱해서 깎여요. 안전 S 는 100점에서 '용량 부담 Dt × 위험 배율(1 + hERG + 간) × 피크 K'를 빼서 깎여요. 이 공식은 교육용으로 단순하게 만든 것이에요.",
+      howTo: "효능 E 는 100점에 결합력 점수({base} + {w} × p) · 흡수 A · 뇌 노출 B · 용량 효능 De 를 차례로 곱해서 깎여요. 안전 S 는 100점에서 '용량 부담 Dt × 위험 배율(1 + hERG + 간) × 피크 K'를 빼서 깎여요.",
       fills: '⑥ 예상 위험 · 감시 계획',
-      lesson: '안전 S 의 빨간 칸은 모두 용량 부담 Dt 에 곱해져서 생겨요. 그래서 용량을 줄이면 빨간 칸이 한꺼번에 줄어들어요.',
     },
-  } as Record<'lab' | 'seesaw' | 'peak' | 'dose' | 'plane' | 'waterfall', { tab: string; sub: string; question: string; howTo: string; fills: string; lesson: string }>,
+  } as Record<'lab' | 'seesaw' | 'peak' | 'dose' | 'plane' | 'waterfall', { tab: string; sub: string; question: string; howTo: string; fills: string }>,
   toolNotes: {
     fills: '채워지는 신청서 칸 · {what}',
-    lessonTitle: '배울 점',
     knobForm: '제형',
     knobDose: '용량',
     knobCandidate: '후보',
@@ -538,7 +511,6 @@ export const IND_COPY = {
     mrsdOk: '{dose} mg 은 MRSD {mrsd} mg 이하예요. 1상 시작 용량으로 쓸 수 있어요.',
     mrsdOver: '{dose} mg 은 MRSD {mrsd} mg 을 넘어요. 이대로 내면 규칙 검사에서 보완 요구를 받아요.',
     mrsdNone: '동물실험 결과가 없어서 MRSD 를 아직 몰라요.',
-    peakConcept: '곡선 모양은 이해를 돕는 개념 그림이에요. 실제로 잰 약물 농도 곡선이 아니에요. 꼭대기 높이(Dt × K)만 게임 규칙 값이에요.',
     peakLimit: 'IND 한계 {v} = (100 − {min}) ÷ 위험 배율 {rk}',
     peakMrsd: '{form} MRSD {mrsd} mg 의 부담',
     peakTop: '꼭대기 {pk} = Dt {dt} × K {k}',
@@ -700,34 +672,33 @@ export const IND_COPY = {
     version: '판 {n}',
     loading: '불러오는 중…',
     rulesTitle: '규칙 검사 미리 보기',
-    rulesHint: '[서류 심사 받기]를 누르면 규칙 검사를 먼저 해요. 하나라도 걸리면 AI 심사 없이 바로 보완으로 돌아와요. 이때는 돈도 횟수도 들지 않아요.',
+    rulesHint: '[서류 심사 받기]를 누르면 규칙 검사를 먼저 해요. 하나라도 걸리면 바로 보완으로 돌아와요.',
     reviewBtn: '서류 심사 받기(무료)',
-    reviewLimit: 'AI 심사는 신청서 1건당 하루 {n}번, 모둠 전체로 하루 {teamN}번까지 받을 수 있어요. 규칙 검사에서 걸리거나 내용이 바뀌지 않아 앞 심사 결과를 그대로 돌려줄 때는 횟수에 세지 않아요.',
     reviewPending: 'AI 심사관이 신청서를 읽고 있어요. 읽은 뒤 판정을 정리하는 기간을 거쳐 결과가 나와요. 그동안 다른 칸이나 단계를 계속 써도 돼요.',
     reviewRetrying: "AI 심사가 잠시 늦어지고 있어요. '심사 대기'로 두고 다시 시도할게요. 그동안에도 신청서를 고칠 수 있어요.",
     reviewStale: '심사받은 뒤 신청서가 바뀌었어요(심사 판 {a} · 지금 판 {b}). 지금 판으로 다시 심사를 통과해야 접수할 수 있어요.',
     verdict: { pending: '심사 중', pass: '서류 통과', revise: '보완 요구', reject: '거절' } as Record<string, string>,
-    itemHeader: 'AI 심사관의 칸별 지적',
+    itemHeader: '심사관의 칸별 지적',
     itemStatus: { ok: '문제 없어요', missing: '빠졌어요', inconsistent: '앞뒤가 안 맞아요', unclear: '분명하지 않아요' } as Record<string, string>,
-    feedbackHeader: 'AI 심사관의 종합 피드백',
-    reviseHint: '지적받은 칸을 고쳐서 다시 심사받으면 돼요. 보완 요구에는 연구비가 들지 않고, 다시 받는 심사도 무료예요.',
+    feedbackHeader: '심사관의 종합 피드백',
+    reviseHint: '지적받은 칸을 고쳐서 다시 심사받으면 돼요.',
     teacherNote: '선생님 메모',
-    passedNotice: '규칙 검사와 AI 심사를 모두 통과했어요. 이제 수수료를 내고 IND 를 접수할 수 있어요.',
+    passedNotice: '서류 심사를 통과했어요. 이제 수수료를 내고 IND 를 접수할 수 있어요.',
     submitBtn: '접수하기 — 수수료 {fee}',
     submitConfirm: '접수하면 모둠 연구비에서 {fee}가 빠져요. {days}게임 일 뒤에 판정이 나요. 접수한 뒤에는 신청서를 고칠 수 없어요.',
     waiting: '{from} 접수 → {to} 판정 · {pct}%',
     waitingLabel: 'IND 판정까지',
     approvedTitle: 'IND 승인서(임상시험 계획 승인서)',
     stamp: '승인',
-    approvedNote: 'IND 승인은 약을 팔아도 된다는 허가가 아니에요. 사람에게 첫 시험(1상)을 시작해도 된다는 허락이에요. 이 승인서의 제형 · 용량 · 환자군 · 1차 평가지표가 4.1 임상으로 넘어가요.',
+    approvedNote: '이 승인서의 제형 · 용량 · 환자군 · 1차 평가지표가 4.1 임상으로 넘어가요.',
     heldNote: '보류됐어요. 선생님과 이유를 확인한 뒤 새 신청서를 쓸 수 있어요.',
     noFunds: '모둠 연구비가 모자라서 접수할 수 없어요.',
     planCandidateGone: '(지금은 주력 · 백업이 아니에요)',
-    approvalRows: { candidate: '후보 물질', form: '제형', dose: '시작 용량', phase1Endpoint: '1상 1차 평가지표', population: '다음 상의 환자군', endpoint: '다음 상의 1차 평가지표', score: '예상 점수(흔들림 없음)', day: '승인일' },
-    phase1Gap: '흔들림 전 예상치로 보면 1상 참고 기준(S ≥ {p1})까지 {gap} 모자라요. 4.1 임상은 이 승인서의 용량으로 시작해요. 1상이 보류되면 다시 도전할 때 용량이나 제형을 바꿀 수 있어요.',
-    phase1Ok: '흔들림 전 예상치로는 1상 참고 기준(S ≥ {p1})도 넘는 조합이에요. 실제 1상 결과는 예상과 달라질 수 있어요.',
+    approvalRows: { candidate: '후보 물질', form: '제형', dose: '시작 용량', phase1Endpoint: '1상 1차 평가지표', population: '다음 상의 환자군', endpoint: '다음 상의 1차 평가지표', score: '예상 점수', day: '승인일' },
+    phase1Gap: '1상 참고 기준(S ≥ {p1})까지 {gap} 모자라요. 4.1 임상은 이 승인서의 용량으로 시작해요. 1상이 보류되면 다시 도전할 때 용량이나 제형을 바꿀 수 있어요.',
+    phase1Ok: '1상 참고 기준(S ≥ {p1})도 넘는 조합이에요.',
     locked: '접수한 신청서는 고칠 수 없어요.',
-    lockedStep: '3.2 에서 주력을 정하고 동물실험을 끝내면 신청서를 쓸 수 있어요. 도구와 연구 노트는 미리 볼 수 있어요.',
+    lockedStep: '3.2 에서 주력을 정하고 동물실험을 끝내면 신청서를 쓸 수 있어요.',
     pledgeOn: '체크했어요',
   },
   /** 칸마다 '서버가 채운 값' 줄(설계 §5.10 표). */
@@ -743,7 +714,6 @@ export const IND_COPY = {
   },
   ui: {
     tabsLabel: '3.3 도구',
-    doneWhen: 'IND 승인',
     mineTitle: '내 작업대 — 도구로 조합 시험하기',
     teamTitle: '모둠 공유 — 임상시험 계획 승인 신청서',
   },

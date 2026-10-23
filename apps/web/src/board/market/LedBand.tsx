@@ -2,7 +2,7 @@
  * 전광판 01 — LED 흐르는 띠(설계 §5.3 · 시안 design/pipeline-board-30-variants.html 01). 자리: 위 띠 아래 전체 폭.
  *
  * - 최근 소식 10건(`GET /api/market/board`) — `◆ {티커} {헤드라인} {▲/▼ x.x%}`. 3px 점 가면 Mono 22px, 기본 호박색 · 악재 빨강 · 순위 변동 초록.
- *   색만으로 말하지 않는다: ▲ ▼ 기호 · 'AI' 꼬리표(다듬은 헤드라인) · 화면 낭독기 글.
+ *   색만으로 말하지 않는다: ▲ ▼ 기호 · 화면 낭독기 글. 다듬은 헤드라인의 'AI' 꼬리표는 2026-10-24 사용자 지시로 뺐다.
  * - 40초에 한 바퀴 — 두 벌을 이어 끊김 없이(두 번째 벌은 `inert` · `aria-hidden`). 마우스 · 초점이 가면 멈춤, [멈추기 / 다시 흐르기] · ● LIVE.
  * - 모션 줄이기면 흐르지 않고 가로로 넘기는 목록(styles.css).
  * - 항목을 누르면 그 모둠 공개 서랍. 새 소식은 띠와 따로 `aria-live="polite"` 한 줄.
@@ -23,7 +23,6 @@ export interface LedItem {
   /** 'g' = 순위 변동(초록), 'r' = 악재(빨강), 없으면 호박색. */
   tone?: 'g' | 'r';
   teamId: string | null;
-  ai: boolean;
   pct: string;
 }
 
@@ -35,7 +34,6 @@ export function ledItem(e: BoardEventView): LedItem {
     text: e.headline,
     ...(e.tone === 'rank' ? { tone: 'g' as const } : bad ? { tone: 'r' as const } : {}),
     teamId: e.teamId,
-    ai: e.aiHeadline,
     pct: e.changePct !== null && e.changePct !== 0 ? formatPct(e.changePct) : '',
   };
 }
@@ -68,10 +66,8 @@ export function LedBand({ board, classId, big }: { board?: BoardResponse; classI
                       className={`led-i${n.tone ? ` ${n.tone}` : ''}`}
                       disabled={!n.teamId}
                       onClick={() => n.teamId && openDrawer(n.teamId)}
-                      title={n.ai ? C.aiTitle : undefined}
                     >
                       <span className="led">{n.text}{n.pct ? `  ${n.pct}` : ''}</span>
-                      {n.ai && <sup className="led-ai" aria-label={C.aiLabel}>{C.aiTag}</sup>}
                     </button>
                   ))}
                 </span>

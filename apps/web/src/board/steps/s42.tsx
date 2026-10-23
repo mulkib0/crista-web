@@ -19,7 +19,6 @@ import {
   PACK_SHAPES,
   packFits,
   STEP_IDS,
-  STEP_META,
   type ApprovalResponse,
   type ApprovalSaveResponse,
   type CertificateView,
@@ -34,7 +33,7 @@ import {
   DOC_REVIEW_COPY,
 } from '@crista-web/web-contract';
 import { api, ApiFailure, message } from '../../api.ts';
-import { AiBadge, Confirm, DocSectionEditor, Panel, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
+import { Confirm, DocSectionEditor, Panel, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
 import { NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
 import {
   certExportSvg,
@@ -81,8 +80,6 @@ export function Step42(props: StepProps) {
       <StepLayout
         board={board}
         step={step}
-        question={K.stepQuestion}
-        doneWhen={K.doneWhen}
         mine={
           <p className="hint" role={live.error ? 'alert' : 'status'}>
             {live.error ? message(live.error) : K.ui.loading}{' '}
@@ -111,8 +108,6 @@ export function Step42(props: StepProps) {
       <StepLayout
         board={board}
         step={step}
-        question={K.stepQuestion}
-        doneWhen={K.doneWhen}
         tabs={tabs}
         tab={tab}
         onTab={(id) => setTab(id as Tab)}
@@ -125,8 +120,6 @@ export function Step42(props: StepProps) {
     <StepLayout
       board={board}
       step={step}
-      question={K.stepQuestion}
-      doneWhen={K.doneWhen}
       tabs={tabs}
       tab={tab}
       onTab={(id) => setTab(id as Tab)}
@@ -230,7 +223,6 @@ function BrandTab({ board, data, reload }: TabProps) {
       </Panel>
       <Panel title={K.ui.brandTipsTitle}>
         <ul className="s42-tips">{K.brand.tips.map((t) => <li key={t}>{t}</li>)}</ul>
-        <p className="mini muted">{K.brand.whyChange}</p>
         <p className="mini muted" style={{ margin: 0 }}>{K.ui.companyNow(board.team.startupName ?? '—')}</p>
       </Panel>
     </>
@@ -341,8 +333,6 @@ function PackTab({ data, reload }: TabProps) {
       ) : !fits ? (
         <p className="mini">{K.pack.misfitHelp(K.pack.shape[pick.shape], FORM_SHORT[PACK_SHAPE_FORM[pick.shape]], FORM_SHORT[art.form])}</p>
       ) : null}
-      <p className="mini muted">{K.pack.whyMatchForm}</p>
-      {!app?.status || app.status !== 'approved' ? <p className="mini muted">{K.pack.previewCaption(art.codeName ?? '—')}</p> : null}
       {act.error && <p className="hint bad">✕ {act.error}</p>}
     </>
   );
@@ -360,9 +350,7 @@ function NdaTab({ board, data, reload }: TabProps) {
   return (
     <>
       <Panel title={K.nda.title}>
-        <p className="mini" style={{ marginTop: 0 }}>{K.nda.lead}</p>
-        <p className="mini muted">{K.nda.termNda}</p>
-        <p className="mini muted" style={{ marginBottom: 0 }}>{K.nda.realWorldCompare}</p>
+        <p className="mini" style={{ margin: 0 }}>{K.nda.lead}</p>
       </Panel>
       {NDA_SECTIONS.map((s) => {
         const cur = data.sections.find((x) => x.section === s) ?? null;
@@ -448,14 +436,12 @@ function SubmitTab({ data, reload }: TabProps) {
         </div>
         {status !== 'passed' && status !== 'submitted' && status !== 'approved' && <p className="hint">{K.submit.needPass}</p>}
         {status === 'submitted' && app?.decideGameDay != null && <p className="hint good">✓ {K.submit.submitted(Math.ceil(app.decideGameDay), data.reviewGameDays)}</p>}
-        <p className="mini muted" style={{ marginBottom: 0 }}>{K.submit.aiNotice}</p>
         {act.error && <p className="hint bad">✕ {act.error}</p>}
       </Panel>
       {review && (
         <Panel title={K.ui.reviewTitle} sub={review.stage === 'queued' || review.stage === 'retrying' ? K.ui.reviewRunning : undefined} tone={review.verdict === 'pass' ? 'good' : review.verdict === 'pending' ? undefined : 'bad'}>
           <p className="mini" style={{ marginTop: 0 }}>
             <b>{K.ui.verdict[review.verdict] ?? review.verdict}</b>
-            {review.model && <> <AiBadge model={review.model} /></>}
             {stale && <span className="muted">{K.ui.reviewStale(review.docVersion, app!.version)}</span>}
           </p>
           {(review.stage === 'queued' || review.stage === 'retrying') && <p className="mini muted">{K.submit.aiQueued}</p>}
@@ -506,10 +492,6 @@ function Evidence({ rows, caption }: { rows: EvidenceRow[]; caption: string }) {
         <div key={r.key} className="s42-dl-r">
           <dt>{r.label}</dt>
           <dd className={r.mono ? 'mono' : undefined}>{r.value}</dd>
-          <dd className="s42-tags">
-            <span className="sr">{K.ui.evidenceStep}</span>
-            {r.steps.map((s) => <span key={s} className="s42-tag" title={STEP_META[s].title}>{s}</span>)}
-          </dd>
         </div>
       ))}
     </dl>
@@ -612,7 +594,6 @@ function Certificate({ cert }: { cert: CertificateView }) {
         <span>{cert.company} ({cert.ticker})</span>
         <span>{K.ui.approvedOn} <b className="mono">D+{cert.approvedGameDay}</b></span>
       </div>
-      <p className="mini muted" style={{ margin: 0 }}>{K.result.evidenceNote}</p>
     </div>
   );
 }
@@ -670,7 +651,6 @@ function Receipt({ r, title }: { r: ReceiptView; title: string }) {
         <div className="s42-big"><b>{formatCrista(r.totals.spentCrista, { unit: false })}</b><span>{K.ui.spentBig(spentPct, clinical > 0 ? Math.round((clinical / sum) * 100) : null)}</span></div>
         <div className="s42-big"><b>{r.molecules.start ?? '—'} → {r.molecules.end ?? '?'}</b><span>{K.receipt.molecules}</span></div>
         <p className="mini muted" style={{ margin: 0 }}>{K.receipt.failNote}</p>
-        <p className="mini muted" style={{ margin: 0 }}>{K.receipt.lesson}</p>
       </div>
     </div>
   );
@@ -690,7 +670,6 @@ function ResultTab({ data }: TabProps) {
     <>
       {cert && <Complete brand={cert.brand} />}
       {!cert && <p className="hint">{K.result.notYet}</p>}
-      <p className="mini muted">{K.result.termApproval}</p>
       {cert && (
         <section className="s42-sec-block" aria-labelledby="s42-h-cert">
           <h3 className="s42-h" id="s42-h-cert">{K.result.certTitle}</h3>

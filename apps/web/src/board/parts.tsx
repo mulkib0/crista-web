@@ -49,15 +49,6 @@ export function JobState({ job }: { job: WebJobView }) {
   );
 }
 
-/** 결과의 성격(설계 §5.4) — 자료 조회 · 실제 계산 · AI 예측 · 테스트용 고정 결과. */
-export function SourceChip({ source }: { source: WebJobView['source'] }) {
-  if (source === 'fixture') return <span className="chip test" title="워커가 fixture 모드 — 실제 과학 계산이 아닙니다">테스트용 고정 결과</span>;
-  if (source === 'dataset') return <span className="chip">자료 조회</span>;
-  if (source === 'vina') return <span className="chip src">실제 계산 · Vina</span>;
-  if (source === 'admet-ai') return <span className="chip src">AI 예측 · ADMET-AI</span>;
-  return null;
-}
-
 /**
  * 연구 노트 3칸(설계 §6.4) — 칸마다 따로 저장해서 세 명이 동시에 써도 덮지 않는다. 칸 편집 · 낙관적 잠금 · 409 합치기는
  * 공용 서류 칸 편집기(`ui/DocSectionEditor`)가 한다 — 특허 출원서 · 계획서 · IND 신청서 칸도 같은 부품을 쓴다.

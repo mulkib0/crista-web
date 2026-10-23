@@ -141,7 +141,7 @@ export interface Phase3PassView {
   passedGameDay: number | null;
 }
 
-/** NDA 요약 · 허가증의 한 줄 — 오른쪽 꼬리표는 그 줄의 증거가 나온 단계(8.01). */
+/** NDA 요약 · 허가증의 한 줄 — `steps` 는 그 줄의 증거가 나온 단계(8.01 · 데이터만 — 화면 꼬리표는 2026-10-24 사용자 지시로 뺐다). */
 export interface EvidenceRow {
   key: string;
   label: string;
@@ -291,8 +291,6 @@ export function josa(word: string, pair: '이가' | '은는' | '을를' | '과�
 }
 
 export const APPROVAL_COPY = {
-  stepQuestion: '이 약을 환자에게 내놓아도 될까요?',
-  doneWhen: '품목 허가(서류 통과 → 접수 → 60게임 일)',
   lockedNoPhase3: '아직 4.1 임상 3상을 통과하지 못해 심사와 접수는 잠겨 있어요. 하지만 ① 브랜드 이름, ② 포장 꾸미기, ③ 허가 신청서 초안은 지금 미리 써 둘 수 있어요.',
   tabs: { brand: '브랜드 이름', pack: '포장 꾸미기', nda: '허가 신청서', submit: '심사 · 접수', result: '허가증 · 영수증' },
   brand: {
@@ -312,7 +310,6 @@ export const APPROVAL_COPY = {
       "'만병통치'나 '완치'처럼 약효를 부풀리거나 다른 약과 헷갈리게 하는 이름은 심사에서 보완 요구를 받아요.",
       `${BRAND_NAME_MIN}~${BRAND_NAME_MAX}자 안에서 한글, 영문, 숫자를 쓸 수 있고, 낱말 사이에 빈칸을 한 칸까지 넣을 수 있어요.`,
     ],
-    whyChange: '개발하는 동안에는 후보 물질을 회사가 붙인 코드명으로 불러요. 환자에게 내놓을 때는 부르기 쉽고 다른 약과 헷갈리지 않는 상표명(브랜드 이름)을 붙여요.',
     placeholder: `${BRAND_NAME_MIN}~${BRAND_NAME_MAX}자 한글 · 영문 · 숫자(예: 다온콕스)`,
     save: '브랜드 이름 저장',
     saved: '브랜드 이름을 저장하고 학급에서 예약했어요.',
@@ -338,8 +335,6 @@ export const APPROVAL_COPY = {
     misfitHelp: (shapeLabel: string, needLabel: string, formLabel: string) => `${shapeLabel} 포장은 ${needLabel}용이에요. 우리 약의 허가 제형(${formLabel})에 맞는 포장 모양으로 바꿔 주세요.`,
     noFormHelp: '아직 정해진 허가 제형이 없어요. 포장을 미리 꾸며 볼 수 있지만, 제형이 정해진 뒤 포장 모양이 맞는지 다시 확인해요.',
     provisional: (formLabel: string) => `아직 임상 3상 통과 전이라 IND(임상시험 계획 승인 신청)에서 승인받은 제형(${formLabel})으로 임시 비교하고 있어요. 3상을 통과하면 그 프로토콜(임상시험 계획서) 제형으로 다시 맞춰요.`,
-    whyMatchForm: '임상 3상은 정해진 제형 하나로 약의 효과와 안전성을 시험했어요. 그래서 포장도 허가받은 제형에 맞아야 투약 오류(약을 잘못 쓰는 일)를 막을 수 있어요.',
-    previewCaption: (code: string) => `허가 전에는 학급에 코드명(${code})으로만 알려져요. 이 미리보기는 우리 모둠과 선생님만 봐요. 허가가 나면 브랜드 이름이 학급 전광판에 공개되고, 포장에는 허가일이 인쇄돼요.`,
     badShape: '포장 용기 모양을 골라 주세요(정제 · 캡슐 · 바이알 · 패치).',
     badColor: '포장 상자 색을 골라 주세요.',
     badLayout: '포장 라벨 배치를 골라 주세요.',
@@ -349,9 +344,7 @@ export const APPROVAL_COPY = {
   nda: {
     title: '허가 신청서(NDA) 작성',
     lead: `1.1부터 4.1까지의 연구 기록은 서버가 자동으로 요약해 줘요. 여러분은 라벨에 인쇄할 칸 세 개만 써요. 효능 · 효과 한 줄과 라벨 주의사항 두 칸이고, 칸마다 ${NDA_SECTION_MIN}~${NDA_SECTION_MAX}자예요.`,
-    termNda: 'NDA(신약 허가 신청, New Drug Application)는 후보 물질 발견부터 임상 3상까지 모은 모든 약효 · 안전성 자료와 포장 라벨 초안을 묶어 허가 기관에 내는 공식 신청서예요.',
-    realWorldCompare: '실제로는 FDA(미국 식품의약국)에 NDA(21 CFR 314.50)를, 식약처(식품의약품안전처)에 품목 허가 신청을 내요. 상표명 · 제형 · 투여 경로 · 용법 · 용량 · 주의사항과 전체 임상 자료를 함께 내요. 우리 수업에서는 임상 자료 요약을 서버가 묶어 주고, 라벨 문구 세 칸만 직접 써요.',
-    summaryTitle: '연구 증거 요약(오른쪽 꼬리표는 근거 단계)',
+    summaryTitle: '연구 증거 요약',
     sectionLabel: { indication: '효능 · 효과 (한 줄)', caution1: '라벨 주의사항 ①', caution2: '라벨 주의사항 ②' } as Record<NdaSection, string>,
     sectionGuide: {
       indication: '우리 약의 표적 질환, 대상 환자, 임상 3상 1차 평가지표에서 확인된 효과만 정확하게 적어요. 3상에서 시험하지 않은 효과나 과장된 표현은 쓰지 않아요.',
@@ -371,8 +364,8 @@ export const APPROVAL_COPY = {
   },
   submit: {
     title: '서류 심사 · 최종 허가 접수',
-    costDuration: (fee: string, days: number) => `접수 수수료는 ${fee}이고 심사 기간은 ${days}게임 일이에요. 최종 허가는 새로운 실험이나 운에 따른 흔들림 · 점수 기준 없이, 3상 통과 · 포장 제형 일치 · 서류 통과 요건만 갖추면 확정돼요.`,
-    rulesTitle: '규칙 검사(서버 — 모두 맞아야 AI 심사로 넘어가요)',
+    costDuration: (fee: string, days: number) => `접수 수수료는 ${fee}이고 심사 기간은 ${days}게임 일이에요. 3상 통과 · 포장 제형 일치 · 서류 통과 요건을 갖추면 허가가 확정돼요.`,
+    rulesTitle: '규칙 검사(모두 맞아야 AI 심사로 넘어가요)',
     reviewBtn: '서류 심사 요청하기',
     submitBtn: '최종 허가 접수하기',
     confirmTitle: '최종 품목 허가를 접수할까요?',
@@ -380,10 +373,9 @@ export const APPROVAL_COPY = {
     needPass: "규칙 검사와 AI 심사를 모두 통과해 '서류 통과' 상태가 되어야 접수할 수 있어요.",
     submitted: (day: number, days: number) => `최종 허가 신청서가 접수되었어요! ${days}게임 일 뒤인 D+${day}에 최종 품목 허가가 나요.`,
     already: '이미 접수했어요. 모둠원 여러 명이 동시에 눌러도 수수료는 한 번만 나가요.',
-    aiNotice: "AI 심사관(Claude)이 신약 허가 심사관 역할로 서류를 읽어요. 규칙 검사와 AI 심사가 모두 맞아야 '서류 통과'예요. 수수료와 허가 날짜는 AI가 아니라 서버 규칙이 정해요.",
     aiQueued: 'AI 심사관이 신청서를 읽고 있어요. 읽은 뒤 판정을 정리하는 기간을 거쳐 결과가 나와요.',
     rulesBlocked: "규칙 검사에서 맞지 않는 줄이 있어 AI 심사 없이 '보완 필요'가 됐어요. ✕ 줄부터 고쳐 주세요.",
-    feedbackTitle: 'AI 심사관의 종합 피드백',
+    feedbackTitle: '심사관의 종합 피드백',
   },
   rule: {
     phase3: { ok: '임상 3상 통과: 지금 신청 프로토콜로 4.1 임상 3상을 통과했어요.', fail: '임상 3상 미통과: 4.1 임상 3상을 먼저 통과해야 심사 · 접수를 할 수 있어요.' },
@@ -417,8 +409,6 @@ export const APPROVAL_COPY = {
     complete: '신약 개발 파이프라인 완주를 축하해요!',
     completeLead: (brand: string) => `1.1 표적 선정부터 4.2 허가까지 모든 관문을 넘었어요. 우리 신약 「${brand}」${josa(brand, '이가')} 환자에게 갈 수 있게 됐어요.`,
     notYet: '아직 허가 전이에요. 허가가 나면 품목 허가증과 신약 포장이 여기 크게 보여요. 연구비 영수증은 지금까지 쓴 돈으로 미리 볼 수 있어요.',
-    termApproval: '품목 허가(신약 판매 승인)는 허가 기관이 약의 효과가 위험보다 크다고 판단해, 그 이름으로 환자에게 처방 · 판매해도 된다고 내리는 결정이에요. 부작용이 전혀 없다는 뜻은 아니에요.',
-    evidenceNote: '오른쪽 꼬리표는 그 줄의 증거가 나온 단계(1.1~4.2)를 뜻해요. 최종 허가 도장 하나는 새로운 실험이 아니라 지금까지 모은 모든 증거를 한 장으로 묶은 결과예요.',
   },
   receipt: {
     spentTitle: '쓴 돈',
@@ -432,7 +422,6 @@ export const APPROVAL_COPY = {
     preview: '아직 허가 전이에요. 지금까지 쓴 돈으로 미리 본 영수증이에요.',
     groupedNote: '같은 단계의 작업은 한 줄로 묶고, 첫 날 ~ 끝 날을 적어요.',
     failNote: '빨간 줄은 중간에 보류된 IND나 임상시험 시도예요. 보류된 시험에 쓴 연구비도 신약 하나를 만드는 데 든 실제 비용이라 영수증에 그대로 남아요.',
-    lesson: '신약 개발 연구비의 대부분은 사람에게 약효와 안전성을 시험하는 임상 단계(4.1)에 쓰여요.',
     group: { discover: '발견 · 최적화', develop: '특허 · 전임상 · IND', clinical: '임상', approval: '허가' } as Record<ReceiptGroup, string>,
     kind: {
       initial: '처음 연구비', paid_work: '실험 · 계산', paid_work_refund: '실패 작업 환급', adjustment: '조정', patent_fee: '물질특허 출원료', ind_fee: 'IND 수수료',
@@ -503,7 +492,6 @@ export const APPROVAL_COPY = {
     reviewStale: (from: number, to: number) => ` · 심사 뒤 바뀜(판 ${from} → ${to})`,
     brandSection: '브랜드',
     teacher: (note: string) => `선생님이 직접 판정했어요. 메모: ${note}`,
-    evidenceStep: '증거 단계 ',
     teamTitle: '우리 허가 신청',
     flowLabel: '허가 진행',
     progressLabel: '허가 심사 진행',

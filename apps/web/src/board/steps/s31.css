@@ -100,6 +100,4 @@
 }
 
 /* 문구 반영(2026-10-24) — 상한 근거 접기 · 해부도 조각 풀이 · 고른 기전 풀이 */
-.s31 .s31-why { margin-top: 8px; }
-.s31 .s31-why summary { cursor: pointer; font-weight: 600; }
-.s31 .s31-why ul, .s31 .s31-pieces, .s31 .s31-desc { margin: 6px 0; padding-left: 18px; display: grid; gap: 4px; overflow-wrap: anywhere; }
+.s31 .s31-pieces, .s31 .s31-desc { margin: 6px 0; padding-left: 18px; display: grid; gap: 4px; overflow-wrap: anywhere; }

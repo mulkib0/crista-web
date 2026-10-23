@@ -9,7 +9,7 @@ import {
   formatPct,
   MARKET_API,
   MARKET_COPY,
-  STEP_META,
+  processStepLabel,
   type MarketFinalResponse,
   type ProcessStepView,
   type StandingRow,
@@ -23,7 +23,6 @@ const C = MARKET_COPY.final;
 const P = MARKET_COPY.process;
 
 const fmtAt = (iso: string) => new Date(iso).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-const stepName = (id: string) => (STEP_META as Record<string, { title: string } | undefined>)[id]?.title ?? C.antibodyStep(id.replace(/^antibody_/, ''));
 
 export function FinalStandings({ classId }: { classId?: string }) {
   const { final: open, data: board } = useMarket(classId, classId ? 20 : undefined);
@@ -141,7 +140,7 @@ function ProcessTeam({ name, steps, showName }: { name: string; steps: ProcessSt
       {steps.map((s) => (
         <details key={s.stepId}>
           <summary>
-            <span className="mono">{s.stepId}</span> {stepName(s.stepId)} — <b className="mono">{s.score}</b>{C.points}{s.changePct ? ` · ${formatPct(s.changePct)}` : ''}
+            {processStepLabel(s.stepId)} — <b className="mono">{s.score}</b>{C.points}{s.changePct ? ` · ${formatPct(s.changePct)}` : ''}
           </summary>
           <ul>
             {s.components.map((c) => (

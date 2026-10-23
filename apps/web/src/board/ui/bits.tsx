@@ -1,5 +1,5 @@
 /**
- * 작업 화면 공용 작은 부품 — 단계 상태 기호 · 섬 안 페이퍼 판(Panel) · 탭(Tabs · 머리 섬 HeadTabs) · 'AI 심사' · '흔들림 전 예상치' 배지.
+ * 작업 화면 공용 작은 부품 — 단계 상태 기호 · 섬 안 페이퍼 판(Panel) · 탭(Tabs · 머리 섬 HeadTabs) · 'AI 심사' 배지(교사 화면).
  * 모양은 시안 21 '둥근 섬'(설계 §5.4.1): 판 16~20px · 탭 12px · 칩 · 작은 단추 알약(999px).
  */
 import { useEffect, useRef, useState, type ReactNode } from 'react';
@@ -125,20 +125,11 @@ export function HeadTabs({ items, value, onChange, label }: {
   );
 }
 
-/** 'AI 심사' — LLM 이 낸 판단(서류 심사 · 채점 · 헤드라인)임을 알린다(설계 §5.11 · §5.13). */
+/** 'AI 심사' — LLM 이 낸 판단임을 교사 화면에 알린다(설계 §5.11 · §5.13). 학생 화면에서는 2026-10-24 사용자 지시로 쓰지 않는다. */
 export function AiBadge({ model, title }: { model?: string; title?: string }) {
   return (
     <span className="abadge ai" title={title ?? (model ? `${model} 이(가) 읽고 판단했어요 — 규칙 검사와 함께 봐요` : 'AI 가 읽고 판단했어요 — 규칙 검사와 함께 봐요')}>
       <i aria-hidden="true">✦</i>AI 심사{model ? <small> · {model}</small> : null}
-    </span>
-  );
-}
-
-/** '흔들림 전 예상치' — 효능 E · 안전 S 등 판정 전 값(설계 §6.1 · §12-2). 실제 판정은 규칙의 흔들림이 더해진다. */
-export function PreShakeBadge({ title }: { title?: string }) {
-  return (
-    <span className="abadge pre" title={title ?? '판정 때는 규칙이 정한 범위 안에서 값이 조금 흔들려요'}>
-      <i aria-hidden="true">≈</i>흔들림 전 예상치
     </span>
   );
 }
