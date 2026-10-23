@@ -1,7 +1,7 @@
 /**
  * 3.3 제형 · IND 신청(설계 §5.10 · §5.11) — 기능 F33.
  *
- * - 머리 섬 아래 왼쪽(내 작업대): '이 단계에서 하는 일' 3줄 요약 + 펼쳐 보기 → 도구 6종 탭(what-if 실험실이 첫 탭).
+ * - 머리 섬 아래 왼쪽(내 작업대): 도구 6종 탭(what-if 실험실이 첫 탭). '이 단계에서 하는 일' 요약은 2026-10-24 사용자 지시로 뺐다.
  *   도구의 손잡이(제형 · 용량 · 후보 · 환자군)는 개인 상태(`useBenchState`) — 다른 모둠원 화면을 흔들지 않는다.
  * - 오른쪽(모둠 공유): 임상시험 계획 승인 신청서 ①~⑦(칸 단위 자동 저장 · 409 합치기) · 조합 · 규칙 미리 보기 · 심사 · 접수 · 판정 · 승인서.
  *   E–S 평면에서 점을 눌러 고른 조합을 [신청서에 넣기]로 모둠 신청서에 쓴다(plan_version 낙관적 잠금).
@@ -21,7 +21,6 @@ import {
   IND_SECTIONS,
   indFmtMg,
   PRECLINICAL_COPY,
-  REVIEW_LIMITS,
   type DocReviewView,
   type DocSectionView,
   type IndApplicationResponse,
@@ -36,7 +35,7 @@ import {
 } from '@crista-web/web-contract';
 import { api, ApiFailure, message } from '../../api.ts';
 import { money } from '../../ink.ts';
-import { AiBadge, Confirm, DocSectionEditor, Panel, PreShakeBadge, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
+import { Confirm, DocSectionEditor, Panel, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
 import { Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
 import { TOOL_IDS, TOOL_VIEW, type Knobs, type ToolId } from './s33-tools.tsx';
 import './s33.css';
@@ -44,31 +43,6 @@ import './s33.css';
 const C = IND_COPY;
 const D = C.doc;
 const F = C.facts;
-
-function Overview() {
-  const [open, setOpen] = useState(false);
-  return (
-    <Panel title={C.overview.title} className="s33-ov">
-      <p className="s33-one">{C.overview.oneLine}</p>
-      <ol className="s33-three">
-        {C.overview.summary.map((s) => <li key={s}>{s}</li>)}
-      </ol>
-      <button type="button" className="btn sm ghost" aria-expanded={open} aria-controls="s33-more" onClick={() => setOpen((v) => !v)}>
-        {open ? C.overview.collapse : C.overview.expand} {open ? '▴' : '▾'}
-      </button>
-      {open && (
-        <dl id="s33-more" className="s33-more">
-          {C.overview.more.map((m) => (
-            <div key={m.k}>
-              <dt>{m.k}</dt>
-              <dd>{m.v}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
-    </Panel>
-  );
-}
 
 const staleOf = (e: ApiFailure): DocSectionStale | null => {
   const s = e.detail?.section;
@@ -81,7 +55,7 @@ function ReviewBox({ review, app }: { review: DocReviewView; app: IndApplication
   const mark = v === 'pass' ? '✓' : v === 'pending' ? '▸' : '✕';
   const label = (sec: string | null) => (sec && C.sections[sec as keyof typeof C.sections]?.label) || '';
   return (
-    <Panel title={<>{mark} {D.verdict[v]} {review.model && <AiBadge model={review.model} />}</>} sub={`${fillIndCopy(D.version, { n: review.docVersion })}${review.requestedByName ? ` · ${review.requestedByName}` : ''}`} tone={tone}>
+    <Panel title={<>{mark} {D.verdict[v]}</>} sub={`${fillIndCopy(D.version, { n: review.docVersion })}${review.requestedByName ? ` · ${review.requestedByName}` : ''}`} tone={tone}>
       {review.docVersion !== app.version && app.status !== 'submitted' && app.status !== 'approved' && (
         <p className="hint bad">{fillIndCopy(D.reviewStale, { a: review.docVersion, b: app.version })}</p>
       )}
@@ -156,7 +130,7 @@ function Waiting({ app, clock, reload }: { app: IndApplicationView; clock: StepP
     <Panel title={<>▸ {C.status.submitted}</>}>
       <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} aria-label={D.waitingLabel}><i style={{ width: `${pct}%` }} /></div>
       <p className="mini">{fillIndCopy(D.waiting, { from: formatGameDay(from), to: formatGameDay(to), pct })}</p>
-      {app.safety !== null && <p className="mini mono">E {app.efficacy?.toFixed(1)} · S {app.safety.toFixed(1)} <PreShakeBadge /></p>}
+      {app.safety !== null && <p className="mini mono">E {app.efficacy?.toFixed(1)} · S {app.safety.toFixed(1)}</p>}
     </Panel>
   );
 }
@@ -317,21 +291,16 @@ export function Step33(props: StepProps) {
 
   const mine = (
     <>
-      <Overview />
       {!data ? (
         <p className="hint">{live.error ? message(live.error) : D.loading}</p>
       ) : !cand ? (
         <p className="empty">{data.readyReason ?? D.lockedStep}</p>
       ) : (
-        <Panel title={<>{C.tools[tool].tab} <PreShakeBadge title={C.preShake} /></>} sub={fillIndCopy(C.toolNotes.fills, { what: C.tools[tool].fills })}>
+        <Panel title={C.tools[tool].tab} sub={fillIndCopy(C.toolNotes.fills, { what: C.tools[tool].fills })}>
           <p className="s33-q">{fillIndCopy(C.tools[tool].question, ruleFill)}</p>
           <p className="hint">{fillIndCopy(C.tools[tool].howTo, ruleFill)}</p>
           <ToolView data={data} cand={cand} knobs={knobs} setKnobs={(fn) => setKnobs((k) => ({ ...k, ...fn(k) }))} brainPop={brainPop} onApply={onApply} applied={app && app.patentId === cand.patentId ? { form: app.form, dose: app.doseMg } : null} busy={applyAct.busy} />
           {applyAct.error && <p className="hint bad" role="alert">{applyAct.error}</p>}
-          <details className="s33-lesson">
-            <summary>{C.toolNotes.lessonTitle}</summary>
-            <p>{C.tools[tool].lesson}</p>
-          </details>
         </Panel>
       )}
     </>
@@ -426,7 +395,6 @@ export function Step33(props: StepProps) {
               <button type="button" className="btn pri" disabled={!canSubmit || act.busy} onClick={() => setConfirm(true)}>
                 {fillIndCopy(D.submitBtn, { fee })}
               </button>
-              <span className="note mini">{fillIndCopy(D.reviewLimit, { n: REVIEW_LIMITS.perDocPerDay, teamN: REVIEW_LIMITS.perTeamPerDay })}</span>
             </div>
           )}
           {act.error && <p className="hint bad" role="alert">{act.error}</p>}
@@ -463,8 +431,6 @@ export function Step33(props: StepProps) {
         tab={tool}
         onTab={(id) => setTool(id as ToolId)}
         tabsLabel={C.ui.tabsLabel}
-        doneWhen={C.ui.doneWhen}
-        headExtra={<PreShakeBadge title={C.preShake} />}
         mineTitle={C.ui.mineTitle}
         mine={mine}
         teamTitle={C.ui.teamTitle}

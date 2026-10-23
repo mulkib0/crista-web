@@ -99,7 +99,7 @@ export function HurdleLadder({ ladder }: { ladder: PhaseLadderView[] }) {
   const STATE_MARK = { todo: '', recruiting: '▸ 모집', running: '▸ 진행', pending: '⏳ 판정 대기', passed: '✓ 통과', held: '✕ 보류' } as const;
   const summary = ladder.map((l) => `${PHASE_LABEL[l.phase]} ${STATE_MARK[l.state] || '준비'} · 기준 ${[l.thresholds.efficacy !== null ? `E ≥ ${l.thresholds.efficacy}` : '', l.thresholds.safety !== null ? `S ≥ ${l.thresholds.safety}` : ''].filter(Boolean).join(' · ')} · 예상 E ${l.efficacy.toFixed(1)} S ${l.safety.toFixed(1)} · 참고 통과 ${pct(l.refPassProb)}`).join(' / ');
   return (
-    <Fig label={`세 관문 허들 — ${summary}`} w={W} h={H} caption="막대 = 지금 프로토콜의 흔들림 전 예상치 · 가로대 = 그 상의 기준. 참고 통과 확률은 game-rules 규칙(목표 인원 기준).">
+    <Fig label={`세 관문 허들 — ${summary}`} w={W} h={H} caption="막대 = 지금 프로토콜의 예상치 · 가로대 = 그 상의 기준 · 통과 확률은 목표 인원 기준">
       {ladder.map((l, i) => {
         const x0 = i * col + 8;
         const cols: Array<{ m: 'E' | 'S'; v: number; th: number | null }> = [

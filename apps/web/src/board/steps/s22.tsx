@@ -27,7 +27,7 @@ import {
 import { api, newRequestId } from '../../api.ts';
 import { money } from '../../ink.ts';
 import { By, JobState } from '../parts.tsx';
-import { Confirm, Panel, PreShakeBadge, ReasonChips, useBenchState, useLocalTab } from '../ui/index.ts';
+import { Confirm, Panel, ReasonChips, useBenchState, useLocalTab } from '../ui/index.ts';
 import { Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
 import { fmtKcal, KnownChip, OriginChip, useSelection } from './s21.tsx';
 import './s22.css';
@@ -143,7 +143,6 @@ function Lights({ rows, cns }: { rows: AdmetView[]; cns: boolean }) {
         <li><Light tone="w" text={C.s22.lightsLegend.mid} /></li>
         <li><Light tone="b" text={C.s22.lightsLegend.bad} /> {C.s22.lightsLegend.badWhat}</li>
       </ul>
-      <p className="mini muted">{C.s22.lightsNote}</p>
     </>
   );
 }
@@ -398,7 +397,6 @@ export function Step22(props: StepProps) {
   return (
     <StepLayout
       {...props}
-      headExtra={<PreShakeBadge title={C.s22.preShake} />}
       tabs={[
         { id: 'run', no: '①', label: C.s22.tabs.run, sub: sel ? C.s22.ui.queueTab(sel.picks.length) : undefined },
         { id: 'radar', no: '4.02', label: C.s22.tabs.radar, disabled: !has },
@@ -417,10 +415,9 @@ export function Step22(props: StepProps) {
             : effectiveTab === 'run' ? <Run board={board} sel={sel} step={step} onChanged={changed} />
               : effectiveTab === 'radar' ? tool(C.s22.radarQ, <><Radars rows={rows} /><p className="mini muted">{C.s22.radarNote}</p><p className="mini muted">{C.s22.radarAxes}</p></>)
                 : effectiveTab === 'lights' ? tool(C.s22.lightsQ, <Lights rows={rows} cns={sel.cns} />)
-                  : effectiveTab === 'trip' && focused ? tool(C.s22.tripQ, <>{molPick}<Trip row={focused} cns={sel.cns} indMin={sel.indSafetyMin} /><p className="mini muted">{C.s22.tripNote}</p></>)
-                    : effectiveTab === 'chain' && focused ? tool(C.s22.chainQ, <>{molPick}<Chain row={focused} indMin={sel.indSafetyMin} /><p className="mini muted">{C.s22.chainNote}</p></>)
+                  : effectiveTab === 'trip' && focused ? tool(C.s22.tripQ, <>{molPick}<Trip row={focused} cns={sel.cns} indMin={sel.indSafetyMin} /></>)
+                    : effectiveTab === 'chain' && focused ? tool(C.s22.chainQ, <>{molPick}<Chain row={focused} indMin={sel.indSafetyMin} /></>)
                       : null}
-          {sel && effectiveTab !== 'run' && <p className="hint">≈ {C.s22.preShake}</p>}
         </div>
       }
       teamTitle={C.s22.ui.teamTitle}
@@ -429,7 +426,7 @@ export function Step22(props: StepProps) {
           {sel && <Candidates board={board} sel={sel} onChanged={changed} />}
           {sel && done.length > 0 && (
             <details className="sel-ai">
-              <summary><b>{C.s22.aiTitle}</b> <span className="mini muted">— {C.s22.aiNote}</span></summary>
+              <summary><b>{C.s22.aiTitle}</b></summary>
               <div className="tbl-w"><table>
                 <thead><tr><th>{C.s22.cols.mol}</th>{(done[0]!.aiRadar).map((r) => <th key={r.axis}>{r.axis}</th>)}</tr></thead>
                 <tbody>

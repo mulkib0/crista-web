@@ -1,0 +1,377 @@
+[
+ {
+  "width": 1440,
+  "name": "s11",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "s12",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "s21",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "s22",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "s31",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "s32",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "s33",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "s41",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "s42",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "board",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "final",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "teacher-progress",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "teacher-reviews",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "teacher-clinical",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 1440,
+  "name": "teacher-market",
+  "doc": false,
+  "bad": [],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s11",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s12",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s21",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s22",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s31",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s32",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s33",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s41",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "s42",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "board",
+  "doc": false,
+  "bad": [
+   "button.tb-btn rank final 465",
+   "span.tb-k 453",
+   "b.mono 453",
+   "div.kv cash 628",
+   "span. 628",
+   "b. 628",
+   "div.kv day 685",
+   "span. 685"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "final",
+  "doc": false,
+  "bad": [
+   "div.kv cash 537",
+   "span. 537",
+   "b. 537",
+   "div.kv day 594",
+   "span. 594",
+   "b. 594",
+   "button.btn sm 693",
+   "button.btn sm 772"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "teacher-progress",
+  "doc": false,
+  "bad": [
+   "ul.steps 447",
+   "li. 447",
+   "button.st 447",
+   "span.st-t 429",
+   "ul.steps 682",
+   "li. 565",
+   "button.st 565",
+   "span.st-n 475"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "teacher-reviews",
+  "doc": false,
+  "bad": [
+   "ul.steps 447",
+   "li. 447",
+   "button.st 447",
+   "span.st-t 429",
+   "ul.steps 682",
+   "li. 565",
+   "button.st 565",
+   "span.st-n 475"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "teacher-clinical",
+  "doc": false,
+  "bad": [
+   "ul.steps 447",
+   "li. 447",
+   "button.st 447",
+   "span.st-t 429",
+   "ul.steps 682",
+   "li. 565",
+   "button.st 565",
+   "span.st-n 475"
+  ],
+  "serverError": false,
+  "leftover": []
+ },
+ {
+  "width": 390,
+  "name": "teacher-market",
+  "doc": false,
+  "bad": [
+   "ul.steps 447",
+   "li. 447",
+   "button.st 447",
+   "span.st-t 429",
+   "ul.steps 682",
+   "li. 565",
+   "button.st 565",
+   "span.st-n 475"
+  ],
+  "serverError": false,
+  "leftover": []
+ }
+]

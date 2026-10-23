@@ -7,6 +7,7 @@
  *   WEB_PORT=3410 E2E_FULL_STOP=approval npm run e2e:full — 화면 점검용: 허가까지만 하고 마감하지 않음(로그인 정보 JSON 을 찍고 끝)
  *   WEB_PORT=3410 E2E_FULL_LLM=all LLM_DAILY_PER_CLASS=20 npm run e2e:full — 서류 심사 5건 · 임상 1 · 2 · 3상 첫 시도를 실제 Claude 로(이 프로세스 안에서 — 서버는 LLM 꺼 둔 채). 보류면 재도전은 교사 수동.
  *     보완 · 거절이면 지적을 찍고 교사 정정으로 넘겨요. 끝에 llm_calls(이 학급) 호출 수 · 토큰 · 거절을 찍어요. LLM_DAILY_PER_CLASS 가 학급 호출 상한이에요.
+ *     E2E_FULL_LLM_ONLY=nda,phase3 처럼 실제 Claude 를 쓸 곳만 고를 수 있어요(나머지는 교사 판정). 같은 DB 의 LLM 켠 서버(3390)가 이 학급 소식의 헤드라인을 다듬으면 그 호출도 같은 학급 상한에 세어져요.
  *
  * 교사 1 · 학생 4 · 2모둠(모둠 A 2명 — 알츠하이머/ACHE 끝까지 · 모둠 B 2명 — 2형 당뇨/DPP4 3.1 까지).
  *  1.1 추천 · 확정 → 1.2 브리핑 · 회의 6안건 합의 · 실행 · 찜(근거) → 2.1 찜 분자 + 변형체 도킹 → 2.2 대기열 · ADMET · 특허 후보
@@ -79,6 +80,9 @@ const BASE = process.env.E2E_BASE_URL ?? `http://127.0.0.1:${process.env.WEB_POR
 /** 'all' — 서류 심사 5건(특허 2 · 계획서 · IND · NDA)과 임상 1 · 2 · 3상 시뮬레이션을 모두 이 프로세스에서 실제 Claude 로(비용 — 마무리 점검용). */
 const REAL_ALL = process.env.E2E_FULL_LLM === 'all';
 const REAL_LLM = process.env.E2E_FULL_LLM === '1' || REAL_ALL;
+/** 'all' 일 때 실제 Claude 를 쓸 곳만 고른다(쉼표 — patent · iacuc · ind · nda · phase1 · phase2 · phase3). 비우면 전부. 비용을 나눠 확인할 때. */
+const REAL_ONLY = (process.env.E2E_FULL_LLM_ONLY ?? '').split(',').map((x) => x.trim()).filter(Boolean);
+const realFor = (key: string): boolean => REAL_ALL && (REAL_ONLY.length === 0 || REAL_ONLY.includes(key));
 const STOP = process.env.E2E_FULL_STOP ?? '';
 const here = dirname(fileURLToPath(import.meta.url));
 const suffix = randomBytes(3).toString('hex').slice(0, 5);
@@ -230,8 +234,8 @@ interface LlmLogRow {
 const llmLog: LlmLogRow[] = [];
 
 /** 서류 심사 — 실제 Claude 모드면 이 프로세스에서 심사관을 부르고(최대 3번), 보완 · 거절이면 지적을 남긴 뒤 교사 정정으로 넘긴다. 아니면 교사 수동 통과. */
-async function reviewGate(teacher: Agent, reviewId: string, what: string): Promise<void> {
-  if (!REAL_ALL) return teacherPass(teacher, reviewId);
+async function reviewGate(teacher: Agent, reviewId: string, what: string, key: 'patent' | 'iacuc' | 'ind' | 'nda'): Promise<void> {
+  if (!realFor(key)) return teacherPass(teacher, reviewId);
   const t0 = Date.now();
   const deps = llmDeps();
   type Row = { verdict: string; held_verdict: string | null; class_id: string; llm_status: string; response_model: string | null; flags: string[]; llm_output: { items?: Array<{ id: string; status: string; note?: string }>; feedback?: string } | null };
@@ -455,7 +459,7 @@ async function patent(t: Team, teacher: Agent, disease: string, gene: string): P
   const v = (await p.get<PatentsResponse>(PATENT_API.patents)).applications.find((a) => a.id === app.id)!;
   const rv = await q.ok<{ review: { id: string; verdict: string; stage: string; ruleFindings: Array<{ id: string; status: string; note: string }> } }>('POST', PATENT_API.review(app.id), { docVersion: v.version });
   assert.equal(rv.review.verdict, 'pending', `규칙 단계에서 막힘: ${JSON.stringify(rv.review.ruleFindings.filter((f) => f.status === 'fail'))}`);
-  await reviewGate(teacher, rv.review.id, `모둠 ${t.key} 3.1 특허`);
+  await reviewGate(teacher, rv.review.id, `모둠 ${t.key} 3.1 특허`, 'patent');
   const accepted = await waitFor(async () => {
     const x = (await p.get<PatentsResponse>(PATENT_API.patents)).applications.find((a) => a.id === app.id)!;
     return x.status === 'accepted' ? x : undefined;
@@ -553,7 +557,7 @@ async function main(): Promise<void> {
     st = await a1.get<PreclinicalResponse>(PRECLINICAL_API.state);
     const rv = await a1.ok<{ review: { id: string; verdict: string; ruleFindings: Array<{ status: string; note: string }> } }>('POST', PRECLINICAL_API.review, { expectedVersion: st.protocol!.version });
     assert.equal(rv.review.verdict, 'pending', JSON.stringify(rv.review.ruleFindings.filter((f) => f.status === 'fail')));
-    await reviewGate(teacher, rv.review.id, '모둠 A 3.2 동물실험계획서');
+    await reviewGate(teacher, rv.review.id, '모둠 A 3.2 동물실험계획서', 'iacuc');
     st = await waitFor(async () => {
       const x = await a1.get<PreclinicalResponse>(PRECLINICAL_API.state);
       return x.protocol?.status === 'approved' ? x : undefined;
@@ -616,7 +620,7 @@ async function main(): Promise<void> {
     assert.deepEqual(ind.application!.rulePreview.filter((f) => f.status === 'fail').map((f) => f.note), []);
     const rv = await a1.ok<{ review: { id: string; verdict: string } }>('POST', IND_API.review(app.id), { expectedVersion: ind.application!.version });
     assert.equal(rv.review.verdict, 'pending');
-    await reviewGate(teacher, rv.review.id, '모둠 A 3.3 IND');
+    await reviewGate(teacher, rv.review.id, '모둠 A 3.3 IND', 'ind');
     ind = await waitFor(async () => {
       const x = await a1.get<IndResponse>(IND_API.ind);
       return x.application?.status === 'passed' ? x : undefined;
@@ -651,6 +655,17 @@ async function main(): Promise<void> {
       const deps = llmDeps();
       const t0 = Date.now();
       const calls = async () => (await sql<{ n: number }>('select count(*)::int as n from web.llm_calls where ref_id = $1', [trialId]))[0]!.n;
+      // LLM 을 끈 서버는 [임상 시작] 직후 규칙 결과(rule)를 담는다(교사 승인 폐지 뒤). 그 결과가 들어온 뒤에 비우고 실제 Claude 로 다시 부른다
+      // — 먼저 부르면 늦게 들어온 규칙 결과가 앞서 담겨 실제 결과를 버린다(2026-10-24 4회차에서 1회 낭비).
+      await waitFor(async () => {
+        const [x] = await sql<{ result_source: string | null }>('select result_source from web.clinical_trials where id = $1', [trialId]);
+        return x!.result_source === 'rule' ? true : undefined;
+      }, 60_000, `${no}상 서버 규칙 결과`, 1000).catch(() => false);
+      await sql(
+        `update web.clinical_trials set sim_status = 'queued', result = null, result_source = null, result_model = null, sim_next_at = null, sim_attempts = 0, sim_error = null
+          where id = $1 and status = 'running' and result_source = 'rule'`,
+        [trialId],
+      );
       const row = await waitFor(async () => {
         // 비용 상한 — 한 시도에 4회(시뮬레이션 2회 × 재시도 1)를 넘기지 않는다.
         if ((await calls()) >= 4) throw new Error(`${no}상 시뮬레이션 — 호출 4회에도 ready 가 아니에요`);
@@ -705,7 +720,7 @@ async function main(): Promise<void> {
   };
   const phases = ['phase1', 'phase2', 'phase3'] as const;
   for (const [i, phase] of phases.entries()) {
-    const real = REAL_ALL || (REAL_LLM && phase === 'phase1');
+    const real = REAL_ALL ? realFor(phase) : REAL_LLM && phase === 'phase1';
     await stage(`모둠 A 4.1 ${i + 1}상 — 모집(집중) · 최소 인원 · [임상 시작] 과금 1회 · 끝나는 날 ${real ? '실제 Claude 시뮬레이션 공개' : '판정 대기 → 교사 통과'} · 전광판 소식 · 보류면 같은 프로토콜로 재도전`, async () => {
       let fin = await runTrial(i + 1, i === 0 ? 'first' : 'next', real);
       for (let retry = 1; fin.verdict !== 'pass'; retry++) {
@@ -751,7 +766,7 @@ async function main(): Promise<void> {
     for (const [k, v] of Object.entries(S)) await a1.ok('PUT', APPROVAL_API.section(k), { body: v, expectedVersion: 0 });
     const rv = await a2.ok<{ review: { id: string; verdict: string; ruleFindings: Array<{ status: string; note: string }> } }>('POST', APPROVAL_API.review);
     assert.equal(rv.review.verdict, 'pending', JSON.stringify(rv.review.ruleFindings.filter((f) => f.status === 'fail')));
-    await reviewGate(teacher, rv.review.id, '모둠 A 4.2 NDA');
+    await reviewGate(teacher, rv.review.id, '모둠 A 4.2 NDA', 'nda');
     await waitFor(async () => ((await a1.get<ApprovalResponse>(APPROVAL_API.get)).application?.status === 'passed' ? true : undefined), 10_000, '허가 서류 통과');
     await a1.ok('POST', APPROVAL_API.submit);
     await advance(cls.id, 61);

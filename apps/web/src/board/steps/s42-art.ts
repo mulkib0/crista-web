@@ -178,7 +178,7 @@ export function stampSvg(day: number | null, size = 112): string {
   return `<svg width="${size}" height="${size}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="54" fill="none" stroke="${C.bad}" stroke-width="4"/><circle cx="60" cy="60" r="45" fill="none" stroke="${C.bad}" stroke-width="1.5"/><text x="60" y="68" text-anchor="middle" font-size="30" font-weight="700" fill="${C.bad}" ${SERIF}>${esc(APPROVAL_COPY.result.stampWord)}</text><text x="60" y="36" text-anchor="middle" font-size="11" fill="${C.bad}" ${MONO}>${esc(APPROVAL_COPY.result.stampTop)}</text><text x="60" y="90" text-anchor="middle" font-size="11" fill="${C.bad}" ${MONO}>${day != null ? `D+${day}` : ''}</text></svg>`;
 }
 
-/** 허가증 이미지(8.01) — 줄마다 증거 단계 꼬리표. */
+/** 허가증 이미지(8.01). 줄마다 붙던 증거 단계 꼬리표는 2026-10-24 사용자 지시(출처 배지 삭제)로 뺐다. */
 export function certExportSvg(cert: CertificateView): { svg: string; w: number; h: number } {
   const w = 820;
   const rowH = 30;
@@ -197,11 +197,6 @@ export function certExportSvg(cert: CertificateView): { svg: string; w: number; 
     s += T(40, y + 20, r.label, `font-size="12" fill="${C.muted}"`);
     const v = Array.from(r.value);
     s += `<text x="170" y="${y + 20}" font-size="13" fill="${C.ink}" ${r.mono ? MONO : FONT}>${esc(v.length > 62 ? v.slice(0, 61).join('') + '…' : r.value)}</text>`;
-    let x = w - 40;
-    for (const st of [...r.steps].reverse()) {
-      x -= 36;
-      s += `<rect x="${x}" y="${y + 7}" width="32" height="17" fill="#e4ffc0" stroke="${C.line}"/><text x="${x + 16}" y="${y + 20}" text-anchor="middle" font-size="10.5" fill="${C.ink}" ${MONO}>${st}</text>`;
-    }
   });
   const fy = top + cert.rows.length * rowH;
   s += `<line x1="40" x2="${w - 40}" y1="${fy}" y2="${fy}" stroke="${C.ink}"/>`;

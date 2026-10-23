@@ -72,7 +72,6 @@ select.txt { appearance: auto; }
 .ok-msg { border: 1px solid var(--good); background: var(--good-bg); color: var(--good); padding: 8px 12px; font-size: 13px; }
 .empty { border: 1px dashed var(--line-strong); padding: 22px 16px; color: var(--muted); text-align: center; font-size: 13px; }
 .chip { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.02em; padding: 3px 7px; border: 1px solid var(--line-strong); white-space: nowrap; display: inline-block; }
-.chip.src { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .chip.test { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag { display: inline-block; font-family: var(--mono); font-size: 10.5px; padding: 1px 6px; border: 1px solid currentColor; white-space: nowrap; }
@@ -419,22 +418,8 @@ td .row { flex-wrap: nowrap; }
 .hd-n { flex: none; font: 600 14px/1.3 var(--mono); font-variant-numeric: tabular-nums; padding: 6px 10px; border-radius: 12px; background: var(--film); color: var(--film-ink); box-shadow: inset 0 0 0 1px var(--fg); }
 .hd h1 { margin: 0; flex: none; font-size: 20px; line-height: 1.25; letter-spacing: -0.03em; word-break: keep-all; }
 .hd-test { flex: none; }
-.hd[data-open="true"] .hd-test { display: none; } /* 펴면 칩 줄에 긴 경고가 있다 */
-.hd-tg { appearance: none; flex: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 999px; padding: 7px 12px; margin-left: auto; font-size: 12.5px; font-weight: 600; white-space: nowrap; transition: border-color .18s ease; }
-.hd-bar > .htabs + .hd-tg { margin-left: 0; } /* 탭이 있으면 탭이 오른쪽으로 밀고, 없으면 단추가 민다 */
-.hd-tg:hover { border-color: var(--fg); }
-.hd-tg svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .hd-hint { margin: 8px 0 0; }
-.hd-more { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 24px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); animation: hd-in .2s ease both; }
-.hd-more[hidden] { display: none; }
-.hd-l { display: grid; gap: 8px; align-content: start; min-width: 0; }
-.hd-r { display: grid; gap: 6px; justify-items: end; align-content: start; max-width: 380px; }
-.hd-r .chips { justify-content: flex-end; }
-.sh-q { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; text-wrap: balance; word-break: keep-all; }
-.eyebrow { margin: 0; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); word-break: keep-all; }
 .lede { margin: 0; max-width: 62ch; color: var(--muted); font-size: 13.5px; }
-.hd-r .eyebrow { text-align: right; }
-@keyframes hd-in { from { opacity: 0; transform: translateY(-4px); } }
 
 /* 섬 안 — 페이퍼 판 · 버튼 · 입력(둥글게) */
 .shell .panel { border: 0; background: var(--bg); border-radius: 18px; padding: 16px; }
@@ -466,7 +451,6 @@ td .row { flex-wrap: nowrap; }
 .notes { display: grid; gap: 12px; }
 .mini { font-size: 12px; }
 .next { padding-top: 4px; }
-.lock-box { display: grid; gap: 6px; }
 .shell .modal { border: 0; border-radius: 20px; box-shadow: 0 2px 4px rgba(8,11,9,0.04), 0 40px 80px -40px rgba(8,11,9,0.4); }
 
 /* ── 공용 부품(board/ui) ── */
@@ -508,13 +492,12 @@ td .row { flex-wrap: nowrap; }
 .verdict.ok { color: var(--good); background: var(--good-bg); }
 .verdict.warn { color: var(--warn); background: var(--warn-bg); }
 .verdict.block { color: var(--bad); background: var(--bad-bg); }
-/* 배지 — AI 심사 · 흔들림 전 예상치 */
+/* 배지 — AI 심사(교사 화면) */
 .abadge { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 2px 9px; font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
 .abadge i { font-style: normal; }
 .abadge small { font-weight: 400; opacity: 0.75; }
 .abadge.ai { background: var(--fg); color: var(--bg); }
 .abadge.ai i { color: var(--hi); }
-.abadge.pre { background: var(--film); color: var(--film-ink); box-shadow: inset 0 0 0 1px var(--line-strong); }
 /* 서류 칸 편집기 */
 .doc-c { display: grid; gap: 4px; }
 .doc-c .lab { margin: 0; display: flex; gap: 8px; align-items: center; }
@@ -571,18 +554,11 @@ td .row { flex-wrap: nowrap; }
   /* 묶음 상자가 풀리므로(display: contents) 묶음 색은 칩마다 칠한다 */
   .grp .st { background: var(--g-bg); }
   .grp .st[aria-current="step"] { background: var(--acc); }
-  /* 머리 섬 — 첫 줄 배지 · 제목 · 아이콘 단추, 걸음 탭은 그 아래 한 줄(가로로 넘긴다), 소개는 한 열 */
+  /* 머리 섬 — 첫 줄 배지 · 제목, 걸음 탭은 그 아래 한 줄(가로로 넘긴다) */
   .isl-head { padding: 12px 12px 12px 14px; }
   .hd-bar { flex-wrap: wrap; gap: 10px; }
   .hd h1 { flex: 1 1 0; min-width: 0; font-size: 18px; }
-  .hd-tg, .hd-bar > .htabs + .hd-tg { order: 1; padding: 7px 9px; margin-left: 0; }
-  .hd-tg-t { display: none; }
   .htabs { order: 2; flex: 1 0 100%; margin: 0 -2px; }
-  .hd-more { grid-template-columns: minmax(0, 1fr); margin-top: 12px; padding-top: 12px; }
-  .hd-r { justify-items: start; max-width: none; }
-  .hd-r .chips { justify-content: flex-start; }
-  .hd-r .eyebrow { text-align: left; }
-  .sh-q { font-size: 15px; }
   .led-i { font-size: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -590,6 +566,5 @@ td .row { flex-wrap: nowrap; }
   .mq { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
   .live i, .stamp { animation: none !important; }
   .district.shake, .rpg-more, .rpg-choice button.on, .rpg-mapname, .rpg-stamp > div { animation: none !important; }
-  .st, .stab, .htab, .hd-tg { transition: none; }
-  .hd-more { animation: none; }
+  .st, .stab, .htab { transition: none; }
 }

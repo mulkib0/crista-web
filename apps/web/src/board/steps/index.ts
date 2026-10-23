@@ -1,11 +1,9 @@
 /**
  * 단계 → 화면 표(9단계, 설계 §6.1). 기능 화면은 자기 파일(`s12.tsx` 등)만 고치고 이 표는 그대로 둔다.
- * 4.1 · 4.2 는 상세 설계를 미뤄 잠긴 안내(`locked.tsx`).
  */
 import type { ComponentType } from 'react';
 import type { StepId } from '@crista-web/web-contract';
 import type { StepProps } from './common.tsx';
-import { LockedStep } from './locked.tsx';
 import { Step11 } from './s11.tsx';
 import { Step12 } from './s12.tsx';
 import { Step21 } from './s21.tsx';

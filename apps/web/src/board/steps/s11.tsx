@@ -142,7 +142,6 @@ export function Step11({ board, step, bench, setBench, reload, goStep }: StepPro
       onTab={(id) => setTab(id as Tab)}
       tabsLabel="1.1 내 작업대 도구"
       ratio="mine"
-      mineTitle="내 작업대 — 나만 보여요 · 무료"
       mine={
         <div className="s11">
           {loadErr && <p className="err">{loadErr}</p>}

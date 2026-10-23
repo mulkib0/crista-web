@@ -37,7 +37,7 @@ import {
 import { api, ApiFailure, newRequestId } from '../../api.ts';
 import { money } from '../../ink.ts';
 import { By } from '../parts.tsx';
-import { AiBadge, DocSectionEditor, Panel, ReasonChips, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
+import { DocSectionEditor, Panel, ReasonChips, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
 import { Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
 import './s32.css';
 
@@ -86,7 +86,7 @@ export function Step32(props: StepProps) {
     return { id, no: meta.no, label: meta.label, ...(sub ? { sub } : {}), ...(mark ? { mark } : {}) };
   });
 
-  const layout = { ...props, tabs, tab, onTab: (id: string) => setTab(id as Tab), doneWhen: U.doneWhen, ratio: 'even' as const };
+  const layout = { ...props, tabs, tab, onTab: (id: string) => setTab(id as Tab), ratio: 'even' as const };
   if (!d) {
     return (
       <StepLayout
@@ -251,7 +251,6 @@ function ProtocolMine({ d, reload, myName }: BodyProps) {
   return (
     <>
       <Panel title={U.settings}>
-        <p className="hint">{U.settingsHint}</p>
         <SettingsForm d={d} reload={reload} />
       </Panel>
       <Panel title={U.sectionsTitle}>
@@ -398,21 +397,18 @@ function ProtocolTeam({ d, reload }: BodyProps) {
             </ul>
             <p className="hint">{p.status === 'reviewing' ? '▸ ' : ''}{C.statusHint[p.status]}</p>
             {p.changedSinceApproval && <p className="hint">! {C.messages.changed}</p>}
-            <p className="mini muted">{U.aiNotice}</p>
             {act.error && <p className="err">{act.error}</p>}
             <div className="acts">
               <button className="btn pri" type="button" disabled={act.busy || p.status === 'reviewing' || !d.unlocked} onClick={() => void act.run(async () => {
                 await api.post<ReviewRequestResponse>(PRECLINICAL_API.review, { expectedVersion: p.version });
                 reload();
               })}>{U.requestReview}</button>
-              <span className="note">{U.reviewFree}</span>
             </div>
           </Panel>
           {p.review && (
             <Panel title={U.review} sub={` · ${U.docVersion(p.review.docVersion)}`} tone={p.review.verdict === 'pass' ? 'good' : p.review.verdict === 'pending' ? 'hi' : 'warn'}>
               <p className="s32-verdict">
                 <b>{p.review.verdict === 'pass' ? '✓' : p.review.verdict === 'pending' ? '▸' : '!'} {U.verdict[p.review.verdict]}</b>
-                {p.review.model && <AiBadge model={p.review.model} />}
               </p>
               {p.review.verdict === 'pending' && <p className="hint" role="status">{p.review.stage === 'deliberating' ? DOC_REVIEW_COPY.deliberating(p.review.releaseGameDay) : U.reviewPending}</p>}
               {p.review.stage === 'auto' && <p className="hint">{DOC_REVIEW_COPY.auto}</p>}
@@ -466,7 +462,6 @@ function AltMine({ d, reload }: BodyProps) {
   const act = useAction();
   return (
     <Panel title={C.steps.alt.label} sub={` · ${money(d.fees.altCents)} · ${U.gameDays(PRECLINICAL_FEES.altAssayGameDays)}`}>
-      <p className="hint">{U.altNote}</p>
       <dl className="s32-assays">
         {(['herg', 'liver'] as const).map((a) => (
           <div key={a}>
@@ -527,7 +522,6 @@ function AltTeam({ d }: BodyProps) {
       </Panel>
       <Panel title={U.saved} tone="good">
         <p className="s32-big"><b>{U.animals(d.report.totalSaved)}</b></p>
-        <p className="hint">{U.savedHint}</p>
         <ul className="s32-rules">
           {d.report.rows.filter((r) => r.excludedByAlt).map((r) => <li key={r.patentId} className="ok"><b aria-hidden="true">✓</b> {r.codeName} · {U.animals(r.animalsSaved)}</li>)}
         </ul>
@@ -545,7 +539,6 @@ function AnimalMine({ d, reload }: BodyProps) {
   return (
     <>
       <Panel title={U.runAnimal} sub={` · ${money(d.fees.animalCents)} · ${U.gameDays(PRECLINICAL_FEES.animalStudyGameDays)}`}>
-        <p className="hint">{U.runInfo}</p>
         <details className="s32-bundle">
           <summary>{U.bundleTitle}</summary>
           <ul>{U.bundle.map((line) => <li key={line}>{line}</li>)}</ul>
@@ -572,12 +565,10 @@ function AnimalMine({ d, reload }: BodyProps) {
                 );
               })}
             </ul>
-            {approved.patentIds.some((id) => runFor(d, id, 'animal_study')) && <p className="mini muted">{C.messages.rerun}</p>}
           </>
         )}
       </Panel>
       <Panel title={U.calc}>
-        <p className="hint">{C.calc.intro}</p>
         <ol className="s32-formula mini">{C.calc.formula.map((line) => <li key={line}>{line}</li>)}</ol>
         {studies.length === 0 ? <p className="empty">{U.noStudy}</p> : <CalcForm d={d} reload={reload} studies={studies} />}
       </Panel>
@@ -844,7 +835,6 @@ function PickTeam({ d, reload, myName }: BodyProps) {
           maxLength={PRECLINICAL_LIMITS.reflectionMax}
           rows={2}
         />
-        <p className="mini muted">{U.privacy}</p>
       </Panel>
     </>
   );

@@ -397,12 +397,12 @@ export const SELECTION_COPY = {
     radarWarn: '한 축이 분홍 띠를 벗어났지만 올릴 수는 있어요. 물성 레이더에서 어느 축이 벗어났는지 확인해 두세요.',
     radarBlock: (n: number) => `물성 레이더에서 ${n}개 축이 분홍 띠를 벗어났어요. 물성 레이더 도구를 열어 어느 축이 약점인지 다시 살펴보세요.`,
     indOk: (s: string, min: number) =>
-      `경구 50 mg 기준 예상 안전 S(흔들림 전 예상치)가 ${s}로 IND(임상시험 계획 승인 신청) 기준(${min}) 이상이라 올릴 수 있어요.`,
+      `경구 50 mg 기준 예상 안전 S가 ${s}로 IND(임상시험 계획 승인 신청) 기준(${min}) 이상이라 올릴 수 있어요.`,
     indBlock: (s: string, min: number) =>
-      `경구 50 mg 기준 예상 안전 S(흔들림 전 예상치)가 ${s}로 IND 안전 기준(${min})보다 낮아요. 신호등 표나 점수 분해 사슬에서 안전 점수가 깎인 이유를 확인해 보세요.`,
-    topOk: (e: string) => `경구 50 mg 기준 예상 효능 E(흔들림 전 예상치)가 ${e}로 우리 모둠 2.2 결과 가운데 1위라 올릴 수 있어요.`,
+      `경구 50 mg 기준 예상 안전 S가 ${s}로 IND 안전 기준(${min})보다 낮아요. 신호등 표나 점수 분해 사슬에서 안전 점수가 깎인 이유를 확인해 보세요.`,
+    topOk: (e: string) => `경구 50 mg 기준 예상 효능 E가 ${e}로 우리 모둠 2.2 결과 가운데 1위라 올릴 수 있어요.`,
     topBlock: (e: string, best: string) =>
-      `경구 50 mg 기준 예상 효능 E(흔들림 전 예상치)가 ${e}로 우리 모둠 1위(${best})보다 낮아요. 신호등 표에서 모둠 분자들의 E 값을 다시 견주어 보세요.`,
+      `경구 50 mg 기준 예상 효능 E가 ${e}로 우리 모둠 1위(${best})보다 낮아요. 신호등 표에서 모둠 분자들의 E 값을 다시 견주어 보세요.`,
   },
   origin: {
     this: '이 표적을 겨냥해 만든 계열',
@@ -446,7 +446,6 @@ export const SELECTION_COPY = {
     /** 눈금 그림 안의 짧은 이름표(풀이는 위 목록). */
     gaugeTag: { histamine: '히스타민', p0: 'p = 0 선', median: '라이브러리 가운데값', ref: '기준 약', p1: 'p = 1 선', top: '라이브러리 1위' },
     cardsQ: '도킹 점수는 높은데 원래 다른 병을 고치려고 만든 약은 아닌가요?',
-    cardsNote: '도킹 점수는 컴퓨터가 계산한 예측값이지 실제 실험으로 잰 값이 아니에요. 점수가 1위라도 그 분자의 출신(원래 겨냥한 표적과 기전)을 함께 확인해야 해요.',
     cardsBand: (rank: number, mech: string) => `도킹 ${rank}위지만 원래 ${mech} 약`,
     cardsStamp: '점수 1위 ≠ 주력 후보',
     stairsQ: 'ΔG 가 0.7 kcal/mol 다르면 주머니 절반을 채우는 농도는 몇 배 달라질까요? ‘조금 약한’ 후보는 농도가 얼마나 더 필요할까요?',
@@ -460,14 +459,9 @@ export const SELECTION_COPY = {
         ? `기준 약보다 ${gap} kcal/mol 더 깊어요. 주머니 절반을 채우는 데 필요한 농도가 약 ${n}배 낮아요.`
         : `기준 약보다 ${gap} kcal/mol 더 얕아요. 주머니 절반을 채우려면 약 ${n}배 더 높은 농도가 필요해요.`,
     edit: {
-      smilesGuide: '원본 분자의 SMILES(분자 구조를 글자로 적은 식)를 조금 고쳐 새로운 변형체를 만들어 보세요.',
       chips: ['방향족 아민 → 아세트아마이드', '니트로 → 시아노', '염기성 아민 → 아마이드', '하이드록시 도입', '플루오린 도입', '메톡시 제거'],
       chipsHead: '이렇게 바꿔 볼 수 있어요',
       chipReady: '작용기(분자의 성질을 결정하는 원자 묶음) 칩 자동 변환은 아직 준비 중이에요. 지금은 위 SMILES 칸을 직접 고쳐서 물성 미리보기와 재도킹을 쓸 수 있어요.',
-      preview: '무료 물성 미리보기 — 도킹하기 전에 바뀐 분자의 물성과 위험 신호를 무료로 먼저 확인해요.',
-      previewLimit: '무료 물성 미리보기는 우리 모둠 전체에서 1분에 20회까지 쓸 수 있어요.',
-      redockCost: (cost: string) => `미리보기를 마친 변형체를 다시 도킹하면 도킹 1회 비용(${cost})이 들어요.`,
-      compare: '원본 · 변형체를 함께 견주는 표예요. 모둠원이 도킹한 모든 분자의 담당자 · ΔG · 기준 약 대비 결합력 · 상호작용 잔기 · 부모 분자를 한눈에 견주어 봐요.',
     },
     empty: '아직 도킹을 끝낸 분자가 없어요. 도킹 결과가 나오면 결과 읽기 도구 3종이 열려요.',
     queueTitle: '2.2 대기열',
@@ -492,8 +486,8 @@ export const SELECTION_COPY = {
     ui: {
       loading: '불러오는 중…',
       tabsLabel: '2.1 도구',
-      mineEdit: '내 작업대 — 구조 바꿔 다시 도킹 · 무료 미리보기',
-      mineRead: '내 작업대 — 결과 읽기(나만 보여요 · 무료)',
+      mineEdit: '내 작업대 — 구조 바꿔 다시 도킹',
+      mineRead: '내 작업대 — 결과 읽기',
       teamTitle: '모둠 공유 — 도킹 비교표 · 2.2 대기열',
       loadTitle: '불러오기',
       loadSub: '내 담당 후보 · 기준 약',
@@ -539,7 +533,6 @@ export const SELECTION_COPY = {
   },
   s22: {
     tabs: { radar: '물성 레이더', lights: '신호등 표', trip: '몸속 여행 지도', chain: '점수 분해 사슬', run: 'ADMET 실행' },
-    preShake: '흔들림 전 예상치 — 실제 임상 결과는 흔들림(시험마다 무작위로 생기는 차이) 때문에 이 값과 달라질 수 있어요.',
     empty: '아직 ADMET 예측을 끝낸 분자가 없어요. 대기열 분자로 ADMET 을 실행하면 리드 읽기 도구 4종이 열려요.',
     radarQ: '이 분자의 약점은 여섯 축 가운데 어느 축인가요?',
     radarNote: '분홍 띠는 먹는 약이 흔히 있는 물성 범위예요(참고). 띠 안쪽이나 바깥쪽으로 벗어난 축이 그 분자의 약점이에요.',
@@ -548,8 +541,6 @@ export const SELECTION_COPY = {
     radarAllIn: '여섯 축 모두 분홍 띠 안에 있어요',
     radarOut: (n: number, axes: string) => `분홍 띠 밖 ${n}곳: ${axes}`,
     lightsQ: '표적에는 잘 붙는데 빨간 위험 신호(■)가 켜진 분자는 어느 것인가요?',
-    lightsNote:
-      '대기열 분자와 기준 약을 한 줄씩 놓고 결합력 p · 신호 5개 · 효능 E · 안전 S 를 견주어 봐요. E · S 는 경구(입으로 먹는 약) 50 mg · 첫 환자군 기준의 흔들림 전 예상치예요. 신호는 물성 규칙으로 빠르게 거르는 망이라 실제 실험과 다를 수 있어요.',
     /** 표 아래 범례 — 칩(짧은 이름)은 줄바꿈이 안 되니 풀이(`*What`)는 칩 옆 글로 둔다. */
     lightsLegend: {
       good: '좋아요',
@@ -559,8 +550,6 @@ export const SELECTION_COPY = {
       badWhat: '흡수 나쁨 · 뇌 노출 낮음(CNS 표적일 때) · 경피 부적합 · 위험 높음',
     },
     tripQ: '이 분자는 우리 몸 어디를 지나면서 효능을 잃거나 안전 점수가 깎이나요?',
-    tripNote:
-      '분자 하나를 골라 입에서 표적과 장기까지 이동하는 길을 따라가 봐요. 막대 길이는 그 길로 지나가는 약의 양(계산값)을 뜻해요. 장기마다 효능 E와 안전 S(흔들림 전 예상치)가 얼마나 깎이는지 보여 줘요.',
     trip: {
       mouth: '입 — 먹어요',
       mouthDose: (dose: number) => `경구 정제 ${dose} mg`,
@@ -579,8 +568,6 @@ export const SELECTION_COPY = {
       cut: (v: string) => `${v} 깎임`,
     },
     chainQ: '사슬의 어느 칸 하나가 전체 효능이나 안전 점수를 크게 끌어내리나요?',
-    chainNote:
-      '효능 E와 안전 S(흔들림 전 예상치)를 만드는 곱셈 · 뺄셈 블록을 펼쳐 놓았어요. 제형(경구 · 정맥주사 · 경피)과 용량(10 · 50 · 100 mg) 단추를 눌러 어느 칸이 바뀌는지 실험해 보세요. 정맥주사는 바로 피로 들어가 흡수 A가 1이 되지만, 한 번에 높은 농도가 몰려 제형 계수 K가 1.25로 커져요.',
     chain: {
       form: '제형',
       dose: '용량',
@@ -612,8 +599,7 @@ export const SELECTION_COPY = {
     runTitle: '2.1 대기열',
     runSub: (n: number, cost: string) => `${n}개 · 분자마다 ${cost}`,
     runBy: (name: string) => `담은 사람 ${name}`,
-    aiTitle: 'ADMET-AI 레이더 (참고 · AI 예측)',
-    aiNote: '이 패널은 AI가 예측한 참고 자료예요. 근거 칩 판정이나 점수 계산에는 쓰지 않아요.',
+    aiTitle: 'ADMET-AI 레이더',
     candTitle: '특허 후보',
     candSub: (n: number, max: number, per: number) => `${n} / ${max}개 · 1인 ${per}개 한도`,
     candEmpty: '아직 올린 특허 후보가 없어요. 리드 읽기 도구 4종으로 비교한 뒤 근거 칩을 골라 올려 보세요.',
@@ -634,7 +620,7 @@ export const SELECTION_COPY = {
       tabsLabel: '2.2 도구',
       queueTab: (n: number) => `대기열 ${n}`,
       mineRun: '내 작업대 — ADMET 로 볼 분자(2.1 대기열)',
-      mineRead: '내 작업대 — 리드 읽기(나만 보여요 · 무료)',
+      mineRead: '내 작업대 — 리드 읽기',
       teamTitle: '모둠 공유 — 특허 후보 · ADMET 비교',
       choose: '— 고르기 —',
       reasonOf: (reason: string) => `근거 · ${reason}`,

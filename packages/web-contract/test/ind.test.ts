@@ -154,7 +154,6 @@ describe('칸 · 문구 묶음', () => {
       assert.ok(IND_SECTIONS.some((s) => s.key === c.section && s.kind === 'text'), c.section);
     }
     for (const p of IND_PARTS) assert.ok(IND_COPY.parts[p].title);
-    assert.equal(IND_COPY.overview.summary.length, 3);
   });
 });
 
@@ -179,6 +178,6 @@ describe('검토 · 수리(F33 적대적 검토)', () => {
     assert.match(IND_COPY.toolNotes.peakLimit, /\{min\}/);
     assert.match(IND_COPY.tools.lab.howTo, /\{ind\}.*\{p1\}.*\{p2e\}.*\{p3e\}.*\{p3s\}/);
     assert.match(IND_COPY.tools.plane.question, /\{ind\}/);
-    for (const text of [IND_COPY.doc.approvedNote, ...IND_COPY.overview.more.map((m) => m.v), IND_COPY.tools.lab.howTo]) assert.ok(!/S ≥ \d/.test(text), text);
+    for (const text of [IND_COPY.doc.approvedNote, IND_COPY.tools.lab.howTo]) assert.ok(!/S ≥ \d/.test(text), text);
   });
 });

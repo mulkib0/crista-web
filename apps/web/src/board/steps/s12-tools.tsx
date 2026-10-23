@@ -91,7 +91,6 @@ export function CriteriaLab({ ds, mission, gene, state, setState, onSend, names 
   return (
     <div className="s12-lab">
       <Panel title={C.lab.title}>
-        <p className="s12-p muted">{C.lab.intro}</p>
         <div className="s12-presets" role="group" aria-label={C.lab.presets}>
           <span className="lab">{C.lab.presets}</span>
           <button type="button" className="btn sm" onClick={() => setState(() => LAB_PRESETS.advice(mission))}>{C.lab.presetAdvice}</button>
@@ -116,7 +115,6 @@ export function CriteriaLab({ ds, mission, gene, state, setState, onSend, names 
         </div>
         <div className="acts">
           <button type="button" className="btn pri" onClick={() => onSend(crit)} disabled={Object.keys(crit).length === 0}>{C.lab.send}</button>
-          <span className="note">{C.coach.meetingNote}</span>
         </div>
       </Panel>
       <Scoreboard f={f} title={C.scoreboard.mine} />
@@ -132,7 +130,6 @@ export function CriteriaLab({ ds, mission, gene, state, setState, onSend, names 
             })}
           </ol>
         ) : <p className="empty">{C.lab.none}</p>}
-        <p className="mini muted">{C.scoreboard.note}</p>
       </Panel>
     </div>
   );
@@ -222,7 +219,6 @@ export function ChemMap({ ds, state, setState, onTake }: {
   return (
     <div className="s12-map">
       <Panel title={C.map.title}>
-        <p className="s12-p muted">{C.map.intro}</p>
         <div className="row">
           <label className="mini" htmlFor="map-x">{C.map.x}</label>
           <select id="map-x" className="txt s12-sel" value={ax} onChange={(e) => setState((s) => ({ ...s, x: e.target.value as Axis, box: null }))}>
@@ -347,7 +343,6 @@ export function JudgeCards({ ds, mission, gene, state, setState }: {
   return (
     <div className="s12-judge">
       <Panel title={C.briefing.warmup}>
-        <p className="s12-p muted">{C.judge.intro}</p>
         <div className="s12-cards">
           {cards.map(({ c, story }) => {
             const fails = screenFails(c, adv);

@@ -33,16 +33,13 @@
 .s42-kv dt { color: var(--muted); font-size: 12px; }
 .s42-kv dd { margin: 0; overflow-wrap: anywhere; }
 
-/* 증거 줄(NDA 요약 · 허가증) — 오른쪽 단계 꼬리표 */
+/* 증거 줄(NDA 요약 · 허가증) */
 .s42-dl { margin: 0; display: grid; border-top: 1px solid var(--line-strong); }
-.s42-dl-r { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) auto; gap: 0 10px; padding: 6px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.s42-dl-r { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 0 10px; padding: 6px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
 .s42-dl-r dt { color: var(--muted); font-size: 12px; }
 .s42-dl-r dd { margin: 0; font-size: 13px; overflow-wrap: anywhere; }
-.s42-tags { display: flex; gap: 3px; justify-content: flex-end; flex-wrap: wrap; }
-.s42-tag { font-family: var(--mono); font-size: 10.5px; padding: 1px 5px; background: var(--film); border: 1px solid var(--line-strong); white-space: nowrap; }
 @media (max-width: 520px) {
-  .s42-dl-r { grid-template-columns: minmax(0, 1fr) auto; }
-  .s42-dl-r dt { grid-column: 1 / -1; }
+  .s42-dl-r { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ⑤ 결과 */

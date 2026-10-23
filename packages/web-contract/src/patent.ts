@@ -9,7 +9,7 @@
  *
  * 학생에게 보이는 문구는 `PATENT_COPY` 한곳에 모았다 — §5.12 대로 Gemini 4 Argon (High) 초안을 Claude 가 검토해 반영했다(식별자 · 숫자 · 규칙 값은 이 객체 밖).
  */
-import { cristaToCents, formatCrista, INITIAL_FUND_CRISTA } from './money.ts';
+import { cristaToCents } from './money.ts';
 import type { DocReviewView, DocSectionView, ReviewChecklistItem, RuleFinding } from './review.ts';
 import type { Avatar } from './rules.ts';
 
@@ -392,18 +392,8 @@ export function smilesDiff(a: string, b: string): { start: number; end: number }
 export const fillPatentCopy = (text: string, values: Record<string, string | number | null | undefined>): string =>
   text.replace(/\{(\w+)\}/g, (m, k: string) => (values[k] === undefined || values[k] === null ? m : String(values[k])));
 
-/** 출원료 3건 · 초기 연구비 대비 비율(§5.8.1 '비용' 근거) — 숫자는 규칙 값에서 만든다. */
-const FEE_THREE = formatCrista(PATENT_FEE_CRISTA * MAX_PATENTS_DEFAULT);
-const FEE_THREE_PCT = `${((PATENT_FEE_CRISTA * MAX_PATENTS_DEFAULT * 100) / INITIAL_FUND_CRISTA).toLocaleString('en-US', { maximumFractionDigits: 1 })}%`;
-
 export const PATENT_COPY = {
   tabs: { pick: '출원할 후보 고르기', code: '코드명 해부도', doc: '출원서 쓰기', review: '심사 요청', ledger: '원장 등재' },
-  /** 머리 섬의 '완료 조건' 칩(한 줄) — 풀어 쓴 글은 `doneWhenLong`. */
-  doneWhen: '유효 특허 1건 이상',
-  doneWhenLong: '유효하게 등록된 물질특허가 1건 이상 있으면 이 단계를 마치고 3.2 전임상 · 동물실험으로 넘어갈 수 있어요.',
-  summary:
-    '2.2 에서 고른 특허 후보에 우리 코드명을 붙여요. 그다음 물질특허(새 분자 자체를 지키는 특허) 출원서(특허를 신청하는 서류)를 써요. 심사는 세 가지를 봐요. 새 물질인가, 학급에 같은 물질의 특허가 없는가, 효과 주장이 숫자와 맞는가예요. 받아들여지면 출원료를 내고 학급 특허 원장(등록된 특허를 순서대로 적은 공개 목록)에 올라가요. 유효 특허가 있어야 3.2 전임상 · 동물실험으로 갈 수 있어요.',
-  cardGuide: '2.2 단계에서 추린 후보 물질의 결합 점수와 ADMET(흡수 · 분포 · 대사 · 배설 · 독성) 신호를 확인하고 특허로 지킬 후보를 골라 보세요.',
   slots: (used: number, max: number) => `모둠 출원 칸 ${used} / ${max}(받아들여짐 + 심사 중)`,
   noCandidates: '아직 특허를 출원할 후보 물질이 없어요. 2.2 단계에서 후보를 먼저 골라 주세요.',
   knownChip: '이미 알려진 물질',
@@ -413,7 +403,6 @@ export const PATENT_COPY = {
   fingerprintNote: (ref: string) =>
     `SMILES(분자를 한 줄 글자로 적은 것)를 글자마다 막대로 세웠어요. 기준 약(${ref})과 다른 글자만 형광으로 칠했어요. 원자 하나라도 다른 새 분자여야 특허를 받을 수 있어요.`,
   sameAsRef: (ref: string) => `기준 약(${ref})과 SMILES 글자가 모두 같아요. 이미 알려진 물질이라 특허를 받을 수 없어요.`,
-  codeHead: '코드명을 이름표 · 이음표 · 번호 세 조각으로 나눠 조각마다 뜻을 적어요. 그 아래에 기전(약이 몸속에서 일하는 방식) 한 줄을 채워요.',
   formatLine: "형식: 영문 대문자 3~4자 + '-' + 숫자 3자리. 받아들여지면 바꿀 수 없어요.",
   /** 코드명 문제 — `{ticker}` · `{code}` 는 `codeProblemText` 가 채운다(서버 오류 글도 같은 함수). */
   codeProblem: {
@@ -440,7 +429,6 @@ export const PATENT_COPY = {
     num: '번호 — 숫자 3자리로 후보 물질의 고유 번호를 붙여요(예: 101, 102).',
   },
   mechTargetGuide: (gene: string) => `우리 모둠이 고른 표적의 유전자(${gene})가 자동으로 들어가요. 지금 표적 버전의 표적과 같아야 해요.`,
-  llmNote: "조각의 뜻과 기전이 표적과 맞는지는 AI 심사관이 봐요. 예를 들어 수송체 표적에 '작용제'를 고르고 이유가 없으면 보완이에요.",
   howLabel: { selective: '선택적', reversible: '가역', irreversible: '비가역', competitive: '경쟁적' } satisfies Record<MechHow, string>,
   howDesc: {
     selective: '목표 표적({gene})에 주로 붙고 다른 단백질은 덜 건드려요.',
@@ -579,39 +567,18 @@ export const PATENT_COPY = {
   changedAfterReview: '심사 뒤 바뀜 — 심사 중이거나 심사가 끝난 뒤에 고친 칸이 있어요. 이 결과는 심사했던 글에만 해당해요. 바뀐 글로 다시 심사를 요청해 주세요.',
   precheck: '제출 전 규칙 점검 (즉시 · 무료)',
   request: '심사 요청(무료 · 받아들여지면 출원료)',
-  feeNote: (fee: string) => `심사 요청은 무료예요. 받아들여질 때만 출원료 ${fee}를 내요.`,
   abandonApp: '출원서 거두기',
   abandonPatent: '등록 특허 포기하기',
   abandonConfirm: (code: string, fee: string) =>
     `${code} 등록 특허를 포기할까요? 모둠 출원 칸은 하나 돌아와요. 낸 출원료 ${fee}는 돌려받지 못해요. 그 분자는 다른 모둠이 출원할 수 있게 돼요.`,
   withdrawConfirm: '이 출원서를 거둘까요? 이 후보로 새 출원서를 다시 만들 수 있어요. 같은 코드명은 다시 못 써요.',
   ledgerTitle: '학급 특허 원장',
-  ledgerNote: '우리 학급에서 받아들여진 물질특허를 순서대로 모은 공개 원장이에요. 같은 물질은 먼저 받아들여진 모둠 것이에요. 출원할 특허 후보가 있으면 서둘러 출원해요.',
   ledgerEmpty: '아직 등록된 특허가 없어요.',
   ledgerStatus: { active: '등록', abandoned: '포기', rejected: '거절 · 이미 있음' },
   redRowNote: '빨간 줄은 같은 물질이 다른 모둠 것으로 먼저 받아들여져 거절된 우리 출원서예요. 이 줄은 우리 화면에만 보여요. 다른 모둠 원장에는 등록 줄만 보여요.',
-  disclosureNote: '등록된 특허 분자의 구조식은 학급 원장에 공개돼요. 실제 특허도 공개되기 때문이에요. 다른 후보의 SMILES · 물성 · 점수 · 출원서 본문 · 심사 결과는 우리 모둠과 선생님만 봐요.',
-  boardNote: '등록 소식은 학급 전광판에 흘러요. 포기는 흐르지 않아요.',
   mine: '우리',
   accepted: (code: string, patentNo: string, seq: number, fee: string) =>
     `받아들여졌어요! 학급 특허 원장에 올랐어요(코드명 ${code} · 출원번호 ${patentNo}). 우리 학급에서 ${seq}번째 특허예요. 출원료 ${fee}를 냈어요.`,
-  /** 머리 섬 AI 배지의 풀이 · 심사 요청 안내. */
-  aiReview:
-    '규칙(형식 · 신규성 · 학급 중복 · 상한 · 잔액)을 서버가 먼저 판정해요. 그다음 AI 심사관(Claude)이 빠진 것과 앞뒤 안 맞는 곳을 봐요. AI 는 규칙 판정을 뒤집지 못해요. 심사는 수 초 ~ 수십 초 걸려요. 그동안 다른 칸을 써도 돼요.',
-  /** 모둠 출원 칸 상한(§5.8.1) — 풀어 주는 글. */
-  limit: {
-    guide: (used: number, max: number) => `모둠 출원 칸은 받아들여짐과 심사 중을 합쳐 최대 ${max}건이에요(권장 2~3건). 지금 ${used} / ${max}건을 쓰고 있어요.`,
-    classSetting: `상한은 선생님이 ${MAX_PATENTS_MIN}~${MAX_PATENTS_MAX}건 사이로 정해요. 짧은 수업은 2건을 권해요.`,
-    whyHead: `왜 모둠당 특허는 기본 최대 ${MAX_PATENTS_DEFAULT}건(권장 2~3건)일까요?`,
-    why: [
-      "첫째, 3.2 전임상(사람에게 쓰기 전에 세포나 동물로 안전성과 효과를 확인하는 단계)에서 후보를 견주려면 2건 이상이 필요해요. 1건이면 동물실험이 '고르기'가 아니라 '확인'이 돼요.",
-      "둘째, 실제로도 개발 후보 1개에 구조가 다른 백업(개발 후보가 실패할 때를 대비한 예비 후보) 1~2개를 두는 일이 흔해요. 백업을 늘릴수록 얻는 것은 줄어들어요. 가장 비용 효율적인 전략은 '적은 수의 백업'이에요(Stock & Molinoff 2002).",
-      "셋째, 3R 원칙(동물실험을 대체하고, 수를 줄이고, 고통을 덜어 주는 원칙) 중 '감소' 때문이에요. 동물실험은 특허 분자마다 한 묶음이에요. 묶음 크기를 '알맞게'로 고르면 82마리예요. 그래서 3건이면 246마리, 4건이면 328마리예요. 특허 상한이 곧 동물 수 상한이에요.",
-      "넷째, 같은 물질은 선착순이에요. 상한이 크면 인기 분자를 '막아 두기'로 출원하는 전략이 생겨요. 8모둠 × 3 = 24줄이면 원장도 한눈에 읽혀요.",
-      `다섯째, ${MAX_PATENTS_DEFAULT}건이면 출원료가 ${FEE_THREE}예요. 초기 연구비 ${formatCrista(INITIAL_FUND_CRISTA)}의 ${FEE_THREE_PCT}라 부담되지만 감당할 수 있어요.`,
-      '여섯째, 4명이 출원서 3건의 칸을 나누면 1인 1건을 맡아요. 남은 1명은 해부도와 검토를 맡아요.',
-    ],
-  },
   /** 화면 틀 문구(s31.tsx) — 단추 · 패널 제목 · 표 머리 · 화면 낭독기 글. */
   ui: {
     pickFirst: '출원서를 먼저 골라요',
@@ -624,7 +591,6 @@ export const PATENT_COPY = {
     fingerprintAria: (name: string, n: number) => `${name} — 기준 약과 다른 글자 ${n}자`,
     legend: { c: 'C · c 탄소(소문자 c 는 고리 속 방향족 탄소 — 고리 전체가 전자를 고르게 나눠 가진 탄소)', n: 'N 질소', o: 'O 산소', x: '할로젠', hit: '▼ 형광 = 기준 약과 다른 곳' },
     feeBalance: (fee: string, balance: string) => `출원료 ${fee} · 잔액 ${balance}`,
-    balance: (balance: string) => `잔액 ${balance}`,
     slotUsed: '사용',
     slotEmpty: '빈 칸',
     ourApps: '우리 출원서',
@@ -645,7 +611,6 @@ export const PATENT_COPY = {
     actionBlank: '(무엇을 하나)',
     codeSummaryNote: (codes: string) => `다른 모둠과는 이름표(티커)가 달라서 코드명이 겹치지 않아요. 우리 모둠이 쓴 코드명: ${codes || '없음'}`,
     docHead: '출원서 칸',
-    docIntro: '이 출원서는 특허법 시행규칙 [별지 제15호서식] 명세서 틀을 학생용으로 줄인 거예요. 모둠원이 칸을 나눠 맡아 쓰고, 서로 다른 칸은 동시에 저장돼요. 서버가 채운 근거 자료는 고칠 수 없는 칸으로 따로 보여요.',
     anatomyTitle: '5.01 출원서 해부',
     evidence: (admet: string, docking: string | null) => `ADMET ${admet}${docking ? ` · 도킹 ${docking}` : ''}`,
     srFinding: { reject: '거절', revise: '보완', ok: '통과' },
@@ -656,8 +621,8 @@ export const PATENT_COPY = {
     resultTitle: '특허 심사 결과판',
     noReview: '아직 심사를 요청하지 않았어요.',
     rulesHead: '서버 규칙 검사 결과',
-    itemsTitle: 'AI 심사관의 칸별 지적',
-    summaryHead: 'AI 심사관의 종합 피드백',
+    itemsTitle: '심사관의 칸별 지적',
+    summaryHead: '심사관의 종합 피드백',
     teacherNote: (note: string) => `선생님 메모 — ${note}`,
     ledgerRows: (n: number) => `${n}줄`,
     ledgerCols: { seq: '순서', no: '출원번호', applicant: '출원인', code: '코드명', target: '표적 · 질환', structure: '구조식', filed: '출원일', status: '상태' },

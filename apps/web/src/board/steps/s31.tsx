@@ -32,7 +32,7 @@ import {
 import { api, ApiFailure, message } from '../../api.ts';
 import { ink, money } from '../../ink.ts';
 import { By } from '../parts.tsx';
-import { AiBadge, Confirm, DocSectionEditor, Panel, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
+import { Confirm, DocSectionEditor, Panel, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
 import { currentTarget, Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
 import './s31.css';
 
@@ -102,11 +102,10 @@ export function Step31(props: StepProps) {
   }));
 
   const reloadSoon = () => live.reload();
-  const head = data ? <span className="chip">{C.slots(data.used, data.maxPatentsPerTeam)}</span> : null;
 
   if (!data) {
     return (
-      <StepLayout {...props} doneWhen={C.doneWhen} tabs={tabs} tab={tab} onTab={(id) => setTab(id as Tab)}
+      <StepLayout {...props} tabs={tabs} tab={tab} onTab={(id) => setTab(id as Tab)}
         team={<p className={live.error ? 'err' : 'empty'}>{live.error ? message(live.error) : C.ui.loading}</p>} />
     );
   }
@@ -134,8 +133,6 @@ export function Step31(props: StepProps) {
   return (
     <StepLayout
       {...props}
-      doneWhen={C.doneWhen}
-      headExtra={<>{head}<AiBadge title={C.aiReview} /></>}
       tabs={tabs}
       tab={tab}
       onTab={(id) => setTab(id as Tab)}
@@ -160,7 +157,6 @@ function PickBench({ data, refSmiles, refName, onOpen, reload }: { data: Patents
   if (data.candidates.length === 0) return <Panel title={C.tabs.pick}><p className="empty">{C.noCandidates}</p></Panel>;
   return (
     <>
-      <p className="hint">{C.cardGuide}</p>
       {act.error && <p className="err">{act.error}</p>}
       {data.candidates.map((c) => (
         <Panel key={c.admetJobId} title={c.label ?? c.admetJobId.slice(0, 8)} sub={c.dockingKcal !== null ? `ΔG ${c.dockingKcal.toFixed(2)}` : undefined} tone={c.known ? 'bad' : undefined}>
@@ -238,12 +234,6 @@ function SlotsPanel({ data, selected, onOpen }: { data: PatentsResponse; selecte
         <ol className="s31-slots" aria-label={C.slots(data.used, data.maxPatentsPerTeam)}>
           {slots.map((on, i) => <li key={i} className={on ? 'on' : ''}>{on ? '■' : '□'}<span className="sr">{on ? C.ui.slotUsed : C.ui.slotEmpty}</span></li>)}
         </ol>
-        <p className="hint">{C.limit.guide(data.used, data.maxPatentsPerTeam)} {C.feeNote(money(data.feeCents))}</p>
-        <details className="s31-why">
-          <summary className="mini">{C.limit.whyHead}</summary>
-          <ul className="mini">{C.limit.why.map((w) => <li key={w}>{w}</li>)}</ul>
-          <p className="mini muted">{C.limit.classSetting}</p>
-        </details>
       </Panel>
       <Panel title={C.ui.ourApps} sub={C.ui.count(data.applications.length)}>
         {data.applications.length === 0 ? <p className="empty">{C.ui.none}</p> : (
@@ -292,7 +282,6 @@ function CodeBench({ data, app, myName, reload }: { data: PatentsResponse; app: 
   return (
     <>
       <Panel title={C.tabs.code}>
-        <p className="hint">{C.codeHead}</p>
         <CodeAnatomy ticker={data.ticker} num={num} problems={num ? check.problems : []} />
         <ul className="s31-pieces mini">
           <li>{C.pieceDesc.tick(data.ticker)}</li>
@@ -330,7 +319,6 @@ function CodeBench({ data, app, myName, reload }: { data: PatentsResponse; app: 
         <ChoiceChips app={app} keyName="mech_action" reload={reload} />
         <DocSectionEditor id="s31-why" label={C.sectionLabel.mech_why} guide={fill(C.sectionGuide.mech_why)} placeholder={fill(C.sectionExample.mech_why)} value={sectionValue(app, 'mech_why')} save={save('mech_why')}
           staleOf={staleOf} myName={myName} maxLength={PATENT_SECTIONS.mech_why.max} rows={2} readOnly={!isEditable(app)} />
-        <p className="hint">{C.llmNote}</p>
       </Panel>
     </>
   );
@@ -427,7 +415,6 @@ function DocBench({ app, members, myName, reload }: { app: PatentApplicationView
     <>
       {changed && <p className="hint">↻ {changed}</p>}
       <Panel title={C.ui.docHead}>
-        <p className="hint">{C.ui.docIntro}</p>
         {DOC_KEYS.map((key) => (
           <DocSectionEditor key={key} id={`s31-${key}`} label={C.sectionLabel[key]} guide={fill(C.sectionGuide[key])} placeholder={fill(C.sectionExample[key])} value={sectionValue(app, key)} save={save(key)}
             staleOf={staleOf} myName={myName} maxLength={PATENT_SECTIONS[key].max} rows={key === 'effect' || key === 'background' ? 4 : 2} readOnly={ro} />
@@ -526,8 +513,7 @@ function ReviewBench({ data, app, reload }: { data: PatentsResponse; app: Patent
         {pre && fails.length === 0 && <p className="hint good">✓ {C.rule.allOk}</p>}
       </Panel>}
       {(reviewable || app.status === 'reviewing') && <Panel title={C.request}>
-        <p className="hint">{C.aiReview}</p>
-        <p className="hint">{C.feeNote(money(data.feeCents))} ({C.ui.balance(money(data.balanceCents))})</p>
+        <p className="hint">{C.ui.feeBalance(money(data.feeCents), money(data.balanceCents))}</p>
         <div className="acts">
           <button type="button" className="btn pri" disabled={!reviewable || act.busy}
             onClick={() => void act.run(async () => {
@@ -577,7 +563,7 @@ function ReviewResult({ data, app, onLedger }: { data: PatentsResponse; app: Pat
         <FindingList findings={r.ruleFindings} />
       </Panel>
       {(r.items.length > 0 || r.feedback) && (
-        <Panel title={<>{C.ui.itemsTitle} <AiBadge model={r.model ?? undefined} /></>}>
+        <Panel title={C.ui.itemsTitle}>
           <ul className="s31-find">
             {r.items.map((it) => (
               <li key={it.id} className={it.status === 'ok' ? 'ok' : 'bad'}>
@@ -601,8 +587,6 @@ function LedgerPanel({ rows }: { rows: PatentLedgerRow[] }) {
   const L = C.ui.ledgerCols;
   return (
     <Panel title={C.ledgerTitle} sub={C.ui.ledgerRows(rows.filter((r) => r.kind === 'patent').length)}>
-      <p className="hint">{C.ledgerNote}</p>
-      <p className="hint">{C.disclosureNote} {C.boardNote}</p>
       {rows.some((r) => r.kind === 'rejected') && <p className="hint bad">{C.redRowNote}</p>}
       {rows.length === 0 ? <p className="empty">{C.ledgerEmpty}</p> : (
         <div className="s31-led">

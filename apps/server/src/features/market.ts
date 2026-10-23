@@ -52,6 +52,7 @@ import {
   HEADLINE_VERSION,
   LISTING_PRICE_USD,
   MARKET_COPY,
+  processStepLabel,
   MARKET_EXTRA_BANDS,
   OPEN_KIND_PATTERN,
   PROCESS_COMMON,
@@ -60,7 +61,6 @@ import {
   PROJECTOR_RECENT,
   SHARES_OUTSTANDING,
   STEP_IDS,
-  STEP_META,
   antibodyBand,
   formatCapM,
   jitteredPct,
@@ -377,8 +377,6 @@ export interface ProcessScoreInput {
   source?: 'feature' | 'market';
 }
 
-const stepTitle = (stepId: string): string =>
-  (STEP_META as Record<string, { title: string } | undefined>)[stepId]?.title ?? COPY.final.antibodyStep(stepId.replace(/^antibody_/, '').replace(/_/g, ' '));
 
 const cut140 = (s: string): string => ([...s].length > 140 ? `${[...s].slice(0, 139).join('')}…` : s);
 
@@ -435,7 +433,7 @@ async function postProcessScoreInner(
     classId: input.classId,
     teamId: input.teamId,
     kind: 'process',
-    headline: cut140(COPY.process.headline(ticker, input.stepId, stepTitle(input.stepId), facts)),
+    headline: cut140(COPY.process.headline(ticker, processStepLabel(input.stepId), facts)),
     public: { ticker, step: input.stepId, facts: facts.join(' · ') },
     idemKey: `process:${input.teamId}:${input.stepId}`,
     gameDay: input.gameDay ?? (await currentGameDay(tx, input.classId)),

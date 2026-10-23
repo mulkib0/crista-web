@@ -6,13 +6,6 @@
   --s33-td: #b06a00;
 }
 
-/* ── 이 단계에서 하는 일 ── */
-.s33-ov .s33-one { margin: 0 0 8px; font-family: var(--serif); font-size: 15px; line-height: 1.5; }
-.s33-three { margin: 0 0 10px; padding-left: 1.3em; display: grid; gap: 4px; font-size: 13px; line-height: 1.5; }
-.s33-more { margin: 10px 0 0; display: grid; gap: 8px; }
-.s33-more div { display: grid; grid-template-columns: minmax(84px, max-content) minmax(0, 1fr); gap: 2px 12px; }
-.s33-more dt { font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 2px; }
-.s33-more dd { margin: 0; font-size: 13px; line-height: 1.5; }
 .s33-q { margin: 0 0 10px; font-family: var(--serif); font-size: 14px; }
 
 /* ── 손잡이 ── */
@@ -135,13 +128,8 @@ polyline.s33-f-oral, polyline.s33-f-iv, polyline.s33-f-transdermal { fill: none;
 
 @media (max-width: 560px) {
   .s33-kv { padding-right: 0; padding-top: 56px; }
-  .s33-more div { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
   .s33-beam, .s33-pan { transition: none; }
 }
 
-/* 도구 '배울 점'(문구 반영 — 2026-10-24) */
-.s33-lesson { margin-top: 10px; font-size: 13px; }
-.s33-lesson summary { cursor: pointer; font-weight: 600; }
-.s33-lesson p { margin: 6px 0 0; line-height: 1.55; }

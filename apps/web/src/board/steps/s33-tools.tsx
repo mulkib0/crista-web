@@ -296,7 +296,6 @@ export function ToolPeak(p: ToolProps) {
         })}
       </ul>
       <p className="hint">{fillIndCopy(T.peakLimit, { v: f1(limit), min: rules.thresholds.ind, rk: rk.toFixed(2) })}{mrsd !== undefined ? ` · ${fillIndCopy(T.peakMrsd, { form: FORM[p.knobs.form].short, mrsd: indFmtMg(mrsd) })}` : ''}</p>
-      <p className="hint">{T.peakConcept}</p>
     </div>
   );
 }

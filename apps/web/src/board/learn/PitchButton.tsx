@@ -77,7 +77,6 @@ function PitchDialog({ initial, onClose }: { initial: PitchRound; onClose: () =>
           ✕
         </button>
         <h2 id={`${id}-h`}>{C.pitchTitle(C.round[round])}</h2>
-        <p className="mini muted">{C.pitchLede}</p>
         <Tabs size="sm" label={C.roundTabs} value={round} onChange={(v) => setRound(v as PitchRound)} items={PITCH_ROUNDS.map((r) => ({ id: r, label: C.round[r] }))} />
         <PitchPanel key={round} round={round} />
       </div>
@@ -201,15 +200,8 @@ function ResultView({ r }: { r: PitchRoundView }) {
             <i aria-hidden="true" />
             {C.pitchPaidBase}
           </span>
-        ) : r.overridden ? (
-          <span className="chip">
-            {C.overridden} · {C.qualOf(r.qual)}
-          </span>
         ) : (
-          <span className="abadge ai">
-            <i aria-hidden="true">✦</i>
-            {C.aiGraded} · {C.qualOf(r.qual)}
-          </span>
+          <span className="mini">{C.qualOf(r.qual)}</span>
         )}
       </div>
       {r.flags.length > 0 && <p className="hint bad">{r.flags.map((f) => (C.flag as Record<string, string>)[f] ?? f).join(' ')}</p>}
