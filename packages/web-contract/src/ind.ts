@@ -566,19 +566,19 @@ export const IND_COPY = {
       criterion: '심사 기준: 개발 계획(질환 · 필요한 이유 · 1~3상 흐름)이 우리 표적 · 질환과 맞나요?',
     },
     form_reason: {
-      label: '제형을 고른 근거(2줄)',
+      label: '제형을 고른 근거',
       placeholder: `예: 경구 흡수 신호가 '좋음'이고 피크 K 가 ×1.00 이라 정맥(×1.25)보다 꼭대기 부담이 낮아요. 경구 50 mg 은 MRSD 이하이고 예상 S 가 IND 기준 ${IND_SAFETY_MIN}를 넘어요.`,
       guide: '왜 이 제형을 골랐는지 2줄로 써요. 흡수 신호, 경피 투과 신호, 피크 K, 예상 E · S 를 근거로 들어요.',
       criterion: "심사 기준: 제형 근거가 도구 결과(흡수 · 경피 투과 신호 · 피크 K · 예상 E · S)와 맞나요? 경피 투과가 '부적합'인 분자는 경피로 고를 수 없어요.",
     },
     nonclinical: {
-      label: '동물실험 해석(3~5줄)',
+      label: '동물실험 해석',
       placeholder: '예: 개가 랫드보다 더 민감했어요(개 NOAEL 18 mg/kg/일). 높은 용량의 개에서 QT 간격이 늘어나는 소견이 있었어요. 그래서 1상은 MRSD 이하로 시작하고 심전도를 자주 확인할 거예요.',
       guide: '랫드(실험용 큰 쥐)와 개 중 어느 쪽이 더 민감했는지 써요. NOAEL 과 소견도 해석해요. 소견에는 간 수치 상승이나 심전도 QT(심장이 한 번 뛰고 다시 회복하기까지 걸리는 시간) 연장 같은 것이 있어요.',
       criterion: "심사 기준: 해석이 실제 소견과 맞나요? 간 소견이 있는데 '독성 없음'이라고 쓰면 앞뒤가 맞지 않아요.",
     },
-    calc_hed: { label: 'HED(mg/kg) — 직접 계산', placeholder: '예: 10.0', guide: `HED(사람 등가 용량)는 NOAEL ÷ 환산 계수(랫드 ${SPECIES_HED_DIVISOR.rat} · 개 ${SPECIES_HED_DIVISOR.dog})로 구해요. 두 종 가운데 더 낮은 값을 적어요. 더 민감한 종을 기준으로 삼는 거예요.` },
-    calc_mrsd: { label: '고른 제형의 MRSD(mg) — 직접 계산', placeholder: '예: 60', guide: `경구 MRSD 는 HED ÷ 안전계수 × ${HUMAN_WEIGHT_KG} kg 으로 구해요. 안전계수는 기본 ${SAFETY_FACTOR.standard}이고, 3.2 에서 마릿수를 '적게'로 했다면 ${SAFETY_FACTOR.low}이에요. 정맥 · 경피를 골랐다면 3.2 결과판의 제형별 MRSD 를 보고 적어요. 이 게임은 제형마다 피크 K 가 달라 MRSD 도 달라져요.` },
+    calc_hed: { label: 'HED(mg/kg)', placeholder: '예: 10.0', guide: `HED(사람 등가 용량)는 NOAEL ÷ 환산 계수(랫드 ${SPECIES_HED_DIVISOR.rat} · 개 ${SPECIES_HED_DIVISOR.dog})로 구해요. 두 종 가운데 더 낮은 값을 적어요. 더 민감한 종을 기준으로 삼는 거예요.` },
+    calc_mrsd: { label: '고른 제형의 MRSD(mg)', placeholder: '예: 60', guide: `경구 MRSD 는 HED ÷ 안전계수 × ${HUMAN_WEIGHT_KG} kg 으로 구해요. 안전계수는 기본 ${SAFETY_FACTOR.standard}이고, 3.2 에서 마릿수를 '적게'로 했다면 ${SAFETY_FACTOR.low}이에요. 정맥 · 경피를 골랐다면 3.2 결과판의 제형별 MRSD 를 보고 적어요. 이 게임은 제형마다 피크 K 가 달라 MRSD 도 달라져요.` },
     subject: {
       label: '대상과 이유',
       placeholder: '예: 건강한 성인 지원자로 해요. 1상은 먼저 안전성을 보는 시험이에요. 원래 앓던 병이 없는 사람이어야 부작용이 약 때문인지 가려내기 쉬워요.',
@@ -598,7 +598,7 @@ export const IND_COPY = {
       criterion: '심사 기준: 감시 계획이 위험 신호 · 동물실험 소견과 맞나요? 위험이 낮으면 일반 감시로 충분해요.',
     },
     consent: {
-      label: '동의 설명문 핵심 3줄 · IRB',
+      label: '동의 설명문 · IRB',
       placeholder: '예: ① 이 시험은 새 약 후보를 사람에게 처음 써서 안전한지 확인해요. ② 심장 리듬 변화 같은 부작용이 생길 수 있어 자주 검사해요. ③ 언제든 불이익 없이 그만둘 수 있어요. 이 계획은 IRB 심의를 먼저 받아요.',
       guide: '참여자가 꼭 알아야 할 세 가지(시험 목적 · 예상 위험 · 언제든 그만둘 수 있음)를 써요. IRB(임상시험심사위원회, 시험이 안전하고 윤리적인지 미리 심사하는 위원회) 심의도 적어요.',
       criterion: '심사 기준: 동의 설명문 핵심 세 가지(목적 · 위험 · 언제든 그만둘 수 있음)와 IRB 심의가 모두 있나요?',

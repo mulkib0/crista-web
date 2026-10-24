@@ -171,7 +171,7 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 <p className="hint">번호축을 섞으면 구간이 어긋나요 — 고른 축의 숫자만 써요.</p>
               </div>
               <div className="fld">
-                <label className="lab" htmlFor="a2-cut">고정 문턱 — 가장 안 바뀌는 상위 {cut}%</label>
+                <label className="lab" htmlFor="a2-cut">고정 문턱</label>
                 <div className="rng">
                   <input id="a2-cut" type="range" min={10} max={50} step={5} value={cut} onChange={(e) => setCut(Number(e.target.value))} />
                   <output>{cut}%</output>

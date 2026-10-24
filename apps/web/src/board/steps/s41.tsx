@@ -638,8 +638,8 @@ function BountyPanel({ trial, reload }: { trial: TrialView; reload: () => void }
           <legend>{K.bountyQ.remedy}</legend>
           {b.choices.remedies.map((o) => <label key={o.id}><input type="radio" name="s41-remedy" value={o.id} checked={remedy === o.id} onChange={() => setRemedy(o.id)} /> {o.label}</label>)}
         </fieldset>
-        <label className="lab" htmlFor="s41-ana">{f(K.bountyText, { min: TRIAL_BOUNTY_TEXT_MIN, max: TRIAL_BOUNTY_TEXT_MAX })}</label>
-        <textarea id="s41-ana" className="txt" rows={4} maxLength={TRIAL_BOUNTY_TEXT_MAX} value={text} onChange={(e) => setText(e.target.value)} />
+        <label className="lab" htmlFor="s41-ana">{K.bountyText}</label>
+        <textarea id="s41-ana" className="txt" rows={4} maxLength={TRIAL_BOUNTY_TEXT_MAX} value={text} placeholder={f(K.bountyHint, { min: TRIAL_BOUNTY_TEXT_MIN })} onChange={(e) => setText(e.target.value)} />
         <p className="mini muted mono">{len} / {TRIAL_BOUNTY_TEXT_MAX}</p>
         <button className="btn pri" type="submit" disabled={act.busy || !axis || !remedy || len < TRIAL_BOUNTY_TEXT_MIN || wait > 0}>{wait > 0 ? f(U.bountyRetryIn, { sec: wait }) : U.bountySubmit}</button>
       </form>

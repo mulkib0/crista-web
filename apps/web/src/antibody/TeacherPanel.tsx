@@ -210,7 +210,7 @@ function TeacherPanelBody({ classId, teams }: { classId: string | null; teams: r
           <p className="hint">{settings.loading ? '불러오는 중…' : '설정을 아직 불러오지 못했어요.'}</p>
         ) : (
           <>
-            <p className="lab">설계 점수 가중치 — 다섯 칸의 합이 1.00 이어야 해요</p>
+            <p className="lab">설계 점수 가중치</p>
             <div className="ab-tp-w">
               {ANTIBODY_WEIGHT_KEYS.map((key) => (
                 <div className="fld" key={key}>
@@ -237,7 +237,7 @@ function TeacherPanelBody({ classId, teams }: { classId: string | null; teams: r
             <p className="lab" style={{ marginTop: 16 }}>문턱</p>
             <div className="ab-tp-w two">
               <div className="fld">
-                <label className="lab" htmlFor="abt-margin">설계 점수 문턱 폭(0~20)</label>
+                <label className="lab" htmlFor="abt-margin">설계 점수 문턱 폭</label>
                 <input
                   id="abt-margin"
                   className="txt"
@@ -254,7 +254,7 @@ function TeacherPanelBody({ classId, teams }: { classId: string | null; teams: r
                 <span className="note">원본 점수보다 이만큼 높아야 통과예요(기본 {SCORE_THRESHOLD_MARGIN}).</span>
               </div>
               <div className="fld">
-                <label className="lab" htmlFor="abt-conf">AI 확신도 문턱(0~100)</label>
+                <label className="lab" htmlFor="abt-conf">AI 확신도 문턱</label>
                 <input
                   id="abt-conf"
                   className="txt"
@@ -277,7 +277,7 @@ function TeacherPanelBody({ classId, teams }: { classId: string | null; teams: r
               그 아래는 {ANTIBODY_GRADE_WORD.poor} 이에요.
             </p>
 
-            <p className="lab" style={{ marginTop: 16 }}>열린 랩 — 학생이 들어갈 수 있는 곳</p>
+            <p className="lab" style={{ marginTop: 16 }}>열린 랩</p>
             {TRACK_IDS.map((track) => (
               <label className="chk" key={track}>
                 <input
@@ -424,12 +424,12 @@ function CorrectPanel({ classId, teams, onDone }: {
             </select>
           </div>
           <div className="fld">
-            <label className="lab" htmlFor="abc-pct">기업가치 정정 변동률(−{CORRECTION_MAX_PCT} ~ +{CORRECTION_MAX_PCT}%)</label>
+            <label className="lab" htmlFor="abc-pct">기업가치 정정 변동률(%)</label>
             <input id="abc-pct" className="txt" type="number" min={-CORRECTION_MAX_PCT} max={CORRECTION_MAX_PCT} step={1} value={pct} onChange={(e) => setPct(Number(e.target.value))} />
             <span className="note">0 으로 두면 기업가치는 그대로 두고 정정 사실만 전광판에 올려요.</span>
           </div>
           <div className="fld">
-            <label className="lab" htmlFor="abc-reason">정정 이유(1~140자) — 전광판 소식에 그대로 올라가요</label>
+            <label className="lab" htmlFor="abc-reason">정정 이유</label>
             <input id="abc-reason" className="txt" value={reason} maxLength={140} onChange={(e) => setReason(e.target.value)} placeholder="예: 모둠원 한 명의 설계가 중복 접수돼 두 번 반영됐어요" />
             <span className="note">{reasonLen}/140자</span>
           </div>

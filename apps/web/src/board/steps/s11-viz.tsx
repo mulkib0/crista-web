@@ -473,7 +473,7 @@ export function BackFace({ t, d }: { t: TargetRow; d: DData }) {
   const tier = targetTier(t), k = TARGET_TIER[tier], redock = TARGET_REDOCK[d.option.targetId];
   return (
     <div className={`s11-face ${tier === 'ready' ? 'ok' : tier === 'pdb' ? 'mid' : 'no'}`}>
-      <span className="lab">카드 뒷면 · 구조 확인</span>
+      <span className="lab">카드 뒷면</span>
       <span className="g">{t.symbol}</span>
       <dl className="s11-kv">
         <dt>결정구조</dt><dd>{t.pdbId ?? '없음'}</dd>

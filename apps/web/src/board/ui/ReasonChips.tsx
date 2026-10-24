@@ -50,7 +50,7 @@ export function ReasonChips({ legend, chips, value, onChange, multiple, verdict,
   const blocked = blocks(verdict) || picked.length === 0;
   return (
     <fieldset className="reasons">
-      <legend className="lab">{legend}{multiple ? ' · 여럿 고를 수 있어요' : ''}</legend>
+      <legend className="lab">{legend}</legend>
       <div className="chips">
         {chips.map((c) => (
           <button key={c.id} type="button" className="rchip" aria-pressed={picked.includes(c.id)} disabled={c.disabled} title={c.hint} onClick={() => toggle(c.id)}>
