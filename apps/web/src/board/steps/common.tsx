@@ -121,8 +121,9 @@ function useWide(ref: RefObject<HTMLElement | null>, min: number) {
 export function StepLayout({ board, step, tabs, tab, onTab, tabsLabel, mine, team, teamTitle, ratio = 'team' }: StepLayoutProps) {
   const id = step.id.replace('.', '');
   const only = !mine ? 'team' : null;
-  // 모둠 공유 = 대화가 바탕. 공유 자료는 옆 패널로 편다 — 개인 상태(단계를 오가도 남는다), 처음엔 접혀 있다.
-  const [side, setSide] = useLocalTab('team-side', SIDE, 'closed');
+  // 모둠 공유 = 대화가 바탕. 공유 자료는 옆 패널로 편다 — 개인 상태(단계를 오가도 남는다), 처음엔 펴져 있다
+  // (단계를 끝내는 단추 — 1.1 확정 · 1.2 다 읽었어요 · 연구 노트 — 가 이 안에 있어 접혀 있으면 찾지 못했다).
+  const [side, setSide] = useLocalTab('team-side', SIDE, 'open');
   const open = !!team && side === 'open';
   const room = useRef<HTMLDivElement>(null);
   const split = useWide(room, SPLIT_MIN);
