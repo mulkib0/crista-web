@@ -196,14 +196,15 @@ export const AUTO_MIN_CHARS = 20;
 
 /**
  * AI 심사관을 쓸 수 없을 때(장애 · 거절 · 키 없음 · 학급 하루 상한)의 규칙 자동 판정 — 교사를 기다리지 않게.
- * - unavailable: 체크리스트 칸이 모두 `AUTO_MIN_CHARS` 자 이상이면 통과, 덜 채운 칸은 missing 으로 짚어 보완.
+ * - unavailable: 체크리스트 칸이 모두 `AUTO_MIN_CHARS` 자(항목에 `minChars` 가 있으면 그 값 — 12자까지인 브랜드 이름 등) 이상이면 통과, 덜 채운 칸은 missing 으로 짚어 보완.
  * - refused: AI 가 글을 심사하지 않았다 = 수업과 관계없는 표현이 있을 가능성 — 칸 상태는 같게 매기되 보완으로 돌려보낸다.
  * 규칙 검사(`RuleFinding`)는 앞에서 이미 통과했다(fail 이면 LLM 까지 오지 않는다). 최종은 여기서도 `combineVerdict`.
  */
 export function autoReviewOutput(sections: Record<string, string>, checklist: readonly ReviewChecklistItem[], reason: 'unavailable' | 'refused'): DocReviewOutput {
   const items = checklist.map((c) => {
-    const filled = charLength(norm(sections[c.section] ?? '')) >= AUTO_MIN_CHARS;
-    return { id: c.id, status: filled ? ('ok' as const) : ('missing' as const), note: filled ? '칸이 채워져 있어요.' : `이 칸을 ${AUTO_MIN_CHARS}자 이상 채워 주세요.` };
+    const min = c.minChars ?? AUTO_MIN_CHARS;
+    const filled = charLength(norm(sections[c.section] ?? '')) >= min;
+    return { id: c.id, status: filled ? ('ok' as const) : ('missing' as const), note: filled ? '칸이 채워져 있어요.' : `이 칸을 ${min}자 이상 채워 주세요.` };
   });
   const allFilled = items.every((item) => item.status === 'ok');
   const feedback =

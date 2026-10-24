@@ -133,6 +133,11 @@ describe('서류 심사 — 교사 없는 자동 판정 · 숙고 기간', () =>
     assert.equal(combineVerdict([], short), 'revise');
     assert.deepEqual(short.items.map((i) => i.status), ['ok', 'missing']);
   });
+  test('원래 짧은 칸(브랜드 이름 2~12자)은 항목의 minChars 로 본다 — 20자를 요구하면 LLM 이 꺼진 날 허가 서류가 늘 보완이 됐다', () => {
+    const items = [...checklist, { id: 'brand_honest', section: 'brand', criterion: '브랜드', minChars: 2 }];
+    assert.equal(combineVerdict([], autoReviewOutput({ ...full, brand: '다온콕스' }, items, 'unavailable')), 'pass');
+    assert.deepEqual(autoReviewOutput({ ...full, brand: '다' }, items, 'unavailable').items.map((i) => i.status), ['ok', 'ok', 'missing']);
+  });
   test('AI 가 거절하면 칸을 다 채워도 보완(관계없는 표현을 빼고 다시) — 규칙 fail 이 있으면 규칙이 이긴다', () => {
     assert.equal(combineVerdict([], autoReviewOutput(full, checklist, 'refused')), 'revise');
     assert.equal(combineVerdict([{ id: 'n', status: 'fail', note: '', severity: 'reject' }], autoReviewOutput(full, checklist, 'unavailable')), 'reject');
