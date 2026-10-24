@@ -55,7 +55,8 @@ a { color: inherit; }
 .txt:focus { outline: none; border-color: var(--fg); }
 textarea.txt { resize: vertical; min-height: 74px; line-height: 1.5; }
 select.txt { appearance: auto; }
-.lab { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.lab { display: block; font-size: 14px; font-weight: 700; color: var(--fg); margin-bottom: 8px; }
+.lab em { font-weight: 400; color: var(--muted); }
 .fld + .fld { margin-top: 14px; }
 .hint { font-size: 12px; margin-top: 6px; color: var(--muted); }
 .hint.bad { color: var(--bad); }
@@ -511,7 +512,7 @@ td .row { flex-wrap: nowrap; }
 /* 서류 칸 편집기 */
 .doc-c { display: grid; gap: 4px; }
 .doc-c .lab { margin: 0; display: flex; gap: 8px; align-items: center; }
-.doc-c .lab em { font-style: normal; margin-left: auto; text-transform: none; letter-spacing: 0; }
+.doc-c .lab em { font-style: normal; margin-left: auto; }
 .doc-stale { background: var(--bad-bg); border-radius: 12px; padding: 10px 12px; display: grid; gap: 6px; }
 .doc-stale blockquote { margin: 0; padding-left: 0; white-space: pre-wrap; color: var(--muted); }
 /* 확인 창 */

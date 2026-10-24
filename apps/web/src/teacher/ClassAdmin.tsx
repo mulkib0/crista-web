@@ -62,7 +62,7 @@ export function ClassAdmin({ detail, onCreated, onChanged }: {
         <section className="isl tc-isl" aria-labelledby="tc-cls-h">
           <h2 className="ptitle" id="tc-cls-h">{detail.name} <small>{detail.assignment} · 모둠 {detail.teamCount}개 · 모둠 정원 {detail.teamCapacity}</small></h2>
           <div className="panel">
-            <p className="lab">학생 받기 — {detail.codeOpen ? '열림: 학생이 가입한 뒤 학급 목록에서 이 학급을 골라 들어와요' : '닫힘: 목록에 보이지 않아 새 학생이 들어올 수 없어요'}</p>
+            <p className="lab">학생 받기 <span className={`sig ${detail.codeOpen ? 'g' : ''}`}>{detail.codeOpen ? '열림' : '닫힘'}</span></p>
             <div className="acts">
               {detail.codeOpen ? <button className="btn sm" type="button" onClick={() => void recruit('close')}>학생 받기 닫기</button> : <button className="btn sm pri" type="button" onClick={() => void recruit('open')}>학생 받기 열기</button>}
               <span className="note">가입 주소: {location.origin}{import.meta.env.BASE_URL} · 학생이 다 들어오면 닫아 두세요</span>
@@ -111,7 +111,7 @@ export function ClassAdmin({ detail, onCreated, onChanged }: {
         <h2 className="ptitle" id="tc-new-h">새 학급 만들기</h2>
         <form onSubmit={create} noValidate>
           <div className="fld"><label className="lab" htmlFor="cn">학급 이름</label><input id="cn" className="txt" value={form.name} maxLength={40} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="예: 3학년 2반 생명과학" /></div>
-          <div className="fld"><label className="lab" htmlFor="tc">모둠 수 N(2~8)</label><input id="tc" className="txt" type="number" min={2} max={8} value={form.teamCount} onChange={(e) => setForm({ ...form, teamCount: Number(e.target.value) })} /></div>
+          <div className="fld"><label className="lab" htmlFor="tc">모둠 수</label><input id="tc" className="txt" type="number" min={2} max={8} value={form.teamCount} onChange={(e) => setForm({ ...form, teamCount: Number(e.target.value) })} /></div>
           <div className="fld"><label className="lab" htmlFor="ms">학급 정원</label><input id="ms" className="txt" type="number" min={1} max={200} value={form.maxStudents} onChange={(e) => setForm({ ...form, maxStudents: Number(e.target.value) })} /></div>
           <div className="fld">
             <span className="lab">모둠 배정</span>

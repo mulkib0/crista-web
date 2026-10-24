@@ -104,7 +104,7 @@ export function TeacherMarket({ classId }: { classId: string }) {
         <div className="row" style={{ marginTop: 10 }}>
           <label className="lab" htmlFor="mk-n-t" style={{ margin: 0 }}>{T.noticeTeam}</label>
           <select id="mk-n-t" className="txt" value={notice.teamId} onChange={(e) => setNotice({ ...notice, teamId: e.target.value })} style={{ maxWidth: 200 }}>
-            <option value="">—</option>
+            <option value="">{T.noticeNoTeam}</option>
             {data?.ranking.map((r) => <option key={r.teamId} value={r.teamId}>{r.ticker} · {r.startupName}</option>)}
           </select>
           {notice.teamId && (

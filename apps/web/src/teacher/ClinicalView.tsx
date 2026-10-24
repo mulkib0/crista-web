@@ -78,7 +78,7 @@ function TrialCard({ t, teams, onDone }: { t: TeacherTrialView; teams: TeamLooku
           {t.simError && <p className="hint bad">시뮬레이션 오류: {t.simError}</p>}
         </div>
         <div className="tc-ref">
-          <span className="lab">참고 판정 · game-rules(교육용)</span>
+          <span className="lab">참고 판정</span>
           {ref ? (
             <>
               <p className="tc-big">{ref.passed ? '통과 쪽' : `보류 쪽${ref.failure ? ` · ${CLINICAL_COPY.holdKind[ref.failure as HoldKind] ?? ref.failure}` : ''}`} <small className="mono">통과 확률 {pct(ref.passProb)}</small></p>
@@ -129,7 +129,7 @@ function TrialActions({ t, onDone }: { t: TeacherTrialView; onDone: () => void }
   }
   return (
     <form className="tc-decide" onSubmit={decide}>
-      <span className="lab">{hasAi ? '공개 전 정정(AI 원본은 남아요)' : '직접 판정'}</span>
+      <span className="lab">{hasAi ? '공개 전 정정' : '직접 판정'}</span>
       <div className="row">
         {!hasAi && (
           <button type="button" className="btn sm" disabled={busy} onClick={() => void run(() => api.post(CLINICAL_API.teacherResimulate(t.id)), 'AI 시뮬레이션을 다시 돌려요.')}>↻ 다시 시뮬레이션</button>

@@ -422,7 +422,7 @@ function PickDrawer({ board, d, t, weights, note, setNote, onGoReady, reload, ba
       <EvBars t={t} />
       {back && <BackFace t={t} d={d} />}
       <ReasonChips
-        legend="추천 근거 — 코치가 데이터와 맞는지 짚어요"
+        legend="추천 근거"
         multiple
         chips={TARGET_PICK_REASONS.map((r) => ({ id: r.id, label: r.label }))}
         value={reasons}
@@ -441,7 +441,7 @@ function PickDrawer({ board, d, t, weights, note, setNote, onGoReady, reload, ba
         </ul>
       )}
       <div className="fld">
-        <label className="lab" htmlFor="s11-note">한 줄 이유 · 모둠원이 읽어요(선택 · {PICK_REASON_NOTE_MAX}자)</label>
+        <label className="lab" htmlFor="s11-note">한 줄 이유</label>
         <input id="s11-note" className="txt" value={note} maxLength={PICK_REASON_NOTE_MAX} onChange={(e) => setNote(e.target.value)}
           placeholder={`예: 점수는 낮지만 ${d.option.referenceLigand.name}이(가) 있어 2.1 에서 바로 견줄 수 있어요`} />
       </div>

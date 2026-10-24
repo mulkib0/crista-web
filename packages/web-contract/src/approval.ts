@@ -365,7 +365,7 @@ export const APPROVAL_COPY = {
   submit: {
     title: '서류 심사 · 최종 허가 접수',
     costDuration: (fee: string, days: number) => `접수 수수료는 ${fee}이고 심사 기간은 ${days}게임 일이에요. 3상 통과 · 포장 제형 일치 · 서류 통과 요건을 갖추면 허가가 확정돼요.`,
-    rulesTitle: '규칙 검사(모두 맞아야 AI 심사로 넘어가요)',
+    rulesTitle: '규칙 검사',
     reviewBtn: '서류 심사 요청하기',
     submitBtn: '최종 허가 접수하기',
     confirmTitle: '최종 품목 허가를 접수할까요?',

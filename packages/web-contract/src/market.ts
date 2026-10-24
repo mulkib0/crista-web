@@ -507,7 +507,7 @@ export const MARKET_COPY = {
   },
   final: {
     title: '학급 신약 개발 최종 순위',
-    previewTitle: '최종 순위 미리보기(마감 전 · 선생님 전용)',
+    previewTitle: '최종 순위 미리보기',
     frozenAt: (at: string) => `${at}에 마감되었어요. 이 뒤의 소식은 최종 순위를 바꾸지 않아요.`,
     reason: { teacher: '선생님이 마감했어요.', schedule: '정한 마감 시각이 되어 자동으로 마감됐어요.' } satisfies Record<MarketFinalInfo['reason'], string>,
     podium: '시상대',
@@ -608,7 +608,8 @@ export const MARKET_COPY = {
     finalPreview: '최종 순위 미리보기',
     notice: '공지 · 정정 소식',
     noticeHeadline: '전광판 문구',
-    noticeTeam: '정정할 모둠(공지는 비워 두세요)',
+    noticeTeam: '정정할 모둠',
+    noticeNoTeam: '없음(공지)',
     noticePct: '기업가치 정정(%)',
     noticeSend: '올리기',
     noticePlaceholder: '예: 정정: MIRP 2상 판정 재계산',

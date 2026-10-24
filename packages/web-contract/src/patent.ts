@@ -399,7 +399,7 @@ export const PATENT_COPY = {
   knownChip: '이미 알려진 물질',
   openApp: '출원서 열기',
   newApp: '이 후보로 출원서 만들기',
-  fingerprintTitle: '구조 지문 — 기준 약과 다른 자리 찾기',
+  fingerprintTitle: '구조 지문',
   fingerprintNote: (ref: string) =>
     `SMILES(분자를 한 줄 글자로 적은 것)를 글자마다 막대로 세웠어요. 기준 약(${ref})과 다른 글자만 형광으로 칠했어요. 원자 하나라도 다른 새 분자여야 특허를 받을 수 있어요.`,
   sameAsRef: (ref: string) => `기준 약(${ref})과 SMILES 글자가 모두 같아요. 이미 알려진 물질이라 특허를 받을 수 없어요.`,
