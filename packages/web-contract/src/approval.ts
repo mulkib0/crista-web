@@ -123,7 +123,7 @@ export const NDA_CHECKLIST: readonly ReviewChecklistItem[] = [
   { id: 'indication_modest', section: 'indication', criterion: '완치 · 부작용 없음 · 모든 환자 같은 과장된 표현이 없다' },
   { id: 'caution_grounded', section: 'caution1', criterion: '주의사항 두 개 중 적어도 하나가 사실에 있는 실제 위험 신호(전임상 소견 · hERG · 간독성 · 1상 안전)에 근거한다' },
   { id: 'caution_actionable', section: 'caution2', criterion: '주의사항이 환자나 의사가 무엇을 하면 되는지(복용 방법 · 피할 것 · 검사 · 병원 연락) 구체적으로 말한다' },
-  { id: 'brand_honest', section: 'brand', criterion: '브랜드 이름이 효능을 과장하거나 다른 약으로 착각하게 하지 않는다' },
+  { id: 'brand_honest', section: 'brand', criterion: '브랜드 이름이 효능을 과장하거나 다른 약으로 착각하게 하지 않는다', minChars: BRAND_NAME_MIN },
 ];
 
 // ── 화면 모양 ──

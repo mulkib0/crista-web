@@ -81,6 +81,8 @@ export interface ReviewChecklistItem {
   id: string;
   section: string;
   criterion: string;
+  /** 규칙 자동 판정(AI 를 쓸 수 없을 때)이 '채워졌다'고 보는 최소 글자 수 — 생략하면 20자. 브랜드 이름처럼 원래 짧은 칸만 적는다. */
+  minChars?: number;
 }
 
 export const REVIEW_LIMITS = {
