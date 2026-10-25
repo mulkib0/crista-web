@@ -1,7 +1,8 @@
 /**
  * 3.3 제형 · IND 신청(설계 §5.10 · §5.11) — 기능 F33.
  *
- * - 머리 섬 아래 왼쪽(내 작업대): 도구 6종 탭(what-if 실험실이 첫 탭). '이 단계에서 하는 일' 요약은 2026-10-24 사용자 지시로 뺐다.
+ * - 머리 섬 아래 왼쪽(내 작업대): 도구 6종 — 신청서 칸을 채우는 나란한 도구라 번호 없는 '보기' 토글(2026-10-25 합의안 06 — 신청서 ①~⑦ 번호와 겹치지 않게).
+ *   what-if 실험실이 첫 도구. '이 단계에서 하는 일' 요약은 2026-10-24 사용자 지시로 뺐다.
  *   도구의 손잡이(제형 · 용량 · 후보 · 환자군)는 개인 상태(`useBenchState`) — 다른 모둠원 화면을 흔들지 않는다.
  * - 오른쪽(모둠 공유): 임상시험 계획 승인 신청서 ①~⑦(칸 단위 자동 저장 · 409 합치기) · 조합 · 규칙 미리 보기 · 심사 · 접수 · 판정 · 승인서.
  *   E–S 평면에서 점을 눌러 고른 조합을 [신청서에 넣기]로 모둠 신청서에 쓴다(plan_version 낙관적 잠금).
@@ -36,7 +37,7 @@ import {
 import { api, ApiFailure, message } from '../../api.ts';
 import { money } from '../../ink.ts';
 import { Confirm, DocSectionEditor, Panel, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
-import { Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { StepLayout, useAction, type StepProps } from './common.tsx';
 import { TOOL_IDS, TOOL_VIEW, type Knobs, type ToolId } from './s33-tools.tsx';
 import './s33.css';
 
@@ -237,7 +238,7 @@ function Plan({ data, app, editable, reload }: { data: IndResponse; app: IndAppl
 }
 
 export function Step33(props: StepProps) {
-  const { board, step, goStep } = props;
+  const { board } = props;
   const [tool, setTool] = useLocalTab<ToolId>('step:3.3', TOOL_IDS, 'lab');
   const live = useLive<IndResponse>(IND_API.ind, (m) =>
     (m.type === 'doc.reviewed' && m.kind === 'ind') || (m.type === 'board.changed' && (m.reason.startsWith('ind') || m.reason === 'lead' || m.reason.startsWith('preclinical') || m.reason.startsWith('job'))),
@@ -277,7 +278,7 @@ export function Step33(props: StepProps) {
       })
     : null;
 
-  const tabs = TOOL_IDS.map((id, i) => ({ id, no: ['①', '②', '③', '④', '⑤', '⑥'][i], label: C.tools[id].tab, sub: C.tools[id].sub }));
+  const tabs = TOOL_IDS.map((id) => ({ id, label: C.tools[id].tab, sub: C.tools[id].sub }));
   const ToolView = TOOL_VIEW[tool];
   const fails = app?.rulePreview.filter((f) => f.status === 'fail') ?? [];
   const review = app?.review ?? null;
@@ -345,7 +346,7 @@ export function Step33(props: StepProps) {
   const team = (
     <>
       {!data ? null : !app ? (
-        <Panel title={D.heading}>
+        <Panel title={D.heading} id="s33-app">
           <p className="mini">{data.ready ? D.newDocHint : data.readyReason ?? D.lockedStep}</p>
           <div className="acts">
             <button type="button" className="btn pri" disabled={!data.ready || act.busy} onClick={() => void act.run(async () => {
@@ -357,7 +358,7 @@ export function Step33(props: StepProps) {
         </Panel>
       ) : (
         <>
-          <Panel title={<>{C.statusMark[app.status]} {D.heading}</>} sub={`${C.status[app.status]} · ${fillIndCopy(D.version, { n: app.version })}${app.createdByName ? ` · ${app.createdByName}` : ''}`} tone={app.status === 'approved' || app.status === 'passed' ? 'good' : app.status === 'revise' || app.status === 'held' ? 'warn' : undefined}>
+          <Panel id="s33-app" title={<>{C.statusMark[app.status]} {D.heading}</>} sub={`${C.status[app.status]} · ${fillIndCopy(D.version, { n: app.version })}${app.createdByName ? ` · ${app.createdByName}` : ''}`} tone={app.status === 'approved' || app.status === 'passed' ? 'good' : app.status === 'revise' || app.status === 'held' ? 'warn' : undefined}>
             {!editable && app.status !== 'approved' && <p className="hint">{D.locked}</p>}
             {app.status === 'held' && (
               <>
@@ -419,8 +420,6 @@ export function Step33(props: StepProps) {
           </Confirm>
         </>
       )}
-      <NotesBlock board={board} stepId="3.3" />
-      <Next step={step} goStep={goStep} label="4.1" />
     </>
   );
 
@@ -431,6 +430,7 @@ export function Step33(props: StepProps) {
         tab={tool}
         onTab={(id) => setTool(id as ToolId)}
         tabsLabel={C.ui.tabsLabel}
+        go={{ ind: { spot: 's33-app' } }}
         mine={mine}
         teamTitle={C.ui.teamTitle}
         team={team}

@@ -4,6 +4,7 @@
  * 왼쪽 섬 = 내 작업대(입력 초안 · 미리보기 — 이 브라우저에만), 오른쪽 섬 = 모둠 공유(서버 저장 · 실시간 — useLive).
  * 허가가 나면 ⑤ 가 두 열을 다 쓰고, 파이프라인 완주 연출(모션 줄이기면 멈춘 그림)을 띄운다.
  * 학생 문구는 규격 `APPROVAL_COPY` 에서만 가져온다(§5.12).
+ * 마지막 단계라 바닥 띠는 남은 일(품목 허가 — 아직 안 끝난 첫 걸음을 가리킨다) · 허가 심사 기다림 · 완주만 보여 준다(2026-10-25 합의안).
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -34,7 +35,7 @@ import {
 } from '@crista-web/web-contract';
 import { api, ApiFailure, message } from '../../api.ts';
 import { Confirm, DocSectionEditor, Panel, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
-import { NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { StepLayout, useAction, type StepProps } from './common.tsx';
 import {
   certExportSvg,
   downloadPng,
@@ -86,7 +87,6 @@ export function Step42(props: StepProps) {
             {live.error && <button type="button" className="btn sm" onClick={live.reload}>{K.ui.retry}</button>}
           </p>
         }
-        team={<NotesBlock board={board} stepId="4.2" />}
       />
     );
   }
@@ -100,6 +100,8 @@ export function Step42(props: StepProps) {
     { id: 'result', no: '⑤', label: K.tabs.result, mark: approved ? '✓' : undefined },
   ];
   const common = { ...props, data, reload: live.reload };
+  // 띠 '하러 가기' — 품목 허가는 아직 안 끝난 첫 걸음(브랜드 → 포장 → 신청서 → 심사 · 접수)으로.
+  const go = { approval: { tab: tabs.find((t) => t.id !== 'result' && t.mark !== '✓')?.id ?? 'submit' } };
   const body =
     tab === 'brand' ? <BrandTab {...common} /> : tab === 'pack' ? <PackTab {...common} /> : tab === 'nda' ? <NdaTab {...common} /> : tab === 'submit' ? <SubmitTab {...common} /> : null;
 
@@ -111,6 +113,8 @@ export function Step42(props: StepProps) {
         tabs={tabs}
         tab={tab}
         onTab={(id) => setTab(id as Tab)}
+        go={go}
+        notes={false}
         mine={<ResultTab {...common} />}
       />
     );
@@ -123,18 +127,14 @@ export function Step42(props: StepProps) {
       tab={tab}
       onTab={(id) => setTab(id as Tab)}
       ratio="even"
+      go={go}
       mine={
         <>
           {!data.phase3 && <p className="hint">🔒 {data.lockedReason}</p>}
           {body}
         </>
       }
-      team={
-        <>
-          <TeamStatus data={data} />
-          <NotesBlock board={board} stepId="4.2" />
-        </>
-      }
+      team={<TeamStatus data={data} />}
     />
   );
 }

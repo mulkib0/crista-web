@@ -1,6 +1,8 @@
 /* 가이드북 창 — 오른쪽 서랍(시가총액 서랍 .mk-drawer 와 같은 결) · 왼쪽 단계 탭 · 오른쪽 개념 카드. 폰은 탭을 가로 줄로. */
 .gb-open svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
-.top-r > .gb-open { background: var(--hi); color: var(--hi-fg); border-color: transparent; }
+/* 위 띠 단추 — 순위 단추(.tb-btn)처럼 평소 페이퍼, 올리면 라임. 늘 켜진 라임은 바닥 띠 '다음' 단추 하나만 쓴다(2026-10-25 '다음' 합의안). */
+.top-r > .gb-open { background: var(--raise); color: var(--fg); border-color: transparent; }
+.top-r > .gb-open:hover:not(:disabled) { background: var(--hi); color: var(--hi-fg); border-color: transparent; }
 
 .modal-back.gb-back { place-items: stretch end; padding: 0; }
 .gb {

@@ -3,7 +3,8 @@
  *
  * 걸음 ① 윤리 배우기(카드 5장 · 확인 문제 3개 · 이수 도장) ② 계획서 심의(칸 쓰기 · 설정 · 규칙 미리 보기 · 심의)
  * ③ 대체 시험(hERG · 간 오가노이드 — 동물 0마리) ④ 동물실험(실행 · 진행 · 결과판 · NOAEL → HED → MRSD 계산 칸)
- * ⑤ 한 번 더 고르기(근거 칩 · 주력 1 + 백업 0~1 · 종료보고서 · 회고).
+ * ⑤ 한 번 더 고르기(근거 칩 · 주력 1 + 백업 0~1 · 종료보고서 · 회고) — 주력 지정이 완료 조건 셋째라 실제 작업 탭으로 남긴다(2026-10-25 합의안).
+ * 다음 단계로는 바닥 띠가 데려간다 — 남은 일(계획서 승인 · 동물실험 1건 · 주력 지정)마다 ② · ④ · ⑤ 판을 가리킨다.
  * 모둠 공유 자료는 `useLive(GET /api/preclinical)` — 모둠 WS 소식(board.changed · doc.reviewed · job.progress)이 오면 다시 읽는다.
  * 학생에게 보이는 문구는 web-contract `PRECLINICAL_COPY` 한곳(§5.12). 그래프는 SVG 직접.
  */
@@ -38,7 +39,8 @@ import { api, ApiFailure, newRequestId } from '../../api.ts';
 import { money } from '../../ink.ts';
 import { By } from '../parts.tsx';
 import { DocSectionEditor, Panel, ReasonChips, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
-import { Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { StepLayout, useAction, type StepProps } from './common.tsx';
+import { days } from './next.ts';
 import './s32.css';
 
 const TABS = ['ethics', 'protocol', 'alt', 'animal', 'pick'] as const;
@@ -53,7 +55,6 @@ const sectionStale = (e: ApiFailure): DocSectionStale | null => {
 const studyOf = (r: PreclinicalRunView): AnimalStudyResult | null => (r.result?.kind === 'animal_study' ? r.result : null);
 
 export function Step32(props: StepProps) {
-  const { board, step } = props;
   const [tab, setTab] = useLocalTab<Tab>('step:3.2', TABS, 'ethics');
   const live = useLive<PreclinicalResponse>(PRECLINICAL_API.state, (m) =>
     m.type === 'board.changed' || (m.type === 'doc.reviewed' && m.kind === 'iacuc') || m.type === 'job.progress',
@@ -86,7 +87,11 @@ export function Step32(props: StepProps) {
     return { id, no: meta.no, label: meta.label, ...(sub ? { sub } : {}), ...(mark ? { mark } : {}) };
   });
 
-  const layout = { ...props, tabs, tab, onTab: (id: string) => setTab(id as Tab), ratio: 'even' as const };
+  // 기다림 — 대체 시험 · 동물실험은 게임 시계로 끝난다(띠에 'D+14 / 28').
+  const run = d?.runs.find((r) => r.status === 'queued' || r.status === 'running');
+  const wait = run ? { text: `${run.byName ? `${run.byName} 님 ` : ''}${C.steps[run.kind === 'animal_study' ? 'animal' : 'alt'].label} ${days(run.progressPct, run.endsGameDay - run.startGameDay)}`, clock: true } : undefined;
+  const go = { iacuc: { tab: 'protocol', spot: 's32-review' }, animal: { tab: 'animal', spot: 's32-animal' }, main: { tab: 'pick', spot: 's32-lead' } };
+  const layout = { ...props, tabs, tab, onTab: (id: string) => setTab(id as Tab), ratio: 'even' as const, go, ...(wait ? { wait } : {}) };
   if (!d) {
     return (
       <StepLayout
@@ -101,12 +106,11 @@ export function Step32(props: StepProps) {
             <p className="hint" role="status">{U.loading}</p>
           )
         }
-        team={<NotesBlock board={board} stepId="3.2" />}
       />
     );
   }
   const reload = live.reload;
-  const body = { d, reload, myName: board.account.displayName, myId: board.account.userId };
+  const body = { d, reload, myName: props.board.account.displayName, myId: props.board.account.userId };
   const views: Record<Tab, { mine: ReactNode; team: ReactNode }> = {
     ethics: { mine: <EthicsMine {...body} />, team: <EthicsTeam {...body} /> },
     protocol: { mine: <ProtocolMine {...body} />, team: <ProtocolTeam {...body} /> },
@@ -127,8 +131,6 @@ export function Step32(props: StepProps) {
       team={
         <div className="s32">
           {views[tab].team}
-          {tab === 'pick' && <NotesBlock board={board} stepId="3.2" />}
-          {tab === 'pick' && <Next step={step} goStep={props.goStep} label="3.3" />}
         </div>
       }
     />
@@ -386,7 +388,7 @@ function ProtocolTeam({ d, reload }: BodyProps) {
       )}
       {!p ? <Panel><p className="empty">{U.noProtocol}</p></Panel> : (
         <>
-          <Panel title={U.rulesPreview} sub={` · ${C.status[p.status]} · ${U.docVersion(p.version)}`}>
+          <Panel title={U.rulesPreview} sub={` · ${C.status[p.status]} · ${U.docVersion(p.version)}`} id="s32-review">
             <ul className="s32-rules">
               {p.ruleFindings.map((f) => (
                 <li key={f.id} className={f.status}>
@@ -537,7 +539,7 @@ function AnimalMine({ d, reload }: BodyProps) {
   const studies = d.runs.filter((r) => r.kind === 'animal_study' && r.status === 'succeeded');
   return (
     <>
-      <Panel title={U.runAnimal} sub={` · ${money(d.fees.animalCents)} · ${U.gameDays(PRECLINICAL_FEES.animalStudyGameDays)}`}>
+      <Panel title={U.runAnimal} sub={` · ${money(d.fees.animalCents)} · ${U.gameDays(PRECLINICAL_FEES.animalStudyGameDays)}`} id="s32-animal">
         <details className="s32-bundle">
           <summary>{U.bundleTitle}</summary>
           <ul>{U.bundle.map((line) => <li key={line}>{line}</li>)}</ul>
@@ -748,7 +750,7 @@ function PickMine({ d, reload }: BodyProps) {
   return (
     <>
       <ResultBoard d={d} />
-      <Panel title={U.setLead}>
+      <Panel title={U.setLead} id="s32-lead">
         {studies.length === 0 ? <p className="empty">{U.noStudy}</p> : (
           <>
             <p className="hint">{U.leadRule}</p>

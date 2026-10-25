@@ -2,7 +2,8 @@
  * 1.1 질환 · 표적 선정(설계 §6.4 · §5.4.2) — 왼쪽 = 내 작업대 도구 5종(걸음 탭) + 공통 추천 서랍, 오른쪽 = 모둠 추천 카드 · 표적 확정.
  * 왼쪽 섬 = 개인 작업대(이 브라우저에만 — 다른 모둠원의 입력 칸을 흔들지 않는다), 오른쪽 섬 = 모둠 공유(서버 저장 · 실시간).
  *
- * 도구(시안 design/target-select-10.html 01~05): ① 질환 지도 → 열지도 · ② 관계망 · ③ 내 점수(가중치) · ④ 32개 한눈에(산점도) · ⑤ 카드 뒤집기.
+ * 도구(시안 design/target-select-10.html 01~05 — 순서가 아니라 나란한 도구라 번호 없는 '보기' 토글): 질환 지도 → 열지도 · 관계망 · 내 점수(가중치) · 32개 한눈에(산점도) · 카드 뒤집기.
+ * 다음 단계로는 바닥 띠가 데려간다 — 남은 일(모둠 표적 확정)은 추천 카드(없으면 추천 서랍)를 가리킨다.
  * 데이터는 질환 4종을 각각 `API.diseaseTargets` 로 받아 표적 8개씩(`targetShortlist`) 쓴다. 추천 근거 코치는 서버와 같은 함수(`checkTargetPickReasons`).
  */
 import { useEffect, useMemo, useState } from 'react';
@@ -30,18 +31,18 @@ import {
 import { api, message } from '../../api.ts';
 import { By } from '../parts.tsx';
 import { Panel, ReasonChips, useBenchState, useLocalTab, type TabItem } from '../ui/index.ts';
-import { currentTarget, Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { currentTarget, StepLayout, useAction, type StepProps } from './common.tsx';
 import { BackFace, EV_COLOR, EvBars, f2, f3, FlipCard, HeatMap, myRows, n0, NetMap, rankIn, readyOf, Scatter, StackBars, TierSig, type DData, type Flag, type TRow } from './s11-viz.tsx';
 import './s11.css';
 
 const TABS = ['map', 'net', 'weigh', 'scatter', 'cards'] as const;
 type Tab = (typeof TABS)[number];
 const TAB_ITEMS: TabItem[] = [
-  { id: 'map', no: '①', label: '질환 지도', sub: '질환군 타일 → 근거 열지도' },
-  { id: 'net', no: '②', label: '관계망', sub: '질환-유전자 망에서 점 고르기' },
-  { id: 'weigh', no: '③', label: '내 점수', sub: '가중치로 32개 다시 줄 세우기' },
-  { id: 'scatter', no: '④', label: '32개 한눈에', sub: '점수 × 약물 근거 산점도' },
-  { id: 'cards', no: '⑤', label: '카드 뒤집기', sub: '점수만 보고 고른 뒤 구조 확인' },
+  { id: 'map', label: '질환 지도', sub: '질환군 타일 → 근거 열지도' },
+  { id: 'net', label: '관계망', sub: '질환-유전자 망에서 점 고르기' },
+  { id: 'weigh', label: '내 점수', sub: '가중치로 32개 다시 줄 세우기' },
+  { id: 'scatter', label: '32개 한눈에', sub: '점수 × 약물 근거 산점도' },
+  { id: 'cards', label: '카드 뒤집기', sub: '점수만 보고 고른 뒤 구조 확인' },
 ];
 
 interface Sel {
@@ -100,7 +101,7 @@ function useDiseaseData(board: BoardResponse) {
   return { ds, error, ready: ds.length === board.diseases.length };
 }
 
-export function Step11({ board, step, bench, setBench, reload, goStep }: StepProps) {
+export function Step11({ board, step, bench, setBench, reload }: StepProps) {
   const [tab, setTab] = useLocalTab<Tab>('step:1.1', TABS, 'map');
   const { ds, error: loadErr, ready: allLoaded } = useDiseaseData(board);
   const all = useMemo<TRow[]>(() => ds.flatMap((d) => d.list.map((t) => ({ t, d }))), [ds]);
@@ -142,6 +143,7 @@ export function Step11({ board, step, bench, setBench, reload, goStep }: StepPro
       onTab={(id) => setTab(id as Tab)}
       tabsLabel="1.1 내 작업대 도구"
       ratio="mine"
+      go={{ target: { spot: board.picks.length ? 's11-cards' : 's11-drawer' } }}
       mine={
         <div className="s11">
           {loadErr && <p className="err">{loadErr}</p>}
@@ -154,7 +156,7 @@ export function Step11({ board, step, bench, setBench, reload, goStep }: StepPro
               {tab === 'weigh' && (allLoaded ? <WeighTool all={all} weights={weights} setWeights={setWeights} sel={sel} onPick={pickTarget} /> : <Panel><p className="muted" style={{ margin: 0 }}>질환 4종 자료를 모으는 중…</p></Panel>)}
               {tab === 'scatter' && (allLoaded ? <ScatterTool all={all} sel={sel} onPick={pickTarget} /> : <Panel><p className="muted" style={{ margin: 0 }}>질환 4종 자료를 모으는 중…</p></Panel>)}
               {tab === 'cards' && <CardsTool ds={ds} cur={cur} sel={sel} onDisease={pickDisease} onPick={pickTarget} />}
-              <section className="s11-drawer" aria-label="추천 서랍">
+              <section className="s11-drawer" id="s11-drawer" aria-label="추천 서랍">
                 <h3 className="s11-lab">추천 서랍</h3>
                 {drawer}
               </section>
@@ -181,8 +183,6 @@ export function Step11({ board, step, bench, setBench, reload, goStep }: StepPro
             </Panel>
           )}
           <PickCards board={board} ds={ds} reload={reload} />
-          <NotesBlock board={board} stepId="1.1" />
-          <Next step={step} goStep={goStep} label="1.2" />
         </div>
       }
     />
@@ -523,7 +523,7 @@ function TeamWeights({ board, all, myWeights }: { board: BoardResponse; all: TRo
 function PickCards({ board, ds, reload }: { board: BoardResponse; ds: DData[]; reload: () => void }) {
   const act = useAction();
   return (
-    <div className="cards">
+    <div className="cards" id="s11-cards">
       {board.picks.length === 0 && <p className="empty">아직 추천 카드가 없어요. 왼쪽에서 표적을 고르고 근거를 골라 올려 주세요.</p>}
       {act.error && <p className="err">{act.error}</p>}
       {board.picks.map((p) => <PickCard key={p.id} p={p} board={board} ds={ds} busy={act.busy} onConfirm={() => void act.run(async () => {

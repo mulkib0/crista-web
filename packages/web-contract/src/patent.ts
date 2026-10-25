@@ -528,7 +528,7 @@ export const PATENT_COPY = {
     limit: (max: number) => `모둠 출원 칸(${max}건)이 찼어요. 받아들여짐과 심사 중인 출원서만 세요. 등록 특허를 포기하거나 심사가 끝나길 기다려요.`,
     balance: (balance: string, fee: string) => `남은 연구비(${balance})가 출원료(${fee})보다 적어요. 출원료는 받아들여질 때 내요.`,
     // 규칙 지적은 80자 안(§5.13 지적 길이 · 시험 '규칙 문구는 80자 안') — 풀이는 `noveltyHelp` · 원장 · 구조 지문 화면이 맡는다.
-    novelty: '거절 — 이미 알려진 물질이에요(5.06 구조 지문). 2.1 에서 구조를 바꿔 새 분자로 내세요.',
+    novelty: '거절 — 이미 알려진 물질이에요(구조 지문). 2.1 에서 구조를 바꿔 새 분자로 내세요.',
     noveltyHelp:
       "평면 SMILES 가 공개 분자 목록(데이터셋) 'ChEMBL 승인약' · 'ZINC 소형'의 분자나 표적 기준 리간드(이 표적에 붙는다고 알려진 기준 분자)와 같으면 이미 알려진 물질이에요.",
     duplicate: (code: string) => `거절 · 이미 있음 — 학급 원장에 같은 물질의 유효 특허가 있어요(${code}). 2.1 에서 변형체를 만들어 다시 와요.`,
@@ -610,7 +610,7 @@ export const PATENT_COPY = {
     actionBlank: '(무엇을 하나)',
     codeSummaryNote: (codes: string) => `다른 모둠과는 이름표(티커)가 달라서 코드명이 겹치지 않아요. 우리 모둠이 쓴 코드명: ${codes || '없음'}`,
     docHead: '출원서 칸',
-    anatomyTitle: '5.01 출원서 해부',
+    anatomyTitle: '출원서 해부',
     evidence: (admet: string, docking: string | null) => `ADMET ${admet}${docking ? ` · 도킹 ${docking}` : ''}`,
     srFinding: { reject: '거절', revise: '보완', ok: '통과' },
     runPrecheck: '규칙 점검',

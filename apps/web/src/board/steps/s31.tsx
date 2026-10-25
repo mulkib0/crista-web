@@ -33,7 +33,7 @@ import { api, ApiFailure, message } from '../../api.ts';
 import { ink, money } from '../../ink.ts';
 import { By } from '../parts.tsx';
 import { Confirm, DocSectionEditor, Panel, useBenchState, useLive, useLocalTab, type DocSectionStale } from '../ui/index.ts';
-import { currentTarget, Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { currentTarget, StepLayout, useAction, type StepProps } from './common.tsx';
 import './s31.css';
 
 const TABS = ['pick', 'code', 'doc', 'review', 'ledger'] as const;
@@ -69,7 +69,7 @@ const staleOf = (e: ApiFailure): DocSectionStale | null => {
 };
 
 export function Step31(props: StepProps) {
-  const { board, step, goStep } = props;
+  const { board } = props;
   const [tab, setTab] = useLocalTab<Tab>('step:3.1', TABS, 'pick');
   const [appId, setAppId] = useBenchState<string | null>('s31:app', null);
   const live = useLive<PatentsResponse>(PATENT_API.patents, (m) =>
@@ -102,10 +102,12 @@ export function Step31(props: StepProps) {
   }));
 
   const reloadSoon = () => live.reload();
+  // 띠 '하러 가기' — 남은 일(특허 1건)은 출원서가 없으면 ① 후보, 쓰는 중이면 ③ 출원서, 심사 중 · 고칠 곳이 있으면 ④ 심사로.
+  const go = { patent: { tab: !app || app.status === 'rejected' || app.status === 'abandoned' ? 'pick' : app.status === 'draft' ? 'doc' : 'review' } };
 
   if (!data) {
     return (
-      <StepLayout {...props} tabs={tabs} tab={tab} onTab={(id) => setTab(id as Tab)}
+      <StepLayout {...props} tabs={tabs} tab={tab} onTab={(id) => setTab(id as Tab)} go={go}
         team={<p className={live.error ? 'err' : 'empty'}>{live.error ? message(live.error) : C.ui.loading}</p>} />
     );
   }
@@ -137,14 +139,9 @@ export function Step31(props: StepProps) {
       tab={tab}
       onTab={(id) => setTab(id as Tab)}
       ratio="even"
+      go={go}
       mine={mine ? <div className="s31">{mine}</div> : undefined}
-      team={
-        <>
-          <div className="s31">{team}</div>
-          <NotesBlock board={board} stepId="3.1" />
-          <Next step={step} goStep={goStep} label="3.2" />
-        </>
-      }
+      team={<div className="s31">{team}</div>}
     />
   );
 }
