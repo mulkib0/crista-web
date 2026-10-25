@@ -138,11 +138,6 @@ function Lights({ rows, cns }: { rows: AdmetView[]; cns: boolean }) {
           })}
         </tbody>
       </table></div>
-      <ul className="sel-legend mini" aria-label={C.s22.ui.legendNote}>
-        <li><Light tone="g" text={C.s22.lightsLegend.good} /> {C.s22.lightsLegend.goodWhat}</li>
-        <li><Light tone="w" text={C.s22.lightsLegend.mid} /></li>
-        <li><Light tone="b" text={C.s22.lightsLegend.bad} /> {C.s22.lightsLegend.badWhat}</li>
-      </ul>
     </>
   );
 }
@@ -304,7 +299,6 @@ function Candidates({ board, sel, onChanged }: { board: BoardResponse; sel: Sele
         </ul>
       )}
       {sel.candidates.some((c) => (LEGACY_LEAD_REASONS as readonly string[]).includes(c.reason)) && <p className="mini muted">{C.s22.candLegacy}</p>}
-      <p className="mini muted">{C.s22.candNote(sel.limits.leadPerTeam, board.maxPatentsPerTeam)}</p>
       {(mineFull || teamFull) && <p className="hint">{teamFull ? C.s22.candLimitTeam(sel.limits.leadPerTeam) : C.s22.candLimitMine(sel.limits.leadPerPerson)}</p>}
       <div className="fld">
         <label className="lab" htmlFor="s22-cand">{C.s22.candFrom}</label>
@@ -364,7 +358,6 @@ function Run({ board, sel, step, onChanged }: { board: BoardResponse; sel: Selec
           );
         })}
       </ul>
-      <p className="hint">{C.s22.runHint(money(board.costs['2.2']))}</p>
       {!sel.admet.some((a) => a.status === 'succeeded') && <p className="hint">{C.s22.empty}</p>}
       {act.error && <p className="err" role="alert">{act.error}</p>}
     </Panel>
@@ -391,7 +384,7 @@ export function Step22(props: StepProps) {
   const molPick = (
     <Pick label={C.s22.chain.mol} items={done.map((a) => a.jobId!)} value={focused?.jobId ?? ''} onChange={(id) => setFocus(id)} text={(id) => nameOf(done.find((a) => a.jobId === id)!)} />
   );
-  const tool = (q: string, body: ReactNode) => <Panel plain><p className="sel-q">{q}</p>{body}</Panel>;
+  const tool = (body: ReactNode) => <Panel plain>{body}</Panel>;
   const effectiveTab: Tab = has || tab === 'run' ? tab : 'run';
 
   return (
@@ -413,10 +406,10 @@ export function Step22(props: StepProps) {
         <div className="s22">
           {!sel ? <Panel><p className="hint">{live.error ? live.error.message : C.s22.ui.loading}</p></Panel>
             : effectiveTab === 'run' ? <Run board={board} sel={sel} step={step} onChanged={changed} />
-              : effectiveTab === 'radar' ? tool(C.s22.radarQ, <><Radars rows={rows} /><p className="mini muted">{C.s22.radarNote}</p><p className="mini muted">{C.s22.radarAxes}</p></>)
-                : effectiveTab === 'lights' ? tool(C.s22.lightsQ, <Lights rows={rows} cns={sel.cns} />)
-                  : effectiveTab === 'trip' && focused ? tool(C.s22.tripQ, <>{molPick}<Trip row={focused} cns={sel.cns} indMin={sel.indSafetyMin} /></>)
-                    : effectiveTab === 'chain' && focused ? tool(C.s22.chainQ, <>{molPick}<Chain row={focused} indMin={sel.indSafetyMin} /></>)
+              : effectiveTab === 'radar' ? tool(<Radars rows={rows} />)
+                : effectiveTab === 'lights' ? tool(<Lights rows={rows} cns={sel.cns} />)
+                  : effectiveTab === 'trip' && focused ? tool(<>{molPick}<Trip row={focused} cns={sel.cns} indMin={sel.indSafetyMin} /></>)
+                    : effectiveTab === 'chain' && focused ? tool(<>{molPick}<Chain row={focused} indMin={sel.indSafetyMin} /></>)
                       : null}
         </div>
       }

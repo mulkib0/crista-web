@@ -147,12 +147,6 @@ function Gauge({ sel, board }: { sel: SelectionResponse; board: BoardResponse })
           );
         })}
       </svg>
-      <figcaption className="mini muted">{C.s21.gaugeNote}</figcaption>
-      <ul className="sel-notes mini">
-        {milestones.map((m) => <li key={m.key} className={`g-m ${m.tone}`}>{m.note}</li>)}
-        {dots.length > 0 && <li className="g-m me">{C.s21.gaugeDots(sel.docked.length)}</li>}
-      </ul>
-      <p className="mini muted">{C.s21.gaugeLegend}</p>
     </figure>
   );
 }
@@ -234,8 +228,6 @@ function Stairs({ sel, focus, setFocus }: { sel: SelectionResponse; focus: strin
             </>
           )}
         </svg>
-        <figcaption className="mini muted">{C.s21.stairsNote}</figcaption>
-        <p className="mini muted">{C.s21.stairsAxis} · {C.s21.stairsBands}</p>
       </figure>
       {mol && <p className={`verdict ${gap <= 0 ? 'ok' : 'warn'}`} role="status"><b aria-hidden="true">{gap <= 0 ? '↓' : '↑'}</b> {C.s21.stairsLine(Math.abs(gap).toFixed(2), nText, gap <= 0)}</p>}
     </>
@@ -328,7 +320,6 @@ function Queue({ board, sel, focus, setFocus, onChanged }: { board: BoardRespons
           <option value="">{C.s21.ui.choose}</option>
           {options.map((d) => <option key={d.jobId} value={d.jobId}>{shortName(d)} · ΔG {fmtKcal(d.kcal)} · {d.byName}</option>)}
         </select>
-        <p className="hint">{C.s21.pickRef}</p>
       </div>
       {mol && (
         <div className="chips" style={{ marginTop: 8 }}><OriginChip origin={mol.origin} /><KnownChip known={mol.known} /></div>
@@ -439,11 +430,6 @@ export function Step21(props: StepProps) {
         <div className="fld">
           <label className="lab" htmlFor="smi">SMILES</label>
           <textarea id="smi" ref={smilesRef} className="txt mono" rows={3} value={bench.smiles} maxLength={200} onChange={(e) => (setBench((b) => ({ ...b, smiles: e.target.value })), setPreview(null))} placeholder="예: COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2" />
-          <div className="chips sel-edit-chips" role="list" aria-label={C.s21.edit.chipsHead}>
-            <span className="mini muted">{C.s21.edit.chipsHead}</span>
-            {C.s21.edit.chips.map((t) => <span key={t} role="listitem" className="chip">{t}</span>)}
-          </div>
-          <p className="hint">{C.s21.edit.chipReady}</p>
         </div>
         <div className="fld">
           <label className="lab" htmlFor="lbl">{C.s21.ui.labelLabel}</label>
@@ -476,10 +462,10 @@ export function Step21(props: StepProps) {
     </>
   );
 
-  const readTool = (inner: (s: SelectionResponse) => ReactNode, q: string) =>
+  const readTool = (inner: (s: SelectionResponse) => ReactNode) =>
     !sel ? <Panel><p className="hint">{live.error ? live.error.message : C.s21.ui.loading}</p></Panel>
       : !hasResults ? <Panel><p className="empty">{C.s21.empty}</p></Panel>
-        : <Panel plain><p className="sel-q">{q}</p>{inner(sel)}</Panel>;
+        : <Panel plain>{inner(sel)}</Panel>;
 
   return (
     <StepLayout
@@ -496,9 +482,9 @@ export function Step21(props: StepProps) {
       tabsLabel={C.s21.ui.tabsLabel}
       mine={
         <div className="s21">
-          {tab === 'gauge' && hasResults ? readTool((s) => <Gauge sel={s} board={board} />, C.s21.gaugeQ)
-            : tab === 'cards' && hasResults ? readTool((s) => <Cards sel={s} onPick={pickFromCard} />, C.s21.cardsQ)
-              : tab === 'stairs' && hasResults ? readTool((s) => <Stairs sel={s} focus={stairFocus} setFocus={setStairFocus} />, C.s21.stairsQ)
+          {tab === 'gauge' && hasResults ? readTool((s) => <Gauge sel={s} board={board} />)
+            : tab === 'cards' && hasResults ? readTool((s) => <Cards sel={s} onPick={pickFromCard} />)
+              : tab === 'stairs' && hasResults ? readTool((s) => <Stairs sel={s} focus={stairFocus} setFocus={setStairFocus} />)
                 : editPanel}
         </div>
       }
@@ -506,7 +492,7 @@ export function Step21(props: StepProps) {
       team={
         <div className="s21">
           {sel && <Retro sel={sel} />}
-          <Panel title={C.s21.ui.tableTitle(target ? `${target.gene} (PDB ${target.pdbId})` : null)} sub={C.s21.ui.tableSub}>
+          <Panel title={C.s21.ui.tableTitle(target ? `${target.gene} (PDB ${target.pdbId})` : null)}>
             <div className="tbl-w"><table>
               <thead><tr><th>{CO.who}</th><th>{CO.mol}</th><th className="num">{CO.dg}</th><th className="num">{CO.vsRef}</th><th>{CO.residues}</th><th>{CO.state}</th><th /></tr></thead>
               <tbody>
