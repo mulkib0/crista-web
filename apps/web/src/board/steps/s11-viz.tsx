@@ -109,9 +109,8 @@ export function TierSig({ t, pdb }: { t: TargetRow; pdb?: boolean }) {
 // ── 1.01 근거 열지도 — 질환 하나의 표적 8개 ──
 
 export function HeatMap({ d, sel, onPick }: { d: DData; sel: string | null; onPick: (symbol: string) => void }) {
-  const W = 760, top = 58, rh = 40, H = top + d.list.length * rh + 44;
+  const W = 760, top = 58, rh = 40, H = top + d.list.length * rh + 22;
   const cx = (k: number) => 150 + k * 64, cw = 58, bx = 414, bw = 110, px = 600, chx = 640;
-  const ready = readyOf(d);
   return (
     <Svg w={W} h={H} label={`${d.name} 표적 ${d.list.length}개의 근거 4종 열지도`}>
       {TARGET_EVIDENCE.map((e, k) => (
@@ -156,7 +155,6 @@ export function HeatMap({ d, sel, onPick }: { d: DData; sel: string | null; onPi
       })}
       <line x1={bx + bw * 0.5} x2={bx + bw * 0.5} y1={top} y2={top + d.list.length * rh} stroke="var(--line-strong)" strokeDasharray="3 3" strokeWidth={1} />
       <T x={bx + bw * 0.5} y={top + d.list.length * rh + 14} a="middle" cls="t-m t-mu" fs={11}>0.5</T>
-      <T x={8} y={H - 8} fs={12.5} w={600}>{`${d.name} 연관 표적 ${n0(d.assoc)}개 중 상위 ${d.list.length} · 종합 점수 순 · 도킹 준비된 표적은 ${ready?.symbol ?? '없음'} 하나`}</T>
     </Svg>
   );
 }
@@ -245,12 +243,6 @@ export function NetMap({ d, sel, onPick, size, flags }: { d: DData; sel: string 
           </g>
         );
       })}
-      {!sm && (
-        <>
-          <T x={8} y={20} fs={12} w={600}>가운데에 가까울수록 연관 근거가 강하다 · 선 굵기 = 종합 점수 · 점을 누르면 근거가 열린다</T>
-          <T x={8} y={H - 10} cls="t-mu" fs={11.5}>{`흐린 점 하나 = 연관 표적 50개 (나머지 ${n0(d.assoc - d.list.length)}개는 점수가 더 낮다)`}</T>
-        </>
-      )}
     </Svg>
   );
 }
@@ -276,9 +268,8 @@ export function StackBars({ all, w, sel, onPick, showAll }: { all: TRow[]; w: re
   const extra = showAll ? [] : rows.map((r, i) => ({ r, i })).filter(({ r, i }) => i >= lim && r.t.dockingTargetId);
   const list = [...shown, ...extra];
   const gap = extra.length ? 14 : 0;
-  const H = top + list.length * rh + gap + 46;
+  const H = top + list.length * rh + gap + 22;
   const yOf = (n: number) => top + n * rh + (n >= shown.length ? gap : 0);
-  const ready = rows.map((r, i) => (r.t.dockingTargetId ? `${r.t.symbol} ${i + 1}위` : null)).filter(Boolean);
   return (
     <Svg w={W} h={H} label="가중치를 바꾼 내 표적 점수 누적 막대">
       <T x={8} y={20} cls="t-mu" fs={11.5}>내 순위</T>
@@ -287,8 +278,8 @@ export function StackBars({ all, w, sel, onPick, showAll }: { all: TRow[]; w: re
       <T x={bx + bw + 72} y={20} cls="t-mu" fs={11.5}>도킹</T>
       {[0, 0.25, 0.5, 0.75, 1].map((v) => (
         <g key={v}>
-          <line x1={bx + v * bw} x2={bx + v * bw} y1={top - 4} y2={H - 46} stroke="var(--line)" strokeWidth={1} />
-          <T x={bx + v * bw} y={H - 32} a="middle" cls="t-m t-mu" fs={11}>{String(v)}</T>
+          <line x1={bx + v * bw} x2={bx + v * bw} y1={top - 4} y2={H - 22} stroke="var(--line)" strokeWidth={1} />
+          <T x={bx + v * bw} y={H - 8} a="middle" cls="t-m t-mu" fs={11}>{String(v)}</T>
         </g>
       ))}
       {extra.length > 0 && <line x1={8} x2={W - 8} y1={top + shown.length * rh + gap / 2} y2={top + shown.length * rh + gap / 2} stroke="var(--line-strong)" strokeDasharray="2 4" strokeWidth={1} />}
@@ -327,7 +318,6 @@ export function StackBars({ all, w, sel, onPick, showAll }: { all: TRow[]; w: re
           </g>
         );
       })}
-      <T x={8} y={H - 6} fs={12.5} w={600}>{`가중치를 바꾸면 순위가 바뀐다 · 하지만 ◆ 도킹 준비된 표적은 늘 ${ready.length}개 — ${ready.join(' · ')}`}</T>
     </Svg>
   );
 }
@@ -361,7 +351,6 @@ export function Scatter({ all, sel, onPick, onHover, dim, flags, compact }: {
   return (
     <Svg w={W} h={H} label="표적 32개의 점수와 약물 근거 산점도">
       <rect x={x0} y={yu(1)} width={x1 - x0} height={yu(0.99) - yu(1)} fill="var(--hi)" fillOpacity={0.35} />
-      <T x={x1} y={yu(1) - 8} a="end" fs={11.5} w={600}>연두 띠 = 약물 근거 0.99 이상 · 이미 약이 있는 표적</T>
       {[0.94, 0.96, 0.98, 1].map((v) => (
         <g key={`u${v}`}>
           <line x1={x0} x2={x1} y1={yu(v)} y2={yu(v)} stroke="var(--line)" strokeWidth={1} />
@@ -376,7 +365,6 @@ export function Scatter({ all, sel, onPick, onHover, dim, flags, compact }: {
       ))}
       <rect x={x0 - 4} y={brk} width={x1 - x0 + 8} height={14} fill="var(--surface)" />
       <path d={`M${x0 - 10} ${brk + 4} l8 -5 M${x0 - 10} ${brk + 12} l8 -5`} stroke="var(--fg)" strokeWidth={1.5} fill="none" />
-      <T x={x0 + 6} y={brk + 11} cls="t-mu" fs={11}>≈ 축 끊김: 위 칸은 0.94 ~ 1.00 을 크게 펼침</T>
       {[0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9].map((v) => (
         <g key={`x${v}`}>
           <line x1={sx(v)} x2={sx(v)} y1={yl(0)} y2={yl(0) + 5} stroke="var(--fg)" strokeWidth={1} />

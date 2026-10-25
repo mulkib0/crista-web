@@ -201,9 +201,6 @@ export function SeqEditor({ chain, value, parent, numbering, cdrs, locks, unlock
           <button type="button" className="btn sm" disabled={readOnly} onClick={() => onUnlock(picked)}>그래도 풀기</button>
         </p>
       )}
-      <p className="mini muted" style={{ margin: 0 }}>
-        1차에서는 글자를 바꾸기만 할 수 있어요 — 끼워 넣기 · 지우기는 길이가 달라져 자리 번호가 밀리기 때문에 막아 뒀어요.
-      </p>
     </div>
   );
 }

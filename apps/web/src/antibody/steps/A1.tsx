@@ -120,7 +120,6 @@ export function A1({ board, step, me, actions, goStep, mock }: AbStepProps) {
             )}
 
             <Panel title="내 분담 몫" sub={`표적 ${slot}`}>
-              <p className="mini muted" style={{ margin: '0 0 8px' }}>모둠원이 표적을 나눠 맡아요 — 내 몫을 조회해 카드로 올려요.</p>
               {targets.length === 0 ? (
                 <p className="empty">{live.loading ? '표적 표를 받는 중이에요.' : '표적 표를 받지 못했어요 — 잠시 뒤 다시 열어 주세요.'}</p>
               ) : (
@@ -174,7 +173,6 @@ export function A1({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 empty={live.loading ? '항체 표를 받는 중이에요.' : '항체 표를 받지 못했어요.'}
                 summary={parent ? `고른 원본 항체 · ${parent.name}` : undefined}
               />
-              <p className="mini muted" style={{ margin: '6px 0 0' }}>사슬 길이 · 서열은 확정 뒤 A2 · A3 에서 받아요.</p>
             </Panel>
 
             <Panel title="구조 후보">
@@ -196,7 +194,6 @@ export function A1({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 rowKey={(r, i) => `${r.set}-${i}`}
                 rowTone={(_r, i) => (i === 0 ? 'on' : undefined)}
                 empty={live.loading ? '구조 후보를 받는 중이에요.' : '구조 후보를 받지 못했어요.'}
-                summary="항원이 함께 들어 있는 구조만 둬요 — 항체만 들어 있는 구조로는 A5 에서 계면을 볼 수 없어요. 계면은 첫 체인 조로 읽어요."
               />
             </Panel>
           </>

@@ -295,7 +295,6 @@ export function ToolPeak(p: ToolProps) {
           );
         })}
       </ul>
-      <p className="hint">{fillIndCopy(T.peakLimit, { v: f1(limit), min: rules.thresholds.ind, rk: rk.toFixed(2) })}{mrsd !== undefined ? ` · ${fillIndCopy(T.peakMrsd, { form: FORM[p.knobs.form].short, mrsd: indFmtMg(mrsd) })}` : ''}</p>
     </div>
   );
 }
@@ -346,7 +345,6 @@ export function ToolDose(p: ToolProps) {
           );
         })}
       </div>
-      <div className="chips"><span className="chip">{T.doseLegendE}</span><span className="chip">{T.doseLegendS}</span><span className="chip">{fillIndCopy(T.doseLegendOk, { ind: th.ind })}</span></div>
     </div>
   );
 }

@@ -161,7 +161,6 @@ function ProtocolTools({ data }: { data: ClinicalResponse }) {
     <>
       <Panel title={K.viz.hurdle.title} plain>
         <HurdleLadder ladder={data.ladder} />
-        <p className="mini muted">{K.viz.hurdle.read}</p>
       </Panel>
       <Panel title={U.phaseQs}>
         <ul className="s41-qs">
@@ -186,29 +185,22 @@ function protocolOf(data: ClinicalResponse): TrialView['protocol'] | null {
   return data.current?.protocol ?? data.trials[0]?.protocol ?? null;
 }
 
-const armsNote = (proto: TrialView['protocol']): string =>
-  proto.phase === 'phase1' ? (proto.oncology ? K.protocol.arms.phase1Onc : K.protocol.arms.phase1) : K.protocol.arms[proto.phase];
-
 function ProtocolTeam({ data, reload }: { data: ClinicalResponse; reload: () => void }) {
   const act = useAction();
   const cand = data.candidate;
   const proto = protocolOf(data);
   const open = data.routes.find((r) => r.route === 'first' || r.route === 'next');
-  const phase1 = proto ? proto.phase === 'phase1' : true;
   return (
     <>
       <Panel title={U.protocolNow} sub={proto ? `${PHASE_LABEL[proto.phase]}` : U.protocolFromInd}>
         {cand && (
-          <>
-            <dl className="s41-dl">
-              <dt>{U.dlCandidate}</dt><dd><b className="mono">{proto?.codeName ?? cand.codeName}</b>{cand.backup ? <span className="mini muted"> · {f(U.backupOf, { code: cand.backup.codeName })}</span> : null}</dd>
-              <dt>{U.dlFormDose}</dt><dd>{FORM_LABEL[proto?.form ?? cand.form]} · {proto?.doseMg ?? cand.doseMg} mg</dd>
-              <dt>{U.dlPopulation}</dt><dd>{proto?.healthy ? U.healthyPopulation : cand.population}</dd>
-              <dt>{U.dlEndpoint}</dt><dd>{proto?.phase === 'phase1' ? U.endpointPhase1Short : cand.endpoint}</dd>
-              {cand.mrsdMgByForm && <><dt>{U.dlMrsd}</dt><dd className="mono">{IND_FORMS.map((x) => `${FORM_LABEL[x]} ${cand.mrsdMgByForm?.[x] ?? '—'}`).join(' · ')} mg</dd></>}
-            </dl>
-            <p className="mini muted">{phase1 ? K.protocol.endpointPhase1 : f(K.protocol.endpoint, { endpoint: cand.endpoint })}</p>
-          </>
+          <dl className="s41-dl">
+            <dt>{U.dlCandidate}</dt><dd><b className="mono">{proto?.codeName ?? cand.codeName}</b>{cand.backup ? <span className="mini muted"> · {f(U.backupOf, { code: cand.backup.codeName })}</span> : null}</dd>
+            <dt>{U.dlFormDose}</dt><dd>{FORM_LABEL[proto?.form ?? cand.form]} · {proto?.doseMg ?? cand.doseMg} mg</dd>
+            <dt>{U.dlPopulation}</dt><dd>{proto?.healthy ? U.healthyPopulation : cand.population}</dd>
+            <dt>{U.dlEndpoint}</dt><dd>{proto?.phase === 'phase1' ? U.endpointPhase1Short : cand.endpoint}</dd>
+            {cand.mrsdMgByForm && <><dt>{U.dlMrsd}</dt><dd className="mono">{IND_FORMS.map((x) => `${FORM_LABEL[x]} ${cand.mrsdMgByForm?.[x] ?? '—'}`).join(' · ')} mg</dd></>}
+          </dl>
         )}
         {proto && (
           <>
@@ -223,8 +215,6 @@ function ProtocolTeam({ data, reload }: { data: ClinicalResponse; reload: () => 
                 </tbody>
               </table>
             </div>
-            <p className="mini">{armsNote(proto)}</p>
-            {!(proto.phase === 'phase1' && proto.oncology) && <p className="mini muted">{K.protocol.design}</p>}
             <p className="mini muted">
               {f(K.protocol.sampleSize, { target: proto.targetN, min: proto.minN, primaryWeek: proto.primaryWeek })} · {f(K.protocol.costDuration, { phase: PHASE_LABEL[proto.phase], cost: c(proto.costCrista), days: proto.gameDays })}
             </p>
@@ -233,7 +223,6 @@ function ProtocolTeam({ data, reload }: { data: ClinicalResponse; reload: () => 
       </Panel>
       {open && (
         <Panel title={f(K.routes[open.route], { phase: PHASE_LABEL[open.phase] })} tone="hi">
-          <p className="mini" style={{ marginTop: 0 }}>{U.openHint}</p>
           <div className="acts">
             <button className="btn pri" type="button" disabled={act.busy} onClick={() => act.run(async () => { await api.post(CLINICAL_API.open, { route: open.route }); reload(); })}>
               {f(K.routes[open.route], { phase: PHASE_LABEL[open.phase] })}
@@ -245,7 +234,6 @@ function ProtocolTeam({ data, reload }: { data: ClinicalResponse; reload: () => 
       {data.trials.length > 0 && (
         <Panel title={K.viz.gantt.title} plain>
           <TrialGantt trials={data.trials} gameDay={data.gameDay} />
-          <p className="mini muted">{f(K.viz.gantt.read, { days: PHASE_RULES.phase3.gameDays })}</p>
         </Panel>
       )}
     </>
@@ -271,7 +259,6 @@ function RecruitTools({ data }: { data: ClinicalResponse }) {
       </Panel>
       <Panel title={U.powerCurve} sub={t.phase === 'phase1' ? U.powerSub1 : U.powerSub23} plain>
         <PowerCurve phase={t.phase} oncology={t.protocol.oncology} n={r.enrolled} target={r.targetN} />
-        <p className="mini muted">{t.phase === 'phase1' ? K.power1Note : `${K.powerNote} ${f(K.powerTarget, { targetPower: pct(PHASE_RULES[t.phase].targetPower) })}`}</p>
       </Panel>
     </>
   );
@@ -313,13 +300,12 @@ function RecruitTeam({ data, reload }: { data: ClinicalResponse; reload: () => v
               </button>
             ))}
           </div>
-          <p className="mini muted">{f(U.tierSpent, { spent: c(r.spentCrista) })} · {K.tierRule}</p>
+          <p className="mini muted">{f(U.tierSpent, { spent: c(r.spentCrista) })}</p>
           {act.error && <p className="err">{act.error}</p>}
         </Panel>
       )}
       <Panel title={K.viz.funding.title} plain>
         <FundingStairs funding={data.funding} balanceCrista={data.balanceCrista} />
-        <p className="mini muted">{K.viz.funding.read}</p>
       </Panel>
     </>
   );
@@ -336,7 +322,7 @@ function StartTools({ data }: { data: ClinicalResponse }) {
     <>
       <Panel title={U.gaugeTitle} sub={f(U.gaugeSub, { n: t.recruit.enrolled })}>
         <PowerGauge power={t.recruit.power} goal={phase1 ? 0.8 : goal} label={phase1 ? U.gauge1 : U.gauge23} />
-        <p className="mini">{phase1 ? K.power1Note : K.powerNote} {f(K.powerNow, { n: t.recruit.enrolled, power: pct(t.recruit.power), target: t.recruit.targetN, powerAtTarget: pct(t.recruit.powerAtTarget) })}</p>
+        <p className="mini">{f(K.powerNow, { n: t.recruit.enrolled, power: pct(t.recruit.power), target: t.recruit.targetN, powerAtTarget: pct(t.recruit.powerAtTarget) })}</p>
         {t.status === 'recruiting' && t.recruit.enrolled < t.recruit.targetN && <p className="mini muted">{phase1 ? K.lowWarnPhase1 : f(K.lowWarn, { min: t.recruit.minN })}</p>}
       </Panel>
       <Panel title={U.shakeTitle} plain>
@@ -415,14 +401,13 @@ function ResultTools({ pick }: { pick: ResultPick }) {
   return (
     <>
       <ArmLegend arms={arms} />
-      <Panel title={U.timeTitle} plain><TimeCourse result={r} arms={arms} unit={r.primary.unit} /><p className="mini muted">{K.read.timecourse}</p></Panel>
-      {r.subgroups.length > 0 && <Panel title={U.forestTitle} plain><ForestPlot result={r} /><p className="mini muted">{K.read.subgroup}</p></Panel>}
-      {r.pk.length > 0 && <Panel title={U.pkTitle} plain><PkCurves result={r} arms={arms} /><p className="mini muted">{K.read.pk}</p></Panel>}
-      {r.survival.length > 0 && <Panel title={U.survivalTitle} plain><SurvivalCurves result={r} arms={arms} /><p className="mini muted">{K.read.survival}</p></Panel>}
+      <Panel title={U.timeTitle} plain><TimeCourse result={r} arms={arms} unit={r.primary.unit} /></Panel>
+      {r.subgroups.length > 0 && <Panel title={U.forestTitle} plain><ForestPlot result={r} /></Panel>}
+      {r.pk.length > 0 && <Panel title={U.pkTitle} plain><PkCurves result={r} arms={arms} /></Panel>}
+      {r.survival.length > 0 && <Panel title={U.survivalTitle} plain><SurvivalCurves result={r} arms={arms} /></Panel>}
       {r.responseRate.length > 0 && (
         <Panel title={U.responseTitle}>
           <HBars label={U.responseBars} max={100} rows={r.responseRate.map((x) => ({ label: armName(arms, x.arm), value: x.pct, text: `${x.pct}%`, tone: x.arm === 'high' ? 'hi' : x.arm === 'control' ? 'dim' : undefined }))} />
-          <p className="mini muted">{K.read.responder}</p>
         </Panel>
       )}
     </>
@@ -475,14 +460,12 @@ function ResultTeam({ data, pick }: { data: ClinicalResponse; pick: ResultPick }
             </tbody>
           </table>
         </div>
-        <p className="mini muted">{K.read.demographics}</p>
         <p className="s41-analysis"><b>{U.analysis} · </b>{r.analysis}</p>
         <p className="mini"><b>{U.rec} · </b>{r.recommendation}</p>
       </Panel>
-      <Panel title={U.consortTitle} plain><ConsortFlow result={r} arms={arms} /><p className="mini muted">{K.read.consort}</p></Panel>
+      <Panel title={U.consortTitle} plain><ConsortFlow result={r} arms={arms} /></Panel>
       <Panel title={U.primaryTitle} plain>
         <PrimaryBars result={r} arms={arms} />
-        <p className="mini muted">{cmp ? `${K.read.primary} ${K.read.p}.` : K.read.primaryPhase1}</p>
       </Panel>
       <Panel title={U.aeTitle} plain>
         <AeStacked result={r} arms={arms} />
@@ -502,8 +485,6 @@ function ResultTeam({ data, pick }: { data: ClinicalResponse; pick: ResultPick }
           </table>
         </div>
         <p className="mini muted">{f(U.dropLine, { list: drops.map(([k, n]) => `${K.dropReason[k as keyof typeof K.dropReason] ?? k} ${n}`).join(' · ') || U.none })}</p>
-        <p className="mini muted">{K.read.ae}</p>
-        <p className="mini muted">{K.read.aeRule}</p>
       </Panel>
     </>
   );
@@ -526,7 +507,6 @@ function RetryTools({ data }: { data: ClinicalResponse }) {
             ok: r.available,
           }))}
         />
-        <p className="mini muted">{K.viz.fork.read}</p>
         <ul className="s41-qs">
           {(['same', 'amend', 'backup'] as const).map((k) => (
             <li key={k}><b>{K.routes[k]}</b><span className="mini muted">{f(K.routeWhy[k], { fee: c(BACKUP_SWAP_FEE_CRISTA), waitDays: BACKUP_SWAP_WAIT_DAYS })}</span></li>

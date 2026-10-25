@@ -179,7 +179,6 @@ export function Step11({ board, step, bench, setBench, reload }: StepProps) {
           {tab === 'scatter' && allLoaded && (
             <Panel title="모둠 깃발" sub="올린 카드 자리">
               <Scatter all={all} sel={sel} flags={flags} compact onPick={(r) => pickTarget(r.d.id, r.t.symbol)} />
-              <p className="s11-note">깃발 = 모둠원이 올린 표적(이름 첫 글자). 깃발이 모두 연두 띠(약물 근거 0.99+)의 ◆ 위에 있나요?</p>
             </Panel>
           )}
           <PickCards board={board} ds={ds} reload={reload} />
@@ -203,14 +202,6 @@ function DiseaseChips({ ds, cur, onDisease }: { ds: DData[]; cur: DData; onDisea
     </div>
   );
 }
-
-const LEGEND = (
-  <div className="s11-row">
-    <span className="s11-sig good">✓ 도킹 준비됨 — 결정구조 + 기준 약 + 검증</span>
-    <span className="s11-sig warn">△ 구조만 있음</span>
-    <span className="s11-sig bad">✗ 구조 없음</span>
-  </div>
-);
 
 interface ToolProps {
   ds: DData[];
@@ -253,8 +244,6 @@ function MapTool({ ds, cur, sel, onDisease, onPick }: ToolProps) {
       </Panel>
       <Panel title={`② 표적 고르기 — ${cur.name} 근거 열지도`} sub="Open Targets v4">
         <HeatMap d={cur} sel={sel?.diseaseId === cur.id ? sel.symbol : null} onPick={(s) => onPick(cur.id, s)} />
-        {LEGEND}
-        <p className="s11-note">줄을 누르면 아래 추천 서랍이 열려요. 연두 줄 = 2.1 도킹으로 갈 수 있는 표적.</p>
       </Panel>
     </>
   );
@@ -266,11 +255,9 @@ function NetTool({ ds, cur, sel, onDisease, onPick }: ToolProps) {
     <>
       <Panel>
         <DiseaseChips ds={ds} cur={cur} onDisease={onDisease} />
-        <p className="s11-note">{cur.blurb ? `${cur.blurb} · ` : ''}연관 표적 {n0(cur.assoc)}개 중 상위 {cur.list.length}개만 그려요.</p>
       </Panel>
       <Panel title={`${cur.name} 관계망`} sub="거리 = 점수 · 모양 = 준비 상태">
         <NetMap d={cur} sel={sel?.diseaseId === cur.id ? sel.symbol : null} onPick={(s) => onPick(cur.id, s)} />
-        {LEGEND}
       </Panel>
     </>
   );
@@ -301,10 +288,9 @@ function WeighTool({ all, weights, setWeights, sel, onPick }: { all: TRow[]; wei
       <Panel title="32개 표적 — 내 점수 순" sub={`가중치 ${weights.join(' · ')}`}>
         <StackBars all={all} w={weights} sel={sel} showAll={showAll} onPick={(r) => onPick(r.d.id, r.t.symbol)} />
         <div className="s11-row">
-          {TARGET_EVIDENCE.map((e, k) => <span key={e.key} className="chip"><i className="s11-sw" style={{ background: EV_COLOR[k] }} aria-hidden="true" />{e.label} · {e.desc}</span>)}
+          {TARGET_EVIDENCE.map((e, k) => <span key={e.key} className="chip"><i className="s11-sw" style={{ background: EV_COLOR[k] }} aria-hidden="true" />{e.label}</span>)}
           <button type="button" className="btn sm" aria-pressed={showAll} onClick={() => setShowAll(!showAll)}>{showAll ? '상위 14만' : '32개 모두 보기'}</button>
         </div>
-        <p className="s11-note">검은 세로선 = Open Targets 종합 점수. 줄을 누르면 추천 서랍이 열려요. 올리면 이 가중치도 카드에 함께 남아요.</p>
       </Panel>
     </>
   );
@@ -332,9 +318,8 @@ function ScatterTool({ all, sel, onPick }: { all: TRow[]; sel: Sel | null; onPic
         <Scatter all={all} sel={sel} dim={dim} onHover={setHover} onPick={(r) => onPick(r.d.id, r.t.symbol)} />
         <div className="s11-row">
           {ds.map((d) => <span key={d.id} className="chip"><i className="s11-sw round" style={{ background: d.color }} aria-hidden="true" />{d.name}</span>)}
-          <span className="chip">◆ 도킹 준비됨 · ● 그 밖</span>
         </div>
-        <p className="s11-note" aria-live="polite">{hover ?? '점을 가리키면 이름이 나와요. ◆ 4개는 모두 연두 띠 안에 있어요.'}</p>
+        {hover && <p className="s11-note" aria-live="polite">{hover}</p>}
       </Panel>
     </>
   );
@@ -357,16 +342,11 @@ function CardsTool({ ds, cur, sel, onDisease, onPick }: ToolProps) {
       <Panel><DiseaseChips ds={ds} cur={cur} onDisease={onDisease} /></Panel>
       <Panel title={`${cur.name} 카드 ${cur.list.length}장`} sub="어느 카드가 2.1 도킹으로 갈 수 있을까">
         <div className="s11-row">
-          <span className="s11-note" style={{ flex: '1 1 240px' }}>앞면은 점수와 근거뿐이에요. 점수만 보고 하나 찍은 뒤 뒤집어 확인해 보세요.</span>
           <button type="button" className="btn sm" aria-pressed={allOn} onClick={() => setFlipped({ ...flipped, [cur.id]: allOn ? [] : cur.list.map((t) => t.symbol) })}>{allOn ? '모두 앞면으로' : '모두 뒤집기'}</button>
         </div>
         <div className="s11-cards">
           {cur.list.map((t, i) => <FlipCard key={t.symbol} t={t} d={cur} i={i} on={fl.includes(t.symbol)} sel={sel?.diseaseId === cur.id && sel.symbol === t.symbol} onFlip={() => flip(t)} />)}
         </div>
-        <p className="s11-note" aria-live="polite">
-          뒤집은 카드 {fl.length} / {cur.list.length}
-          {found && rd ? ` · 찾았다 — 점수 ${rankIn(cur, rd)}위 ${rd.symbol} 만 다음 단계로 갈 수 있어요.` : fl.length ? ' · 아직 도킹할 수 있는 표적이 안 나왔어요.' : ''}
-        </p>
         {found && rd && !(sel?.diseaseId === cur.id && sel.symbol === rd.symbol) && (
           <div className="acts"><button type="button" className="btn pri sm" onClick={() => onPick(cur.id, rd.symbol)}>{rd.symbol} 추천 서랍 열기</button></div>
         )}
@@ -475,7 +455,6 @@ function TeamNets({ ds, sel, flags, onPick }: { ds: DData[]; sel: Sel | null; fl
           </div>
         ))}
       </div>
-      <p className="s11-note">깃발 = 모둠원이 올린 표적(이름 첫 글자) · ✓ 네모 = 도킹 준비됨 · 점을 누르면 왼쪽에서 그 표적이 열려요.</p>
     </Panel>
   );
 }
@@ -514,7 +493,6 @@ function TeamWeights({ board, all, myWeights }: { board: BoardResponse; all: TRo
           </tbody>
         </table>
       </div>
-      <p className="s11-note">같은 데이터인데 1위가 다르다. 점수는 '판단'이고 ◆(결정구조 준비)는 '사실'이라 올린 카드는 모두 ◆ 쪽으로 모여요.</p>
     </Panel>
   );
 }

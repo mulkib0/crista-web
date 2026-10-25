@@ -43,7 +43,6 @@ export function ValuationCard({ valuation, classRank }: { valuation: AntibodyVal
           {valuation.lastEvent.changePct !== undefined ? ` (${valuation.lastEvent.changePct > 0 ? '+' : ''}${valuation.lastEvent.changePct}%)` : ''}
         </p>
       )}
-      <p className="mini muted" style={{ margin: '6px 0 0' }}>다른 모둠의 점수 숫자는 보이지 않아요 — 우리보다 앞인지 뒤인지만 알려 줘요.</p>
     </Panel>
   );
 }

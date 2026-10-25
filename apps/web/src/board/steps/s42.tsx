@@ -152,7 +152,7 @@ const lockedNow = (d: ApprovalResponse) => d.application?.status === 'submitted'
  * 내 초안은 '고치기 시작한 순간의 판(base)'과 함께 둔다 — 저장은 그 판으로 보내야 낙관적 잠금이 산다(§7.4 늦은 쪽 409).
  * 화면이 실시간으로 다시 읽은 지금 판을 보내면, 그 사이 모둠원이 저장한 이름을 모르고 덮어쓴다.
  */
-function BrandTab({ board, data, reload }: TabProps) {
+function BrandTab({ data, reload }: TabProps) {
   const app = data.application;
   const saved = app?.brand?.name ?? null;
   const current = app?.brandVersion ?? 0;
@@ -184,47 +184,40 @@ function BrandTab({ board, data, reload }: TabProps) {
       }
     });
   return (
-    <>
-      <Panel title={K.brand.title}>
-        <p className="mini" style={{ marginTop: 0 }}>{K.brand.lead}</p>
-        <label className="lab" htmlFor="s42-brand">{K.ui.brandLabel}</label>
-        <input
-          id="s42-brand"
-          className="txt s42-brand-in"
-          value={value}
-          maxLength={16}
-          placeholder={K.brand.placeholder}
-          autoComplete="off"
-          disabled={locked}
-          aria-describedby="s42-brand-v"
-          onChange={(e) => {
-            const name = e.target.value;
-            setDraft((d) => ({ name, base: d?.base ?? current }));
-          }}
-        />
-        <p id="s42-brand-v" className={`verdict ${verdict.status}`} role={verdict.status === 'block' ? 'alert' : 'status'} style={{ marginTop: 8 }}>
-          <b aria-hidden="true">{verdict.status === 'ok' ? '✓' : verdict.status === 'warn' ? '!' : '✕'}</b>{' '}
-          {verdict.status === 'ok' ? K.ui.brandOk : verdict.message}
+    <Panel title={K.brand.title}>
+      <label className="lab" htmlFor="s42-brand">{K.ui.brandLabel}</label>
+      <input
+        id="s42-brand"
+        className="txt s42-brand-in"
+        value={value}
+        maxLength={16}
+        placeholder={K.brand.placeholder}
+        autoComplete="off"
+        disabled={locked}
+        aria-describedby="s42-brand-v"
+        onChange={(e) => {
+          const name = e.target.value;
+          setDraft((d) => ({ name, base: d?.base ?? current }));
+        }}
+      />
+      <p id="s42-brand-v" className={`verdict ${verdict.status}`} role={verdict.status === 'block' ? 'alert' : 'status'} style={{ marginTop: 8 }}>
+        <b aria-hidden="true">{verdict.status === 'ok' ? '✓' : verdict.status === 'warn' ? '!' : '✕'}</b>{' '}
+        {verdict.status === 'ok' ? K.ui.brandOk : verdict.message}
+      </p>
+      {overtaken && (
+        <p className="hint" role="status">
+          ! {K.ui.brandChanged(saved ?? '', app?.brand?.byName ?? '—')}{' '}
+          <button type="button" className="btn sm" onClick={() => setDraft(null)}>{K.ui.useSaved}</button>
         </p>
-        {overtaken && (
-          <p className="hint" role="status">
-            ! {K.ui.brandChanged(saved ?? '', app?.brand?.byName ?? '—')}{' '}
-            <button type="button" className="btn sm" onClick={() => setDraft(null)}>{K.ui.useSaved}</button>
-          </p>
-        )}
-        <div className="acts" style={{ marginTop: 10 }}>
-          <button type="button" className="btn pri" disabled={locked || act.busy || verdict.status === 'block' || value.trim() === saved} onClick={save}>
-            {K.brand.save}
-          </button>
-          {note && <span className="note">{note}</span>}
-        </div>
-        {act.error && <p className="hint bad">✕ {act.error}</p>}
-      </Panel>
-      <Panel title={K.ui.brandTipsTitle}>
-        <ul className="s42-tips">{K.brand.tips.map((t) => <li key={t}>{t}</li>)}</ul>
-        <p className="mini muted" style={{ margin: 0 }}>{K.ui.companyNow(board.team.startupName ?? '—')}</p>
-      </Panel>
-    </>
+      )}
+      <div className="acts" style={{ marginTop: 10 }}>
+        <button type="button" className="btn pri" disabled={locked || act.busy || verdict.status === 'block' || value.trim() === saved} onClick={save}>
+          {K.brand.save}
+        </button>
+        {note && <span className="note">{note}</span>}
+      </div>
+      {act.error && <p className="hint bad">✕ {act.error}</p>}
+    </Panel>
   );
 }
 
@@ -304,13 +297,11 @@ function PackTab({ data, reload }: TabProps) {
   return (
     <>
       <Panel title={K.pack.title}>
-        <p className="mini" style={{ marginTop: 0 }}>{K.pack.lead}</p>
         <div className="s42-ctl">
           <Choice label={K.ui.packShape} items={PACK_SHAPES} value={pick.shape} names={K.pack.shape} disabled={locked} onChange={(shape) => setPick((p) => ({ ...p, shape }))} />
           <Choice label={K.ui.packColor} items={PACK_COLORS} value={pick.color} names={K.pack.color} swatch={PACK_FILL} disabled={locked} onChange={(color) => setPick((p) => ({ ...p, color }))} />
           <Choice label={K.ui.packLayout} items={PACK_LAYOUTS} value={pick.layout} names={K.pack.layout} disabled={locked} onChange={(layout) => setPick((p) => ({ ...p, layout }))} />
         </div>
-        <p className="mini muted">{K.pack.shapeDesc[pick.shape]}</p>
         {app?.formProvisional && art.form && <p className="hint">{K.pack.provisional(FORM_SHORT[art.form])}</p>}
         {overtaken && (
           <p className="hint" role="status">
@@ -348,9 +339,6 @@ function NdaTab({ board, data, reload }: TabProps) {
   const locked = lockedNow(data);
   return (
     <>
-      <Panel title={K.nda.title}>
-        <p className="mini" style={{ margin: 0 }}>{K.nda.lead}</p>
-      </Panel>
       {NDA_SECTIONS.map((s) => {
         const cur = data.sections.find((x) => x.section === s) ?? null;
         return (
@@ -649,7 +637,6 @@ function Receipt({ r, title }: { r: ReceiptView; title: string }) {
         <div className="s42-big"><b>{r.daysTaken !== null ? K.ui.daysUnit(r.daysTaken) : '—'}</b><span>{K.ui.dayRange(r.firstGameDay ?? 0, r.lastGameDay ?? 0)}</span></div>
         <div className="s42-big"><b>{formatCrista(r.totals.spentCrista, { unit: false })}</b><span>{K.ui.spentBig(spentPct, clinical > 0 ? Math.round((clinical / sum) * 100) : null)}</span></div>
         <div className="s42-big"><b>{r.molecules.start ?? '—'} → {r.molecules.end ?? '?'}</b><span>{K.receipt.molecules}</span></div>
-        <p className="mini muted" style={{ margin: 0 }}>{K.receipt.failNote}</p>
       </div>
     </div>
   );
@@ -689,7 +676,6 @@ function ResultTab({ data }: TabProps) {
       <section className="s42-sec-block" aria-labelledby="s42-h-rc">
         <h3 className="s42-h" id="s42-h-rc">{K.result.receiptTitle}</h3>
         {!cert && <p className="mini muted">{K.receipt.preview}</p>}
-        <p className="mini muted">{K.receipt.groupedNote}</p>
         <div ref={rcRef}>
           <Receipt r={data.receipt} title={`${data.startupName} (${data.ticker})${meta.codeName ? ` · ${meta.codeName}` : ''}${meta.brand ? ` 「${meta.brand}」` : ''}`} />
         </div>

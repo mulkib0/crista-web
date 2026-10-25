@@ -61,14 +61,13 @@ export function ArmLegend({ arms }: { arms: TrialArmView[] }) {
   );
 }
 
-function Fig({ label, children, caption, w, h, className }: { label: string; children: ReactNode; caption?: ReactNode; w: number; h: number; className?: string }) {
+function Fig({ label, children, w, h, className }: { label: string; children: ReactNode; caption?: ReactNode; w: number; h: number; className?: string }) {
   return (
     <figure className={`c41-fig${className ? ` ${className}` : ''}`}>
       <svg viewBox={`0 0 ${w} ${h}`} role="img" aria-label={label} preserveAspectRatio="xMidYMid meet">
         <title>{label}</title>
         {children}
       </svg>
-      {caption && <figcaption className="mini muted">{caption}</figcaption>}
     </figure>
   );
 }
