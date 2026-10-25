@@ -22,6 +22,7 @@ import {
   targetShortlist,
   targetTier,
   type BoardResponse,
+  type DiseaseOption,
   type DiseaseTargetsResponse,
   type TargetPickCheck,
   type TargetPickRequest,
@@ -32,7 +33,7 @@ import { api, message } from '../../api.ts';
 import { By } from '../parts.tsx';
 import { Panel, ReasonChips, useBenchState, useLocalTab, type TabItem } from '../ui/index.ts';
 import { currentTarget, StepLayout, useAction, type StepProps } from './common.tsx';
-import { BackFace, EV_COLOR, EvBars, f2, f3, FlipCard, HeatMap, myRows, n0, NetMap, rankIn, readyOf, Scatter, StackBars, TierSig, type DData, type Flag, type TRow } from './s11-viz.tsx';
+import { BackFace, EV_COLOR, EvBars, f2, f3, FlipCard, HeatMap, myRows, n0, NetMap, rankIn, readyList, readyNames, Scatter, StackBars, TierSig, type DData, type Flag, type TRow } from './s11-viz.tsx';
 import './s11.css';
 
 const TABS = ['map', 'net', 'weigh', 'scatter', 'cards'] as const;
@@ -58,10 +59,15 @@ interface Filt {
 /** 질환별 표적 자료 — 단계를 오가도 다시 받지 않는다(서버도 10분 캐시). */
 const loaded = new Map<string, DiseaseTargetsResponse>();
 
+/** `board.diseases` 는 질환 × 표적 줄이다(한 질환에 표적 여럿) — 질환 하나당 첫 줄만 남긴다. */
+const uniqueDiseases = (board: BoardResponse): DiseaseOption[] =>
+  board.diseases.filter((d, i, all) => all.findIndex((x) => x.diseaseId === d.diseaseId) === i);
+
 function useDiseaseData(board: BoardResponse) {
   const [data, setData] = useState<Record<string, DiseaseTargetsResponse>>(() => Object.fromEntries(loaded));
   const [error, setError] = useState<string | null>(null);
-  const ids = board.diseases.map((d) => d.diseaseId).join(',');
+  const diseases = useMemo(() => uniqueDiseases(board), [board.diseases]);
+  const ids = diseases.map((d) => d.diseaseId).join(',');
   useEffect(() => {
     let live = true;
     for (const id of ids.split(',').filter(Boolean)) {
@@ -79,7 +85,7 @@ function useDiseaseData(board: BoardResponse) {
   }, [ids]);
   const ds = useMemo<DData[]>(
     () =>
-      board.diseases.flatMap((option, i) => {
+      diseases.flatMap((option, i) => {
         const res = data[option.diseaseId];
         if (!res) return [];
         const cat = targetDiseaseTile(option.diseaseId);
@@ -96,9 +102,9 @@ function useDiseaseData(board: BoardResponse) {
           color: `var(--d${(i % 4) + 1})`,
         }];
       }),
-    [board.diseases, data],
+    [diseases, data],
   );
-  return { ds, error, ready: ds.length === board.diseases.length };
+  return { ds, error, ready: ds.length === diseases.length };
 }
 
 export function Step11({ board, step, bench, setBench, reload }: StepProps) {
@@ -123,7 +129,13 @@ export function Step11({ board, step, bench, setBench, reload }: StepProps) {
 
   const flags: Flag[] = board.picks.map((p) => {
     const d = ds.find((x) => x.id === p.diseaseId);
-    return { diseaseId: p.diseaseId, symbol: (d && readyOf(d)?.symbol) ?? board.diseases.find((o) => o.diseaseId === p.diseaseId)?.gene ?? '', initial: p.byName.slice(0, 1), name: p.byName };
+    const row = d?.list.find((t) => t.dockingTargetId === p.targetId);
+    return {
+      diseaseId: p.diseaseId,
+      symbol: row?.symbol ?? board.diseases.find((o) => o.targetId === p.targetId)?.gene ?? '',
+      initial: p.byName.slice(0, 1),
+      name: p.byName,
+    };
   });
 
   const drawer = selD && selT ? (
@@ -233,7 +245,7 @@ function MapTool({ ds, cur, sel, onDisease, onPick }: ToolProps) {
                 return (
                   <button key={c.mondoId} type="button" className="s11-tile" aria-pressed={cur.id === d.id} onClick={() => onDisease(d.id)}>
                     <span className="nm"><i style={{ background: d.color }} aria-hidden="true" />{d.name}</span>
-                    <small>연관 표적 {n0(d.assoc)} · 도킹 {d.option.gene} · {d.option.cns ? '뇌까지' : '뇌 밖'}</small>
+                    <small>연관 표적 {n0(d.assoc)} · 고를 수 있는 표적 {readyNames(d) || '없음'} · {d.option.cns ? '뇌까지' : '뇌 밖'}</small>
                     {d.blurb && <span className="bl">{d.blurb}</span>}
                   </button>
                 );
@@ -242,7 +254,7 @@ function MapTool({ ds, cur, sel, onDisease, onPick }: ToolProps) {
           ))}
         </div>
       </Panel>
-      <Panel title={`② 표적 고르기 — ${cur.name} 근거 열지도`} sub="Open Targets v4">
+      <Panel title={`② 표적 고르기 — ${cur.name} 근거 열지도`} sub={`Open Targets v4 · 고를 수 있는 표적 ${readyList(cur).length}개`}>
         <HeatMap d={cur} sel={sel?.diseaseId === cur.id ? sel.symbol : null} onPick={(s) => onPick(cur.id, s)} />
       </Panel>
     </>
@@ -329,8 +341,9 @@ function ScatterTool({ all, sel, onPick }: { all: TRow[]; sel: Sel | null; onPic
 function CardsTool({ ds, cur, sel, onDisease, onPick }: ToolProps) {
   const [flipped, setFlipped] = useBenchState<Record<string, string[]>>('s11:flip', {});
   const fl = flipped[cur.id] ?? [];
-  const rd = readyOf(cur);
-  const found = !!rd && fl.includes(rd.symbol);
+  const open = readyList(cur);
+  // 뒤집어서 찾아낸 '도킹으로 갈 수 있는' 표적들 — 질환마다 하나가 아닐 수 있다.
+  const found = open.filter((t) => fl.includes(t.symbol));
   const flip = (t: TargetRow) => {
     const on = fl.includes(t.symbol);
     setFlipped({ ...flipped, [cur.id]: on ? fl.filter((s) => s !== t.symbol) : [...fl, t.symbol] });
@@ -340,15 +353,21 @@ function CardsTool({ ds, cur, sel, onDisease, onPick }: ToolProps) {
   return (
     <>
       <Panel><DiseaseChips ds={ds} cur={cur} onDisease={onDisease} /></Panel>
-      <Panel title={`${cur.name} 카드 ${cur.list.length}장`} sub="어느 카드가 2.1 도킹으로 갈 수 있을까">
+      <Panel title={`${cur.name} 카드 ${cur.list.length}장`} sub={`어느 카드가 2.1 도킹으로 갈 수 있을까 · 찾은 도킹 표적 ${found.length} / ${open.length}`}>
         <div className="s11-row">
           <button type="button" className="btn sm" aria-pressed={allOn} onClick={() => setFlipped({ ...flipped, [cur.id]: allOn ? [] : cur.list.map((t) => t.symbol) })}>{allOn ? '모두 앞면으로' : '모두 뒤집기'}</button>
         </div>
         <div className="s11-cards">
           {cur.list.map((t, i) => <FlipCard key={t.symbol} t={t} d={cur} i={i} on={fl.includes(t.symbol)} sel={sel?.diseaseId === cur.id && sel.symbol === t.symbol} onFlip={() => flip(t)} />)}
         </div>
-        {found && rd && !(sel?.diseaseId === cur.id && sel.symbol === rd.symbol) && (
-          <div className="acts"><button type="button" className="btn pri sm" onClick={() => onPick(cur.id, rd.symbol)}>{rd.symbol} 추천 서랍 열기</button></div>
+        {found.length > 0 && (
+          <div className="acts">
+            {found
+              .filter((t) => !(sel?.diseaseId === cur.id && sel.symbol === t.symbol))
+              .map((t) => (
+                <button key={t.symbol} type="button" className="btn pri sm" onClick={() => onPick(cur.id, t.symbol)}>{t.symbol} 추천 서랍 열기</button>
+              ))}
+          </div>
         )}
       </Panel>
     </>
@@ -378,14 +397,14 @@ function PickDrawer({ board, d, t, weights, note, setNote, onGoReady, reload, ba
   const [done, setDone] = useState<string | null>(null);
   const act = useAction();
   const tier = targetTier(t);
-  const ready = readyOf(d);
+  const open = readyList(d);
   const rank = rankIn(d, t);
   const checks = checkTargetPickReasons(reasons, t, { rank });
   const blocked = checks.some((c) => c.check?.status === 'block');
   const mine = board.picks.find((p) => p.userId === board.account.userId && p.diseaseId === d.id);
   const can = tier === 'ready' && reasons.length > 0 && !blocked;
   const why = tier !== 'ready'
-    ? `${t.symbol} 는 ${TARGET_TIER[tier].label} — 2.1 도킹으로 갈 수 없어요. 이 질환에서 도킹 준비된 표적은 ${ready?.symbol ?? '없음'} 하나예요.`
+    ? `${t.symbol} 는 ${TARGET_TIER[tier].label} — 2.1 도킹으로 갈 수 없어요. 이 질환에서 도킹으로 갈 수 있는 표적은 ${open.length ? `${readyNames(d)}(${open.length}개)` : '없음'} 이에요.`
     : reasons.length === 0 ? '근거를 하나 이상 고르세요.'
       : blocked ? '✕ 표시된 근거는 데이터와 맞지 않아요. 빼거나 바꾸세요.'
         : mine ? `지금 내 ${d.short} 카드가 있어요 — 다시 올리면 바뀌어요.` : '올리면 모둠 공유에 카드가 바로 보여요.';
@@ -429,12 +448,14 @@ function PickDrawer({ board, d, t, weights, note, setNote, onGoReady, reload, ba
       {done && <p className="ok-msg">{done}</p>}
       <div className="acts">
         <button type="button" className="btn pri" disabled={!can || act.busy} onClick={() => void act.run(async () => {
-          const body: TargetPickRequest = { diseaseId: d.id, targetId: d.option.targetId, reasons, weights: weights.some((w) => w > 0) ? weights : null, note: note.trim() || null };
+          const body: TargetPickRequest = { diseaseId: d.id, targetId: t.dockingTargetId ?? d.option.targetId, reasons, weights: weights.some((w) => w > 0) ? weights : null, note: note.trim() || null };
           await api.post(API.picks, body);
           setDone(`모둠 공유에 ${d.name} · ${t.symbol} 카드를 올렸어요.`);
           reload();
         })}>{mine ? '다시 올리기' : '모둠에 올리기'} → {d.short} · {t.symbol}</button>
-        {tier !== 'ready' && ready && <button type="button" className="btn sm" onClick={() => onGoReady(ready.symbol)}>{ready.symbol} 보러 가기</button>}
+        {tier !== 'ready' && open.map((r) => (
+          <button key={r.symbol} type="button" className="btn sm" onClick={() => onGoReady(r.symbol)}>{r.symbol} 보러 가기</button>
+        ))}
         <span className="note">{why}</span>
       </div>
     </div>
@@ -487,7 +508,7 @@ function TeamWeights({ board, all, myWeights }: { board: BoardResponse; all: TRo
                 <td><By name={m.displayName} avatar={m.avatar} />{me && <span className="mini muted"> · 나(지금 슬라이더)</span>}</td>
                 {TARGET_EVIDENCE.map((e, k) => <td key={e.key} className="num">{w ? `× ${w[k]}` : '—'}</td>)}
                 <td className="num">{top ? <>{top.t.symbol} <span className="muted">{top.d.short} {f3(top.s)}{top.t.dockingTargetId ? ' ◆' : ''}</span></> : '—'}</td>
-                <td className="num">{ps.length ? ps.map((p) => board.diseases.find((o) => o.diseaseId === p.diseaseId)?.gene ?? '').join(' · ') + ' ◆' : '—'}</td>
+                <td className="num">{ps.length ? ps.map((p) => board.diseases.find((o) => o.targetId === p.targetId)?.gene ?? '').join(' · ') + ' ◆' : '—'}</td>
               </tr>
             ))}
           </tbody>
@@ -505,7 +526,7 @@ function PickCards({ board, ds, reload }: { board: BoardResponse; ds: DData[]; r
       {board.picks.length === 0 && <p className="empty">아직 추천 카드가 없어요. 왼쪽에서 표적을 고르고 근거를 골라 올려 주세요.</p>}
       {act.error && <p className="err">{act.error}</p>}
       {board.picks.map((p) => <PickCard key={p.id} p={p} board={board} ds={ds} busy={act.busy} onConfirm={() => void act.run(async () => {
-        await api.post(API.target, { diseaseId: p.diseaseId });
+        await api.post(API.target, { diseaseId: p.diseaseId, targetId: p.targetId });
         reload();
       })} />)}
     </div>
@@ -513,9 +534,9 @@ function PickCards({ board, ds, reload }: { board: BoardResponse; ds: DData[]; r
 }
 
 function PickCard({ p, board, ds, busy, onConfirm }: { p: TargetPickView; board: BoardResponse; ds: DData[]; busy: boolean; onConfirm: () => void }) {
-  const o = board.diseases.find((x) => x.diseaseId === p.diseaseId);
+  const o = board.diseases.find((x) => x.targetId === p.targetId) ?? board.diseases.find((x) => x.diseaseId === p.diseaseId);
   const d = ds.find((x) => x.id === p.diseaseId);
-  const t = d ? readyOf(d) : null;
+  const t = d?.list.find((r) => r.dockingTargetId === p.targetId) ?? null;
   const on = p.targetId === board.program.targetId;
   const checks = d && t ? checkTargetPickReasons(p.reasons, t, { rank: rankIn(d, t) }) : [];
   return (
@@ -525,7 +546,7 @@ function PickCard({ p, board, ds, busy, onConfirm }: { p: TargetPickView; board:
         <span className="muted mini">추천</span>
         <b>{o?.label}</b>
         <span className="mono mini">{o?.gene} · {o?.pdbId}</span>
-        {t && <span className="chip">종합 {f2(t.overallScore)} · {rankIn(d!, t)}위</span>}
+        {t && <span className="chip">{t.symbol} · 종합 {f2(t.overallScore)} · {rankIn(d!, t)}위</span>}
       </div>
       {p.reasons.length > 0 && (
         <ul className="s11-plist">

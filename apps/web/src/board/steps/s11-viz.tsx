@@ -48,7 +48,10 @@ export const f3 = (v: number) => v.toFixed(3);
 export const n0 = (v: number) => v.toLocaleString('ko-KR');
 const clip = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 export const rankIn = (d: DData, t: TargetRow) => d.list.indexOf(t) + 1;
-export const readyOf = (d: DData) => d.list.find((t) => t.dockingTargetId) ?? null;
+/** 그 질환에서 2.1 도킹으로 갈 수 있는 표적들(결정구조 + 기준 약 + 재도킹 검증) — 질환마다 여럿일 수 있다. */
+export const readyList = (d: DData) => d.list.filter((t) => t.dockingTargetId);
+/** 안내 문구에 쓰는 기호 줄 — 예: `EGFR · ALK · ERBB2`. */
+export const readyNames = (d: DData) => readyList(d).map((t) => t.symbol).join(' · ');
 
 const press = (fn: () => void) => (e: KeyboardEvent) => {
   if (e.key === 'Enter' || e.key === ' ') {
@@ -162,6 +165,8 @@ export function HeatMap({ d, sel, onPick }: { d: DData; sel: string | null; onPi
 // ── 1.04 질환-유전자 망 — 가운데 질환, 표적은 점수만큼 가깝게, 모양은 준비 상태 ──
 
 const ANGS = [-100, 100, -42, 42, -142, 142, 180, 60];
+/** 도킹 준비 표적 자리 — 오른쪽 가운데에서 위아래로 벌린다(여럿이어도 한 점에 겹치지 않게). */
+const READY_ANGS = [0, -34, 34, -68, 68];
 const rng = (seed: number) => {
   let s = seed >>> 0;
   return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;
@@ -171,8 +176,10 @@ export function NetMap({ d, sel, onPick, size, flags }: { d: DData; sel: string 
   const sm = size === 'sm', W = sm ? 320 : 760, H = sm ? 290 : 540, cx = W / 2, cy = sm ? 145 : 270, k = sm ? 0.42 : 1;
   const R = (s: number) => (60 + (0.92 - s) * 720) * k;
   let ang = 0;
+  let rdy = 0;
   const pts = d.list.map((t) => {
-    const a = ((t.dockingTargetId ? 0 : (ANGS[ang++ % ANGS.length] ?? 0)) * Math.PI) / 180, r = R(t.overallScore);
+    const deg = t.dockingTargetId ? (READY_ANGS[rdy++ % READY_ANGS.length] ?? 0) : (ANGS[ang++ % ANGS.length] ?? 0);
+    const a = (deg * Math.PI) / 180, r = R(t.overallScore);
     return { t, a, x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
   });
   const dots: Array<{ x: number; y: number }> = [];
