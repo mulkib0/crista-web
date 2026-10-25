@@ -227,7 +227,6 @@ export function A3({ board, step, me, actions, goStep, mock }: AbStepProps) {
                   >
                     원래 글자로 되돌리기
                   </button>
-                  <span className="note">뼈대 자리를 되돌리면 사람 유전자에 더 가까워져요.</span>
                 </div>
               </Panel>
             )}
@@ -239,7 +238,6 @@ export function A3({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 ))}
                 <button type="button" className="btn film" disabled={busy} onClick={() => run(async () => setSuggestions(await actions.suggest(3, boldness)))}>제안 받기</button>
               </div>
-              <p className="hint">과감함이 높을수록 다양성은 올라가고 원본을 되찾는 비율은 내려가요.</p>
               {suggestions && (
                 <div className="cards" style={{ marginTop: 8 }}>
                   {suggestions.map((s) => (
@@ -328,7 +326,6 @@ export function A3({ board, step, me, actions, goStep, mock }: AbStepProps) {
               rows={designRows}
               rowKey={(d) => d.id}
               rowTone={(d) => (d.origin === 'parent' ? 'ref' : d.byName === me.account.displayName ? 'on' : undefined)}
-              summary="원본 비교군은 늘 한 줄 들어 있어요 — 점수가 '원본보다 얼마나 나아졌나'에 걸려 있기 때문이에요."
             />
           </Panel>
           <AbNotes board={board} stepId="A3" myName={me.account.displayName} save={actions.saveNote} />

@@ -66,7 +66,6 @@ export function A6({ board, step, me, actions, mock }: AbStepProps) {
             </Panel>
 
             <AbNotes board={board} stepId="A6" myName={me.account.displayName} save={actions.saveNote} />
-            <p className="mini muted" style={{ margin: 0 }}>세 칸을 나눠 쓰면 학습 연구비 보상이 ×1.2 가 돼요 — 한 사람이 다 쓰지 않아도 돼요.</p>
 
             <div className="acts">
               <button type="button" className="btn pri" disabled={busy || !picked || board.best !== undefined} onClick={() => setAsk(true)}>
@@ -87,7 +86,6 @@ export function A6({ board, step, me, actions, mock }: AbStepProps) {
               onCancel={() => setAsk(false)}
             >
               <p>{picked?.design.label} · 되돌릴 수 없어요.</p>
-              <p className="mini muted">점수와 기업가치는 서버가 정해요 — 미리 보여 주지 않아요.</p>
             </Confirm>
           </>
         )

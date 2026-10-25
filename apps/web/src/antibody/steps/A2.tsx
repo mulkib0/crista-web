@@ -144,9 +144,6 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 <p style={{ margin: 0 }}>
                   이 단계의 분석 작업을 한 번 돌리면 자리마다 등급 · 백분위 · 고정 추천이 생겨요.
                 </p>
-                <p className="mini muted" style={{ margin: '6px 0 0' }}>
-                  작업이 끝나기 전에는 숫자를 보여 주지 않아요 — 연습용 값을 실제 값처럼 보여 주지 않기로 했어요.
-                </p>
               </Panel>
             )}
             {/* 분석 작업 돌리기 — A2 는 설계 없이 모둠에 한 번 돌리는 작업이에요(`POST /api/antibody/jobs` 는 A2 에만 designId 를 받지 않아요). */}
@@ -168,7 +165,6 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 <select id="a2-scheme" className="txt" value={scheme} onChange={(e) => setScheme(e.target.value as CdrScheme)}>
                   {CDR_SCHEMES.map((s) => <option key={s} value={s}>{SCHEME_WORD[s]}</option>)}
                 </select>
-                <p className="hint">번호축을 섞으면 구간이 어긋나요 — 고른 축의 숫자만 써요.</p>
               </div>
               <div className="fld">
                 <label className="lab" htmlFor="a2-cut">고정 문턱</label>
@@ -194,14 +190,11 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
               {rows.length === 0 ? (
                 <p className="empty">{diversity ? '이 구간은 아직 읽지 못했어요.' : '분석 작업을 먼저 돌려 주세요.'}</p>
               ) : (
-                <>
-                  <div className="row" style={{ gap: 2 }}>
-                    {rows.map((r) => (
-                      <span key={r.i} className="ab-dv" data-d={r.grade} title={`${r.no} ${r.aa} · 등급 ${r.grade}`}>{r.grade}</span>
-                    ))}
-                  </div>
-                  <p className="mini muted" style={{ margin: '8px 0 0' }}>칩 안의 숫자가 등급이에요 — 색에만 기대지 않아요.</p>
-                </>
+                <div className="row" style={{ gap: 2 }}>
+                  {rows.map((r) => (
+                    <span key={r.i} className="ab-dv" data-d={r.grade} title={`${r.no} ${r.aa} · 등급 ${r.grade}`}>{r.grade}</span>
+                  ))}
+                </div>
               )}
             </Panel>
           </>
@@ -222,13 +215,6 @@ export function A2({ board, step, me, actions, goStep, mock }: AbStepProps) {
                       label: '중쇄 접힘 구조. 색이 진한 자리는 비슷한 항체 대부분이 같은 글자를 쓰는 자리예요.',
                     }
                   : null
-              }
-              note={
-                <p className="mini muted" style={{ margin: '6px 0' }}>
-                  {fold && Object.keys(grades).length > 0
-                    ? 'A4 에서 접은 중쇄 구조에 다양성을 칠했어요 — 경쇄와 복합체 구조는 번호축이 달라 칠하지 않아요. 표에는 같은 내용이 늘 들어 있어요.'
-                    : '구조는 A4 접힘을 돌리면 3D 로도 볼 수 있어요 — 표에는 같은 내용이 늘 들어 있어요.'}
-                </p>
               }
             />
             <div className="panel" style={{ marginTop: 10 }}>

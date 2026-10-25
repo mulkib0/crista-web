@@ -65,7 +65,7 @@ export function A4({ board, step, me, actions, goStep, mock }: AbStepProps) {
           id="A4"
           chips={
             <>
-              <span className="chip">{termName('confidence')} — 모델의 자기 확신 점수예요</span>
+              <span className="chip">{termName('confidence')}</span>
               {mock && <span className="chip test">화면 개발용 고정 자료</span>}
             </>
           }
@@ -94,7 +94,6 @@ export function A4({ board, step, me, actions, goStep, mock }: AbStepProps) {
                 <button type="button" className="rchip" aria-pressed={shape === 'fv'} onClick={() => setShape('fv')}>사슬을 따로 접기</button>
                 <button type="button" className="rchip" aria-pressed={shape === 'scfv'} onClick={() => setShape('scfv')}>링커로 이어 한 번에({SCFV_LINKER})</button>
               </div>
-              <p className="hint">두 사슬을 그냥 붙여 보낼 수는 없어요 — 따로 접거나 링커로 이어야 해요.</p>
             </Panel>
 
             <Panel title="길이 계산기" tone={tooLong ? 'bad' : undefined}>
@@ -161,7 +160,6 @@ export function A4({ board, step, me, actions, goStep, mock }: AbStepProps) {
                       { label: `${termName('cdr')}-H3 구간`, value: fold.confidenceCdrH3, text: fold.confidenceCdrH3.toFixed(0), tone: 'hi' },
                     ]}
                   />
-                  <p className="mini muted" style={{ margin: '6px 0 0' }}>기준선 90 · {CONFIDENCE_MIN_FOR_COMPLEX} — {CONFIDENCE_MIN_FOR_COMPLEX} 밑이면 A5 복합체 평가에서 빠져요.</p>
                 </Panel>
               );
             })

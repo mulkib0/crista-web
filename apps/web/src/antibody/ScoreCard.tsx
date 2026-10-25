@@ -4,7 +4,7 @@
  */
 import { ANTIBODY_WEIGHT_KEYS, type AntibodyScoreWeights, type ScoreView } from '@crista-web/web-contract';
 import { HBars, Panel } from '../board/ui/index.ts';
-import { TERMS, THRESHOLD_NOTE } from './terms.ts';
+import { TERMS } from './terms.ts';
 
 const PART_WORD: Record<keyof AntibodyScoreWeights, string> = {
   binding: '붙는 힘',
@@ -68,7 +68,6 @@ export function ScoreCard({ score }: { score: ScoreView }) {
       )}
 
       <p className="hint" style={{ marginTop: 10 }}>{score.caveat}</p>
-      <p className="mini muted" style={{ margin: '4px 0 0' }}>{THRESHOLD_NOTE}</p>
 
       <details style={{ marginTop: 10 }}>
         <summary className="mini">점수 계산 방법 — 지표 이름이 무슨 뜻인가요</summary>
