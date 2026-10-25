@@ -684,12 +684,15 @@ export const CLINICAL_COPY = {
     loading: '불러오는 중…',
     lockedTitle: '🔒 잠긴 단계',
     lockedPatients: '환자 수 — 상마다 커져요',
-    notesTitle: '모둠 공유 — 연구 노트 초안',
     openHint: '모집은 기본(추가 비용 없음)으로 시작해요. 모집 탭에서 투자 단계를 바꾸면 빨라져요. 시작(상 비용)은 최소 인원이 모인 뒤에 해요.',
     tabSubAttempt: '{phase} {n}회',
     tabSubRecruit: '{n}/{target}명',
     tabSubPending: '판정 대기',
     tabSubRetry: '3경로 · 바운티',
+    // 바닥 띠(2026-10-25 '다음' 합의안) — 기다림
+    bandRecruit: '{phase} 참여자 모집 {n}/{target}명',
+    bandRunning: '{phase} 임상',
+    bandPending: '{phase} 판정 대기 — 선생님이 확인하고 있어요',
     pass: '통과',
     held: '보류',
     // ① 프로토콜
@@ -805,7 +808,6 @@ export const CLINICAL_COPY = {
     notEligible: '바운티 대상이 아니에요.',
     bountySubmit: '원인 분석 내기',
     bountyRetryIn: '{sec}초 뒤 다시',
-    nextStep: '다음 단계로 — 4.2 최종 허가 →',
     // 그림(s41-charts.tsx)
     today: '오늘 D+{day}',
   },

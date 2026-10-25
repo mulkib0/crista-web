@@ -1,0 +1,1255 @@
+<title>Crista 다음 넘기기 30안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+  /* 레이아웃: 위 = Gemini 4 Argon(High)과의 협의 요약(진단 · 원칙 · 추천 조합), 끈끈한 막대 = 묶음 바로가기 · 상태 타임라인(잠김 → 할 일 남음 → 계산 중 → 넘어갈 수 있음 → 넘긴 뒤) · 기기,
+     아래 = 6묶음 × 5 카드. 카드 안은 ③ 작업 화면(둥근 섬)의 축소 모형 — 시안이 바꾸는 자리만 또렷하게, 나머지는 회색 뼈대로 둔다.
+     색 · 글꼴은 apps/web/src/styles.css 의 Crista 토큰. 앱처럼 밝은 박막 톤 하나로 고정한다(다른 design/*-30 시안과 같다). */
+  :root {
+    --bg: #f1f1e9; --surface: #fbfbf6; --raise: #e7e8de; --raise-2: #dcddd2; --fg: #080b09; --muted: #5b6358; --faint: #8d948a;
+    --line: rgba(8, 11, 9, 0.13); --line-strong: rgba(8, 11, 9, 0.32); --ghost: rgba(8, 11, 9, 0.075); --ghost-2: rgba(8, 11, 9, 0.12);
+    --hi: #c6ff4a; --hi-fg: #080b09; --hi-soft: rgba(198, 255, 74, 0.42);
+    --good: #2f6f2a; --good-bg: rgba(47, 111, 42, 0.12); --warn: #8a5a00; --warn-bg: rgba(176, 120, 0, 0.14); --bad: #b2361b; --bad-bg: rgba(178, 54, 27, 0.11);
+    --night: #0b0d0a; --led: #ffcf5a;
+    --film: linear-gradient(115deg, #ffd3ea 0%, #cdeaff 28%, #e4ffc0 52%, #ffe2c2 76%, #e6d4ff 100%);
+    --g1: radial-gradient(ellipse 110% 75% at 40% -5%, #d4c7f1, transparent 85%), radial-gradient(ellipse 95% 60% at 75% 110%, #dce5ee, transparent 90%), #f1ecef;
+    --g2: linear-gradient(135deg, #ded6f4, #f1e9e2, #d5eadd);
+    --g3: radial-gradient(ellipse 145% 55% at 10% 100%, #bfe1dc, transparent 90%), linear-gradient(125deg, #dae5f5, #f1ebd9 75%);
+    --g4: radial-gradient(ellipse 95% 85% at 0% 20%, #f1ccb9, transparent 80%), radial-gradient(ellipse 90% 85% at 100% 95%, #c7e5d9, transparent 80%), #f4ece5;
+    --sans: "IBM Plex Sans KR", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    color-scheme: light;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--hi); color: var(--hi-fg); }
+  :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .page { max-width: 1520px; margin: 0 auto; padding-block: 28px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 22px; }
+  .hd { display: grid; gap: 10px; max-width: 820px; }
+  .eyebrow { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--film); box-shadow: 0 0 0 1px var(--fg); }
+  h1 { margin: 0; font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.04em; line-height: 1.1; text-wrap: balance; }
+  h1 em { font-style: normal; background: var(--film); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px var(--fg); }
+  .lede { margin: 0; color: var(--muted); max-width: 68ch; }
+  .lede b { color: var(--fg); font-weight: 600; }
+
+  /* 협의 요약 */
+  .talk { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .tk { background: var(--surface); border-radius: 20px; padding: 16px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+  .tk h2 { margin: 0; font-size: 15px; letter-spacing: -0.01em; display: flex; gap: 8px; align-items: baseline; }
+  .tk h2 small { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--muted); letter-spacing: 0.04em; }
+  .tk ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: k; }
+  .tk li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 6px; font-size: 13px; line-height: 1.5; }
+  .tk li::before { counter-increment: k; content: counter(k); font-family: var(--mono); font-size: 11px; font-weight: 600; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--raise); margin-top: 1px; }
+  .tk li b { font-weight: 700; }
+  .tk li .who { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-left: 4px; white-space: nowrap; }
+  .tk.rec { background: var(--fg); color: var(--bg); }
+  .tk.rec li::before { background: var(--hi); color: var(--hi-fg); }
+  .tk.rec h2 small, .tk.rec .who { color: #b9c0b5; }
+  .tk.rec a { color: var(--hi); text-decoration: none; font-family: var(--mono); font-weight: 600; }
+  .tk.rec a:hover { text-decoration: underline; }
+
+  /* 끈끈한 막대 */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+  .bar-r { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+  .jump { display: flex; flex-wrap: wrap; gap: 4px 14px; min-width: 0; }
+  .jump .jg { display: flex; flex-wrap: wrap; gap: 2px; align-items: center; }
+  .jump .jg > span { font-size: 11.5px; font-weight: 700; margin-right: 4px; }
+  .jump a { font-family: var(--mono); font-size: 11px; text-decoration: none; padding: 2px 6px; border-radius: 999px; color: var(--muted); border: 1px solid transparent; }
+  .jump a:hover { border-color: var(--line-strong); color: var(--fg); }
+  .jump a.on { background: var(--fg); color: var(--bg); }
+  .seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 999px; background: var(--raise); }
+  .seg button { appearance: none; border: 0; background: transparent; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; color: var(--muted); }
+  .seg button i { font-style: normal; font-family: var(--mono); font-size: 10px; margin-right: 4px; }
+  .seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+  .seg.sm button { padding: 3px 8px; font-size: 11px; }
+  .seg.sm { background: var(--bg); }
+  .lbl { font-size: 11.5px; font-weight: 700; color: var(--muted); }
+  .picks { margin-left: auto; display: flex; gap: 8px; align-items: center; font-size: 12.5px; flex-wrap: wrap; }
+  .picks output { font-family: var(--mono); font-size: 12px; }
+  .btn { appearance: none; border: 1px solid var(--fg); background: var(--fg); color: var(--bg); min-height: 30px; padding: 0 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+  .btn.ghost { background: transparent; color: var(--fg); border-color: var(--line-strong); }
+
+  /* 묶음 · 카드 */
+  .sec { display: grid; gap: 14px; scroll-margin-top: 120px; }
+  .sec-h { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
+  .sec-h h2 { margin: 0; font-size: 22px; letter-spacing: -0.03em; }
+  .sec-h h2 b { font-family: var(--mono); font-size: 14px; color: var(--muted); margin-right: 6px; }
+  .sec-h p { margin: 0; color: var(--muted); font-size: 13px; max-width: 72ch; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 640px), 1fr)); gap: 14px; }
+  .grid[data-dev="ph"] { grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); }
+  .card { background: var(--surface); border-radius: 22px; padding: 14px; display: grid; gap: 10px; align-content: start; scroll-margin-top: 120px; min-width: 0; box-shadow: inset 0 0 0 1px transparent; transition: box-shadow .15s ease; }
+  .card[data-picked="true"] { box-shadow: inset 0 0 0 2px var(--fg), 0 0 0 4px var(--hi-soft); }
+  .ch { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: start; }
+  .cn { font-family: var(--mono); font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -0.04em; padding-top: 2px; }
+  .ch h3 { margin: 0; font-size: 16px; letter-spacing: -0.02em; line-height: 1.3; text-wrap: balance; }
+  .ch .one { margin: 3px 0 0; font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+  .src { display: inline-flex; gap: 4px; margin-left: 6px; vertical-align: 2px; }
+  .src span { font-family: var(--mono); font-size: 9.5px; font-weight: 600; padding: 1px 5px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); }
+  .src span.g { background: #e5ecff; border-color: #9fb3e6; color: #24418a; }
+  .src span.c { background: #ffe8d6; border-color: #e4b18c; color: #8a4517; }
+  .pick { appearance: none; border: 1px solid var(--line-strong); background: transparent; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .pick[aria-pressed="true"] { background: var(--hi); border-color: var(--fg); }
+  .cbar { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+  .cm { overflow-x: auto; border-radius: 18px; }
+  .grid[data-dev="pc"] .cm > .mk { min-width: 600px; }
+  .home-grid[data-dev="pc"] .cm > .mk { min-width: 760px; }
+  .cd { margin: 0; display: grid; gap: 4px; font-size: 12.5px; }
+  .cd div { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 8px; }
+  .cd dt { color: var(--muted); font-weight: 600; font-size: 11.5px; padding-top: 1px; }
+  .cd dd { margin: 0; min-width: 0; }
+  .cd dd.weak { color: var(--bad); }
+
+  /* ── 작업 화면 축소 모형(.mk = 1440 · .ph = 폰 390) ── */
+  .mk { position: relative; display: grid; grid-template-columns: 122px minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; grid-template-areas: "top top" "led led" "side head" "side body"; gap: 6px; padding: 7px; background: var(--raise); border-radius: 18px; font-size: 11px; line-height: 1.45; min-height: 400px; overflow: hidden; }
+  .mk-top { grid-area: top; display: flex; align-items: center; gap: 8px; padding: 0 4px; font-size: 10px; color: var(--muted); }
+  .mk-top b { color: var(--fg); font-size: 11px; }
+  .mk-top .mono { margin-left: auto; color: var(--fg); }
+  .mk-led { grid-area: led; background: var(--night); color: var(--led); border-radius: 8px; padding: 3px 8px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mk-led b { color: var(--hi); font-weight: 600; }
+  .mk-side { grid-area: side; background: var(--surface); border-radius: 14px; padding: 6px; display: grid; gap: 5px; align-content: start; min-width: 0; position: relative; }
+  .mk-nm { border: 1px solid var(--line-strong); border-radius: 9px; text-align: center; font-weight: 700; padding: 3px; font-size: 11px; }
+  .mk-g { border-radius: 10px; padding: 4px 2px 2px; display: grid; gap: 1px; }
+  .mk-g[data-g="1"] { background: var(--g1); } .mk-g[data-g="2"] { background: var(--g2); } .mk-g[data-g="3"] { background: var(--g3); } .mk-g[data-g="4"] { background: var(--g4); }
+  .mk-g[data-lock] { filter: saturate(0.45); opacity: 0.8; }
+  .mk-gh { display: flex; gap: 4px; align-items: baseline; padding: 0 5px; font-weight: 700; font-size: 10.5px; }
+  .mk-gh i { font-style: normal; font-family: var(--mono); font-size: 9px; color: var(--muted); }
+  .mk-gh span { margin-left: auto; font-family: var(--mono); font-size: 9px; color: var(--muted); font-weight: 500; }
+  .st { display: grid; grid-template-columns: 21px minmax(0, 1fr) auto; gap: 3px; align-items: center; padding: 3px 5px; border-radius: 7px; font-size: 10px; min-height: 20px; position: relative; }
+  .st .n { font-family: var(--mono); font-size: 9px; font-weight: 600; }
+  .st .t { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .st .k { font-size: 9px; display: inline-flex; align-items: center; gap: 2px; }
+  .st.cur { background: var(--fg); color: var(--bg); }
+  .st.lk { color: var(--faint); }
+  .mk-head { grid-area: head; background: var(--surface); border-radius: 14px; padding: 7px 9px; display: grid; gap: 6px; min-width: 0; position: relative; }
+  .hbar { display: flex; align-items: center; gap: 7px; min-width: 0; flex-wrap: wrap; }
+  .hno { font-family: var(--mono); font-size: 10.5px; font-weight: 600; border: 1px solid var(--fg); border-radius: 999px; padding: 0 7px; background: var(--film); line-height: 18px; }
+  .h1 { font-weight: 700; font-size: 13px; letter-spacing: -0.01em; white-space: nowrap; }
+  .tabs { margin-left: auto; display: flex; gap: 1px; flex-wrap: nowrap; min-width: 0; overflow: hidden; }
+  .hr { margin-left: auto; display: inline-flex; gap: 7px; align-items: center; }
+  .tb { padding: 3px 5px; border-radius: 7px; font-weight: 600; font-size: 9.5px; white-space: nowrap; display: inline-flex; gap: 3px; align-items: baseline; color: var(--fg); }
+  .tb i { font-style: normal; font-family: var(--mono); font-size: 9px; color: var(--muted); }
+  .tb.on { background: var(--hi); }
+  .tb.on i { color: var(--fg); }
+  .tb.dim { color: var(--faint); }
+  .mk-body { grid-area: body; position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); gap: 6px; align-content: start; min-width: 0; }
+  .mk-body.one { grid-template-columns: minmax(0, 1fr); }
+  .isl { background: var(--surface); border-radius: 14px; padding: 8px 9px; display: grid; gap: 6px; align-content: start; min-width: 0; position: relative; }
+  .ih { font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+  .ih::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--fg); }
+  .ih.tm::before { background: transparent; box-shadow: inset 0 0 0 1.5px var(--fg); }
+  .ih small { margin-left: auto; font-weight: 500; font-size: 9.5px; color: var(--muted); }
+  .wcap { font-size: 10px; color: var(--muted); font-weight: 600; }
+  .skp { background: var(--bg); border-radius: 10px; padding: 7px; display: grid; gap: 5px; }
+  .sk { height: 6px; border-radius: 3px; background: var(--ghost); }
+  .bub { display: grid; gap: 3px; max-width: 82%; }
+  .bub.me { justify-self: end; }
+  .bub .sk { height: 14px; border-radius: 8px; }
+  .bub small { font-size: 8.5px; color: var(--faint); }
+  .mk-dock { grid-column: 1 / -1; }
+  .mk-ov { position: absolute; inset: 0; background: rgba(8, 11, 9, 0.34); border-radius: 14px; display: grid; place-items: center; padding: 12px; z-index: 3; }
+  .mk-toast { position: absolute; right: 8px; top: 8px; z-index: 4; max-width: 70%; }
+  .mk-float { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 3; }
+
+  /* 시안이 그리는 또렷한 부품 */
+  .b { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 4px 10px; font-weight: 700; font-size: 10.5px; border: 1px solid var(--line-strong); background: transparent; white-space: nowrap; line-height: 1.3; color: var(--fg); }
+  .b.ink { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .b.lime { background: var(--hi); border-color: var(--fg); }
+  .b.film { background: var(--film); border-color: transparent; }
+  .b.off { border-style: dashed; color: var(--muted); background: transparent; }
+  .b.lg { padding: 7px 14px; font-size: 12px; }
+  .b.xl { padding: 9px 18px; font-size: 13px; }
+  .b.wide { width: 100%; justify-content: center; }
+  .b small { font-weight: 500; font-size: 9.5px; opacity: 0.8; }
+  .b .mono { font-size: 9.5px; }
+  button.b, [data-go] { cursor: pointer; }
+  .pill { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 1px 7px; font-size: 9.5px; font-weight: 600; background: var(--raise); white-space: nowrap; }
+  .pill.ok { background: var(--good-bg); color: var(--good); }
+  .pill.wait { background: var(--warn-bg); color: var(--warn); }
+  .pill.lime { background: var(--hi); }
+  .pill.ink { background: var(--fg); color: var(--bg); }
+  .key { display: inline-grid; place-items: center; width: 13px; height: 13px; border-radius: 50%; background: var(--fg); color: var(--hi); font-size: 8px; font-weight: 700; flex: none; }
+  .box { border-radius: 12px; padding: 8px 10px; display: grid; gap: 6px; background: var(--surface); }
+  .box.paper { background: var(--bg); }
+  .box.ink { background: var(--fg); color: var(--bg); }
+  .box.lime { background: var(--hi); }
+  .box.film { background: var(--film); }
+  .box.line { box-shadow: inset 0 0 0 1px var(--line-strong); }
+  .box.dash { box-shadow: none; outline: 1px dashed var(--line-strong); outline-offset: -1px; }
+  .row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-width: 0; }
+  .row.sp { justify-content: space-between; flex-wrap: nowrap; }
+  .tt { font-weight: 700; font-size: 11.5px; }
+  .tt.lg { font-size: 13px; }
+  .tt.xl { font-size: 16px; letter-spacing: -0.02em; }
+  .mu { color: var(--muted); font-size: 10px; }
+  .box.ink .mu { color: #b9c0b5; }
+  .ck { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
+  .ck li { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 5px; align-items: center; font-size: 10.5px; }
+  .ck li > i { font-style: normal; width: 13px; height: 13px; border-radius: 50%; display: grid; place-items: center; font-size: 8px; font-weight: 700; box-shadow: inset 0 0 0 1.3px var(--line-strong); }
+  .ck li.ok > i { background: var(--fg); color: var(--hi); box-shadow: none; }
+  .ck li.run > i { box-shadow: inset 0 0 0 1.3px var(--warn); color: var(--warn); }
+  .ck li.ok span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+  .ck li em { font-style: normal; font-family: var(--mono); font-size: 9.5px; color: var(--muted); }
+  .bar-p { height: 6px; border-radius: 3px; background: var(--ghost-2); overflow: hidden; position: relative; }
+  .bar-p > i { position: absolute; inset: 0 auto 0 0; background: var(--fg); border-radius: 3px; }
+  .bar-p.film > i { background: var(--film); box-shadow: inset 0 0 0 1px var(--line-strong); }
+  .bar-p.lime > i { background: var(--hi); box-shadow: inset 0 0 0 1px var(--fg); }
+  .av { display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; font-size: 8.5px; font-weight: 700; background: var(--surface); box-shadow: inset 0 0 0 1.2px var(--fg); flex: none; }
+  .av.on { background: var(--hi); }
+  .av.dim { opacity: 0.4; }
+  .avs { display: inline-flex; }
+  .avs .av + .av { margin-left: -4px; }
+  .av.xs { width: 13px; height: 13px; font-size: 7px; }
+  .arw { font-family: var(--mono); color: var(--muted); }
+  .hl { animation: hl 2.4s ease-in-out infinite; }
+  @keyframes hl { 0%, 100% { box-shadow: 0 0 0 0 rgba(198, 255, 74, 0); } 50% { box-shadow: 0 0 0 4px rgba(198, 255, 74, 0.85); } }
+  .spin { display: inline-block; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--warn); border-right-color: transparent; animation: sp 1s linear infinite; flex: none; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+  .lockic { width: 9px; height: 10px; flex: none; }
+  .ring { width: 26px; height: 26px; flex: none; }
+  .sep { width: 1px; align-self: stretch; background: var(--line-strong); }
+  .vsep { height: 1px; background: var(--line); }
+
+  /* 폰 모형 — 앱의 ≤ 860px 모양: 위 띠 → 단계 칩 줄 → 머리 섬 → 작업대 → 모둠 공유. */
+  .ph { width: 300px; max-width: 100%; height: 600px; margin: 0 auto; border-radius: 36px; border: 6px solid var(--fg); background: var(--raise); position: relative; overflow: hidden; font-size: 11px; line-height: 1.45; }
+  .ph-scr { position: absolute; inset: 0; overflow-y: auto; padding: 10px 7px 84px; display: grid; gap: 6px; align-content: start; scrollbar-width: none; }
+  .ph-scr::-webkit-scrollbar { display: none; }
+  .ph-scr > * { grid-area: auto; min-width: 0; }
+  .ph-top { display: flex; align-items: center; gap: 6px; padding: 2px 6px; font-size: 10px; color: var(--muted); }
+  .ph-top b { color: var(--fg); font-size: 11.5px; }
+  .ph-top .mono { margin-left: auto; color: var(--fg); }
+  .ph .mk-led { border-radius: 8px; }
+  .ph-chips { display: flex; gap: 4px; overflow: hidden; padding: 6px; background: var(--surface); border-radius: 14px; -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
+  .ph-chips .st { flex: none; grid-template-columns: auto auto auto; border-radius: 999px; padding: 3px 8px; }
+  .ph-chips .st[data-g="1"] { background: var(--g1); } .ph-chips .st[data-g="2"] { background: var(--g2); } .ph-chips .st[data-g="3"] { background: var(--g3); }
+  .ph-chips .st.cur { background: var(--fg); }
+  .ph .tabs { margin-left: 0; width: 100%; overflow: hidden; }
+  .ph .mk-body { grid-template-columns: minmax(0, 1fr); }
+  .ph-dock { position: absolute; left: 7px; right: 7px; bottom: 8px; z-index: 3; }
+  .ph .mk-ov { border-radius: 30px; position: absolute; inset: 0; }
+  .ph .mk-toast { left: 8px; right: 8px; top: 8px; max-width: none; }
+  .ph .mk-float { bottom: 14px; }
+
+  /* 시안별 부품 */
+  .box.ink .b.off { color: #b9c0b5; border-color: rgba(241, 241, 233, 0.35); }
+  .bd-t { display: grid; gap: 1px; min-width: 0; }
+  .bd-t b { font-size: 11.5px; }
+  .st-sub { grid-column: 2 / -1; font-size: 9px; opacity: 0.8; font-weight: 500; }
+  button.st { appearance: none; border: 0; font: inherit; width: 100%; text-align: left; color: inherit; background: transparent; }
+  .st.nx { background: var(--hi); box-shadow: inset 0 0 0 1px var(--fg); color: var(--fg); }
+  .st.nx .k { font-weight: 700; }
+  .chain { margin-left: 0; flex-wrap: wrap; row-gap: 3px; align-items: center; gap: 2px; overflow: visible; }
+  .cn-i { display: inline-flex; gap: 4px; align-items: center; padding: 2px 7px 2px 3px; border-radius: 999px; font-weight: 600; font-size: 10px; white-space: nowrap; }
+  .cn-i i { width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-family: var(--mono); font-size: 8.5px; box-shadow: inset 0 0 0 1.2px var(--line-strong); }
+  .cn-i.dn { color: var(--muted); }
+  .cn-i.dn i { background: var(--hi); box-shadow: inset 0 0 0 1.2px var(--fg); color: var(--fg); }
+  .cn-i.on { background: var(--fg); color: var(--bg); }
+  .cn-i.on i { background: var(--bg); color: var(--fg); box-shadow: none; }
+  .cn-i.lk { color: var(--faint); }
+  .cn-a { color: var(--faint); font-size: 9px; }
+  .cn-g { display: inline-flex; gap: 4px; align-items: center; border-radius: 999px; padding: 2px 9px; font-weight: 700; font-size: 10px; border: 1px dashed var(--line-strong); color: var(--muted); background: transparent; font-family: inherit; }
+  .cn-g.go { background: var(--hi); border: 1px solid var(--fg); color: var(--fg); }
+  .cn-g.on, .ac-g.on { border: 1px solid var(--fg); color: var(--fg); }
+  .vt { display: inline-flex; flex-wrap: wrap; gap: 2px; align-items: center; padding: 2px; border-radius: 999px; background: var(--bg); justify-self: start; }
+  .vt .mu { padding: 0 6px 0 5px; }
+  .vt-i { padding: 2px 8px; border-radius: 999px; font-size: 9.5px; font-weight: 600; }
+  .vt-i.on { background: var(--fg); color: var(--bg); }
+  .tabs:has(.gate) { padding-right: 5px; }
+  .tb.gate { border: 1px dashed var(--line-strong); margin-left: 4px; position: sticky; right: 4px; background: var(--surface); color: var(--muted); }
+  .tb.gate.go { background: var(--hi); border: 1px solid var(--fg); color: var(--fg); }
+  button.tb { appearance: none; font: inherit; font-weight: 700; font-size: 10px; }
+  .pnc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr); gap: 4px; width: 100%; }
+  .pc { appearance: none; border: 0; font: inherit; color: inherit; border-radius: 10px; padding: 5px 9px; display: grid; gap: 1px; text-align: left; background: var(--bg); min-width: 0; }
+  .pc small { font-size: 9px; color: var(--muted); display: inline-flex; gap: 3px; align-items: center; white-space: nowrap; }
+  .pc b { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pc.now { background: var(--fg); color: var(--bg); }
+  .pc.now small { color: #b9c0b5; }
+  .pc.nx { background: var(--hi); box-shadow: inset 0 0 0 1px var(--fg); }
+  .pc.nx small { color: var(--fg); }
+  .pc.lk b { color: var(--faint); }
+  .dots { display: inline-flex; gap: 4px; align-items: center; }
+  .dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--ghost-2); }
+  .dots i.on { background: var(--fg); width: 18px; border-radius: 4px; }
+  .dots i.dn { background: var(--hi); box-shadow: inset 0 0 0 1px var(--fg); }
+  .mk-body.fx { grid-template-columns: minmax(0, 1fr) 30px; }
+  .isl.focus { padding: 14px 16px; gap: 10px; }
+  .tm-mini { writing-mode: vertical-rl; background: var(--surface); border-radius: 14px; font-weight: 700; font-size: 10.5px; padding: 12px 6px; text-align: center; color: var(--muted); }
+  .ph .tm-mini { writing-mode: horizontal-tb; padding: 8px; }
+  .kd { gap: 8px; }
+  .dt { display: inline-flex; gap: 4px; align-items: center; font-size: 10px; white-space: nowrap; color: var(--muted); }
+  .dt i { width: 8px; height: 8px; border-radius: 50%; box-shadow: inset 0 0 0 1.3px var(--fg); flex: none; }
+  .dt.ok i { background: var(--fg); }
+  .dt.run i { background: conic-gradient(var(--warn) 62%, transparent 0); box-shadow: inset 0 0 0 1.3px var(--warn); }
+  .dt.k1 { color: var(--fg); font-weight: 600; }
+  .dt.k1 i { width: 10px; height: 10px; outline: 2px solid var(--hi); outline-offset: 0; }
+  .dt em { font-style: normal; font-family: var(--mono); font-size: 9px; color: var(--muted); }
+  .gate { display: inline-flex; align-items: center; gap: 6px; appearance: none; border: 0; background: transparent; font: inherit; color: inherit; padding: 0; text-align: left; }
+  .gate-t { display: grid; line-height: 1.2; }
+  .gate-t b { font-size: 10.5px; white-space: nowrap; }
+  .gate-t small { font-size: 9px; color: var(--muted); white-space: nowrap; }
+  .pop { position: absolute; right: 8px; top: calc(100% - 4px); z-index: 4; width: 230px; background: var(--surface); border-radius: 12px; box-shadow: 0 10px 28px rgba(8, 11, 9, 0.18), inset 0 0 0 1px var(--line); padding: 8px 10px; display: grid; gap: 5px; }
+  .rl { display: flex; justify-content: space-between; gap: 8px; font-size: 10px; border-bottom: 1px solid var(--line); padding: 2px 0; min-width: 0; }
+  .rl span { color: var(--muted); white-space: nowrap; }
+  .rl b { font-weight: 600; text-align: right; }
+  .fold { display: flex; justify-content: space-between; gap: 6px; padding: 6px 9px; border-radius: 10px; background: var(--bg); font-size: 10px; font-weight: 600; color: var(--muted); }
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; background: var(--bg); border-radius: 12px; padding: 7px; }
+  .split > div { display: grid; gap: 4px; align-content: start; justify-items: start; min-width: 0; }
+  .split .sp-r { justify-items: stretch; }
+  .split .sp-r { border-left: 1px solid var(--line-strong); padding-left: 7px; }
+  .rcpt { background: var(--surface); border-radius: 16px; padding: 12px 14px; width: min(290px, 100%); display: grid; gap: 6px; box-shadow: 0 12px 34px rgba(8, 11, 9, 0.28); }
+  .sys { background: var(--bg); border-radius: 12px; padding: 7px 9px; display: grid; gap: 5px; font-size: 10.5px; box-shadow: inset 0 0 0 1px var(--line-strong); justify-items: start; }
+  .sys .row { gap: 5px; }
+  .tag-k { background: var(--hi); color: var(--fg); border-radius: 999px; padding: 0 6px; font-size: 9px; font-weight: 700; }
+  .b.wrap { white-space: normal; text-align: left; }
+  .pk { width: 100%; height: 44px; display: block; background: var(--g2); border-radius: 10px; }
+  .pbar { background: var(--surface); border-radius: 22px; padding: 6px; display: grid; gap: 6px; box-shadow: 0 -4px 18px rgba(8, 11, 9, 0.14); }
+  .acc { gap: 3px; align-items: center; overflow: visible; flex-wrap: nowrap; }
+  .ac { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-size: 9px; font-family: var(--mono); box-shadow: inset 0 0 0 1.2px var(--line-strong); flex: none; color: var(--muted); }
+  .ac.dn { background: var(--hi); box-shadow: inset 0 0 0 1.2px var(--fg); color: var(--fg); }
+  .ac-on { display: inline-flex; gap: 4px; align-items: center; background: var(--fg); color: var(--bg); border-radius: 999px; padding: 2px 9px 2px 3px; font-size: 10px; font-weight: 700; white-space: nowrap; min-width: 0; }
+  .ac-on i { font-style: normal; width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); color: var(--fg); font-family: var(--mono); font-size: 8.5px; }
+  .ac-g { margin-left: auto; display: inline-flex; gap: 3px; align-items: center; border-radius: 999px; padding: 2px 8px; border: 1px dashed var(--line-strong); font-size: 10px; font-weight: 700; color: var(--muted); background: transparent; font-family: inherit; white-space: nowrap; }
+  .ac-g.go { background: var(--hi); border: 1px solid var(--fg); color: var(--fg); padding: 4px 10px; }
+  .dd { display: inline-flex; gap: 5px; align-items: center; border-radius: 999px; padding: 4px 10px; background: var(--fg); color: var(--bg); font-weight: 700; font-size: 11px; white-space: nowrap; }
+  .stepper { display: flex; justify-content: space-between; align-items: center; gap: 6px; background: var(--bg); border-radius: 999px; padding: 3px; }
+  .seg3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; background: var(--raise); padding: 3px; border-radius: 999px; }
+  .seg3 > * { appearance: none; border: 0; font: inherit; text-align: center; border-radius: 999px; padding: 5px 4px; font-size: 10px; font-weight: 700; background: transparent; color: var(--muted); white-space: nowrap; display: inline-flex; gap: 3px; justify-content: center; align-items: center; }
+  .seg3 .on { background: var(--surface); color: var(--fg); }
+  .seg3 .go { background: var(--hi); color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+
+  .home-grid { grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); align-items: start; }
+  .home-grid[data-dev="ph"] { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); }
+  #vR { box-shadow: inset 0 0 0 2px var(--fg); }
+  #vR .mk { min-height: 440px; }
+  .home-why { display: grid; gap: 10px; align-content: start; }
+  .home-why > div { background: var(--surface); border-radius: 16px; padding: 12px 14px; display: grid; gap: 2px; font-size: 13px; }
+  .home-why b { font-size: 14px; }
+  .home-why span { color: var(--muted); }
+  .rec-note { margin: 4px 0 0; font-size: 12px; line-height: 1.6; color: #b9c0b5; }
+  @media (max-width: 1100px) { .talk, .home-grid, .home-grid[data-dev="ph"] { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 700px) {
+    .jump, .bar-r { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .jump::-webkit-scrollbar, .bar-r::-webkit-scrollbar { display: none; }
+    .jump .jg, .bar .seg, .picks { flex-wrap: nowrap; flex: none; }
+    .bar-r .lbl { display: none; }
+    .picks { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .hl, .spin { animation: none; } .card { transition: none; } }
+</style>
+
+<div class="page">
+  <header class="hd">
+    <p class="eyebrow">CRISTA · ③ 작업 화면 · 2026-10-25 · Gemini 4 Argon(High) 협의</p>
+    <h1>'다음'을 <em>한눈에</em> — 30안</h1>
+    <p class="lede" id="lede"></p>
+  </header>
+
+  <section class="talk" aria-label="협의 요약" id="talk"></section>
+
+  <div class="bar">
+    <nav class="jump" id="jump" aria-label="묶음 바로가기"></nav>
+    <div class="bar-r">
+      <span class="lbl">상태</span>
+      <div class="seg" id="gstate" role="group" aria-label="모든 시안의 상태"></div>
+      <span class="lbl">기기</span>
+      <div class="seg" id="gdev" role="group" aria-label="기기"></div>
+      <div class="picks"><span>고른 시안</span><output id="picked">없음</output><button class="btn" type="button" id="copy">번호 복사</button><button class="btn ghost" type="button" id="clear">비우기</button></div>
+    </div>
+  </div>
+
+  <section class="sec" id="home"></section>
+
+  <div id="secs"></div>
+</div>
+
+<script>
+/* ── 장면: 가람제약 모둠이 1.2 화합물 스크리닝 → 2.1 분자 도킹으로 넘어간다. 완료 조건(서버) = 스크리닝 1회 성공. ── */
+const STATES = [
+  ['lock', '잠김'],
+  ['todo', '할 일 남음'],
+  ['run', '계산 중'],
+  ['ready', '넘어갈 수 있음'],
+  ['after', '넘긴 뒤'],
+];
+const DEVS = [['pc', '1440'], ['ph', '폰 390']];
+const STEPS = [
+  { id: '1.1', t: '질환 · 표적 선정', g: 1 }, { id: '1.2', t: '화합물 스크리닝', g: 1 },
+  { id: '2.1', t: '분자 도킹', g: 2 }, { id: '2.2', t: 'ADMET · 특허 후보', g: 2 },
+  { id: '3.1', t: '선언 · 물질특허', g: 3 }, { id: '3.2', t: '전임상 · 동물실험', g: 3 }, { id: '3.3', t: '제형 · IND', g: 3 },
+  { id: '4.1', t: '임상 1 · 2 · 3상', g: 4 }, { id: '4.2', t: '최종 허가', g: 4 },
+];
+const GROUPS = { 1: '발견', 2: '최적화', 3: '개발 · 규제', 4: '임상 · 허가' };
+const WALKS = [
+  { n: '①', t: '미션 브리핑' }, { n: '②', t: '모둠 기준 회의' }, { n: '③', t: '스크리닝 실행' }, { n: '④', t: '분자 쇼핑' }, { n: '⑤', t: '넘기기' },
+];
+/* 2.1 의 탭은 '같은 결과를 보는 다른 도구'다 — 순서가 아니다(번호 3.05 · 3.09 는 시각화 번호). */
+const TOOLS_21 = [{ n: '①', t: '구조 바꿔 다시 도킹' }, { n: '3.05', t: '수심계 눈금' }, { n: '3.09', t: '점수 카드' }, { n: '3.07', t: '10배 계단' }];
+const WS = {
+  lock:  { st: ['open', 'lock', 'lock', 'lock', 'lock'], cur: 0 },
+  todo:  { st: ['done', 'cur', 'todo', 'todo', 'todo'], cur: 1 },
+  run:   { st: ['done', 'done', 'run', 'todo', 'todo'], cur: 2 },
+  ready: { st: ['done', 'done', 'done', 'done', 'cur'], cur: 4 },
+  after: { st: ['done', 'done', 'done', 'done', 'done'], cur: 4 },
+};
+const SIDE = {
+  lock:  { '1.1': 'ready', '1.2': 'lock' },
+  todo:  { '1.1': 'done', '1.2': 'ready' },
+  run:   { '1.1': 'done', '1.2': 'run' },
+  ready: { '1.1': 'done', '1.2': 'done', '2.1': 'ready' },
+  after: { '1.1': 'done', '1.2': 'done', '2.1': 'ready' },
+};
+const MEMBERS = [{ n: '가람', r: 'CEO' }, { n: '나래', r: 'CSO' }, { n: '다온', r: 'CTO' }, { n: '루아', r: 'CMO' }];
+/* 모둠원이 지금 보고 있는 단계(대화방 '행적'에서 온다고 가정). */
+const WHERE = {
+  lock:  { 가람: '1.1', 나래: '1.1', 다온: '1.2', 루아: '1.1' },
+  todo:  { 가람: '1.2', 나래: '1.2', 다온: '1.2', 루아: '1.1' },
+  run:   { 가람: '1.2', 나래: '1.2', 다온: '1.2', 루아: '1.2' },
+  ready: { 가람: '1.2', 나래: '2.1', 다온: '1.2', 루아: '1.2' },
+  after: { 가람: '2.1', 나래: '2.1', 다온: '2.1', 루아: '1.2' },
+};
+/* 다음 단계를 여는 조건 — 열쇠(서버 완료 조건) 하나 + 같이 챙기면 좋은 것. */
+const COND = {
+  lock:  [{ t: '1.1 모둠 표적 확정', s: 'todo', v: '아직', key: true, at: '1.1' }],
+  todo:  [{ t: '스크리닝 1회 실행', s: 'todo', v: '0회', key: true, at: '③' }, { t: '모둠 기준 6개 합의', s: 'todo', v: '4/6', at: '②' }, { t: '도킹할 후보 찜', s: 'todo', v: '0개', at: '④' }],
+  run:   [{ t: '스크리닝 1회 실행', s: 'run', v: '62%', key: true, at: '③' }, { t: '모둠 기준 6개 합의', s: 'ok', v: '6/6', at: '②' }, { t: '도킹할 후보 찜', s: 'todo', v: '0개', at: '④' }],
+  ready: [{ t: '스크리닝 1회 실행', s: 'ok', v: '134개 통과', key: true, at: '③' }, { t: '모둠 기준 6개 합의', s: 'ok', v: '6/6', at: '②' }, { t: '도킹할 후보 찜', s: 'ok', v: '4개', at: '④' }],
+  after: [{ t: '도킹 1건 실행', s: 'todo', v: '0건', key: true, at: '①' }, { t: '대조군과 견주기', s: 'todo', v: '—', at: '3.09' }],
+};
+/* 금액은 숫자로 두고 화면 글은 포매터로 만든다(AGENTS.md '화폐' — 앱의 formatCrista 와 같은 꼴: 천 단위 쉼표 + ' 크리스타'). */
+const crista = (n) => `${Math.round(n).toLocaleString('ko-KR')} 크리스타`;
+const CRISTA = { screen: 250_000, dock: 1_000_000, bal: 24_736_586, note: 240_000 };
+const MONEY = { screen: crista(CRISTA.screen), dock: crista(CRISTA.dock), bal: crista(CRISTA.bal), note: crista(CRISTA.note) };
+
+function ctx(st, pop) {
+  const w = WS[st];
+  const walks = WALKS.map((x, i) => ({ ...x, s: w.st[i], i }));
+  const cond = COND[st];
+  return {
+    st, pop, after: st === 'after', lock: st === 'lock', todo: st === 'todo', run: st === 'run', ready: st === 'ready',
+    step: st === 'after' ? { id: '2.1', t: '분자 도킹' } : { id: '1.2', t: '화합물 스크리닝' },
+    walks, cur: w.cur, curW: walks[w.cur], nextW: walks[w.cur + 1] ?? null,
+    cond, side: SIDE[st], where: WHERE[st],
+  };
+}
+
+/* ── 작은 그림 부품 ── */
+const LOCK = '<svg class="lockic" viewBox="0 0 10 11" aria-hidden="true"><rect x="1" y="4.5" width="8" height="6" rx="1.4" fill="currentColor"/><path d="M3 4.6V3.2a2 2 0 0 1 4 0v1.4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+const ARW = '<span aria-hidden="true">→</span>';
+const sk = (w, h) => `<div class="sk" style="width:${w}%${h ? `;height:${h}px` : ''}"></div>`;
+const sks = (...ws) => ws.map((w) => sk(w)).join('');
+const av = (m, cls = '') => `<span class="av ${cls}" title="${m.n}">${m.n[0]}</span>`;
+const avs = (names, cls = '') => `<span class="avs">${names.map((n) => av({ n }, cls)).join('')}</span>`;
+const bar = (p, cls = '') => `<div class="bar-p ${cls}"><i style="width:${p}%"></i></div>`;
+function ring(p, on) {
+  const r = 10, c = 2 * Math.PI * r;
+  return `<svg class="ring" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="${r}" fill="none" stroke="var(--ghost-2)" stroke-width="3"/>${p > 0 ? '' : '<!--'}<circle cx="13" cy="13" r="${r}" fill="none" stroke="${on ? 'var(--fg)' : 'var(--warn)'}" stroke-width="3" stroke-dasharray="${(c * p) / 100} ${c}" transform="rotate(-90 13 13)" stroke-linecap="round"/>${p > 0 ? '' : '-->'}${on ? '<circle cx="13" cy="13" r="7.5" fill="var(--hi)"/><path d="M9.4 13.2l2.5 2.5 4.8-5" fill="none" stroke="var(--fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' : '<rect x="9.5" y="12" width="7" height="5.4" rx="1.1" fill="var(--muted)"/><path d="M11 12.1v-1.3a2 2 0 0 1 4 0v1.3" fill="none" stroke="var(--muted)" stroke-width="1.2"/>'}</svg>`;
+}
+function checklist(c, opt = {}) {
+  return `<ul class="ck">${c.cond.map((x) => `<li class="${x.s}"><i>${x.s === 'ok' ? '✓' : x.s === 'run' ? '▸' : x.key ? '<b>!</b>' : ''}</i><span>${x.key ? '<b>열쇠</b> · ' : ''}${x.t}${opt.at ? ` <em>${x.at}</em>` : ''}</span><em>${x.v}</em></li>`).join('')}</ul>`;
+}
+/* '다음 단계' 단추 하나 — 상태마다 문구 · 모양이 바뀐다. 넘어갈 수 있을 때 누르면 '넘긴 뒤'로 간다. */
+function nextBtn(c, o = {}) {
+  const cls = (t) => `b ${t}${o.size ? ` ${o.size}` : ''}${o.wide ? ' wide' : ''}`;
+  if (c.after) return `<span class="${cls('off')}">${o.afterText ?? '① 도킹 1건 하면 2.2 열려요'}</span>`;
+  if (c.ready) return `<button type="button" class="${cls(o.tone ?? 'lime')}${o.pulse ? ' hl' : ''}" data-go="after">${o.readyText ?? `2.1 분자 도킹으로 ${ARW}`}</button>`;
+  if (c.run) return `<span class="${cls('off')}"><span class="spin"></span>${o.runText ?? '스크리닝 계산 중 · 62%'}</span>`;
+  if (c.lock) return `<button type="button" class="${cls('off')}" data-go="todo">${LOCK} ${o.lockText ?? '1.1 표적 확정부터'}</button>`;
+  return `<button type="button" class="${cls('off')}" data-go="run">${o.todoText ?? '③ 스크리닝 1회 하면 열려요'}</button>`;
+}
+
+/* ── 기본 칸(시안이 바꾸지 않는 자리) — 회색 뼈대 ── */
+function defTabs(c) {
+  if (c.after) return `<div class="tabs">${TOOLS_21.map((w, i) => `<span class="tb${i === 0 ? ' on' : ''}"><i>${w.n}</i>${w.t}</span>`).join('')}</div>`;
+  return tabsWith(c);
+}
+function tabsWith(c, o = {}) {
+  const ws = o.walks ?? c.walks;
+  const cur = o.cur ?? c.cur;
+  return `<div class="tabs"${o.style ? ` style="${o.style}"` : ''}>${ws.map((w) => `<span class="tb${w.i === cur ? ' on' : ''}${o.hl === w.i ? ' hl' : ''}"><i>${w.s === 'done' ? '✓' : w.n}</i>${w.t}</span>`).join('')}${o.end ?? ''}</div>`;
+}
+function sideRows(c, o = {}) {
+  const cur = c.after ? '2.1' : '1.2';
+  return [1, 2, 3, 4].map((g) => {
+    const rows = STEPS.filter((s) => s.g === g);
+    const done = rows.filter((s) => c.side[s.id] === 'done').length;
+    const lockG = rows.every((s) => !c.side[s.id] || c.side[s.id] === 'lock');
+    return `<div class="mk-g" data-g="${g}"${lockG ? ' data-lock' : ''}><div class="mk-gh"><i>${g}</i>${GROUPS[g]}<span>${done}/${rows.length}</span></div>${rows.map((s) => {
+      const state = c.side[s.id] ?? 'lock';
+      if (o.row) { const r = o.row(s, state, cur); if (r) return r; }
+      const extra = o.extra ? o.extra(s, state) : '';
+      const sub = o.sub ? o.sub(s, state) : '';
+      return `<div class="st${s.id === cur ? ' cur' : ''}${state === 'lock' ? ' lk' : ''}"><span class="n">${s.id}</span><span class="t">${s.t}</span><span class="k">${state === 'done' ? '✓' : state === 'run' ? '▸' : state === 'lock' ? LOCK : ''}${extra}</span>${sub ? `<span class="st-sub">${sub}</span>` : ''}</div>`;
+    }).join('')}</div>`;
+  }).join('');
+}
+function defSide(c, o = {}) { return `<div class="mk-nm">가람제약</div>${sideRows(c, o)}`; }
+function phChips(c, o = {}) {
+  const cur = c.after ? '2.1' : '1.2';
+  return `<div class="ph-chips">${STEPS.slice(0, 4).map((s) => {
+    const state = c.side[s.id] ?? 'lock';
+    if (o.chip) { const r = o.chip(s, state, cur); if (r) return r; }
+    return `<span class="st${s.id === cur ? ' cur' : ''}${state === 'lock' ? ' lk' : ''}" data-g="${s.g}"><span class="n">${s.id}</span><span class="t">${s.t}</span><span class="k">${state === 'done' ? '✓' : state === 'lock' ? LOCK : ''}${o.extra ? o.extra(s) : ''}</span></span>`;
+  }).join('')}</div>`;
+}
+function defMine(c, o = {}) {
+  let body;
+  if (c.after) body = `<div class="wcap">① 구조 바꿔 다시 도킹 · 대기열 5개</div><div class="skp">${sks(88, 64, 76)}</div><div class="skp">${sks(54, 70)}</div>`;
+  else if (c.lock) body = `<div class="wcap">① 미션 브리핑 · 읽기만</div><div class="skp">${sks(90, 72, 84, 40)}</div>`;
+  else if (c.run) body = `<div class="wcap">③ 스크리닝 실행</div><div class="skp">${sks(70)}${bar(62)}${sks(46)}</div><div class="skp">${sks(80, 58)}</div>`;
+  else if (c.ready) body = c.noHand ? `<div class="wcap">④ 분자 쇼핑 · 찜 4개</div><div class="skp">${sks(86, 70)}</div><div class="skp">${sks(78, 62)}</div>` : `<div class="wcap">⑤ 넘기기 · 연구 노트</div><div class="skp">${sks(86, 70)}</div><div class="skp">${sks(78, 62)}</div>`;
+  else body = `<div class="wcap">② 모둠 기준 회의 · 4/6 합의</div><div class="skp">${sks(84, 60)}</div><div class="skp">${sks(76, 52)}</div><div class="skp">${sks(68)}</div>`;
+  return `<section class="isl">${o.top ?? ''}<div class="ih">나의 작업대</div>${o.head ?? ''}${body}${o.bottom ?? ''}</section>`;
+}
+function defTeam(c, o = {}) {
+  const body = o.body ?? `<div class="bub"><small>나래</small>${sk(100)}</div><div class="bub me"><small>가람</small>${sk(100)}</div><div class="bub"><small>다온</small>${sk(100)}</div>`;
+  return `<section class="isl">${o.top ?? ''}<div class="ih tm">모둠 공유<small>▤ 공유 자료</small></div>${o.head ?? ''}${body}${o.bottom ?? ''}</section>`;
+}
+function led(c, text) {
+  return `<div class="mk-led">${text ?? (c.after ? '◆ 가람제약 1.2 스크리닝 완료 — 2.1 도킹 시작 ▲ 0.8%  ◆ 세움제약 2.2 특허 후보 지정' : '◆ 세움제약 2.2 특허 후보 지정 ▲ 1.2%  ◆ 한빛바이오 1.2 스크리닝 134개 통과')}</div>`;
+}
+
+/* 한 장 그리기 — 시안은 칸(slot)만 돌려준다. 폰 덮어쓰기는 v.ph. */
+function frame(v, st, dev, pop) {
+  const c = ctx(st, pop);
+  c.noHand = !!v.noHand;
+  let s = v.r(c, dev) || {};
+  if (dev === 'ph' && v.ph) s = { ...s, ...(v.ph(c) || {}) };
+  const step = c.step;
+  const hbar = s.hbar ?? `<div class="hbar">${s.headLead ?? ''}<span class="hno">${step.id}</span><span class="h1">${step.t}</span>${s.headMid ?? ''}${s.tabs === undefined ? defTabs(c) : s.tabs}${s.headRight ? `<span class="hr">${s.headRight}</span>` : ''}</div>`;
+  const head = `<header class="mk-head">${hbar}${s.headBelow ?? ''}${s.headPop ?? ''}</header>`;
+  const body = s.body ?? `${s.mine === undefined ? defMine(c) : s.mine}${s.team === undefined ? defTeam(c) : s.team}`;
+  const bodyCls = `mk-body${s.bodyCls ? ` ${s.bodyCls}` : ''}`;
+  const layers = `${s.float ? `<div class="mk-float">${s.float}</div>` : ''}${s.overlay ? `<div class="mk-ov">${s.overlay}</div>` : ''}${s.toast ? `<div class="mk-toast">${s.toast}</div>` : ''}`;
+  if (dev === 'ph') {
+    return `<div class="ph" data-st="${st}"><div class="ph-scr">
+      <div class="ph-top"><b>가람제약</b><span class="mono">${MONEY.bal}</span></div>
+      ${s.led ?? led(c)}
+      ${s.phSide ?? phChips(c)}
+      ${head}
+      <div class="${bodyCls}">${body}${s.dockIn ? `<div class="mk-dock">${s.dockIn}</div>` : ''}</div>
+    </div>${s.dock ? `<div class="ph-dock">${s.dock}</div>` : ''}${layers}</div>`;
+  }
+  return `<div class="mk" data-st="${st}">
+    <div class="mk-top"><b>가람제약</b><span>FFCA · 기업가치 1위</span><span class="mono">연구비 ${MONEY.bal} · D+42</span></div>
+    ${s.led ?? led(c)}
+    <nav class="mk-side">${s.side ?? defSide(c)}</nav>
+    ${head}
+    <div class="${bodyCls}">${body}${s.dock || s.dockIn ? `<div class="mk-dock">${s.dock ?? s.dockIn}</div>` : ''}${layers}</div>
+  </div>`;
+}
+
+/* ── 시안 30 — src: G·A1 = Gemini 4 Argon(High) 1차 답의 A1, C = Claude ── */
+const FAMS = [
+  { k: 'A', name: '자리 — 늘 같은 곳', desc: "9단계 어디서든 '다음'이 한 자리 · 한 모양으로 있다. 스크롤 위치나 공유 자료 접기와 상관없이 보인다." },
+  { k: 'B', name: '길 — 걸음과 단계를 한 줄로', desc: '단계 안의 걸음과 다음 단계를 한 길 위에 놓는다. 순서 걸음과 나란한 도구는 다르게 그린다.' },
+  { k: 'C', name: '조건 — 무엇을 하면 열리나', desc: '설명 칸을 늘리지 않고 단추 · 점 · 고리로 남은 일을 읽힌다. 누르면 그 일을 하는 자리로 데려간다.' },
+  { k: 'D', name: '순간 — 열릴 때 · 누를 때 · 도착할 때', desc: '전환의 세 순간을 또렷하게 한다. 모둠 결정(연구비가 드는 실행)과 내 화면 이동을 나눈다.' },
+  { k: 'E', name: '모둠 — 같이 넘어가기', desc: '완료는 모둠 단위다. 누가 열었는지, 누가 어디 있는지, 누가 무엇을 맡았는지 보인다.' },
+  { k: 'F', name: '폰 · 기다림', desc: '390px 에서 엄지로 넘기고, 계산이나 게임 시계를 기다릴 때도 길을 잃지 않게 한다. F 묶음 01~04 는 늘 폰 모형으로 보인다.' },
+];
+const V = [];
+
+/* A 자리 */
+V.push({
+  id: '01', fam: 'A', src: ['G·A1', 'C'], name: '머리 섬 끝 관문',
+  one: "걸음 탭 끝, 세로 선 너머에 '다음 단계' 알약 하나. 9단계 모두 같은 자리 · 같은 문법(번호 단계 →).",
+  where: '머리 섬 오른쪽 끝. 머리 섬을 본문 위에 붙여(sticky) 스크롤해도 남게. 폰은 제목 줄 오른쪽.',
+  tabs: '걸음 탭은 그대로. 끝 알약만 단계 넘김 전용.',
+  weak: '걸음 탭이 5개인 단계는 1280px 아래에서 머리 줄이 빠듯하다.',
+  r: (c) => ({ headRight: `<span class="sep"></span>${nextBtn(c, { todoText: '2.1 분자 도킹 · 할 일 1개', runText: '2.1 · 계산 끝나면 열려요', lockText: '2.1 · 1.1 끝나면', afterText: '2.2 · 할 일 1개' })}` }),
+  ph: (c) => ({ headRight: '', headMid: `<span style="margin-left:auto">${nextBtn(c, { todoText: '2.1 · 1개 남음', runText: '62%', lockText: '1.1 먼저', readyText: `2.1 ${ARW}`, afterText: '2.2 · 1개 남음' })}</span>` }),
+});
+
+function teamDock(c) {
+  if (c.ready) return `<div class="box lime row sp"><span class="tt">✓ 1.2 완료 · 134개 통과</span>${nextBtn(c, { tone: 'ink' })}</div>`;
+  if (c.run) return `<div class="box film"><div class="row sp"><span class="tt row"><span class="spin"></span>스크리닝 계산 중</span><span class="mono">62%</span></div>${bar(62)}</div>`;
+  if (c.lock) return `<div class="box paper row sp"><span class="row mu">${LOCK} 1.1 표적을 확정하면 열려요</span><button type="button" class="b" data-go="todo">‹ 1.1로</button></div>`;
+  if (c.after) return `<div class="box paper row sp"><span class="row"><span class="key">!</span>도킹 1건 실행<span class="mono mu">①</span></span><button type="button" class="b">① 하러 가기 ›</button></div>`;
+  return `<div class="box paper row sp"><span class="row"><span class="key">!</span>스크리닝 1회 실행<span class="mono mu">③</span></span><button type="button" class="b" data-go="run">③ 하러 가기 ›</button></div>`;
+}
+V.push({
+  id: '02', fam: 'A', src: ['G·A3', 'G·E4'], name: '모둠 공유 바닥 독',
+  one: '모둠 공유 섬 바닥에 붙은 한 줄. 대화를 보든 공유 자료를 보든 남는다. 남은 일 → 넘어가기로 바뀐다.',
+  where: '모둠 공유 섬 맨 아래(섬 안 스크롤 밖). 폰은 화면 바닥.',
+  tabs: '남은 일이 있는 걸음(③)을 독의 단추가 가리킨다.',
+  weak: '시선이 왼쪽 작업대에 있으면 오른쪽 아래까지 눈을 옮겨야 한다.',
+  r: (c) => ({ team: defTeam(c, { bottom: `<div class="vsep"></div>${teamDock(c)}` }) }),
+  ph: (c) => ({ team: defTeam(c), dock: teamDock(c) }),
+});
+
+function band(c, ph) {
+  const t = c.after ? '2.1 분자 도킹' : '1.2 화합물 스크리닝';
+  const s = c.after ? '걸음 1/4 · ① 도킹 실행' : c.lock ? '1.1 표적 확정 전 · 읽기만' : c.ready ? '걸음 5/5 · 다 했어요' : c.run ? '걸음 3/5 · ③ 스크리닝 실행' : '걸음 2/5 · ② 모둠 기준 회의';
+  return `<div class="box ink row sp"><span class="bd-t"><b>${t}</b><span class="mu">${s}</span></span>${nextBtn(c, { size: ph ? '' : 'lg', todoText: '③ 스크리닝 1회 하면 2.1 열려요 ›', runText: '계산 끝나면 2.1 열려요', lockText: '1.1 표적 확정부터 ‹', afterText: '① 도킹 1건 하면 2.2 열려요 ›' })}</div>`;
+}
+V.push({
+  id: '03', fam: 'A', src: ['C'], name: '본문 바닥 띠',
+  one: "두 섬 아래를 가로지르는 짙은 띠. 왼쪽 = 지금 단계 · 걸음, 오른쪽 = 남은 일을 말하는 다음 단계 단추. 앱 바닥에 붙고, 폰에서도 같은 부품이다.",
+  where: '본문 맨 아래(작업대 + 모둠 공유를 가로질러) 고정. 폰도 같은 띠.',
+  tabs: "띠 왼쪽이 '걸음 2/5'로 위치를 알려 준다. '오른쪽 아래 = 다음'은 학생이 이미 아는 자리다.",
+  weak: '본문 높이를 56px 쓴다. 표 · 그림 맨 아랫줄을 가리지 않게 여백이 필요하다.',
+  r: (c) => ({ dock: band(c) }),
+  ph: (c) => ({ dock: band(c, true) }),
+});
+
+V.push({
+  id: '04', fam: 'A', src: ['G·A4', 'C'], name: '사이드바 다음 칸 점등',
+  one: '사이드바의 지금 단계 칸 아래에 진행 한 줄, 조건을 채우면 다음 단계 칸이 라임으로 켜지고 그 칸을 누르면 넘어간다.',
+  where: '왼쪽 사이드바 9단계 목록 안. 폰은 위 단계 칩 줄.',
+  tabs: '걸음은 머리 섬, 단계 넘김은 사이드바 — 역할을 나눈다.',
+  weak: '완료 직후 시선이 오른쪽 섬에 있어 왼쪽 사이드바로 잘 가지 않는다.',
+  r: (c) => ({
+    side: defSide(c, {
+      row: (s, state) => {
+        if (s.id === '1.2' && !c.after) {
+          const sub = c.lock ? '1.1 끝나면 열려요' : c.ready ? '✓ 134개 통과' : c.run ? '계산 중 62%' : '스크리닝 0/1';
+          return `<div class="st cur"><span class="n">1.2</span><span class="t">${s.t}</span><span class="k">${state === 'done' ? '✓' : state === 'lock' ? LOCK : ''}</span><span class="st-sub">${sub}</span></div>`;
+        }
+        if (s.id === '2.1' && c.ready) return `<button type="button" class="st nx hl" data-go="after"><span class="n">2.1</span><span class="t">${s.t}</span><span class="k">열림 →</span></button>`;
+        if (s.id === '2.1' && (c.todo || c.run)) return `<div class="st lk"><span class="n">2.1</span><span class="t">${s.t}</span><span class="k">${LOCK}</span><span class="st-sub">1.2 스크리닝 뒤</span></div>`;
+        if (s.id === '2.1' && c.after) return `<div class="st cur"><span class="n">2.1</span><span class="t">${s.t}</span><span class="k"></span><span class="st-sub">도킹 0/1</span></div>`;
+        return null;
+      },
+    }),
+  }),
+  ph: (c) => ({ phSide: phChips(c, { chip: (s, state) => (s.id === '2.1' && c.ready ? `<button type="button" class="st nx hl" data-go="after" style="width:auto"><span class="n">2.1</span><span class="t">${s.t}</span><span class="k">→</span></button>` : null) }) }),
+});
+
+function floatPill(c) {
+  if (c.ready) return nextBtn(c, { size: 'lg', readyText: `✓ 1.2 완료 · 2.1 분자 도킹으로 ${ARW}` });
+  if (c.run) return `<span class="b film lg"><span class="spin"></span>스크리닝 계산 중 · 62%</span>`;
+  if (c.lock) return `<button type="button" class="b ink lg" data-go="todo">${LOCK} 1.1 표적 확정 뒤 열려요 · ‹ 1.1로</button>`;
+  if (c.after) return `<span class="b ink lg">2.1 · 남은 일 1 · ① 도킹 실행 ›</span>`;
+  return `<button type="button" class="b ink lg" data-go="run">1.2 · 남은 일 1 · ③ 스크리닝 실행 ›</button>`;
+}
+V.push({
+  id: '05', fam: 'A', src: ['G·A5', 'C'], name: '가운데 떠 있는 알약',
+  one: '두 섬이 만나는 아래 가운데에 떠 있는 알약. 평소엔 작고 짙게 남은 일을, 열리면 라임으로 넓어진다.',
+  where: '본문 아래 가운데(두 섬 경계)에 떠 있음. 폰은 엄지 높이.',
+  tabs: "순서 걸음에선 알약이 '다음 걸음 ③'을 먼저 가리킨다.",
+  weak: '떠 있어서 표 · 그래프 아랫줄을 가린다. 섬 아래 여백을 늘려야 한다.',
+  r: (c) => ({ float: floatPill(c) }),
+});
+
+/* B 길 */
+function chain(c, o = {}) {
+  if (c.after) return `<div class="tabs chain"><span class="cn-i on"><i>①</i>도킹 실행</span><span class="cn-a">⇒</span><span class="cn-g">2.2 ${LOCK}</span></div>`;
+  const parts = c.walks.slice(0, 4).map((w) => {
+    const cls = w.s === 'done' ? 'dn' : w.i === c.cur ? 'on' : w.s === 'lock' ? 'lk' : '';
+    const sym = w.s === 'done' ? '✓' : w.s === 'run' ? '▸' : w.n;
+    return `<span class="cn-i ${cls}"><i>${sym}</i>${w.t}</span>`;
+  });
+  const gate = c.ready ? (o.passive ? '<span class="cn-g on">2.1 열림</span>' : `<button type="button" class="cn-g go hl" data-go="after">2.1 분자 도킹 ${ARW}</button>`) : `<span class="cn-g">2.1 ${LOCK}</span>`;
+  return `<div class="tabs chain">${parts.join('<span class="cn-a">→</span>')}<span class="cn-a">⇒</span>${gate}</div>`;
+}
+const toolToggle = (names) => `<div class="vt"><span class="mu">보기</span>${names.map((n, i) => `<span class="vt-i${i === 0 ? ' on' : ''}">${n}</span>`).join('')}</div>`;
+V.push({
+  id: '06', fam: 'B', noHand: true, src: ['G·B1', 'G·B4', 'G·B5', 'C'], name: '순서는 사슬 · 도구는 보기',
+  one: "순서 걸음은 화살표 사슬(✓ → ✓ → ❸ → ④ ⇒ 2.1), 나란한 도구는 번호 없는 '보기' 토글로 작업대 안에. '⑤ 넘기기' 탭은 사슬 끝 관문이 대신한다.",
+  where: "머리 섬 둘째 줄 = 사슬. 도구 단계(1.1 · 2.1 · 2.2 · 3.3)는 작업대 머리에 '보기' 토글 — '넘긴 뒤(2.1)'에서 보인다.",
+  tabs: "번호(①②)는 순서에만. '3.05 · 3.09' 같은 시각화 번호는 화면에서 뺀다.",
+  weak: '단계마다 순서/도구 성격을 정해 두어야 하고, 탭 부품이 둘로 는다.',
+  r: (c) => ({ tabs: '', headBelow: chain(c), mine: c.after ? defMine(c, { head: toolToggle(['수심계 눈금', '점수 카드', '10배 계단']) }) : undefined }),
+});
+
+V.push({
+  id: '07', fam: 'B', noHand: true, src: ['G·B2', 'C'], name: '마지막 탭 = 다음 단계',
+  one: "지금 탭 모양은 그대로 두고, 단계마다 제각각이던 끝 탭(⑤ 넘기기 · ⑤ 한 번 더 고르기)을 '→ 2.1 분자 도킹' 관문으로 바꾼다. 가장 작은 고침.",
+  where: '걸음 탭 줄의 맨 끝 칸. 폰에선 가로로 넘겨도 오른쪽 끝에 붙어 있다.',
+  tabs: '순서 걸음 끝에 관문이 붙는다. 도구 단계에도 같은 관문이 붙는다(넘긴 뒤 2.1 참고).',
+  weak: "'⑤ 넘기기' 안에 있던 확정서 요약을 ④나 모둠 공유로 옮겨야 한다.",
+  r: (c) => {
+    if (c.after) return { tabs: `<div class="tabs">${TOOLS_21.map((w, i) => `<span class="tb${i === 0 ? ' on' : ''}"><i>${w.n}</i>${w.t}</span>`).join('')}<span class="tb gate">→ 2.2 · 도킹 뒤</span></div>` };
+    const ws = c.walks.slice(0, 4);
+    const cur = Math.min(c.cur, 3);
+    const gate = c.ready ? `<button type="button" class="tb gate go hl" data-go="after">→ 2.1 분자 도킹</button>` : c.lock ? `<span class="tb gate">${LOCK} 2.1</span>` : c.run ? `<span class="tb gate"><span class="spin"></span>2.1</span>` : '<span class="tb gate">→ 2.1 · ③ 뒤</span>';
+    return { tabs: `<div class="tabs">${ws.map((w) => `<span class="tb${w.i === cur ? ' on' : ''}"><i>${w.s === 'done' ? '✓' : w.n}</i>${w.t}</span>`).join('')}${gate}</div>` };
+  },
+});
+
+function pager(c) {
+  if (c.after) return `<div class="box paper row sp"><button type="button" class="b">‹ 1.2 화합물 스크리닝</button>${nextBtn(c)}</div>`;
+  const prev = c.walks[c.cur - 1];
+  const nxt = c.walks[c.cur + 1];
+  const left = prev ? `<button type="button" class="b">‹ ${prev.n} ${prev.t}</button>` : '<span class="b off">‹</span>';
+  let right;
+  if (c.lock) right = `<button type="button" class="b off" data-go="todo">${LOCK} 1.1 표적 확정 뒤 실행</button>`;
+  else if (c.ready) right = nextBtn(c, { pulse: true });
+  else if (c.run) right = `<span class="b off"><span class="spin"></span>끝나면 ${nxt.n} ${nxt.t}</span>`;
+  else right = `<button type="button" class="b ink">${nxt.n} ${nxt.t} ›</button>`;
+  return `<div class="box paper row sp">${left}<span class="mu mono">${c.cur + 1}/5</span>${right}</div>`;
+}
+V.push({
+  id: '08', fam: 'B', src: ['G·B3', 'C'], name: '작업대 징검다리',
+  one: '작업대 맨 아래에 ‹ 이전 걸음 · 2/5 · 다음 걸음 ›. 마지막 걸음에서 오른쪽 단추가 라임 \'2.1 분자 도킹으로\'로 바뀐다.',
+  where: '나의 작업대 섬 바닥. 폰은 작업대 카드 바로 밑.',
+  tabs: '순서 걸음 단계에만 켠다. 도구 단계는 이전 단계 · 다음 단계 단추만.',
+  weak: '작업대가 길면 바닥까지 내려가야 보인다(바닥 고정과 같이 써야).',
+  r: (c) => ({ mine: defMine(c, { bottom: pager(c) }) }),
+});
+
+function pnc(c) {
+  if (c.after) return `<div class="pnc"><button type="button" class="pc"><small>‹ 이전 ✓</small><b>1.2 화합물 스크리닝</b></button><div class="pc now"><small>지금 · 걸음 1/4</small><b>2.1 분자 도킹</b></div><div class="pc lk"><small>다음 ${LOCK} 도킹 1건 뒤</small><b>2.2 ADMET · 특허 후보</b></div></div>`;
+  const prev = c.lock ? `<button type="button" class="pc hl" data-go="todo"><small>‹ 이전 · 여기부터</small><b>1.1 질환 · 표적 선정</b></button>` : '<button type="button" class="pc"><small>‹ 이전 ✓</small><b>1.1 질환 · 표적 선정</b></button>';
+  const now = `<div class="pc now"><small>지금 · 걸음 ${c.cur + 1}/5</small><b>1.2 화합물 스크리닝</b></div>`;
+  const nx = c.ready ? '<button type="button" class="pc nx hl" data-go="after"><small>다음 · 열렸어요</small><b>2.1 분자 도킹 ›</b></button>' : `<div class="pc lk"><small>다음 ${LOCK} ${c.run ? '계산 끝나면' : c.lock ? '1.2 뒤' : '스크리닝 1회 뒤'}</small><b>2.1 분자 도킹</b></div>`;
+  return `<div class="pnc">${prev}${now}${nx}</div>`;
+}
+V.push({
+  id: '09', fam: 'B', src: ['C'], name: '이전 · 지금 · 다음 세 칸',
+  one: '머리 섬 첫 줄을 세 칸으로 — ‹ 1.1 ✓ | 지금 1.2 · 걸음 2/5 | 2.1 ›. 다음 칸이 잠김 → 라임으로 바뀐다.',
+  where: '머리 섬 제목 줄 자리. 걸음 탭은 그 아래 한 줄.',
+  tabs: '걸음 탭은 아래 줄로 내려가 전폭을 쓴다.',
+  weak: '머리 섬이 두 줄이 되어 세로를 40px 더 쓴다.',
+  r: (c) => ({ hbar: pnc(c), headBelow: c.after ? `<div class="hbar">${defTabs(c).replace('class="tabs"', 'class="tabs" style="margin-left:0"')}</div>` : `<div class="hbar">${tabsWith(c, { style: 'margin-left:0' })}</div>` }),
+});
+
+function focusBody(c) {
+  const list = c.after ? [0, 1, 2, 3] : c.walks;
+  const dots = `<span class="dots">${list.map((w, i) => `<i class="${c.after ? (i === 0 ? 'on' : '') : w.s === 'done' ? 'dn' : i === c.cur ? 'on' : ''}"></i>`).join('')}</span>`;
+  const title = c.after ? '① 도킹 실행' : `${c.curW.n} ${c.curW.t}`;
+  const prev = c.after ? '<button type="button" class="b">‹ 1.2로</button>' : c.cur > 0 ? `<button type="button" class="b">‹ ${c.walks[c.cur - 1].t}</button>` : '<span></span>';
+  let next;
+  if (c.after) next = nextBtn(c, { size: 'lg' });
+  else if (c.lock) next = `<button type="button" class="b off lg" data-go="todo">${LOCK} 읽기만 · 1.1 표적 확정 뒤</button>`;
+  else if (c.ready) next = nextBtn(c, { size: 'lg', pulse: true });
+  else if (c.run) next = '<span class="b off lg"><span class="spin"></span>계산 62% · 끝나면 ④ 분자 쇼핑</span>';
+  else next = `<button type="button" class="b ink lg">다음 걸음 · ${c.nextW.n} ${c.nextW.t} ›</button>`;
+  return `<section class="isl focus"><div class="row sp"><span class="mu">${c.after ? '2.1 분자 도킹 · 1/4' : `1.2 화합물 스크리닝 · ${c.cur + 1}/5`}</span>${dots}</div><div class="tt xl">${title}</div><div class="skp">${sks(92, 78, 85, 60)}</div><div class="skp">${sks(70, 50)}</div><div class="row sp">${prev}${next}</div></section><aside class="tm-mini">모둠 공유 · 대화 3 ›</aside>`;
+}
+V.push({
+  id: '10', fam: 'B', src: ['C'], name: '한 화면 한 걸음',
+  one: '탭 줄을 없애고 지금 걸음 하나만 크게. 아래 오른쪽에 늘 다음 걸음 단추, 마지막엔 다음 단계 단추. 모둠 공유는 옆에 접힌 손잡이.',
+  where: '작업대가 본문을 다 쓴다. 모둠 공유는 오른쪽 얇은 손잡이(누르면 펼침).',
+  tabs: '탭 대신 점 5개(●●○○○). 순서 걸음 단계 전용 모드.',
+  weak: '도구를 오가며 비교하는 단계(1.1 · 2.1)엔 맞지 않고, 모둠 대화가 한 번 더 숨는다.',
+  r: (c) => ({ tabs: '', body: focusBody(c), bodyCls: 'fx' }),
+});
+
+/* C 조건 */
+function sayBtn(c) {
+  if (c.after) return '<button type="button" class="b off wide lg">① 도킹 1건 하면 2.2가 열려요 · 하러 가기 ›</button>';
+  if (c.ready) return `<button type="button" class="b lime wide lg hl" data-go="after">2.1 분자 도킹으로 ${ARW}</button>`;
+  if (c.run) return '<span class="b off wide lg"><span class="spin"></span>스크리닝 계산 중 62% · 끝나면 2.1이 열려요</span>';
+  if (c.lock) return '<button type="button" class="b off wide lg" data-go="todo">‹ 1.1에서 표적부터 확정하기</button>';
+  return '<button type="button" class="b off wide lg" data-go="run">③ 스크리닝 1회 하면 2.1이 열려요 · 하러 가기 ›</button>';
+}
+V.push({
+  id: '11', fam: 'C', src: ['G·C1', 'C'], name: '남은 일을 말하는 단추',
+  one: "흐린 단추에 '완료 조건을 채우면…' 대신 남은 일을 그대로 쓴다. 누르면 ③ 탭으로 데려가 그 자리를 반짝인다. 잠기면 '‹ 1.1에서 확정하기'.",
+  where: '머리 섬 둘째 줄 전폭 단추(다른 자리 시안과 같이 써도 된다).',
+  tabs: '할 일 탭(③)이 단추와 같이 반짝인다 — 어디로 갈지 보인다.',
+  weak: '3.2처럼 조건이 셋이면 한 줄에 줄여 써야 한다(계획서 · 실험 · 주력 2/3).',
+  r: (c) => ({
+    headBelow: sayBtn(c),
+    tabs: c.todo ? tabsWith(c, { hl: 2 }) : undefined,
+    side: c.lock ? defSide(c, { row: (s) => (s.id === '1.1' ? `<div class="st hl"><span class="n">1.1</span><span class="t">${s.t}</span><span class="k"></span></div>` : null) }) : undefined,
+  }),
+});
+
+function keyDots(c) {
+  return `<div class="row kd" style="justify-content:flex-end"><div class="row">${c.cond.map((x) => `<span class="dt ${x.s}${x.key ? ' k1' : ''}"><i></i>${x.key ? '<b>열쇠</b> ' : ''}${x.t}<em>${x.v}</em></span>`).join('')}</div>${nextBtn(c, { todoText: `2.1 ${ARW}`, runText: `2.1 ${ARW}`, lockText: `2.1 ${ARW}`, afterText: `2.2 ${ARW}` })}</div>`;
+}
+V.push({
+  id: '12', fam: 'C', src: ['G·C2', 'C'], name: '열쇠 점',
+  one: '단추 왼쪽에 점 몇 개(● 됨 · ○ 아직). 서버 완료 조건은 굵은 열쇠 점 하나, 나머지는 챙기면 좋은 것. 점을 누르면 그 걸음으로.',
+  where: '머리 섬 둘째 줄 — 점들 + 다음 단계 단추.',
+  tabs: '점마다 걸음 번호(③ · ② · ④)로 이어진다.',
+  weak: "칩 테두리 없이 점 + 글자만으로 그려야 '배지 늘리기'가 되지 않는다.",
+  r: (c) => ({ headBelow: keyDots(c) }),
+});
+
+function gate13(c) {
+  const p = c.ready ? 100 : c.run ? 62 : 0;
+  const nm = c.after ? '2.2 ADMET' : '2.1 분자 도킹';
+  const sub = c.after ? '0/1 · 도킹 1건' : c.ready ? '열렸어요' : c.run ? '0/1 · 계산 중 62%' : c.lock ? '1.1 확정 뒤' : '0/1 · 스크리닝 1회';
+  const inner = `${ring(p, c.ready)}<span class="gate-t"><b>${nm}</b><small>${sub}</small></span>${c.ready ? `<span class="b lime">${ARW}</span>` : ''}`;
+  return c.ready ? `<button type="button" class="gate hl" data-go="after" style="border-radius:999px;padding-right:2px">${inner}</button>` : `<span class="gate">${inner}</span>`;
+}
+V.push({
+  id: '13', fam: 'C', src: ['C'], name: '자물쇠 고리',
+  one: '다음 단계 이름 옆에 채워지는 고리. 0/1 → 계산 62% → ✓. 마우스를 올리면(폰은 누르면) 남은 일 목록이 뜬다.',
+  where: "머리 섬 오른쪽 끝. '할 일 남음'에서 목록이 뜬 모습.",
+  tabs: '목록의 걸음 번호를 누르면 그 탭으로.',
+  weak: '고리만 보고는 무슨 일이 남았는지 모른다 — 올려 봐야 안다.',
+  r: (c) => ({ headRight: `<span class="sep"></span>${gate13(c)}`, headPop: c.todo ? `<div class="pop"><span class="mu">2.1 을 열려면</span>${checklist(c, { at: true })}</div>` : '' }),
+});
+
+function runCard(c) {
+  if (c.after) return `<section class="isl"><div class="ih">나의 작업대</div><div class="wcap">① 구조 바꿔 다시 도킹</div><div class="box paper"><div class="row sp"><span class="tt">도킹 대기열 · 찜 4개 + 대조군</span></div>${sks(80, 60)}<button type="button" class="b ink">도킹 실행 · ${MONEY.dock}</button></div><div class="skp">${sks(70, 48)}</div></section>`;
+  let inner;
+  if (c.lock) inner = `${sks(80, 64)}<div class="row"><span class="b off">${LOCK} 실행은 1.1 표적 확정 뒤</span><button type="button" class="b" data-go="todo">‹ 1.1로</button></div>`;
+  else if (c.run) inner = `${bar(62)}<div class="row sp"><span class="row"><span class="spin"></span>220종 거르는 중</span><span class="mono">62%</span></div>`;
+  else if (c.ready) inner = `<div class="row"><span class="pill ok">✓ 1회 실행 · 134개 통과</span><span class="mu">가람 님</span></div><div class="row"><button type="button" class="b">④ 후보 더 고르기</button>${nextBtn(c, { pulse: true })}</div>`;
+  else inner = `${sks(84, 66)}<button type="button" class="b ink" data-go="run">스크리닝 실행 · ${MONEY.screen}</button>`;
+  return `<section class="isl"><div class="ih">나의 작업대</div><div class="wcap">③ 스크리닝 실행</div><div class="box paper"><div class="tt">ChEMBL 220종 · 모둠 기준 6개</div>${inner}</div><div class="skp">${sks(70, 48)}</div></section>`;
+}
+V.push({
+  id: '14', fam: 'C', src: ['G·C3', 'G·C5'], name: '한 자리에서 바로 다음',
+  one: "조건을 채우는 바로 그 카드(스크리닝 실행)에서, 끝나는 순간 '④ 후보 더 고르기' 옆에 '2.1 분자 도킹으로'가 솟는다. 4.1 '3상 통과'도 판정 카드 밑에서 바로 4.2로.",
+  where: '열쇠 행동 카드 안(1.1 확정 카드 · 1.2 실행 카드 · 3.2 주력 지정 카드 · 4.1 판정 카드).',
+  tabs: '열쇠 걸음 뒤의 걸음(④)은 보강이라고 알려 준다 — 바로 가도 되고 더 담아도 된다.',
+  weak: '나중에 다시 들어왔을 때를 위해 고정 자리에도 단추가 하나 더 있어야 한다.',
+  r: (c) => ({ mine: runCard(c), tabs: c.after ? undefined : tabsWith(c, { cur: c.lock ? 0 : 2 }) }),
+});
+
+function receiptTeam(c) {
+  if (c.after) return defTeam(c);
+  const rows = [
+    ['표적', c.lock ? '—' : 'ACHE · 알츠하이머병'],
+    ['모둠 기준', c.lock ? '—' : c.todo ? '4/6 합의' : '6/6 합의'],
+    ['스크리닝', c.ready ? '1회 · 134개 통과' : c.run ? '계산 중 62%' : '0회'],
+    ['2.1 도킹 대기열', c.ready ? '찜 4개 + 대조군' : '0개'],
+    ['도킹 예상', c.ready ? MONEY.dock : '—'],
+  ];
+  return `<section class="isl"><div class="ih tm">모둠 공유<small>▤ 공유 자료</small></div><div class="box line"><div class="tt">1.2 스크리닝 확정서</div>${rows.map(([a, b]) => `<div class="rl"><span>${a}</span><b>${b}</b></div>`).join('')}${nextBtn(c, { wide: true })}</div><div class="fold"><span>연구 노트 · 0/3칸 · 최대 +${MONEY.note}</span><span>▾</span></div><div class="fold"><span>이 단계 연구 문항 · 0/2</span><span>▾</span></div></section>`;
+}
+V.push({
+  id: '15', fam: 'C', src: ['G·C4', 'G·F5'], name: '확정서 위 · 노트 아래',
+  one: '공유 자료 맨 위에 확정서와 넘기기 단추, 연구 노트 · 문항은 한 줄로 접어 아래로. 단추가 노트에 밀려 내려가지 않는다.',
+  where: '모둠 공유 → 공유 자료 맨 위(첫 화면 안).',
+  tabs: "'⑤ 넘기기' 탭이 없어도 된다 — 확정서가 늘 맨 위.",
+  weak: '노트가 접혀 덜 쓸 수 있다 — 접힌 줄에 0/3칸 · 연구비 보상을 남긴다.',
+  r: (c) => ({ team: receiptTeam(c) }),
+});
+
+/* D 순간 */
+function split(c) {
+  let commit;
+  if (c.after) commit = `<button type="button" class="b ink">도킹 실행 · ${MONEY.dock}</button>`;
+  else if (c.lock) commit = `<span class="b off">${LOCK} 1.1 표적 확정 뒤</span>`;
+  else if (c.run) commit = '<span class="b off"><span class="spin"></span>스크리닝 계산 중 62%</span>';
+  else if (c.ready) commit = '<span class="b">✓ 실행함 · 다시 실행</span>';
+  else commit = `<button type="button" class="b ink" data-go="run">③ 스크리닝 실행하러 › <small>${MONEY.screen}</small></button>`;
+  const move = nextBtn(c, { wide: true, todoText: `2.1 분자 도킹 ${ARW}`, runText: `2.1 분자 도킹 ${ARW}`, lockText: `2.1 분자 도킹 ${ARW}`, afterText: `2.2 ADMET ${ARW}` });
+  return `<div class="split"><div><span class="mu">모둠 결정 · 연구비가 나가요</span>${commit}</div><div class="sp-r"><span class="mu">화면 이동</span>${move}</div></div>`;
+}
+V.push({
+  id: '16', fam: 'D', src: ['G·D1', 'C'], name: '결정 | 이동 두 칸',
+  one: "한 줄을 둘로 — 왼쪽 '모둠 결정'(크리스타가 나가는 실행), 오른쪽 '화면 이동'(2.1 →). 두 행동이 한 단추에 섞이지 않는다.",
+  where: '머리 섬 둘째 줄 전폭(왼쪽 결정 · 오른쪽 이동). 폰은 바닥 바.',
+  tabs: '어느 걸음에 있든 결정 · 이동이 나란히 보인다.',
+  weak: '실행에 앞선 입력(기준 합의)이 덜 되면 왼쪽 단추가 그 입력으로 데려가야 한다.',
+  r: (c) => ({ headBelow: split(c) }),
+  ph: (c) => ({ headBelow: '', dock: `<div class="pbar">${split(c)}</div>` }),
+});
+
+const RCPT = `<div class="rcpt"><div class="row sp"><span class="tt lg">2.1로 가져가요</span><span class="mu mono">1.2 → 2.1</span></div>
+  <div class="rl"><span>찜 후보</span><b>4개 · 도네페질 외 3</b></div>
+  <div class="rl"><span>대조군</span><b>도네페질 · ΔG −11.84</b></div>
+  <div class="rl"><span>표적</span><b>ACHE · PDB 4EY7</b></div>
+  <div class="rl"><span>도킹 예상</span><b class="mono">${MONEY.dock}</b></div>
+  <span class="mu">연구비는 2.1에서 도킹을 실행할 때 나가요.</span>
+  <div class="row sp"><button type="button" class="b" data-pop="0">더 고를래요</button><button type="button" class="b lime" data-go="after">2.1 시작 ${ARW}</button></div></div>`;
+V.push({
+  id: '17', fam: 'D', noHand: true, src: ['G·D4', 'C'], name: '넘김 영수증',
+  one: "'⑤ 넘기기' 탭을 없애고, 다음 단계 단추를 누르면 무엇을 들고 가는지 영수증 한 장이 뜬다. 한 번 더 누르면 넘어간다.",
+  where: "머리 섬 끝 단추 → 본문 위 영수증. '넘어갈 수 있음'에서 단추를 눌러 보세요.",
+  tabs: '걸음이 5개 → 4개로 준다(넘기기만을 위한 탭 삭제).',
+  weak: '이미 넘어갔다가 다시 갈 때는 영수증 없이 바로 가야 한다(분기 필요).',
+  popInit: true, focus: 'ready',
+  r: (c) => {
+    const cur = Math.min(c.cur, 3);
+    const tabs = c.after ? undefined : tabsWith(c, { walks: c.walks.slice(0, 4), cur });
+    const btn = c.ready ? `<button type="button" class="b lime hl" data-pop="1">2.1 분자 도킹으로 ${ARW}</button>` : nextBtn(c, { todoText: '2.1 · 할 일 1개', runText: '2.1 · 계산 뒤', lockText: '2.1 · 1.1 뒤', afterText: '2.2 · 할 일 1개' });
+    return { tabs, headRight: `<span class="sep"></span>${btn}`, overlay: c.ready && c.pop ? RCPT : '' };
+  },
+});
+
+V.push({
+  id: '18', fam: 'D', src: ['G·D2', 'G·D5', 'C'], name: '열리는 순간 띠',
+  one: '모둠원 누구든 조건을 채우는 순간, 모두의 머리 섬 아래로 라임 띠가 내려온다 — 누가 · 무엇을 · 이제 어디로. 전광판도 같이 알린다.',
+  where: "머리 섬 바로 아래 한 줄(열린 순간). '더 살펴보기'를 누르면 머리 끝 단추만 라임으로 남는다.",
+  tabs: '띠가 걸음 탭을 덮지 않는다 — 지금 걸음에 그대로 머물 수 있다.',
+  weak: '다 끝난 단계에 다시 들어왔을 땐 띠 없이 단추만 보여야 한다.',
+  focus: 'ready',
+  r: (c) => ({
+    headRight: `<span class="sep"></span>${c.ready ? '<span class="pill lime">2.1 열림</span>' : nextBtn(c, { todoText: '2.1 · 할 일 1개', runText: '2.1 · 계산 뒤', lockText: '2.1 · 1.1 뒤', afterText: '2.2 · 할 일 1개' })}`,
+    headBelow: c.ready ? `<div class="box lime row sp"><span class="row">${av({ n: '가람' })}<b>가람 님이 스크리닝을 마쳤어요</b><span class="mu">134개 통과 · 2.1 분자 도킹이 열렸어요</span></span><span class="row"><button type="button" class="b">더 살펴보기</button><button type="button" class="b ink" data-go="after">2.1로 ${ARW}</button></span></div>`
+      : c.run ? `<div class="row sp"><span class="mu row">${av({ n: '나래' })} 나래 님이 스크리닝 실행 중</span><span class="mono mu">62%</span></div>${bar(62, 'film')}` : '',
+    led: c.ready ? led(c, '◆ <b>가람제약 1.2 완료</b> — 134개 통과 · 2.1 도킹 열림 ▲ 1.4%  ◆ 세움제약 2.2 특허 후보 지정') : undefined,
+  }),
+});
+
+V.push({
+  id: '19', fam: 'D', src: ['C'], name: '도착 안내 카드',
+  one: "넘어간 뒤 2.1 작업대 맨 위에 한 장 — '1.2에서 가져온 것'과 '여기서 열쇠'. 처음 할 일 단추가 바로 있다. 한 번 보면 접힌다.",
+  where: "다음 단계 작업대 맨 위(도착 첫 화면). '넘긴 뒤'로 열려 있다.",
+  tabs: '도착 카드의 첫 할 일이 ① 탭과 같은 단추다.',
+  weak: "단계마다 '가져온 것'을 다르게 써야 한다(템플릿 9개).",
+  focus: 'after',
+  r: (c) => ({
+    headRight: `<span class="sep"></span>${nextBtn(c, { todoText: '2.1 · 할 일 1개', runText: '2.1 · 계산 뒤', lockText: '2.1 · 1.1 뒤', afterText: '2.2 · 할 일 1개' })}`,
+    mine: c.after ? defMine(c, { head: `<div class="box film"><div class="row sp"><span class="tt lg">2.1 분자 도킹에 왔어요</span><button type="button" class="b" data-go="ready">‹ 1.2 다시 보기</button></div><div class="rl"><span>1.2에서 가져온 것</span><b>찜 4개 · 대조군 도네페질</b></div><div class="rl"><span>여기서 열쇠</span><b>도킹 1건 → 2.2 열림</b></div><button type="button" class="b ink">① 도킹 실행 · ${MONEY.dock}</button></div>` }) : undefined,
+  }),
+});
+
+const POCKET = '<svg viewBox="0 0 160 44" class="pk" aria-hidden="true"><path d="M20 6 C 34 42, 126 42, 140 6" fill="none" stroke="var(--fg)" stroke-width="2"/><circle cx="80" cy="22" r="7" fill="var(--hi)" stroke="var(--fg)" stroke-width="1.5"/><circle cx="66" cy="18" r="4.5" fill="var(--surface)" stroke="var(--fg)" stroke-width="1.2"/><circle cx="94" cy="18" r="4.5" fill="var(--surface)" stroke="var(--fg)" stroke-width="1.2"/><path d="M70 19.5 L74 21 M86 21 L90 19.5" stroke="var(--fg)" stroke-width="1.2"/></svg>';
+V.push({
+  id: '20', fam: 'D', src: ['C'], name: '다음 단계 엿보기',
+  one: '작업대 아래에 다음 단계 카드 — 그림 한 장, 첫 할 일, 드는 연구비. 잠겨 있을 땐 흐리게, 열리면 \'들어가기\'.',
+  where: '나의 작업대 섬 맨 아래.',
+  tabs: '걸음 탭은 그대로. 마지막 걸음 끝에서 자연스럽게 눈에 걸린다.',
+  weak: "글이 한 줄 는다 — '설명 덩어리'로 커지지 않게 세 줄로 묶어 둔다.",
+  focus: 'ready',
+  r: (c) => {
+    if (c.after) return {};
+    const on = c.ready;
+    return { mine: defMine(c, { bottom: `<div class="box line" style="${on ? '' : 'opacity:.72'}"><div class="row sp"><span class="mu">다음 단계</span>${on ? '<span class="pill lime">열림</span>' : `<span class="pill">${LOCK} 잠김</span>`}</div>${POCKET}<div class="tt lg">2.1 분자 도킹</div><div class="rl"><span>첫 할 일</span><b>찜한 후보 도킹</b></div><div class="rl"><span>드는 연구비</span><b class="mono">${MONEY.dock}</b></div>${nextBtn(c, { wide: true, readyText: `들어가기 ${ARW}`, todoText: '③ 스크리닝 1회 뒤 열려요', runText: '계산 끝나면 열려요', lockText: '1.1 표적 확정 뒤' })}</div>` }) };
+  },
+});
+
+/* E 모둠 */
+V.push({
+  id: '21', fam: 'E', src: ['G·E1'], name: '누가 열었나',
+  one: "누군가 조건을 채우면 모두의 단추가 바로 라임으로 바뀌고 이름이 붙는다 — '가람 님이 열었어요 · 2.1 분자 도킹 →'.",
+  where: '다음 단계 단추 안(머리 섬 끝).',
+  tabs: '걸음 탭의 ✓ 도 실시간으로 켜진다.',
+  weak: '실시간 신호가 늦으면 1~2초 엇갈린다(지금 board.changed 로 충분).',
+  focus: 'ready',
+  r: (c) => {
+    let b;
+    if (c.ready) b = `<button type="button" class="b lime hl" data-go="after">${av({ n: '가람' }, 'on')}가람 님이 열었어요 · 2.1 분자 도킹 ${ARW}</button>`;
+    else if (c.run) b = `<span class="b off">${av({ n: '나래' })}<span class="spin"></span>나래 님이 실행 중 · 62%</span>`;
+    else if (c.lock) b = `<span class="b off">${LOCK} 1.1 표적 확정을 기다려요</span>`;
+    else if (c.after) b = '<span class="b off">도킹 1건 · 아직 아무도 안 했어요</span>';
+    else b = '<button type="button" class="b off" data-go="run">스크리닝 1회 · 아직 아무도 안 했어요</button>';
+    return { headRight: `<span class="sep"></span>${b}` };
+  },
+  ph: (c) => ({ headRight: '', headBelow: c.ready ? `<button type="button" class="b lime wide" data-go="after">${av({ n: '가람' }, 'on')}가람 님이 열었어요 · 2.1 ${ARW}</button>` : '' }),
+});
+
+V.push({
+  id: '22', fam: 'E', src: ['G·E3', 'C'], name: '모둠원 자리 · 부르기',
+  one: "사이드바 단계 칸에 모둠원 얼굴이 앉아 있다. 먼저 간 사람이 보이고('나래 님이 2.1에'), 넘긴 뒤 남은 사람을 부를 수 있다.",
+  where: '사이드바 단계 칸 아래 줄 + 다음 단계 단추 문구. 폰은 단계 칩에 인원 수.',
+  tabs: '같은 단계 안에서도 걸음 탭 위에 작은 얼굴 점(선택).',
+  weak: '모둠원 위치를 계속 보내야 한다(가벼운 채널로).',
+  focus: 'ready',
+  r: (c) => ({
+    side: defSide(c, { sub: (s) => { const names = MEMBERS.filter((m) => c.where[m.n] === s.id).map((m) => m.n); return names.length ? `<span class="row" style="gap:3px">${avs(names, 'xs')}<span>${names.join(' · ')}</span></span>` : ''; } }),
+    headRight: `<span class="sep"></span>${nextBtn(c, { readyText: `2.1로 · 나래 님 먼저 가 있어요 ${ARW}`, todoText: '2.1 · 할 일 1개', runText: '2.1 · 계산 뒤', lockText: '2.1 · 1.1 뒤', afterText: '2.2 · 할 일 1개' })}`,
+    toast: c.after ? `<div class="box ink row">${av({ n: '루아' })}<span>루아 님만 1.2에 있어요</span><button type="button" class="b lime">부르기</button></div>` : '',
+  }),
+  ph: (c) => ({ phSide: phChips(c, { extra: (s) => { const n = MEMBERS.filter((m) => c.where[m.n] === s.id).length; return n ? ` <span class="pill">${n}명</span>` : ''; } }) }),
+});
+
+function sysCard(c) {
+  if (c.ready) return `<div class="sys"><b>◆ 1.2 완료</b><span class="mu">가람 님 스크리닝 1회 · 134개 통과</span><button type="button" class="b lime" data-go="after">2.1 분자 도킹 열기 ${ARW}</button></div>`;
+  if (c.run) return `<div class="sys"><span class="row"><span class="spin"></span>나래 님이 스크리닝을 시작했어요 · 62%</span></div>`;
+  if (c.lock) return `<div class="sys"><span class="row">${LOCK} 1.1 표적 확정이 먼저예요</span><button type="button" class="b" data-go="todo">‹ 1.1로</button></div>`;
+  if (c.after) return `<div class="sys"><span>가람 · 나래 · 다온 님이 2.1로 왔어요</span><button type="button" class="b">루아 님 부르기</button></div>`;
+  return `<div class="sys"><span class="row"><span class="key">!</span>남은 일 하나 — 스크리닝 1회</span><button type="button" class="b" data-go="run">③으로 ›</button></div>`;
+}
+V.push({
+  id: '23', fam: 'E', src: ['C', 'G·E4'], name: '대화방 알림 카드',
+  one: '모둠 대화에 시스템 카드가 들어온다 — 시작했어요 · 끝났어요 · 열렸어요. 카드 안 단추로 바로 넘어간다.',
+  where: '모둠 공유 → 대화 맨 아래(새 메시지처럼).',
+  tabs: "'③으로' 단추가 걸음 탭을 연다.",
+  weak: '대화가 빠르게 흐르면 카드가 위로 밀린다 — 고정 자리와 같이 써야.',
+  focus: 'ready',
+  r: (c) => ({ team: defTeam(c, { body: `<div class="bub"><small>나래</small>${sk(100)}</div><div class="bub me"><small>가람</small>${sk(100)}</div>${sysCard(c)}` }) }),
+});
+
+function commit24(c) {
+  if (c.after) return `<button type="button" class="b ink wrap"><span class="tag-k">모둠 결정</span>도킹 실행 · ${MONEY.dock}</button>`;
+  if (c.ready) return '<span class="b">✓ 모둠 결정 끝 · 가람 님이 실행</span>';
+  if (c.run) return '<span class="b off"><span class="spin"></span>모둠 결정 실행 중 · 62%</span>';
+  if (c.lock) return `<span class="b off">${LOCK} 모둠 결정은 1.1 뒤</span>`;
+  return `<button type="button" class="b ink wrap" data-go="run"><span class="tag-k">모둠 결정</span>스크리닝 실행 · ${MONEY.screen}</button>`;
+}
+V.push({
+  id: '24', fam: 'E', src: ['G·E2'], name: '결정은 모둠 · 이동은 나',
+  one: "말과 모양을 둘로 나눈다 — 크리스타가 나가는 단추는 잉크 + '모둠 결정', 다음 단계로 가는 단추는 '내 화면 · 2.1로 →'. 겁먹지 않고 누른다.",
+  where: '화면 전체 단추 규칙(작업대 = 결정, 머리 끝 = 이동).',
+  tabs: '나의 작업대 안 단추는 연구비를 쓰지 않는다는 원칙은 그대로.',
+  weak: '문구 규칙만으로는 자리 문제가 풀리지 않는다 — 자리 시안과 같이.',
+  r: (c) => ({
+    headRight: `<span class="sep"></span>${nextBtn(c, { readyText: `내 화면 · 2.1로 ${ARW}`, todoText: '내 화면 · 2.1로 (③ 뒤)', runText: '내 화면 · 2.1로 (계산 뒤)', lockText: '내 화면 · 2.1로', afterText: '내 화면 · 2.2로 (도킹 뒤)' })}`,
+    mine: defMine(c, { bottom: commit24(c) }),
+  }),
+});
+
+function assign(c) {
+  if (c.after) return `<div class="box line"><div class="row sp"><span class="tt">2.2를 열려면</span>${nextBtn(c, { afterText: `2.2 ${ARW}` })}</div><ul class="ck"><li><i><b>!</b></i><span><b>열쇠</b> · 도킹 1건 실행</span>${av({ n: '다온' })}</li><li><i></i><span>대조군과 견주기</span><button type="button" class="b">내가 맡기</button></li></ul></div>`;
+  const owner = (i, x) => {
+    if (c.lock) return `<span class="mu row">${av({ n: '루아' })} 보는 중</span>`;
+    if (i === 0) return x.s === 'run' ? `<span class="row">${av({ n: '나래' })}<span class="spin"></span></span>` : av({ n: x.s === 'ok' ? '가람' : '나래' });
+    if (i === 1) return x.s === 'ok' ? avs(['가람', '나래', '다온', '루아']) : '<span class="mu">다 같이 · 투표</span>';
+    return x.s === 'ok' ? avs(['가람', '다온']) : '<button type="button" class="b">내가 맡기</button>';
+  };
+  const rows = c.cond.map((x, i) => `<li class="${x.s}"><i>${x.s === 'ok' ? '✓' : x.s === 'run' ? '▸' : x.key ? '<b>!</b>' : ''}</i><span>${x.key ? '<b>열쇠</b> · ' : ''}${x.t} <em>${x.v}</em></span>${owner(i, x)}</li>`).join('');
+  return `<div class="box line"><div class="row sp"><span class="tt">2.1을 열려면</span>${nextBtn(c, { todoText: `2.1 ${ARW}`, runText: `2.1 ${ARW}`, lockText: `2.1 ${ARW}` })}</div><ul class="ck">${rows}</ul></div>`;
+}
+V.push({
+  id: '25', fam: 'E', src: ['G·E5', 'C'], name: '할 일 나눠 맡기',
+  one: "다음 단계를 여는 일 목록에 맡은 사람 얼굴이 붙는다. 빈 줄엔 '내가 맡기'. 다 차면 단추가 켜진다.",
+  where: '모둠 공유 섬 맨 위(대화 위).',
+  tabs: '각 줄이 걸음(③ · ② · ④)으로 이어진다.',
+  weak: '맡기기 상태를 서버에 새로 저장해야 한다(지금은 없음).',
+  r: (c) => ({ team: defTeam(c, { head: assign(c) }) }),
+});
+
+/* F 폰 · 기다림 */
+function thumbBar(c) {
+  const walk = c.after ? '① 도킹 실행 · 1/4' : `${c.curW.n} ${c.curW.t} · ${c.cur + 1}/5`;
+  return `<div class="pbar"><div class="row sp"><button type="button" class="b">‹</button><span class="tt">${walk}</span><button type="button" class="b">›</button></div>${nextBtn(c, { wide: true, size: 'lg', todoText: '③ 스크리닝 1회 하면 2.1 열려요', runText: '계산 중 62% · 끝나면 2.1', lockText: '‹ 1.1 표적 확정부터', afterText: '도킹 1건 하면 2.2 열려요' })}</div>`;
+}
+V.push({
+  id: '26', fam: 'F', src: ['G·F1', 'C'], name: '폰 엄지 바',
+  one: '폰 바닥에 두 줄 — 위 = ‹ 지금 걸음 ›, 아래 = 다음 단계 큰 단추. 위쪽 탭 줄이 잘려도 아래에서 다 넘긴다.',
+  where: '폰 화면 바닥 고정(안전 여백 포함).',
+  tabs: '위 탭 줄을 없애고 ‹ › 로 걸음을 넘긴다.',
+  weak: '화면 높이 100px 를 늘 쓴다. 키보드가 뜨면 숨겨야 한다.',
+  phoneOnly: true,
+  r: (c) => ({ tabs: '', dock: thumbBar(c) }),
+});
+
+function acc(c, o = {}) {
+  if (c.after) return `<div class="tabs acc"><span class="ac-on"><i>①</i>도킹 실행</span><span class="ac-g">2.2 ${LOCK}</span></div>`;
+  const cur = Math.min(c.cur, 3);
+  const items = c.walks.slice(0, 4).map((w) => (w.i === cur && !c.ready ? `<span class="ac-on"><i>${w.s === 'run' ? '▸' : w.n}</i>${w.t}</span>` : `<span class="ac${w.s === 'done' ? ' dn' : ''}">${w.s === 'done' ? '✓' : w.s === 'lock' ? LOCK : w.n}</span>`));
+  const gate = c.ready ? (o.passive ? '<span class="ac-g on">2.1 열림</span>' : `<button type="button" class="ac-g go hl" data-go="after">2.1 분자 도킹 ${ARW}</button>`) : `<span class="ac-g">2.1 ${c.lock || c.todo || c.run ? LOCK : ''}</span>`;
+  return `<div class="tabs acc">${items.join('')}${gate}</div>`;
+}
+V.push({
+  id: '27', fam: 'F', src: ['G·F4'], name: '폰 걸음 접기',
+  one: '끝난 걸음은 ✓ 동그라미, 안 한 걸음은 번호만, 지금 걸음만 이름을 편다. 390px 에 다 들어가고 끝에 다음 단계가 붙는다.',
+  where: '폰 머리 섬 걸음 줄.',
+  tabs: '가로 넘기기를 없앤다 — 잘리는 탭이 없다.',
+  weak: '안 가 본 걸음은 눌러 보기 전엔 번호로만 보인다.',
+  phoneOnly: true,
+  r: (c) => ({ tabs: acc(c) }),
+});
+
+V.push({
+  id: '28', fam: 'F', src: ['G·F2'], name: '폰 한 줄 머리',
+  one: '단계 칩 줄 + 머리 섬을 한 줄로 — [1.2 화합물 스크리닝 ▾] + 다음 단계 단추. 걸음은 그 아래 ◀ 2/5 ▶.',
+  where: '폰 위쪽(단계 칩 줄 자리).',
+  tabs: '◀ ▶ 걸음 넘기기 한 줄. ▾ 를 누르면 9단계 목록.',
+  weak: '1440 의 사이드바와 다른 폰 전용 머리가 된다.',
+  phoneOnly: true,
+  r: (c) => ({
+    phSide: '',
+    hbar: `<div class="hbar"><span class="dd"><span class="mono">${c.step.id}</span>${c.step.t} ▾</span><span style="margin-left:auto">${nextBtn(c, { todoText: '2.1 · 1개 남음', runText: '62%', lockText: '1.1 먼저', readyText: `2.1 ${ARW}`, afterText: '2.2 · 1개 남음' })}</span></div>`,
+    headBelow: `<div class="stepper"><button type="button" class="b">◀</button><span><span class="mono mu">${c.after ? '보기 1/4' : `${c.cur + 1}/5`}</span> <b>${c.after ? '구조 바꿔 다시 도킹' : c.curW.t}</b></span><button type="button" class="b">▶</button></div>`,
+  }),
+});
+
+V.push({
+  id: '29', fam: 'F', src: ['G·F3'], name: '폰 세 칸 전환',
+  one: '머리 섬 아래 세 칸 — [작업대] [모둠 공유 62] [2.1 →]. 섬 둘을 오가는 긴 스크롤이 없어지고, 셋째 칸이 늘 다음 단계다.',
+  where: '폰 머리 섬 바로 아래 고정.',
+  tabs: '[작업대]를 볼 때만 걸음 탭이 보인다.',
+  weak: '작업대와 공유 자료를 위아래로 같이 보며 견줄 수 없다.',
+  phoneOnly: true,
+  r: (c) => {
+    const third = c.ready ? `<button type="button" class="go" data-go="after">2.1 ${ARW}</button>` : c.run ? '<span><span class="spin"></span>62%</span>' : c.lock ? `<span>${LOCK} 1.1로</span>` : c.after ? '<span>2.2 · 1개</span>' : '<span>2.1 · 1개 남음</span>';
+    return { headBelow: `<div class="seg3"><span class="on">작업대</span><span>모둠 공유 <b class="mono">62</b></span>${third}</div>`, team: '', bodyCls: 'one' };
+  },
+});
+
+V.push({
+  id: '30', fam: 'F', src: ['G·D3', 'C'], name: '기다림 시계 단추',
+  one: "기다릴 땐 단추가 시계가 된다 — 계산은 '62% · 약 40초', 게임 시계는 'D+14 / 28 · 14일 남음'. 옆에 기다리는 동안 할 일.",
+  where: '머리 섬 끝 단추 + 둘째 줄. 3.2 · 3.3 · 4.1 의 게임 날짜 기다림도 같은 모양.',
+  tabs: '기다리는 동안 갈 걸음(연구 노트 · ④ 진열대)을 단추로 준다.',
+  weak: '몇 초짜리 계산과 몇십 일짜리 게임 시계의 말투를 나눠야 한다.',
+  focus: 'run',
+  r: (c) => ({
+    headRight: `<span class="sep"></span>${c.run ? '<span class="b film"><span class="spin"></span>계산 중 62% · 약 40초</span>' : nextBtn(c, { todoText: '③ 스크리닝(약 1분) 하면 열려요', lockText: '2.1 · 1.1 뒤', afterText: '2.2 · 할 일 1개' })}`,
+    headBelow: c.run ? '<div class="box paper row sp"><span class="mu">기다리는 동안</span><span class="row"><button type="button" class="b">연구 노트 0/3칸 쓰기 ›</button><button type="button" class="b">④ 진열대 미리 보기 ›</button></span></div>' : '',
+    mine: defMine(c, { bottom: `<div class="box dash"><div class="row sp"><span class="mu">다른 단계 예 · 3.2 동물실험</span><span class="mono mu">D+14 / 28</span></div>${bar(50, 'film')}<div class="row sp"><span class="tt">14일 남음 · 끝나면 3.3 열려요</span><span class="pill wait">⏸ 선생님이 시계를 멈췄어요</span></div></div>` }),
+  }),
+});
+
+/* ── 합의 조합(Gemini 2차 판정 + Claude 동의) — 03 + 11 + 21 + 06(폰 27) + 15 + 19 를 한 화면에 ── */
+function homeBand(c, ph) {
+  let btn;
+  const o = ph ? ' wide wrap' : ' lg';
+  if (c.ready) btn = `<button type="button" class="b lime${o} hl" data-go="after">${av({ n: '가람' }, 'on')}가람 님이 열었어요 · 2.1 분자 도킹 ${ARW}</button>`;
+  else if (c.run) btn = `<span class="b off${o}"><span class="spin"></span>나래 님 스크리닝 계산 중 62% · 끝나면 2.1</span>`;
+  else if (c.lock) btn = `<button type="button" class="b off${o}" data-go="todo">‹ 1.1에서 표적부터 확정하기</button>`;
+  else if (c.after) btn = `<button type="button" class="b off${o}">① 도킹 1건 하면 2.2가 열려요 · 하러 가기 ›</button>`;
+  else btn = `<button type="button" class="b off${o}" data-go="run">③ 스크리닝 1회 하면 2.1이 열려요 · 하러 가기 ›</button>`;
+  if (ph) return `<div class="box ink">${btn}</div>`;
+  const t = c.after ? '2.1 분자 도킹' : '1.2 화합물 스크리닝';
+  const w = c.after ? '걸음 1/4 · ① 도킹 실행' : c.lock ? '1.1 표적 확정 전 · 읽기만' : c.ready ? '걸음 4/4 · 다 했어요' : c.run ? '걸음 3/4 · ③ 스크리닝 실행' : '걸음 2/4 · ② 모둠 기준 회의';
+  return `<div class="box ink row sp"><span class="bd-t"><b>${t}</b><span class="mu">${w}</span></span>${btn}</div>`;
+}
+function homeTeam(c) {
+  if (c.after) return defTeam(c);
+  const rows = [
+    ['모둠 기준', c.lock ? '—' : c.todo ? '4/6 합의' : '6/6 합의'],
+    ['스크리닝', c.ready ? '1회 · 134개 통과' : c.run ? '계산 중 62%' : '0회'],
+    ['2.1 로 가져갈 것', c.ready ? '찜 4개 + 대조군' : '0개'],
+    ['도킹 예상', c.ready ? MONEY.dock : '—'],
+  ];
+  return `<section class="isl"><div class="ih tm">모둠 공유<small>▤ 공유 자료</small></div><div class="box line"><div class="tt">1.2 스크리닝 확정서</div>${rows.map(([a, b]) => `<div class="rl"><span>${a}</span><b>${b}</b></div>`).join('')}</div><div class="fold"><span>연구 노트 · 0/3칸 · 최대 +${MONEY.note}</span><span>▾</span></div><div class="bub"><small>나래</small>${sk(100)}</div></section>`;
+}
+const HOME = {
+  id: 'R', noHand: true,
+  r: (c) => ({
+    tabs: '',
+    headBelow: chain(c, { passive: true }),
+    team: homeTeam(c),
+    mine: c.after ? defMine(c, { head: `<div class="box film"><div class="row sp"><span class="tt lg">2.1 분자 도킹에 왔어요</span><button type="button" class="b" data-go="ready">‹ 1.2 다시 보기</button></div><div class="rl"><span>1.2에서 가져온 것</span><b>찜 4개 · 대조군 도네페질</b></div><div class="rl"><span>여기서 열쇠</span><b>도킹 1건 → 2.2 열림</b></div></div>${toolToggle(['수심계 눈금', '점수 카드', '10배 계단'])}` }) : undefined,
+    dock: homeBand(c),
+  }),
+  ph: (c) => ({ headBelow: acc(c, { passive: true }), team: '', dock: homeBand(c, true) }),
+};
+function renderHome() {
+  const st = state.per.R ?? 'ready';
+  document.getElementById('home').innerHTML = `
+    <div class="sec-h"><h2><b>★</b>합의안 — 03 + 11 + 21 + 06 · 27 + 15 + 19</h2><p>Gemini 2차 판정과 Claude 가 합의한 조합을 한 화면에 넣었다. '다음'은 바닥 띠 오른쪽 한 곳에만 있고, 단추가 남은 일을 말한다. 1440 · 폰을 위 막대에서 바꿔 보세요.</p></div>
+    <div class="grid home-grid" data-dev="${state.dev}">
+      <article class="card" id="vR">
+        <div class="cbar"><div class="seg sm cstate" role="group" aria-label="합의안 상태">${segHTML(STATES, st, 'data-cst')}</div></div>
+        <div class="cm">${frame(HOME, st, state.dev, false)}</div>
+      </article>
+      <div class="home-why">${TALK.home.map((x) => `<div><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</div>
+    </div>`;
+}
+
+/* ── 협의 요약 ── */
+const TALK = {
+  diag: [
+    ["<b>'다음'이 두 겹인데 위계가 없다.</b> 단계 안 걸음 넘기기와 다음 단계 넘기기가 자리 · 이름 · 모양이 제각각이다(다음 단계로 · 2.1 분자 도킹으로 보내기 · ⑤ 넘기기 탭 · 4.1 검은 단추).", 'G1 · C'],
+    ['<b>순서 걸음과 나란한 도구가 같은 ①~⑤ 탭이다.</b> 1.1 의 도구 5개를 다 해야 하는 순서로 읽는다. 2.1 탭의 3.05 · 3.09(시각화 번호)는 단계 번호 3.1 과도 헷갈린다.', 'G2 · C'],
+    ["<b>단계 넘김 단추가 묻혀 있다.</b> 접히는 '공유 자료' 패널 맨 아래, 연구 노트 · 평가 · 문항 밑. 폰에서는 사실상 닿지 않는다.", 'G3 · C'],
+    ["<b>무엇이 남았는지 단추에서 읽을 수 없다.</b> 흐린 단추 옆엔 '완료 조건을 채우면 다음 단계가 열려요'뿐이다(조건 칸은 지웠다).", 'G4 · C'],
+    ['<b>결정 · 지출 · 기다림 · 이동이 한 단추에 섞이고, 열린 순간을 아무도 모른다.</b> 모둠원이 조건을 채워도 다른 화면엔 사이드바 ✓ 하나만 바뀐다.', 'G5 · C'],
+  ],
+  rules: [
+    ['<b>단추 문구 = 남은 일.</b> 설명 칸 없이 단추가 말한다(③ 스크리닝 1회 하면 열려요).', 'G · C'],
+    ['<b>단계 넘김은 9단계 모두 한 자리 · 한 문법.</b> {번호} {단계 이름} → . 스크롤 · 접기와 상관없이 보인다.', 'G · C'],
+    ['<b>번호는 순서 걸음에만.</b> 나란한 도구는 번호 없는 보기 토글.', 'G · C'],
+    ['<b>결정과 이동을 나눈다.</b> 크리스타가 나가는 실행 · 확정은 작업 자리에, 다음 단계는 언제든 누르는 이동 단추로.', 'G · C'],
+    ['<b>누가 열었는지 모두의 화면에 바로.</b> 팝업보다 단추 점등 + 이름 한 줄.', 'G · C'],
+    ['<b>폰에선 엄지 자리에 늘 \'다음\'.</b> 연구 노트 밑까지 내려가지 않는다.', 'G · C'],
+  ],
+  rec: [
+    ['<b>03 본문 바닥 띠</b> — \'다음\'의 단 하나의 집. 1440 과 폰에서 같은 부품.', 'G · C'],
+    ['<b>11 남은 일을 말하는 단추</b> — 띠 오른쪽 단추가 \'③ 스크리닝 1회 하면 2.1이 열려요\'. 누르면 ③으로 데려가 반짝.', 'G · C'],
+    ['<b>21 누가 열었나</b> — 열리는 순간 모두의 띠 단추가 라임 + \'가람 님이 열었어요\'.', 'G · C'],
+    ['<b>06 사슬 · 보기</b>(폰은 <b>27 걸음 접기</b>) — ⑤ 넘기기 탭 삭제, 번호는 순서 걸음에만.', 'G · C'],
+    ['<b>15 확정서 위</b> — 들고 가는 것은 공유 자료 맨 위에, 노트는 접어서 아래.', 'G'],
+    ['<b>19 도착 안내 카드</b> — 넘어간 직후 가져온 것과 첫 할 일.', 'G · C'],
+  ],
+  recSub: 'Gemini 2차 판정 · Claude 동의',
+  recNote: '<p class="rec-note">뺀 것 — 18(라임 단추가 위아래 둘이 됨) · 17(두 번 눌러야 넘어감) · 26(폰 바닥 두 줄). Claude 가 냈다가 Gemini 반대에 동의했다.<br>넣는 순서 — ① 지금 단추 문구 · 동작(11 · 21) ② 바닥 띠 + ⑤ 탭 정리 + 확정서 위로(03 · 15) ③ 사슬/보기 · 폰 접기 · 도착 카드(06 · 27 · 19). <a href="#home">합의안 모형 보기 ↓</a></p>',
+  home: [
+    ['한 곳', '\'다음\'은 바닥 띠 오른쪽에만. 머리 섬은 걸음, 사이드바는 단계 목록만 맡는다.'],
+    ['단추가 말한다', '잠김 · 할 일 · 계산 중 · 열림 · 도착 — 다섯 상태 모두 단추 한 줄이 남은 일을 말한다.'],
+    ['모둠 신호', '누가 열었는지 이름이 단추 안에. 따로 뜨는 띠나 창은 없다.'],
+    ['걸음 4개', '⑤ 넘기기 탭이 없어지고 사슬 끝 ⇒ 2.1 이 같은 단추를 가리킨다.'],
+    ['도착', '넘어가면 2.1 작업대 맨 위에 가져온 것 · 열쇠 한 장. 도구 탭은 번호 없는 보기 토글.'],
+  ],
+};
+function renderTalk() {
+  const li = (x) => `<li><span>${x[0]}<span class="who">${x[1]}</span></span></li>`;
+  document.getElementById('lede').innerHTML = "가람제약 모둠이 <b>1.2 화합물 스크리닝을 마치고 2.1 분자 도킹으로 넘어가는 장면</b> 하나로 30가지를 견준다. 위 막대에서 상태를 바꾸면 30개가 함께 바뀌고, 카드마다 따로 바꿀 수도 있다. 모형에서 <b>또렷한 부분이 시안이 바꾸는 자리</b>이고 회색 뼈대는 그대로 두는 자리다. 라임 단추를 누르면 '넘긴 뒤'로 간다. 꼬리표 <b>G·A1</b> 은 Gemini 4 Argon(High)의 안, <b>C</b> 는 Claude 의 안이다.";
+  document.getElementById('talk').innerHTML = `
+    <div class="tk"><h2>진단 <small>Gemini · Claude 합의</small></h2><ol>${TALK.diag.map(li).join('')}</ol></div>
+    <div class="tk"><h2>원칙 <small>어느 시안이든</small></h2><ol>${TALK.rules.map(li).join('')}</ol></div>
+    <div class="tk rec"><h2>추천 조합 <small>${TALK.recSub ?? ''}</small></h2><ol>${TALK.rec.map(li).join('')}</ol>${TALK.recNote ?? ''}</div>`;
+}
+
+/* ── 페이지 ── */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* 저장 못 해도 화면은 그대로 */ } },
+};
+const state = { st: 'todo', dev: store.get('nf30:dev', innerWidth < 700 ? 'ph' : 'pc'), per: {}, pop: {}, picks: new Set(store.get('nf30:picks', [])) };
+if (!DEVS.some(([id]) => id === state.dev)) state.dev = 'pc';
+/* 처음 열 때 — 카드마다 그 시안이 가장 잘 보이는 상태로. 위 막대에서 상태를 고르면 모두 같이 맞춘다. */
+V.forEach((v) => { if (v.focus) state.per[v.id] = v.focus; if (v.popInit) state.pop[v.id] = true; });
+
+function segHTML(list, cur, attr) {
+  return list.map(([id, label], i) => `<button type="button" ${attr}="${id}" aria-pressed="${id === cur}">${attr === 'data-gst' || attr === 'data-cst' ? `<i>${i + 1}</i>` : ''}${label}</button>`).join('');
+}
+function renderCard(v) {
+  const el = document.getElementById(`v${v.id}`);
+  if (!el) return;
+  const st = state.per[v.id] ?? state.st;
+  el.querySelector('.cm').innerHTML = frame(v, st, v.phoneOnly ? 'ph' : state.dev, !!state.pop[v.id]);
+  el.querySelector('.cstate').innerHTML = segHTML(STATES, st, 'data-cst');
+}
+function srcTag(src) {
+  return `<span class="src">${src.map((x) => `<span class="${x[0] === 'G' ? 'g' : 'c'}" title="${x[0] === 'G' ? `Gemini 4 Argon(High) 1차 답 ${x.slice(2)}` : 'Claude 제안'}">${x}</span>`).join('')}</span>`;
+}
+function renderAll() {
+  renderHome();
+  document.getElementById('jump').innerHTML = '<div class="jg"><span>★</span><a href="#home">합의안</a></div>' + FAMS.map((f) => `<div class="jg"><span>${f.k} ${f.name.split(' — ')[0]}</span>${V.filter((v) => v.fam === f.k).map((v) => `<a href="#v${v.id}">${v.id}</a>`).join('')}</div>`).join('');
+  document.getElementById('secs').innerHTML = FAMS.map((f) => `
+    <section class="sec" id="f${f.k}">
+      <div class="sec-h"><h2><b>${f.k}</b>${f.name}</h2><p>${f.desc}</p></div>
+      <div class="grid" data-dev="${state.dev}">
+        ${V.filter((v) => v.fam === f.k).map((v) => `
+          <article class="card" id="v${v.id}" data-picked="${state.picks.has(v.id)}">
+            <div class="ch"><span class="cn">${v.id}</span><div><h3>${v.name}${srcTag(v.src)}</h3><p class="one">${v.one}</p></div>
+              <button type="button" class="pick" data-pick="${v.id}" aria-pressed="${state.picks.has(v.id)}">${state.picks.has(v.id) ? '★ 고름' : '☆ 고르기'}</button></div>
+            <div class="cbar"><div class="seg sm cstate" role="group" aria-label="${v.id} 상태"></div>${v.phoneOnly ? '<span class="mu">폰 모형 고정</span>' : ''}</div>
+            <div class="cm"></div>
+            <dl class="cd"><div><dt>자리</dt><dd>${v.where}</dd></div><div><dt>걸음 탭</dt><dd>${v.tabs}</dd></div><div><dt>약점</dt><dd class="weak">${v.weak}</dd></div></dl>
+          </article>`).join('')}
+      </div>
+    </section>`).join('');
+  V.forEach(renderCard);
+  document.getElementById('gstate').innerHTML = segHTML(STATES, state.st, 'data-gst');
+  document.getElementById('gdev').innerHTML = segHTML(DEVS, state.dev, 'data-gdev');
+  showPicks();
+}
+function showPicks() {
+  const list = [...state.picks].sort();
+  document.getElementById('picked').textContent = list.length ? list.join(' · ') : '없음';
+  document.querySelectorAll('.jump a').forEach((a) => a.classList.toggle('on', state.picks.has(a.getAttribute('href').slice(2))));
+}
+const byId = (id) => V.find((v) => v.id === id);
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('button, [data-go]');
+  if (!t) return;
+  if (t.dataset.gst) {
+    state.st = t.dataset.gst; state.per = { R: state.st }; state.pop = {};
+    document.getElementById('gstate').innerHTML = segHTML(STATES, state.st, 'data-gst');
+    V.forEach(renderCard);
+    renderHome();
+    return;
+  }
+  if (t.dataset.gdev) { state.dev = t.dataset.gdev; store.set('nf30:dev', state.dev); renderAll(); return; }
+  const card = t.closest('.card');
+  const id = card?.id.slice(1);
+  if (id === 'R' && (t.dataset.cst || t.dataset.go)) { state.per.R = t.dataset.cst ?? t.dataset.go; renderHome(); return; }
+  if (t.dataset.cst && card) { state.per[id] = t.dataset.cst; state.pop[id] = false; renderCard(byId(id)); return; }
+  if (t.dataset.pop && card) { state.pop[id] = t.dataset.pop === '1'; renderCard(byId(id)); return; }
+  if (t.dataset.go && card) { state.per[id] = t.dataset.go; state.pop[id] = false; renderCard(byId(id)); return; }
+  if (t.dataset.pick) {
+    const pid = t.dataset.pick;
+    state.picks.has(pid) ? state.picks.delete(pid) : state.picks.add(pid);
+    store.set('nf30:picks', [...state.picks]);
+    t.setAttribute('aria-pressed', String(state.picks.has(pid)));
+    t.textContent = state.picks.has(pid) ? '★ 고름' : '☆ 고르기';
+    card.dataset.picked = String(state.picks.has(pid));
+    showPicks();
+    return;
+  }
+  if (t.id === 'clear') { state.picks.clear(); store.set('nf30:picks', []); renderAll(); return; }
+  if (t.id === 'copy') {
+    const out = document.getElementById('picked');
+    const text = `design/next-flow-30.html 고른 시안: ${[...state.picks].sort().join(' · ') || '없음'}`;
+    const done = () => { t.textContent = '복사함'; setTimeout(() => { t.textContent = '번호 복사'; }, 1400); };
+    try { navigator.clipboard.writeText(text).then(done, () => selectText(out)); } catch { selectText(out); }
+  }
+});
+function selectText(el) { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+
+renderTalk();
+renderAll();
+</script>

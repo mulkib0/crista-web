@@ -376,7 +376,7 @@ td .row { flex-wrap: nowrap; }
 .isl-h.isl-big small { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.06em; color: var(--muted); }
 .isl-h::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
 .isl-h.team::before { background: var(--film); box-shadow: 0 0 0 1px var(--fg); }
-.bd-err { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 20; width: min(560px, calc(100% - 32px)); }
+.bd-err { position: fixed; left: 50%; bottom: calc(var(--band-h, 0px) + max(16px, env(safe-area-inset-bottom, 0px))); transform: translateX(-50%); z-index: 20; width: min(560px, calc(100% - 32px)); }
 
 /* 사이드바 섬(05 4묶음) — 본문을 스크롤해도 따라온다.
    묶음 색은 DaRm 그라데이션 모음(darm/design/gradient-preview-30/catalog.js)에서 빛이 퍼지는 방식이 다른 넷을 골라 묶음마다 하나씩 쓴다.
@@ -491,6 +491,81 @@ td .row { flex-wrap: nowrap; }
 .htab:disabled { opacity: 0.45; }
 .htab-n { font: 500 11px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .htab[aria-pressed="true"] .htab-n { color: var(--hi-fg); }
+/* 순서 걸음 사슬(2026-10-25 '다음' 합의안 06 · design/next-flow-30.html ★) — 머리 섬 한 줄 오른쪽. 끝난 걸음 ✓(라임 동그라미) ·
+   지금 걸음 잉크 · 남은 걸음 번호. 사슬 끝(⇒ 다음 단계)은 표시만 하는 점선 알약 — 넘김 단추는 바닥 띠 하나뿐이다. 넘치면 줄을 바꾼다(잘리지 않게). */
+.chain { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px; margin-left: auto; min-width: 0; } /* relative — 접힌 걸음 이름(낭독용)이 줄 밖으로 문서 폭을 늘리지 않게 */
+.chain-i { appearance: none; border: 0; background: transparent; color: inherit; display: inline-flex; align-items: center; gap: 7px; padding: 4px 12px 4px 4px; border-radius: 999px; font-size: 13px; font-weight: 600; line-height: 1.3; white-space: nowrap; transition: background-color .18s ease; }
+.chain-i:hover:not(:disabled) { background: var(--bg); }
+.chain-i:disabled { opacity: 0.45; }
+.chain-n { flex: none; width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center; font: 600 11.5px/1 var(--mono); box-shadow: inset 0 0 0 1.3px var(--line-strong); }
+.chain-i[data-mark="done"] { color: var(--muted); }
+.chain-i[data-mark="done"] .chain-n { background: var(--hi); color: var(--hi-fg); box-shadow: inset 0 0 0 1.3px var(--fg); }
+.chain-i[data-mark="bad"] .chain-n { background: var(--bad-bg); color: var(--bad); box-shadow: inset 0 0 0 1.3px var(--bad); }
+.chain-i[aria-pressed="true"], .chain-i[aria-pressed="true"]:hover:not(:disabled) { background: var(--fg); color: var(--bg); }
+.chain-i[aria-pressed="true"] .chain-n { background: var(--bg); color: var(--fg); box-shadow: none; }
+.chain-a { color: var(--line-strong); font-size: 12px; }
+.chain-g { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 4px 11px; font-size: 12.5px; font-weight: 700; white-space: nowrap; border: 1px dashed var(--line-strong); color: var(--muted); }
+.chain-g[data-open] { border-style: solid; border-color: var(--fg); color: var(--fg); }
+/* 도구 보기 토글(합의안 06) — 작업대 머리. 번호 없이 이름만, 고른 도구 = 잉크. */
+.vtog { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: 3px; border-radius: 18px; background: var(--bg); justify-self: start; max-width: 100%; }
+.vtog-l { font-size: 11.5px; font-weight: 600; color: var(--muted); padding: 0 8px 0 9px; }
+.vtog-i { appearance: none; border: 0; background: transparent; color: inherit; border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; line-height: 1.25; white-space: nowrap; transition: background-color .18s ease; }
+.vtog-i:hover:not(:disabled) { background: var(--raise); }
+.vtog-i[aria-pressed="true"], .vtog-i[aria-pressed="true"]:hover:not(:disabled) { background: var(--fg); color: var(--bg); }
+.vtog-i:disabled { opacity: 0.42; }
+.vtog-k { font-family: var(--mono); font-size: 11px; }
+/* 본문 바닥 띠(합의안 03 · 11 · 21) — 본문 그리드 마지막 줄(--band-h = 띠 높이, NextBand 가 잰다)을 띠 자리로 비우고,
+   띠는 첫 줄부터 걸쳐(sticky 는 제 칸 밖으로 못 나가서) 그 칸 바닥에 놓은 채 본문 바닥에 붙는다. 라임은 '넘어갈 수 있음' 하나뿐. */
+/* 섬 줄은 남는 높이를 받아(1fr) 본문이 짧아도 띠가 화면 바닥 같은 자리에 온다. */
+.bd-body:has(> .nband) { grid-template-rows: auto minmax(auto, 1fr) var(--band-h, 64px); padding-bottom: 16px; }
+.nband {
+  grid-column: 2 / -1; grid-row: 1 / -1; align-self: end; position: sticky; bottom: 0; z-index: 4; min-width: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px 18px;
+  background: var(--fg); color: var(--bg); border-radius: 20px; padding: 9px 9px 9px 20px;
+  box-shadow: 0 -12px 30px -16px rgba(8, 11, 9, 0.5);
+}
+/* 붙었을 때 본문 바닥 여백(16px)으로 섬이 비쳐 보이지 않게 띠 아래를 바탕색으로 덮는다. */
+.nband::after { content: ""; position: absolute; left: -12px; right: -12px; top: 100%; height: 16px; background: var(--raise); pointer-events: none; }
+.nb-t { margin: 0; display: grid; gap: 1px; min-width: 0; line-height: 1.3; }
+.nb-t b { font-size: 14.5px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nb-t span { font-family: var(--mono); font-size: 11.5px; color: #b9c0b5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nb-btn {
+  appearance: none; flex: 0 1 auto; min-width: 0; max-width: min(680px, 72%); display: inline-flex; align-items: center; gap: 8px;
+  min-height: 42px; padding: 0 18px; border-radius: 999px; border: 1px dashed rgba(241, 241, 233, 0.4);
+  background: transparent; color: #cfd4cb; font-weight: 700; font-size: 13.5px; line-height: 1.3; text-align: left;
+}
+.nb-tx { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+button.nb-btn:hover { border-color: var(--bg); color: var(--bg); }
+.nb-btn[data-tone="todo"] { border-style: solid; color: var(--bg); }
+.nb-btn[data-tone="go"] { background: var(--hi); color: var(--hi-fg); border: 1px solid var(--hi); animation: nb-pulse 2.4s ease-in-out infinite; }
+button.nb-btn[data-tone="go"]:hover { color: var(--hi-fg); border-color: var(--bg); }
+.nb-btn[data-tone="end"] { border-style: solid; border-color: var(--hi); color: var(--hi); }
+.nb-spin { flex: none; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #ffcf5a; border-right-color: transparent; animation: nb-spin 1s linear infinite; }
+.nb-av { flex: none; width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--fg); color: var(--hi); font-size: 11px; }
+@keyframes nb-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(198, 255, 74, 0); } 50% { box-shadow: 0 0 0 5px rgba(198, 255, 74, 0.35); } }
+@keyframes nb-spin { to { transform: rotate(360deg); } }
+/* '하러 가기' 뒤 그 자리 — 라임 고리 한 번(모션 줄이기면 멈춘 테두리) */
+.nx-flash { animation: nx-flash 1.6s ease-out 1; }
+@keyframes nx-flash { 0% { box-shadow: 0 0 0 0 rgba(198, 255, 74, 0); } 18% { box-shadow: 0 0 0 5px rgba(198, 255, 74, 0.95); } 100% { box-shadow: 0 0 0 0 rgba(198, 255, 74, 0); } }
+/* 공유 자료 맨 아래 — 연구 노트 · 문항 접힌 한 줄(합의안 15) */
+.nfold { display: grid; gap: 10px; }
+.nfold-h { appearance: none; border: 0; width: 100%; display: flex; align-items: center; gap: 10px; padding: 11px 16px; border-radius: 16px; background: var(--bg); color: inherit; text-align: left; font-size: 13px; }
+.nfold-h:hover { background: var(--raise); }
+.nfold-h b { font-weight: 700; white-space: nowrap; }
+.nfold-h .mono { margin-left: auto; font-size: 11.5px; color: var(--muted); text-align: right; }
+.nfold-h i { font-style: normal; color: var(--muted); }
+/* 작업대 맨 위 — 도착 안내(합의안 19). 한 번 보면 한 줄로 접힌다. */
+.arrive { background: var(--film); border-radius: 18px; padding: 14px 16px; display: grid; gap: 8px; box-shadow: inset 0 0 0 1px var(--line-strong); }
+.arrive-h { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; }
+.arrive-h b { font-size: 15px; letter-spacing: -0.01em; line-height: 1.35; word-break: keep-all; }
+.arrive-x { appearance: none; border: 0; background: transparent; width: 30px; height: 30px; border-radius: 50%; color: var(--muted); }
+.arrive-x:hover { background: rgba(255, 255, 255, 0.55); color: var(--fg); }
+.arrive dl { margin: 0; display: grid; gap: 4px; }
+.arrive dl div { display: grid; grid-template-columns: minmax(96px, auto) minmax(0, 1fr); gap: 12px; font-size: 13px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.arrive dt { color: var(--muted); }
+.arrive dd { margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+.arrive-fold { appearance: none; border: 0; justify-self: start; background: transparent; color: var(--muted); font-size: 12px; font-weight: 600; padding: 2px 4px; border-radius: 8px; }
+.arrive-fold:hover { color: var(--fg); }
 /* 근거 칩 · 판정 */
 .reasons { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 8px; }
 .reasons > .lab { padding: 0; margin: 0; }
@@ -551,7 +626,9 @@ td .row { flex-wrap: nowrap; }
   .top-r { margin-left: 0; width: 100%; gap: 8px 12px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
   .top-r > * { flex: none; }
   .bd-body, .bd-body:has(> .isl-mine[data-ratio]) { grid-template-columns: minmax(0, 1fr); grid-template-areas: "side" "head" "mine" "team"; padding-top: 12px; }
-  .isl-mine.span, .isl-team.span { grid-area: auto; grid-row: auto; grid-column: auto; }
+  /* 이름 붙은 칸에 둔다 — 띠가 한 열 전체에 걸쳐 있어 자동 배치하면 띠 아래 새 줄로 밀린다. */
+  .isl-mine.span { grid-area: mine; }
+  .isl-team.span { grid-area: team; }
   .bd-rz { display: none; }
   .isl { border-radius: 20px; padding: 16px; }
   .isl.side { position: static; max-height: none; overflow: visible; padding: 12px 8px; gap: 8px; }
@@ -571,6 +648,22 @@ td .row { flex-wrap: nowrap; }
   .hd-bar { flex-wrap: wrap; gap: 10px; }
   .hd h1 { flex: 1 1 0; min-width: 0; font-size: 18px; }
   .htabs { order: 2; flex: 1 0 100%; margin: 0 -2px; }
+  /* 27 폰 걸음 접기 — 끝난 걸음 ✓ · 남은 걸음 번호 동그라미, 지금 걸음만 이름을 편다. 사슬 끝은 오른쪽 끝. 가로로 넘기지 않는다. */
+  .chain { order: 2; flex: 1 0 100%; justify-content: flex-start; margin: 0; gap: 4px; }
+  .chain-a { display: none; }
+  .chain-i { padding: 2px; }
+  .chain-i[aria-pressed="true"] { padding-right: 12px; }
+  .chain-i:not([aria-pressed="true"]) .chain-t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .chain-n { width: 28px; height: 28px; }
+  .chain-g { margin-left: auto; padding: 4px 10px; font-size: 12px; }
+  /* 03 폰 — 띠는 화면 바닥에 떠 있는 단추 한 줄(안전 여백 위). 왼쪽 글은 머리 섬이 이미 말하므로 뺀다. */
+  .bd-body:has(> .nband) { grid-template-rows: auto auto auto minmax(auto, 1fr) var(--band-h, 64px); padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+  .nband { grid-column: 1; bottom: max(8px, env(safe-area-inset-bottom, 0px)); padding: 6px; border-radius: 24px; }
+  .nband::after { display: none; }
+  .nb-t { display: none; }
+  .nb-btn { flex: 1 1 auto; max-width: none; justify-content: center; text-align: center; min-height: 46px; padding: 8px 16px; }
+  .nb-tx { white-space: normal; }
+  .nfold-h { flex-wrap: wrap; }
   .led-i { font-size: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -578,5 +671,7 @@ td .row { flex-wrap: nowrap; }
   .mq { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
   .live i, .stamp { animation: none !important; }
   .district.shake, .rpg-more, .rpg-choice button.on, .rpg-mapname, .rpg-stamp > div { animation: none !important; }
-  .st, .stab, .htab { transition: none; }
+  .st, .stab, .htab, .chain-i, .vtog-i { transition: none; }
+  .nb-btn[data-tone="go"], .nb-spin { animation: none; }
+  .nx-flash { animation: none; outline: 3px solid var(--hi); outline-offset: 2px; }
 }

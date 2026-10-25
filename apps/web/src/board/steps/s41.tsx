@@ -3,6 +3,7 @@
  * 걸음: ① 프로토콜 ② 참여자 모집(투자 단계 · 모집 곡선 · 검정력) ③ 시작 · 진행(간트 · 중간 모니터링) ④ 결과 · 분석(여러 그림) ⑤ 보류 뒤 재도전(3경로 · 바운티).
  * 왼쪽 섬 = 내 작업대(읽기 도구 · 그림 — 이 브라우저에만), 오른쪽 섬 = 모둠 공유(서버 상태 · 행동 — useLive /api/clinical).
  * 학생 문구는 규격 `CLINICAL_COPY` 에서만(§5.12). 결과는 상 기간이 끝난 뒤에만 서버가 보낸다.
+ * 다음 단계로는 바닥 띠가 데려간다(2026-10-25 합의안) — 남은 일(1 → 2 → 3상 통과)은 지금 시험의 걸음을 가리키고, 기다림은 'D+n / 기간'.
  */
 import { useEffect, useMemo, useState } from 'react';
 import {
@@ -28,7 +29,8 @@ import {
 } from '@crista-web/web-contract';
 import { api, message } from '../../api.ts';
 import { Confirm, HBars, Panel, useLive, useLocalTab } from '../ui/index.ts';
-import { NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { StepLayout, useAction, type StepProps } from './common.tsx';
+import { days, type GoMap, type Wait } from './next.ts';
 import {
   AeStacked,
   ArmLegend,
@@ -63,7 +65,7 @@ const NOTE_KO = K.factorWord;
 const noteKo = (note: string) => note.replace(/[a-z]+/g, (w) => NOTE_KO[w] ?? w);
 
 export function Step41(props: StepProps) {
-  const { board, step, goStep } = props;
+  const { board, step } = props;
   const [tab, setTab] = useLocalTab<Tab>('step:4.1', TABS, 'protocol');
   const live = useLive<ClinicalResponse>(CLINICAL_API.view, (m) => (m.type === 'board.changed' && m.reason.startsWith('clinical')) || m.type === 'clock' || (m.type === 'board.event' && m.event.teamId === board.team.id));
   const data = live.data;
@@ -78,7 +80,8 @@ export function Step41(props: StepProps) {
     { id: 'recruit', no: '②', label: K.tabs.recruit, sub: current?.status === 'recruiting' ? f(U.tabSubRecruit, { n: current.recruit.enrolled, target: current.recruit.targetN }) : undefined, mark: current && current.status !== 'recruiting' ? '✓' : undefined },
     { id: 'start', no: '③', label: K.tabs.start, sub: current?.status === 'running' ? `${current.progressPct ?? 0}%` : current?.status === 'pending' ? U.tabSubPending : undefined },
     { id: 'result', no: '④', label: K.tabs.result, sub: latestRevealed ? `${PHASE_LABEL[latestRevealed.phase]} ${latestRevealed.verdict === 'pass' ? U.pass : U.held}` : undefined, mark: latestRevealed ? (latestRevealed.verdict === 'pass' ? '✓' : '✕') : undefined },
-    { id: 'retry', no: '⑤', label: K.tabs.retry, disabled: !held, sub: held ? U.tabSubRetry : undefined },
+    // ⑤ 재도전은 보류됐을 때만 사슬에 넣는다(순서 걸음이 아니라 보류 뒤 갈림길).
+    ...(held ? [{ id: 'retry', no: '⑤', label: K.tabs.retry, sub: U.tabSubRetry }] : []),
   ];
 
   if (!data) {
@@ -96,8 +99,6 @@ export function Step41(props: StepProps) {
             <Panel title={U.lockedPatients} plain><PatientIcons oncology={false} /></Panel>
           </div>
         }
-        teamTitle={U.notesTitle}
-        team={<NotesBlock board={board} stepId="4.1" />}
       />
     );
   }
@@ -109,8 +110,25 @@ export function Step41(props: StepProps) {
 }
 
 /** 결과 탭의 '볼 시험' 고르기는 두 섬(그림 · 표)이 같이 쓴다. */
-function Step41Body({ board, step, goStep, data, view, tabs, setTab, reload }: StepProps & { data: ClinicalResponse; view: Tab; tabs: Array<{ id: string; no: string; label: string; sub?: string; mark?: string; disabled?: boolean }>; setTab: (t: Tab) => void; reload: () => void }) {
+function Step41Body({ board, step, data, view, tabs, setTab, reload }: StepProps & { data: ClinicalResponse; view: Tab; tabs: Array<{ id: string; no: string; label: string; sub?: string; mark?: string; disabled?: boolean }>; setTab: (t: Tab) => void; reload: () => void }) {
   const pick = useResultPick(data);
+  // 띠 — 남은 상은 지금 시험의 걸음으로(보류면 ⑤ 재도전). 실행 단추(모집 · 시작 · 재도전)는 공유 자료에 있어 그 판을 가리킨다
+  // (접혀 있으면 StepLayout 이 편다). 기다림은 모집 n/목표 · 진행 D+n / 기간 · 판정 대기.
+  const cur = data.current;
+  const held = data.trials[0]?.status === 'held';
+  const at: Tab = held ? 'retry' : !cur ? 'protocol' : cur.status === 'recruiting' ? 'recruit' : cur.status === 'completed' ? 'result' : 'start';
+  const to = { tab: at, spot: 'go-s41-team' };
+  const go: GoMap = { phase1: to, phase2: to, phase3: to };
+  const w = cur ? PHASE_LABEL[cur.phase] : '';
+  const wait: Wait | undefined = !cur
+    ? undefined
+    : cur.status === 'recruiting'
+      ? { text: f(U.bandRecruit, { phase: w, n: Math.floor(cur.recruit.enrolled), target: cur.recruit.targetN }), clock: true }
+      : cur.status === 'running' && cur.startedGameDay !== null && cur.endsGameDay !== null
+        ? { text: `${f(U.bandRunning, { phase: w })} ${days(cur.progressPct ?? 0, Math.round(cur.endsGameDay - cur.startedGameDay))}`, clock: true }
+        : cur.status === 'pending'
+          ? { text: f(U.bandPending, { phase: w }) }
+          : undefined;
   return (
     <StepLayout
       board={board}
@@ -118,22 +136,17 @@ function Step41Body({ board, step, goStep, data, view, tabs, setTab, reload }: S
       tabs={tabs}
       tab={view}
       onTab={(id) => setTab(id as Tab)}
+      go={go}
+      {...(wait ? { wait } : {})}
       ratio="even"
       mine={<div className="s41">{view === 'protocol' ? <ProtocolTools data={data} /> : view === 'recruit' ? <RecruitTools data={data} /> : view === 'start' ? <StartTools data={data} /> : view === 'result' ? <ResultTools pick={pick} /> : <RetryTools data={data} />}</div>}
       team={
-        <div className="s41">
+        <div className="s41" id="go-s41-team">
           {view === 'protocol' && <ProtocolTeam data={data} reload={reload} />}
           {view === 'recruit' && <RecruitTeam data={data} reload={reload} />}
           {view === 'start' && <StartTeam data={data} reload={reload} />}
           {view === 'result' && <ResultTeam data={data} pick={pick} />}
           {view === 'retry' && <RetryTeam data={data} reload={reload} />}
-          <NotesBlock board={board} stepId="4.1" />
-          {data.done && (
-            <div className="next acts">
-              <button className="btn pri" type="button" onClick={() => goStep('4.2')}>{U.nextStep}</button>
-              <span className="note">{K.done}</span>
-            </div>
-          )}
         </div>
       }
     />

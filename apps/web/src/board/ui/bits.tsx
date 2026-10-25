@@ -1,8 +1,8 @@
 /**
- * 작업 화면 공용 작은 부품 — 단계 상태 기호 · 섬 안 페이퍼 판(Panel) · 탭(Tabs · 머리 섬 HeadTabs) · 'AI 심사' 배지(교사 화면).
+ * 작업 화면 공용 작은 부품 — 단계 상태 기호 · 섬 안 페이퍼 판(Panel) · 탭(Tabs · 머리 섬 HeadTabs) · 걸음 사슬(WalkChain) · 보기 토글(ViewToggle) · 'AI 심사' 배지(교사 화면).
  * 모양은 시안 21 '둥근 섬'(설계 §5.4.1): 판 16~20px · 탭 12px · 칩 · 작은 단추 알약(999px).
  */
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Avatar, StepView } from '@crista-web/web-contract';
 
 export const AVATAR_LABEL: Record<Avatar, string> = { ceo: 'CEO', cso: 'CSO', cto: 'CTO', cmo: 'CMO' };
@@ -121,6 +121,63 @@ export function HeadTabs({ items, value, onChange, label }: {
           </button>
         );
       })}
+    </div>
+  );
+}
+
+/**
+ * 순서 걸음 사슬(2026-10-25 '다음' 합의안 06 · 폰 27) — ✓ → ✓ → ③ → ④ ⇒ {다음 단계}. 걸음은 누르면 그 탭이 되고,
+ * 사슬 끝(`end`)은 표시만 한다 — 넘김 단추는 바닥 띠 하나뿐이다(라임 단추가 둘이 되지 않게).
+ * 끝난 걸음은 ✓(또는 `mark`), 남은 걸음은 번호, 지금 걸음은 잉크. 폰(≤ 860px)은 지금 걸음만 이름을 펴고 나머지는 동그라미로 접는다(CSS).
+ */
+export function WalkChain({ items, value, onChange, label, end }: {
+  items: TabItem[];
+  value: string;
+  onChange: (id: string) => void;
+  label: string;
+  end?: { text: string; open: boolean };
+}) {
+  return (
+    <div className="chain" role="group" aria-label={label}>
+      {items.map((t, i) => (
+        <Fragment key={t.id}>
+          {i > 0 && <span className="chain-a" aria-hidden="true">→</span>}
+          <button type="button" className="chain-i" data-walk={t.id} data-mark={t.mark === '✓' ? 'done' : t.mark ? 'bad' : undefined} aria-pressed={t.id === value} disabled={t.disabled} onClick={() => onChange(t.id)}
+            title={t.sub ? `${t.label} — ${t.sub}` : t.label}>
+            <span className="chain-n">{t.mark ?? t.no}</span>
+            <span className="chain-t">{t.label}</span>
+            {t.sub && <span className="sr"> · {t.sub}</span>}
+          </button>
+        </Fragment>
+      ))}
+      {end && (
+        <>
+          <span className="chain-a" aria-hidden="true">⇒</span>
+          <span className="chain-g" data-open={end.open || undefined}><span className="sr">다음 단계 </span>{end.text}</span>
+        </>
+      )}
+    </div>
+  );
+}
+
+/** 도구 보기 토글(합의안 06) — 같은 결과를 다르게 보는 나란한 도구. 순서가 아니므로 번호를 달지 않는다. 작업대 머리에 둔다. */
+export function ViewToggle({ items, value, onChange, label }: {
+  items: TabItem[];
+  value: string;
+  onChange: (id: string) => void;
+  label: string;
+}) {
+  return (
+    <div className="vtog" role="group" aria-label={label}>
+      <span className="vtog-l" aria-hidden="true">보기</span>
+      {items.map((t) => (
+        <button key={t.id} type="button" className="vtog-i" data-walk={t.id} aria-pressed={t.id === value} disabled={t.disabled} onClick={() => onChange(t.id)}
+          title={t.sub ? `${t.label} — ${t.sub}` : undefined}>
+          {t.label}
+          {t.mark && <span className="vtog-k"> {t.mark}</span>}
+          {t.sub && <span className="sr"> · {t.sub}</span>}
+        </button>
+      ))}
     </div>
   );
 }

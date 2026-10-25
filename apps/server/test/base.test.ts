@@ -36,7 +36,7 @@ import {
   sanitizeReviewOutput,
 } from '../src/reviews.ts';
 
-type Fact = { step: string; done: boolean; active: boolean; progress: number | null; by_name: string | null };
+type Fact = { step: string; done: boolean; active: boolean; progress: number | null; by_name: string | null; done_by_name?: string | null };
 const done = (step: string): [string, Fact] => [step, { step, done: true, active: false, progress: null, by_name: null }];
 const allJobsDone = new Map([done('1.2'), done('2.1')]) as never;
 
@@ -76,6 +76,32 @@ describe('9단계 상태 — 3.x', () => {
     assert.equal(approved[7]!.state, 'ready');
     assert.equal(approved[7]!.sub, '1상 준비');
     assert.equal(approved[8]!.state, 'locked');
+  });
+  test('남은 일(need) — 완료 판정과 같은 사실 · 3.2 는 셋, 4.1 은 상 차례', () => {
+    const base = { leadCandidates: 1, activePatents: 1, iacucApproved: true, animalDone: false, leadChosen: false };
+    const steps = computeSteps({ targetId: 't', facts: allJobsDone, balanceCents: rich, stage: base });
+    for (const s of steps) assert.equal(s.state === 'done', s.need!.every((n) => n.done), s.id);
+    assert.deepEqual(steps[5]!.need!.map((n) => [n.key, n.done]), [['iacuc', true], ['animal', false], ['main', false]]);
+    assert.match(steps[1]!.need![0]!.ask, /스크리닝 1회/);
+    const ready = { ...base, animalDone: true, leadChosen: true, ind: { status: 'approved' as const } };
+    const phase = (trial: Record<string, unknown>) =>
+      computeSteps({ targetId: 't', facts: allJobsDone, balanceCents: rich, stage: { ...ready, trial: { attempt: 1, progressPct: 0, phase3Passed: false, ...trial } as never } })[7]!.need!.map((n) => n.done);
+    assert.deepEqual(phase({ phase: 'phase1', status: 'running' }), [false, false, false]);
+    assert.deepEqual(phase({ phase: 'phase1', status: 'completed' }), [true, false, false]);
+    assert.deepEqual(phase({ phase: 'phase2', status: 'held' }), [true, false, false]);
+    assert.deepEqual(phase({ phase: 'phase3', status: 'completed', phase3Passed: true }), [true, true, true]);
+  });
+  test('누가 열었나(doneByName) — 사람이 끝낸 단계만 · 끝나지 않으면 비운다', () => {
+    const facts = new Map<string, Fact>([
+      ['1.2', { step: '1.2', done: true, active: false, progress: null, by_name: null, done_by_name: '나래' }],
+      ['2.1', { step: '2.1', done: false, active: true, progress: 0.4, by_name: '다온', done_by_name: null }],
+    ]) as never;
+    const steps = computeSteps({ targetId: 't', facts, balanceCents: rich, by: { target: '가람' }, stage: { leadCandidateBy: '루아' } });
+    assert.equal(steps[0]!.doneByName, '가람');
+    assert.equal(steps[1]!.doneByName, '나래');
+    assert.equal(steps[2]!.doneByName, undefined);
+    assert.equal(steps[2]!.byName, '다온');
+    assert.equal(steps[3]!.doneByName, undefined);
   });
   test('비용 칩 — 3.1 출원료 · 3.3 IND 수수료는 crista 값 그대로, 3.2 는 동물실험 묶음', () => {
     assert.equal(STEP_COST_CENTS['3.1'], PIPELINE_RULES.cost.patentCents);

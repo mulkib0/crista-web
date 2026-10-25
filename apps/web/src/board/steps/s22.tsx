@@ -28,7 +28,7 @@ import { api, newRequestId } from '../../api.ts';
 import { money } from '../../ink.ts';
 import { By, JobState } from '../parts.tsx';
 import { Confirm, Panel, ReasonChips, useBenchState, useLocalTab } from '../ui/index.ts';
-import { Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { StepLayout, useAction, type StepProps } from './common.tsx';
 import { fmtKcal, KnownChip, OriginChip, useSelection } from './s21.tsx';
 import './s22.css';
 
@@ -285,7 +285,7 @@ function Candidates({ board, sel, onChanged }: { board: BoardResponse; sel: Sele
     });
   const labelOf = (jobId: string) => sel.admet.find((a) => a.jobId === jobId);
   return (
-    <Panel title={C.s22.candTitle} sub={C.s22.candSub(sel.candidates.length, sel.limits.leadPerTeam, sel.limits.leadPerPerson)}>
+    <Panel title={C.s22.candTitle} sub={C.s22.candSub(sel.candidates.length, sel.limits.leadPerTeam, sel.limits.leadPerPerson)} id="go-s22-cand">
       {sel.candidates.length === 0 ? <p className="empty">{C.s22.candEmpty}</p> : (
         <ul className="sel-list">
           {sel.candidates.map((c) => {
@@ -344,7 +344,7 @@ function Run({ board, sel, step, onChanged }: { board: BoardResponse; sel: Selec
   const act = useAction();
   if (sel.picks.length === 0) return <Panel><p className="empty">{C.s22.runEmpty}</p></Panel>;
   return (
-    <Panel title={C.s22.runTitle} sub={C.s22.runSub(sel.picks.length, money(board.costs['2.2']))}>
+    <Panel title={C.s22.runTitle} sub={C.s22.runSub(sel.picks.length, money(board.costs['2.2']))} id="go-s22-run">
       <ul className="sel-list">
         {sel.picks.map((p) => {
           const d = sel.docked.find((x) => x.jobId === p.jobId);
@@ -375,7 +375,7 @@ const TABS = ['run', 'radar', 'lights', 'trip', 'chain'] as const;
 type Tab = (typeof TABS)[number];
 
 export function Step22(props: StepProps) {
-  const { board, step, reload, goStep } = props;
+  const { board, step, reload } = props;
   const [tab, setTab] = useLocalTab<Tab>('step:2.2', TABS, 'run');
   const [focus, setFocus] = useBenchState<string | null>('s22:focus', null);
   const live = useSelection(board);
@@ -398,12 +398,13 @@ export function Step22(props: StepProps) {
     <StepLayout
       {...props}
       tabs={[
-        { id: 'run', no: '①', label: C.s22.tabs.run, sub: sel ? C.s22.ui.queueTab(sel.picks.length) : undefined },
-        { id: 'radar', no: '4.02', label: C.s22.tabs.radar, disabled: !has },
-        { id: 'lights', no: '4.03', label: C.s22.tabs.lights, disabled: !has },
-        { id: 'trip', no: '4.04', label: C.s22.tabs.trip, disabled: !has },
-        { id: 'chain', no: '4.10', label: C.s22.tabs.chain, disabled: !has },
+        { id: 'run', label: C.s22.tabs.run, sub: sel ? C.s22.ui.queueTab(sel.picks.length) : undefined },
+        { id: 'radar', label: C.s22.tabs.radar, disabled: !has },
+        { id: 'lights', label: C.s22.tabs.lights, disabled: !has },
+        { id: 'trip', label: C.s22.tabs.trip, disabled: !has },
+        { id: 'chain', label: C.s22.tabs.chain, disabled: !has },
       ]}
+      go={{ lead: has ? { spot: 'go-s22-cand' } : { tab: 'run', spot: 'go-s22-run' } }}
       tab={effectiveTab}
       onTab={(id) => setTab(id as Tab)}
       tabsLabel={C.s22.ui.tabsLabel}
@@ -436,8 +437,7 @@ export function Step22(props: StepProps) {
               </table></div>
             </details>
           )}
-          <NotesBlock board={board} stepId="2.2" />
-          <Next step={step} goStep={goStep} label="3.1" />
+
         </div>
       }
     />

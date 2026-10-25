@@ -29,7 +29,7 @@ import { api, message, newRequestId } from '../../api.ts';
 import { money } from '../../ink.ts';
 import { By, JobState } from '../parts.tsx';
 import { Confirm, Panel, ReasonChips, useBenchState, useLive, useLocalTab } from '../ui/index.ts';
-import { currentTarget, jobsOf, Next, NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { currentTarget, jobsOf, StepLayout, useAction, type StepProps } from './common.tsx';
 import './s21.css';
 
 // ── FSEL 공용(2.1 · 2.2) ──
@@ -389,7 +389,7 @@ const TABS = ['edit', 'gauge', 'cards', 'stairs'] as const;
 type Tab = (typeof TABS)[number];
 
 export function Step21(props: StepProps) {
-  const { board, step, bench, setBench, reload, goStep } = props;
+  const { board, step, bench, setBench, reload } = props;
   const act = useAction();
   const [tab, setTab] = useLocalTab<Tab>('step:2.1', TABS, 'edit');
   const [focus, setFocus] = useBenchState<string | null>('s21:focus', null);
@@ -435,7 +435,7 @@ export function Step21(props: StepProps) {
           {myClaims.length === 0 && <span className="mini muted">{C.s21.ui.loadEmpty}</span>}
         </div>
       </Panel>
-      <Panel title={C.s21.ui.molTitle} sub={bench.parentJobId ? C.s21.ui.molSubVariant : 'SMILES'}>
+      <Panel title={C.s21.ui.molTitle} sub={bench.parentJobId ? C.s21.ui.molSubVariant : 'SMILES'} id="go-s21-dock">
         <div className="fld">
           <label className="lab" htmlFor="smi">SMILES</label>
           <textarea id="smi" ref={smilesRef} className="txt mono" rows={3} value={bench.smiles} maxLength={200} onChange={(e) => (setBench((b) => ({ ...b, smiles: e.target.value })), setPreview(null))} placeholder="예: COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2" />
@@ -485,11 +485,12 @@ export function Step21(props: StepProps) {
     <StepLayout
       {...props}
       tabs={[
-        { id: 'edit', no: '①', label: C.s21.tabs.edit },
-        { id: 'gauge', no: '3.05', label: C.s21.tabs.gauge, disabled: !hasResults },
-        { id: 'cards', no: '3.09', label: C.s21.tabs.cards, disabled: !hasResults },
-        { id: 'stairs', no: '3.07', label: C.s21.tabs.stairs, disabled: !hasResults },
+        { id: 'edit', label: C.s21.tabs.edit },
+        { id: 'gauge', label: C.s21.tabs.gauge, disabled: !hasResults },
+        { id: 'cards', label: C.s21.tabs.cards, disabled: !hasResults },
+        { id: 'stairs', label: C.s21.tabs.stairs, disabled: !hasResults },
       ]}
+      go={{ dock: { tab: 'edit', spot: 'go-s21-dock' } }}
       tab={hasResults || tab === 'edit' ? tab : 'edit'}
       onTab={(id) => setTab(id as Tab)}
       tabsLabel={C.s21.ui.tabsLabel}
@@ -540,8 +541,6 @@ export function Step21(props: StepProps) {
             {runs.some((j) => j.error) && <p className="hint">{C.s21.ui.refunded(runs.find((j) => j.error)?.error?.message ?? '')}</p>}
           </Panel>
           {sel && sel.gauge && <Queue board={board} sel={sel} focus={focus} setFocus={setFocus} onChanged={changed} />}
-          <NotesBlock board={board} stepId="2.1" />
-          <Next step={step} goStep={goStep} label="2.2" />
         </div>
       }
     />

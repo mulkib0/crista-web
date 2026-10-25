@@ -57,6 +57,43 @@ export const DEFERRED_STEPS: readonly StepId[] = [];  // 4.1 은 F41 · 4.2 는 
 
 export const GROUP_TITLE: Record<1 | 2 | 3 | 4, string> = { 1: '발견', 2: '최적화', 3: '개발 · 규제', 4: '임상 · 허가' };
 
+/** 다음 단계를 여는 조건(서버 완료 조건 — 설계 §6.1)의 열쇠. */
+export type StepNeedKey = 'target' | 'screen' | 'dock' | 'lead' | 'patent' | 'iacuc' | 'animal' | 'main' | 'ind' | 'phase1' | 'phase2' | 'phase3' | 'approval';
+
+/**
+ * 다음 단계를 여는 조건 하나 — 화면 바닥 띠 단추가 '남은 일'을 말할 때 쓴다(2026-10-25 '다음' 합의안 11).
+ * 서버가 완료 판정과 같은 사실로 `done` 을 채운다(화면이 따로 셈하지 않는다).
+ */
+export interface StepNeed {
+  key: StepNeedKey;
+  /** 이름 — '스크리닝 1회' · '계획서 승인'. */
+  label: string;
+  /** '… {다음 단계}이 열려요' 앞말 — '스크리닝 1회 하면'. */
+  ask: string;
+  done: boolean;
+}
+
+/** 단계마다 다음 단계를 여는 조건(순서대로). 3.2 는 셋을 다 채워야 하고, 4.1 은 1 → 2 → 3상을 차례로 통과한다. */
+export const STEP_NEEDS: Record<StepId, ReadonlyArray<Omit<StepNeed, 'done'>>> = {
+  '1.1': [{ key: 'target', label: '모둠 표적 확정', ask: '모둠 표적을 확정하면' }],
+  '1.2': [{ key: 'screen', label: '스크리닝 1회', ask: '스크리닝 1회 하면' }],
+  '2.1': [{ key: 'dock', label: '도킹 1건', ask: '도킹 1건 하면' }],
+  '2.2': [{ key: 'lead', label: '특허 후보 1개', ask: '특허 후보를 1개 고르면' }],
+  '3.1': [{ key: 'patent', label: '유효 특허 1건', ask: '특허 1건이 받아들여지면' }],
+  '3.2': [
+    { key: 'iacuc', label: '계획서 승인', ask: '계획서가 승인되면' },
+    { key: 'animal', label: '동물실험 1건', ask: '동물실험 1건을 마치면' },
+    { key: 'main', label: '주력 후보 지정', ask: '주력 후보를 정하면' },
+  ],
+  '3.3': [{ key: 'ind', label: 'IND 승인', ask: 'IND가 승인되면' }],
+  '4.1': [
+    { key: 'phase1', label: '1상 통과', ask: '1상을 통과하면' },
+    { key: 'phase2', label: '2상 통과', ask: '2상을 통과하면' },
+    { key: 'phase3', label: '3상 통과', ask: '3상을 통과하면' },
+  ],
+  '4.2': [{ key: 'approval', label: '품목 허가', ask: '품목 허가를 받으면' }],
+};
+
 export interface StepView {
   id: StepId;
   group: 1 | 2 | 3 | 4;
@@ -77,6 +114,10 @@ export interface StepView {
   costCents?: number;
   /** 게임 시계로 걸리는 기간(3.2 동물실험 28 · 3.3 IND 30 …). */
   durationGameDays?: number;
+  /** 다음 단계를 여는 조건과 채움 여부(`STEP_NEEDS` 순서) — 소분자 트랙만 싣는다. */
+  need?: StepNeed[];
+  /** 이 단계를 연(완료한) 모둠원 — 띠 단추의 '가람 님이 열었어요'. 심사 · 게임 시계로 끝나는 단계(3.3 · 4.1 · 4.2)는 비운다. */
+  doneByName?: string;
 }
 
 /** 작업(`web.jobs`)이 있는 단계 — 1.2 스크리닝 · 2.1 도킹 · 2.2 ADMET(워커) · 3.2 대체 시험 · 동물실험(서버 내부 · 게임 시계). */

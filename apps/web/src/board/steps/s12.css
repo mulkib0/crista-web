@@ -216,6 +216,9 @@
 .s12-recv .rl { display: grid; grid-template-columns: minmax(80px, auto) minmax(0, 1fr); gap: 10px; border-bottom: 1px dashed var(--line); padding-bottom: 4px; }
 .s12-recv .rl span:last-child { text-align: right; overflow-wrap: anywhere; }
 .s12-recv .rl-h { margin-top: 6px; }
+.s12-recv-more { display: grid; gap: 6px; }
+.s12-recv-more > summary { cursor: pointer; font-size: 12px; font-weight: 600; color: var(--muted); padding-top: 2px; }
+.s12-recv-more[open] > summary { margin-bottom: 2px; }
 
 /* 서랍(상세) */
 .s12-drawer-back { display: flex; justify-content: flex-end; align-items: stretch; }

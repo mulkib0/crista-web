@@ -1,7 +1,8 @@
 /**
  * 1.2 화합물 스크리닝 — 확정 화면(기능 F12 · 설계 §5.5 · §5.5.1 · 미리보기 design/screening-pipeline.html · 단계 시각화 1.2-01~05).
  *
- * 다섯 걸음(머리 섬 탭 — 개인 상태): ① 미션 브리핑 ② 모둠 기준 회의 ③ 스크리닝 실행 ④ 분자 쇼핑 ⑤ 넘기기.
+ * 네 걸음(머리 섬 사슬 — 개인 상태): ① 미션 브리핑 ② 모둠 기준 회의 ③ 스크리닝 실행 ④ 분자 쇼핑 ⇒ 2.1. 넘기기만 하던 ⑤ 탭은 2026-10-25 합의안으로
+ * 없앴다 — 확정서는 공유 자료 맨 위(`Receipt`), 다음 단계로는 바닥 띠가 데려간다(남은 일 = ③ 스크리닝 1회).
  * 왼쪽 섬 = 내 작업대(나만 · 무료 · 브라우저 계산 — 01 기준 설계실 · 02 분포 보고 문턱 · 03 화학 공간 울타리 · 04 내가 심사관 · 05 표로 고르기),
  * 오른쪽 섬 = 모둠 공유(`GET /api/screen` + 모둠 WS 'screen.changed' · 'board.changed'). 모둠으로 넘어가는 길은 '모둠에 제안' · '찬성' · '실행' · '찜하기'뿐.
  * 점수판 · 깔때기 띠는 규격 `screenFunnel` 하나로 센다(서버 실행 스냅숏과 같은 함수). 학생 문구는 규격 `SCREEN_COPY`.
@@ -54,15 +55,17 @@ import {
 import { api, newRequestId } from '../../api.ts';
 import { money } from '../../ink.ts';
 import { Confirm, Panel, ReasonChips, Tabs, useBenchState, useLive, useLocalTab, type TabItem } from '../ui/index.ts';
-import { NotesBlock, StepLayout, useAction, type StepProps } from './common.tsx';
+import { StepLayout, useAction, type StepProps } from './common.tsx';
 import { AgendaHist, coachVerdict, Drawer, FunnelBars, FunnelStrip, HistLegend, MemberChip, Scoreboard, SmilesBox, type HistFlag } from './s12-parts.tsx';
 import { AgendaControl, ChemMap, CriteriaLab, initialMap, JudgeCards, LAB_PRESETS, ShelfTable, type JudgeState, type LabState, type MapState } from './s12-tools.tsx';
 import './s12.css';
 
 const C = SCREEN_COPY;
-const TABS = ['brief', 'meet', 'run', 'shop', 'hand'] as const;
+const TABS = ['brief', 'meet', 'run', 'shop'] as const;
 type StepTab = (typeof TABS)[number];
-const NO = ['①', '②', '③', '④', '⑤'];
+const NO = ['①', '②', '③', '④'];
+/** 띠 '하러 가기' — 남은 일(스크리닝 1회)은 ③ 실행 판으로. */
+const GO = { screen: { tab: 'run', spot: 'go-s12-run' } };
 
 /** 이 화면을 다시 읽을 WS 소식 — 회의 칸 · 찜 · 1.2 작업 · 표적. */
 const refetchOn = (m: ServerMessage) =>
@@ -81,7 +84,8 @@ export function Step12(props: StepProps) {
       <StepLayout
         board={board}
         step={step}
-        team={<div className="s12"><Panel>{!targetId ? C.noTarget : err ? <p className="err">{err.message}</p> : <p className="muted">{C.loading}</p>}</Panel><NotesBlock board={board} stepId="1.2" /></div>}
+        go={GO}
+        team={<div className="s12"><Panel>{!targetId ? C.noTarget : err ? <p className="err">{err.message}</p> : <p className="muted">{C.loading}</p>}</Panel></div>}
       />
     );
   }
@@ -136,7 +140,6 @@ function Screen12(p: ScreenProps) {
     { id: 'meet', no: NO[1], label: C.steps.meet, sub: screenFill(C.ui.tabAgreed, { n: agreedCount }), mark: s.allAgreed ? '✓' : undefined },
     { id: 'run', no: NO[2], label: C.steps.run, sub: succeeded.length ? screenFill(C.ui.tabRuns, { n: succeeded.length, k: shelfRun?.snapshot?.final ?? 0 }) : C.ui.tabNotYet, mark: succeeded.length ? '✓' : undefined },
     { id: 'shop', no: NO[3], label: C.steps.shop, sub: screenFill(C.ui.tabClaims, { n: s.claims.length }), mark: s.claims.length ? '✓' : undefined },
-    { id: 'hand', no: NO[4], label: C.steps.hand, sub: C.ui.tabHand, mark: step.state === 'done' && s.claims.length ? '✓' : undefined },
   ];
 
   const ctx: Ctx = { ...p, mission, gene, byId, names, control, act, after, drafts, setDrafts, agendaSel, setAgendaSel, agreedF, myF, mineMarks, readers };
@@ -149,6 +152,7 @@ function Screen12(p: ScreenProps) {
       <>
         <Tabs size="sm" label={C.ui.toolBrief} value={briefTool} onChange={(id) => setBriefTool(id as typeof briefTool)} items={[{ id: 'mission', label: C.ui.toolMission }, { id: 'judge', label: C.judge.title, disabled: !mission }]} />
         {briefTool === 'judge' && mission ? <JudgeCards ds={ds} mission={mission} gene={gene} state={judge} setState={setJudge} /> : <BriefMine c={ctx} />}
+        {briefTool === 'judge' && judge.open && mission && <p className="hint">{screenFill(C.judge.hintNote, { n: judgeSame(ds, mission, judge), m: mission.judgeCards.length })}</p>}
       </>
     );
     teamTitle = C.ui.teamBrief;
@@ -198,19 +202,10 @@ function Screen12(p: ScreenProps) {
     mine = <RunMine c={ctx} />;
     team = <RunTeam c={ctx} />;
     teamTitle = C.ui.teamRun;
-  } else if (tab === 'shop') {
+  } else {
     mine = <ShopMine c={ctx} />;
     teamTitle = C.ui.teamShop;
     team = <Cart c={ctx} />;
-  } else {
-    mine = (
-      <>
-        {judge.open && mission && <p className="hint">{screenFill(C.judge.hintNote, { n: judgeSame(ds, mission, judge), m: mission.judgeCards.length })}</p>}
-        <NotesBlock board={board} stepId="1.2" />
-      </>
-    );
-    teamTitle = C.ui.teamHand;
-    team = <HandTeam c={ctx} />;
   }
 
   return (
@@ -221,10 +216,11 @@ function Screen12(p: ScreenProps) {
       tab={tab}
       onTab={(id) => setTab(id as StepTab)}
       tabsLabel={C.ui.tabsLabel}
+      go={GO}
       ratio={tab === 'meet' || tab === 'shop' ? 'mine' : 'even'}
       mine={<div className="s12">{note && <p className="s12-note" role="status" onClick={() => setNote(null)}>{note}</p>}{act.error && <p className="err">{act.error}</p>}{!mission && <p className="hint">{C.noMission}</p>}{mine}</div>}
       teamTitle={teamTitle}
-      team={<div className="s12">{team}</div>}
+      team={<div className="s12"><Receipt c={ctx} />{team}</div>}
     />
   );
 }
@@ -623,7 +619,7 @@ function RunMine({ c }: { c: Ctx }) {
   return (
     <>
       <Scoreboard f={agreedF} title={C.scoreboard.agreed} />
-      <Panel title={C.run.criteria} sub={C.ui.teamShared}>
+      <Panel title={C.run.criteria} sub={C.ui.teamShared} id="go-s12-run">
         <div className="chips">
           {SCREEN_AGENDAS.map((a) => (
             <span key={a} className={`chip ${s.agreed[a] === undefined ? 's12-warn' : ''}`}>{s.agreed[a] === undefined ? `! ${screenFill(C.ui.undecided, { label: C.agenda[a].label })}` : `✓ ${screenRuleText(a, s.agreed[a], gene)}`}</span>
@@ -992,57 +988,55 @@ function Cart({ c }: { c: Ctx }) {
         <div><dt>{C.shop.sumDock}</dt><dd style={{ fontSize: 13 }}>{money(dockQueue(s, control) * s.costs.dockCents)}</dd></div>
       </dl>
       {control && <p className="mini muted">{screenFill(C.shop.controlNote, { name: shortName(control.name, 10) })}</p>}
-      <div className="acts"><button type="button" className="btn pri" disabled={!n} onClick={() => c.setTab('hand')}>{C.shop.toHand}</button></div>
     </Panel>
   );
 }
 
-// ── ⑤ 넘기기 ──
+// ── 1.2 스크리닝 확정서(공유 자료 맨 위 — 합의안 15) ──
 
-function HandTeam({ c }: { c: Ctx }) {
-  const { s, gene, mission, control, step, goStep } = c;
+/** 2.1 로 들고 갈 것 — 위 다섯 줄은 늘 보이고, 안건별 기준 · 도킹 대기열 · 쓴 연구비는 '자세히'에 접는다. */
+function Receipt({ c }: { c: Ctx }) {
+  const { s, gene, mission, control } = c;
+  const H = C.hand;
   const shelfRun = s.shelf ? s.runs.find((r) => r.jobId === s.shelf!.jobId) : null;
   const snap = shelfRun?.snapshot ?? null;
-  if (!snap || s.claims.length === 0) {
-    return (
-      <Panel title={C.hand.emptyTitle}>
-        <p className="s12-p">{C.hand.emptyBody}</p>
-        <button type="button" className="btn pri" onClick={() => c.setTab(snap ? 'shop' : 'run')}>{snap ? C.steps.shop : C.steps.run}</button>
-      </Panel>
-    );
-  }
-  const spent = s.runs.reduce((a, r) => a + r.costCents - r.refundedCents, 0);
+  const running = s.runs.find((r) => r.status === 'queued' || r.status === 'running');
   const runsDone = s.runs.filter((r) => r.status === 'succeeded').length;
+  const agreed = SCREEN_AGENDAS.filter((a) => s.agreed[a] !== undefined).length;
+  const spent = s.runs.reduce((a, r) => a + r.costCents - r.refundedCents, 0);
+  const queue = dockQueue(s, control);
   const missing = s.members.filter((m) => !s.claims.some((x) => x.userId === m.userId));
+  const screen = running ? screenFill(H.screenRunning, { p: Math.round(running.progress * 100) }) : snap ? screenFill(H.runsValue, { n: runsDone, total: snap.total, final: snap.final }) : H.screenNone;
   return (
-    <>
-      <section className="s12-recv" aria-label={C.hand.receipt}>
-        <h3>{C.hand.receipt}</h3>
-        <div className="rl"><span>{C.hand.target}</span><span>{gene} · {mission?.disease ?? ''}</span></div>
-        {SCREEN_AGENDAS.map((a) => {
-          const g = s.agendas.find((x) => x.agenda === a)!;
-          const same = g.status === 'agreed' && g.value === snap.criteria[a];
-          return (
-            <div key={a} className="rl">
-              <span>{C.agenda[a].label}</span>
-              <span>{screenRuleText(a, snap.criteria[a], gene)}{same && g.proposedByName ? ` · ${screenFill(C.hand.proposer, { name: g.proposedByName, n: g.votes ?? 0 })}` : ''}</span>
-            </div>
-          );
-        })}
-        <div className="rl"><span>{C.hand.runs}</span><span>{screenFill(C.hand.runsValue, { n: runsDone, total: snap.total, final: snap.final })}</span></div>
-        <div className="rl"><span>{C.hand.spent}</span><span>{money(spent)}</span></div>
-        <b className="rl-h">{C.hand.queue}</b>
-        {s.claims.map((x) => (
-          <div key={x.compoundId} className="rl"><span>{shortName(x.name, 22)}</span><span>{x.byName} · {(C.claimReasons as Record<string, string>)[x.reason] ?? C.shop.legacy}</span></div>
-        ))}
-        {control && !s.claims.some((x) => x.compoundId === control.id) && <div className="rl"><span>{shortName(control.name, 22)}</span><span>{C.hand.control}</span></div>}
-        <div className="rl"><span>{C.hand.dockCost}</span><span>{dockQueue(s, control)} × {money(s.costs.dockCents)} = {money(dockQueue(s, control) * s.costs.dockCents)}</span></div>
-      </section>
-      {missing.length > 0 && <p className="verdict warn"><b aria-hidden="true">!</b> {screenFill(C.hand.missing, { names: missing.map((m) => m.displayName).join(', ') })}</p>}
-      <div className="acts">
-        <button type="button" className="btn" onClick={() => c.setTab('shop')}>{C.hand.more}</button>
-        <button type="button" className="btn film" disabled={step.state !== 'done'} onClick={() => goStep('2.1')}>{C.hand.send} →</button>
-      </div>
-    </>
+    <section className="s12-recv" aria-label={H.receipt}>
+      <h3>{H.receipt}</h3>
+      <div className="rl"><span>{H.target}</span><span>{gene} · {mission?.disease ?? ''}</span></div>
+      <div className="rl"><span>{H.agreed}</span><span>{screenFill(H.agreedValue, { n: agreed })}</span></div>
+      <div className="rl"><span>{H.screen}</span><span>{screen}</span></div>
+      <div className="rl"><span>{H.carry}</span><span>{s.claims.length ? screenFill(H.carryValue, { n: s.claims.length }) : H.carryNone}</span></div>
+      <div className="rl"><span>{H.dockCost}</span><span>{s.claims.length ? `${queue} × ${money(s.costs.dockCents)} = ${money(queue * s.costs.dockCents)}` : '—'}</span></div>
+      {snap && (
+        <details className="s12-recv-more">
+          <summary>{H.detail}</summary>
+          {SCREEN_AGENDAS.map((a) => {
+            const g = s.agendas.find((x) => x.agenda === a)!;
+            const same = g.status === 'agreed' && g.value === snap.criteria[a];
+            return (
+              <div key={a} className="rl">
+                <span>{C.agenda[a].label}</span>
+                <span>{screenRuleText(a, snap.criteria[a], gene)}{same && g.proposedByName ? ` · ${screenFill(H.proposer, { name: g.proposedByName, n: g.votes ?? 0 })}` : ''}</span>
+              </div>
+            );
+          })}
+          <div className="rl"><span>{H.spent}</span><span>{money(spent)}</span></div>
+          <b className="rl-h">{H.queue}</b>
+          {s.claims.map((x) => (
+            <div key={x.compoundId} className="rl"><span>{shortName(x.name, 22)}</span><span>{x.byName} · {(C.claimReasons as Record<string, string>)[x.reason] ?? C.shop.legacy}</span></div>
+          ))}
+          {control && !s.claims.some((x) => x.compoundId === control.id) && <div className="rl"><span>{shortName(control.name, 22)}</span><span>{H.control}</span></div>}
+          {s.claims.length > 0 && missing.length > 0 && <p className="verdict warn"><b aria-hidden="true">!</b> {screenFill(H.missing, { names: missing.map((m) => m.displayName).join(', ') })}</p>}
+        </details>
+      )}
+    </section>
   );
 }
