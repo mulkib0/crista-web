@@ -1,8 +1,11 @@
 // '다음' 합의안 적용 점검 공용 — playwright(전역 설치) · 로그인 · 문제 모으기 · 띠 · 라임 단추 · 넘침 검사.
+import { execSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-const require = createRequire('/opt/homebrew/lib/node_modules/');
+// playwright 는 저장소 의존성이 아니라 전역 설치를 쓴다 — PLAYWRIGHT_ROOT(node_modules 폴더)가 있으면 그곳, 없으면 `npm root -g`.
+const root = process.env.PLAYWRIGHT_ROOT ?? execSync('npm root -g', { encoding: 'utf8' }).trim();
+const require = createRequire(join(root, '/'));
 export const { chromium } = require('playwright');
 export const out = dirname(fileURLToPath(import.meta.url));
 export const base = process.env.BASE ?? 'http://127.0.0.1:5190';

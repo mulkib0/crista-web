@@ -421,7 +421,10 @@ const COND = {
   ready: [{ t: '스크리닝 1회 실행', s: 'ok', v: '134개 통과', key: true, at: '③' }, { t: '모둠 기준 6개 합의', s: 'ok', v: '6/6', at: '②' }, { t: '도킹할 후보 찜', s: 'ok', v: '4개', at: '④' }],
   after: [{ t: '도킹 1건 실행', s: 'todo', v: '0건', key: true, at: '①' }, { t: '대조군과 견주기', s: 'todo', v: '—', at: '3.09' }],
 };
-const MONEY = { screen: '250,000 크리스타', dock: '1,000,000 크리스타', bal: '24,736,586 크리스타' };
+/* 금액은 숫자로 두고 화면 글은 포매터로 만든다(AGENTS.md '화폐' — 앱의 formatCrista 와 같은 꼴: 천 단위 쉼표 + ' 크리스타'). */
+const crista = (n) => `${Math.round(n).toLocaleString('ko-KR')} 크리스타`;
+const CRISTA = { screen: 250_000, dock: 1_000_000, bal: 24_736_586, note: 240_000 };
+const MONEY = { screen: crista(CRISTA.screen), dock: crista(CRISTA.dock), bal: crista(CRISTA.bal), note: crista(CRISTA.note) };
 
 function ctx(st, pop) {
   const w = WS[st];
@@ -805,7 +808,7 @@ function receiptTeam(c) {
     ['2.1 도킹 대기열', c.ready ? '찜 4개 + 대조군' : '0개'],
     ['도킹 예상', c.ready ? MONEY.dock : '—'],
   ];
-  return `<section class="isl"><div class="ih tm">모둠 공유<small>▤ 공유 자료</small></div><div class="box line"><div class="tt">1.2 스크리닝 확정서</div>${rows.map(([a, b]) => `<div class="rl"><span>${a}</span><b>${b}</b></div>`).join('')}${nextBtn(c, { wide: true })}</div><div class="fold"><span>연구 노트 · 0/3칸 · 최대 +200,000 크리스타</span><span>▾</span></div><div class="fold"><span>이 단계 연구 문항 · 0/2</span><span>▾</span></div></section>`;
+  return `<section class="isl"><div class="ih tm">모둠 공유<small>▤ 공유 자료</small></div><div class="box line"><div class="tt">1.2 스크리닝 확정서</div>${rows.map(([a, b]) => `<div class="rl"><span>${a}</span><b>${b}</b></div>`).join('')}${nextBtn(c, { wide: true })}</div><div class="fold"><span>연구 노트 · 0/3칸 · 최대 +${MONEY.note}</span><span>▾</span></div><div class="fold"><span>이 단계 연구 문항 · 0/2</span><span>▾</span></div></section>`;
 }
 V.push({
   id: '15', fam: 'C', src: ['G·C4', 'G·F5'], name: '확정서 위 · 노트 아래',
@@ -1088,7 +1091,7 @@ function homeTeam(c) {
     ['2.1 로 가져갈 것', c.ready ? '찜 4개 + 대조군' : '0개'],
     ['도킹 예상', c.ready ? MONEY.dock : '—'],
   ];
-  return `<section class="isl"><div class="ih tm">모둠 공유<small>▤ 공유 자료</small></div><div class="box line"><div class="tt">1.2 스크리닝 확정서</div>${rows.map(([a, b]) => `<div class="rl"><span>${a}</span><b>${b}</b></div>`).join('')}</div><div class="fold"><span>연구 노트 · 0/3칸 · 최대 +200,000 크리스타</span><span>▾</span></div><div class="bub"><small>나래</small>${sk(100)}</div></section>`;
+  return `<section class="isl"><div class="ih tm">모둠 공유<small>▤ 공유 자료</small></div><div class="box line"><div class="tt">1.2 스크리닝 확정서</div>${rows.map(([a, b]) => `<div class="rl"><span>${a}</span><b>${b}</b></div>`).join('')}</div><div class="fold"><span>연구 노트 · 0/3칸 · 최대 +${MONEY.note}</span><span>▾</span></div><div class="bub"><small>나래</small>${sk(100)}</div></section>`;
 }
 const HOME = {
   id: 'R', noHand: true,
