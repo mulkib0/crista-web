@@ -32,13 +32,22 @@ export const TARGET_TIER: Record<TargetTier, { mark: string; label: string; tone
 export const TARGETS_PER_DISEASE = 8;
 
 /**
- * 표적 8개 — 워커 `rank` 1~8(rank 1 = 그 질환의 도킹 준비 표적, 2~8 = 종합 점수 상위 7)을 종합 점수 순으로 다시 줄 세운다.
- * 도킹 준비 표적이 8개 안에 없으면 마지막 자리를 그 표적으로 바꾼다(시안과 같은 8개 — 알츠하이머는 ACHE 가 8위).
+ * 표적 8개 — 워커 `rank` 1~8(rank 1 = 그 질환의 대표 도킹 표적, 2~8 = 종합 점수 상위 7)을 종합 점수 순으로 다시 줄 세운다.
+ * **그 질환의 도킹 준비 표적은 모두 목록에 둔다** — 8개 안에 없는 표적은 점수가 가장 낮은 자리를 밀어내고 들어온다
+ * (고를 수 있는 표적이 목록에서 빠지면 1.1 에서 보이지 않는다).
  */
 export function targetShortlist(targets: readonly TargetRow[]): TargetRow[] {
   const picked = [...targets].sort((a, b) => a.rank - b.rank).slice(0, TARGETS_PER_DISEASE);
-  const ready = targets.find((t) => t.dockingTargetId);
-  if (ready && !picked.includes(ready)) picked[picked.length - 1] = ready;
+  for (const ready of targets.filter((t) => t.dockingTargetId)) {
+    if (picked.includes(ready)) continue;
+    // 점수가 가장 낮은 '도킹 준비 안 된' 줄을 내보낸다 — 열려 있는 표적끼리는 밀어내지 않는다.
+    const drop = picked.reduce<{ i: number; score: number } | null>(
+      (low, t, i) => (t.dockingTargetId || (low && low.score <= t.overallScore) ? low : { i, score: t.overallScore }),
+      null,
+    );
+    if (drop) picked[drop.i] = ready;
+    else picked.push(ready);
+  }
   return picked.sort((a, b) => b.overallScore - a.overallScore);
 }
 
@@ -217,7 +226,10 @@ export function targetDiseaseTile(diseaseId: string): { group: number; tile: Tar
 export const TARGET_REDOCK: Record<string, { ligand: string; rmsd: number }> = {
   'ache-4ey7': { ligand: 'E20', rmsd: 0.82 },
   'egfr-1m17': { ligand: 'AQ4', rmsd: 1.33 },
+  'alk-2xp2': { ligand: 'VGH', rmsd: 1.16 },
+  'erbb2-3pp0': { ligand: '03Q', rmsd: 0.73 },
   'dpp4-1x70': { ligand: '715', rmsd: 0.8 },
+  'gck-1v4s': { ligand: 'MRK', rmsd: 0.67 },
   'cox2-3ln1': { ligand: 'CEL', rmsd: 0.51 },
 };
 

@@ -145,7 +145,7 @@ export const ENDPOINT_PCT_RANGE = { min: 1, max: 50 } as const;
 /** 계획서 수행자 · 근거 등 길이. */
 export const PRECLINICAL_LIMITS = { sectionMax: 1200, reflectionMax: 200, performersMax: 6 } as const;
 
-// ── 효력 모델(설계 §5.9 표 그대로) — 4 표적. 고통등급 · 종료시점은 수의사 · IACUC 실무 자문 전 '제안' 값(§12-15) ──
+// ── 효력 모델(설계 §5.9 표 그대로) — 열린 표적마다 하나. 고통등급 · 종료시점은 수의사 · IACUC 실무 자문 전 '제안' 값(§12-15) ──
 
 export interface PreclinicalModel {
   targetId: TargetId;
@@ -189,6 +189,34 @@ export const PRECLINICAL_MODELS: Record<TargetId, PreclinicalModel> = {
     endpoint: '체중 20% 감소',
     painGrade: 'C',
     species: 'mouse',
+  },
+  'alk-2xp2': {
+    targetId: 'alk-2xp2',
+    gene: 'ALK',
+    model: 'ALK 융합 폐암 세포 이종이식 누드마우스',
+    measures: '종양 성장 억제율(TGI)',
+    endpoint: '종양이 체중의 10% 초과 · 궤양',
+    painGrade: 'D',
+    species: 'mouse',
+  },
+  'erbb2-3pp0': {
+    targetId: 'erbb2-3pp0',
+    gene: 'ERBB2',
+    model: 'HER2 변이 폐암 세포 이종이식 누드마우스',
+    measures: '종양 성장 억제율(TGI)',
+    endpoint: '종양이 체중의 10% 초과 · 궤양',
+    painGrade: 'D',
+    species: 'mouse',
+  },
+  'gck-1v4s': {
+    targetId: 'gck-1v4s',
+    gene: 'GCK',
+    model: 'db/db 생쥐 경구 포도당 부하 시험(OGTT)',
+    measures: '혈당 곡선 면적 감소',
+    endpoint: '체중 20% 감소 · 심한 저혈당',
+    painGrade: 'C',
+    species: 'mouse',
+    debate: '글루코키나아제를 켜는 약은 혈당을 지나치게 낮출 수 있다 — 효력과 저혈당을 같은 시험에서 함께 보는 토론 거리',
   },
   'cox2-3ln1': {
     targetId: 'cox2-3ln1',

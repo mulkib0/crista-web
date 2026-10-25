@@ -39,6 +39,16 @@ describe('targetShortlist', () => {
     assert.ok(list.includes(far));
     assert.equal(list.length, 8);
   });
+  test('한 질환의 도킹 표적이 여럿이면 모두 들어간다 — 열린 표적끼리 밀어내지 않는다', () => {
+    // 비소세포폐암 모양 — EGFR(rank 1) · ALK(rank 3) 는 8 안, 가짜 표적 하나는 rank 29(8 밖).
+    const egfr = row('EGFR', 1, 0.888, { drugScore: 1, pdbId: '1M17', dockingTargetId: 'egfr-1m17' });
+    const alk = row('ALK', 3, 0.813, { drugScore: 0.99, pdbId: '2XP2', dockingTargetId: 'alk-2xp2' });
+    const far = row('ERBB2', 29, 0.4, { drugScore: 0.98, pdbId: '3PP0', dockingTargetId: 'erbb2-3pp0' });
+    const list = targetShortlist([egfr, alk, far, ...others.slice(0, 27)]);
+    assert.equal(list.length, 8);
+    for (const t of [egfr, alk, far]) assert.ok(list.includes(t), t.symbol);
+    assert.equal(list.filter((t) => t.dockingTargetId).length, 3);
+  });
 });
 
 describe('준비 상태 · 가중치', () => {
