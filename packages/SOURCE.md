@@ -5,7 +5,7 @@
 | 항목 | 값 |
 | --- | --- |
 | 원본 | `crista/packages/shared-types` · `crista/packages/game-rules` |
-| 원본 커밋 | `e911572`(2026-10-23, 프로토콜 v11) — 복사 시점 작업 트리에 이 두 패키지의 미커밋 변경 없음 |
+| 원본 커밋 | `345cbdf`(2026-10-25, `feat/disease-multi-targets` — 질환 1 : 표적 N · 도킹 표적 7종) — 복사 시점 작업 트리에 이 두 패키지의 미커밋 변경 없음 |
 | 복사 방법 | `rsync -a --exclude node_modules --exclude dist --exclude '*.tsbuildinfo'` · 복사 직후 `diff -rq` 로 원본과 같음을 확인 |
 
 ## 규칙
@@ -20,5 +20,6 @@
 
 | 날짜 | 명령 | 결과 |
 | --- | --- | --- |
+| 2026-10-25 | `rsync` 재복사(`345cbdf`) · `diff -rq` | 두 패키지 모두 원본과 같음. 차이: `DISEASE_TARGETS`(질환 → 표적 목록) · `DOCKING_TARGETS` 3종(ALK `2XP2` · ERBB2 `3PP0` · GCK `1V4S`) · `TRIAL_OPTIONS` 3종 · `targetsOfDisease()`. `game-rules` 는 바뀌지 않았다 |
 | 2026-10-23(W1) | `npm run typecheck`(shared-types · game-rules) | 둘 다 오류 0 |
 | 2026-10-23(W1) | `npm run test:rules`(`node --test --experimental-strip-types test/*.test.ts`) | 290건 중 287 통과 · 3 실패 — 셋 다 판정 문제가 아니라 crista 저장소 루트의 `assets/data/macro-events.json` · `assets/atlas/crista-atlas-0.json` 을 `../../../` 로 읽는데 이 저장소에는 그 경로가 없어서(ENOENT). 사본은 고치지 않았다 |

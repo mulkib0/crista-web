@@ -47,7 +47,7 @@
  * v11 (실데이터 멀티 표적, 2026-10-23): ① 선언이 질환 · 표적을 받는다(`ProgramDeclareMessage.diseaseId` · `targetId` ·
  * `DISEASE_TO_TARGET` · `ProgramView.diseaseId`) · 도킹 근거를 **표적 × 분자**로 센다(`targetEvidenceKey` ·
  * `PatentCandidateView` 가 표적마다 한 줄 · `PatentFileMessage.targetId`) · 표적별 결합력 정규화
- * (`DockingTarget.referenceKcal` · `referenceRmsd` — 네 표적 결정 리간드 재도킹 실측) · 뇌 병변 환자군이면 비 CNS 표적도
+ * (`DockingTarget.referenceKcal` · `referenceRmsd` — 표적별 결정 리간드 재도킹 실측) · 뇌 병변 환자군이면 비 CNS 표적도
  * 뇌 노출을 판정에 넣는다(`TRIAL_OPTIONS[].brainPopulations`) · 공개 DB 조회 출처(`ResultSource` 에 `'dataset'`) ·
  * Stage 2 스크리닝 구조화 결과(`ExperimentResult.candidates` · `funnel`)와 학생 물성 필터.
  * 구버전 클라이언트는 선언에 표적을 싣지 못하고 Stage 2 후보 · 깔때기를 읽지 못해 버전을 올려 막는다.
@@ -1020,8 +1020,10 @@ export interface DockingTarget {
 }
 
 /**
- * 4대 질환 실제 결정구조 표적 — 알츠하이머병 AChE(4EY7) · 비소세포폐암 EGFR(1M17) ·
- * 2형 당뇨병 DPP4(1X70) · 류마티스 관절염 COX-2(3LN1).
+ * 4대 질환 실제 결정구조 표적 — 재도킹 검증(1위 포즈 중원자 RMSD ≤ 2 Å)을 통과한 표적만 둔다.
+ * 알츠하이머병 AChE(4EY7) · 비소세포폐암 EGFR(1M17) · ALK(2XP2) · HER2(3PP0) ·
+ * 2형 당뇨병 DPP4(1X70) · GCK(1V4S) · 류마티스 관절염 COX-2(3LN1).
+ * 한 질환에 표적이 여럿이다 — 질환별 목록은 `DISEASE_TARGETS`(pipeline.ts).
  */
 export const DOCKING_TARGETS: readonly DockingTarget[] = [
   {
@@ -1079,6 +1081,48 @@ export const DOCKING_TARGETS: readonly DockingTarget[] = [
     cns: false,
     referenceKcal: -12.26,
     referenceRmsd: 0.51,
+  },
+  {
+    id: 'alk-2xp2',
+    label: '역형성 림프종 인산화효소',
+    gene: 'ALK',
+    pdbId: '2XP2',
+    disease: '비소세포폐암',
+    referenceLigand: {
+      name: '크리조티닙',
+      smiles: 'C[C@H](c1c(ccc(c1Cl)F)Cl)Oc2cc(cnc2N)c3cnn(c3)C4CCNCC4',
+    },
+    cns: false,
+    referenceKcal: -9.12,
+    referenceRmsd: 1.16,
+  },
+  {
+    id: 'erbb2-3pp0',
+    label: '사람 상피세포 성장인자 수용체 2',
+    gene: 'ERBB2',
+    pdbId: '3PP0',
+    disease: '비소세포폐암',
+    referenceLigand: {
+      name: 'TAK-285',
+      smiles: 'c1cc(cc(c1)Oc2c(cc(cn2)Nc3c4c(ccn4CCOCCO)ncn3)Cl)C(F)(F)F',
+    },
+    cns: false,
+    referenceKcal: -11.32,
+    referenceRmsd: 0.73,
+  },
+  {
+    id: 'gck-1v4s',
+    label: '글루코키나아제',
+    gene: 'GCK',
+    pdbId: '1V4S',
+    disease: '2형 당뇨병',
+    referenceLigand: {
+      name: '글루코키나아제 활성제 RO-28-1675',
+      smiles: 'Cn1ccnc1Sc2cc(c(cc2F)N)C(=O)Nc3nccs3',
+    },
+    cns: false,
+    referenceKcal: -8.73,
+    referenceRmsd: 0.67,
   },
 ];
 
