@@ -90,7 +90,7 @@ export function Step32(props: StepProps) {
   // 기다림 — 대체 시험 · 동물실험은 게임 시계로 끝난다(띠에 'D+14 / 28').
   const run = d?.runs.find((r) => r.status === 'queued' || r.status === 'running');
   const wait = run ? { text: `${run.byName ? `${run.byName} 님 ` : ''}${C.steps[run.kind === 'animal_study' ? 'animal' : 'alt'].label} ${days(run.progressPct, run.endsGameDay - run.startGameDay)}`, clock: true } : undefined;
-  const go = { iacuc: { tab: 'protocol', spot: 's32-review' }, animal: { tab: 'animal', spot: 's32-animal' }, main: { tab: 'pick', spot: 's32-lead' } };
+  const go = { iacuc: { tab: 'protocol', spot: 'go-s32-review' }, animal: { tab: 'animal', spot: 'go-s32-animal' }, main: { tab: 'pick', spot: 'go-s32-lead' } };
   const layout = { ...props, tabs, tab, onTab: (id: string) => setTab(id as Tab), ratio: 'even' as const, go, ...(wait ? { wait } : {}) };
   if (!d) {
     return (
@@ -388,7 +388,7 @@ function ProtocolTeam({ d, reload }: BodyProps) {
       )}
       {!p ? <Panel><p className="empty">{U.noProtocol}</p></Panel> : (
         <>
-          <Panel title={U.rulesPreview} sub={` · ${C.status[p.status]} · ${U.docVersion(p.version)}`} id="s32-review">
+          <Panel title={U.rulesPreview} sub={` · ${C.status[p.status]} · ${U.docVersion(p.version)}`} id="go-s32-review">
             <ul className="s32-rules">
               {p.ruleFindings.map((f) => (
                 <li key={f.id} className={f.status}>
@@ -539,7 +539,7 @@ function AnimalMine({ d, reload }: BodyProps) {
   const studies = d.runs.filter((r) => r.kind === 'animal_study' && r.status === 'succeeded');
   return (
     <>
-      <Panel title={U.runAnimal} sub={` · ${money(d.fees.animalCents)} · ${U.gameDays(PRECLINICAL_FEES.animalStudyGameDays)}`} id="s32-animal">
+      <Panel title={U.runAnimal} sub={` · ${money(d.fees.animalCents)} · ${U.gameDays(PRECLINICAL_FEES.animalStudyGameDays)}`} id="go-s32-animal">
         <details className="s32-bundle">
           <summary>{U.bundleTitle}</summary>
           <ul>{U.bundle.map((line) => <li key={line}>{line}</li>)}</ul>
@@ -750,7 +750,7 @@ function PickMine({ d, reload }: BodyProps) {
   return (
     <>
       <ResultBoard d={d} />
-      <Panel title={U.setLead} id="s32-lead">
+      <Panel title={U.setLead} id="go-s32-lead">
         {studies.length === 0 ? <p className="empty">{U.noStudy}</p> : (
           <>
             <p className="hint">{U.leadRule}</p>

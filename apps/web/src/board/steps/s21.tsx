@@ -435,7 +435,7 @@ export function Step21(props: StepProps) {
           {myClaims.length === 0 && <span className="mini muted">{C.s21.ui.loadEmpty}</span>}
         </div>
       </Panel>
-      <Panel title={C.s21.ui.molTitle} sub={bench.parentJobId ? C.s21.ui.molSubVariant : 'SMILES'} id="s21-dock">
+      <Panel title={C.s21.ui.molTitle} sub={bench.parentJobId ? C.s21.ui.molSubVariant : 'SMILES'} id="go-s21-dock">
         <div className="fld">
           <label className="lab" htmlFor="smi">SMILES</label>
           <textarea id="smi" ref={smilesRef} className="txt mono" rows={3} value={bench.smiles} maxLength={200} onChange={(e) => (setBench((b) => ({ ...b, smiles: e.target.value })), setPreview(null))} placeholder="예: COc1cc2c(cc1OC)C(=O)C(CC1CCN(Cc3ccccc3)CC1)C2" />
@@ -490,7 +490,7 @@ export function Step21(props: StepProps) {
         { id: 'cards', label: C.s21.tabs.cards, disabled: !hasResults },
         { id: 'stairs', label: C.s21.tabs.stairs, disabled: !hasResults },
       ]}
-      go={{ dock: { tab: 'edit', spot: 's21-dock' } }}
+      go={{ dock: { tab: 'edit', spot: 'go-s21-dock' } }}
       tab={hasResults || tab === 'edit' ? tab : 'edit'}
       onTab={(id) => setTab(id as Tab)}
       tabsLabel={C.s21.ui.tabsLabel}

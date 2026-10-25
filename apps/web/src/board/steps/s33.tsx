@@ -346,7 +346,7 @@ export function Step33(props: StepProps) {
   const team = (
     <>
       {!data ? null : !app ? (
-        <Panel title={D.heading} id="s33-app">
+        <Panel title={D.heading} id="go-s33-app">
           <p className="mini">{data.ready ? D.newDocHint : data.readyReason ?? D.lockedStep}</p>
           <div className="acts">
             <button type="button" className="btn pri" disabled={!data.ready || act.busy} onClick={() => void act.run(async () => {
@@ -358,7 +358,7 @@ export function Step33(props: StepProps) {
         </Panel>
       ) : (
         <>
-          <Panel id="s33-app" title={<>{C.statusMark[app.status]} {D.heading}</>} sub={`${C.status[app.status]} · ${fillIndCopy(D.version, { n: app.version })}${app.createdByName ? ` · ${app.createdByName}` : ''}`} tone={app.status === 'approved' || app.status === 'passed' ? 'good' : app.status === 'revise' || app.status === 'held' ? 'warn' : undefined}>
+          <Panel id="go-s33-app" title={<>{C.statusMark[app.status]} {D.heading}</>} sub={`${C.status[app.status]} · ${fillIndCopy(D.version, { n: app.version })}${app.createdByName ? ` · ${app.createdByName}` : ''}`} tone={app.status === 'approved' || app.status === 'passed' ? 'good' : app.status === 'revise' || app.status === 'held' ? 'warn' : undefined}>
             {!editable && app.status !== 'approved' && <p className="hint">{D.locked}</p>}
             {app.status === 'held' && (
               <>
@@ -430,7 +430,7 @@ export function Step33(props: StepProps) {
         tab={tool}
         onTab={(id) => setTool(id as ToolId)}
         tabsLabel={C.ui.tabsLabel}
-        go={{ ind: { spot: 's33-app' } }}
+        go={{ ind: { spot: 'go-s33-app' } }}
         mine={mine}
         teamTitle={C.ui.teamTitle}
         team={team}

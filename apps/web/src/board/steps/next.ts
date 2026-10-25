@@ -24,7 +24,7 @@ export const FLOW: Record<StepId, Flow> = {
   '4.2': 'chain',
 };
 
-/** 띠 단추 '하러 가기'가 데려갈 자리 — 걸음 · 도구 탭과 잠깐 강조할 요소 id. */
+/** 띠 단추 '하러 가기'가 데려갈 자리 — 걸음 · 도구 탭과 잠깐 강조할 요소 id(`go-` 접두 — 입력 칸 id 와 겹치지 않게). */
 export interface Go {
   tab?: string;
   spot?: string;

@@ -285,7 +285,7 @@ function Candidates({ board, sel, onChanged }: { board: BoardResponse; sel: Sele
     });
   const labelOf = (jobId: string) => sel.admet.find((a) => a.jobId === jobId);
   return (
-    <Panel title={C.s22.candTitle} sub={C.s22.candSub(sel.candidates.length, sel.limits.leadPerTeam, sel.limits.leadPerPerson)} id="s22-cand">
+    <Panel title={C.s22.candTitle} sub={C.s22.candSub(sel.candidates.length, sel.limits.leadPerTeam, sel.limits.leadPerPerson)} id="go-s22-cand">
       {sel.candidates.length === 0 ? <p className="empty">{C.s22.candEmpty}</p> : (
         <ul className="sel-list">
           {sel.candidates.map((c) => {
@@ -344,7 +344,7 @@ function Run({ board, sel, step, onChanged }: { board: BoardResponse; sel: Selec
   const act = useAction();
   if (sel.picks.length === 0) return <Panel><p className="empty">{C.s22.runEmpty}</p></Panel>;
   return (
-    <Panel title={C.s22.runTitle} sub={C.s22.runSub(sel.picks.length, money(board.costs['2.2']))} id="s22-run">
+    <Panel title={C.s22.runTitle} sub={C.s22.runSub(sel.picks.length, money(board.costs['2.2']))} id="go-s22-run">
       <ul className="sel-list">
         {sel.picks.map((p) => {
           const d = sel.docked.find((x) => x.jobId === p.jobId);
@@ -404,7 +404,7 @@ export function Step22(props: StepProps) {
         { id: 'trip', label: C.s22.tabs.trip, disabled: !has },
         { id: 'chain', label: C.s22.tabs.chain, disabled: !has },
       ]}
-      go={{ lead: has ? { spot: 's22-cand' } : { tab: 'run', spot: 's22-run' } }}
+      go={{ lead: has ? { spot: 'go-s22-cand' } : { tab: 'run', spot: 'go-s22-run' } }}
       tab={effectiveTab}
       onTab={(id) => setTab(id as Tab)}
       tabsLabel={C.s22.ui.tabsLabel}

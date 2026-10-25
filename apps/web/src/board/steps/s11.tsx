@@ -143,7 +143,7 @@ export function Step11({ board, step, bench, setBench, reload }: StepProps) {
       onTab={(id) => setTab(id as Tab)}
       tabsLabel="1.1 내 작업대 도구"
       ratio="mine"
-      go={{ target: { spot: board.picks.length ? 's11-cards' : 's11-drawer' } }}
+      go={{ target: { spot: board.picks.length ? 'go-s11-cards' : 'go-s11-drawer' } }}
       mine={
         <div className="s11">
           {loadErr && <p className="err">{loadErr}</p>}
@@ -156,7 +156,7 @@ export function Step11({ board, step, bench, setBench, reload }: StepProps) {
               {tab === 'weigh' && (allLoaded ? <WeighTool all={all} weights={weights} setWeights={setWeights} sel={sel} onPick={pickTarget} /> : <Panel><p className="muted" style={{ margin: 0 }}>질환 4종 자료를 모으는 중…</p></Panel>)}
               {tab === 'scatter' && (allLoaded ? <ScatterTool all={all} sel={sel} onPick={pickTarget} /> : <Panel><p className="muted" style={{ margin: 0 }}>질환 4종 자료를 모으는 중…</p></Panel>)}
               {tab === 'cards' && <CardsTool ds={ds} cur={cur} sel={sel} onDisease={pickDisease} onPick={pickTarget} />}
-              <section className="s11-drawer" id="s11-drawer" aria-label="추천 서랍">
+              <section className="s11-drawer" id="go-s11-drawer" aria-label="추천 서랍">
                 <h3 className="s11-lab">추천 서랍</h3>
                 {drawer}
               </section>
@@ -523,7 +523,7 @@ function TeamWeights({ board, all, myWeights }: { board: BoardResponse; all: TRo
 function PickCards({ board, ds, reload }: { board: BoardResponse; ds: DData[]; reload: () => void }) {
   const act = useAction();
   return (
-    <div className="cards" id="s11-cards">
+    <div className="cards" id="go-s11-cards">
       {board.picks.length === 0 && <p className="empty">아직 추천 카드가 없어요. 왼쪽에서 표적을 고르고 근거를 골라 올려 주세요.</p>}
       {act.error && <p className="err">{act.error}</p>}
       {board.picks.map((p) => <PickCard key={p.id} p={p} board={board} ds={ds} busy={act.busy} onConfirm={() => void act.run(async () => {

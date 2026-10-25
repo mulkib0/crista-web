@@ -11,7 +11,7 @@
  * 기능 화면 쓰는 법(예: s12.tsx):
  *   const [tab, setTab] = useLocalTab('step:1.2', ['brief', 'meet'] as const, 'brief');   // 걸음 탭 = 개인 상태
  *   return <StepLayout {...props} tabs={[{ id: 'brief', no: '①', label: '미션 브리핑' }, …]} tab={tab} onTab={setTab}
- *            go={{ screen: { tab: 'run', spot: 's12-run' } }} mine={…내 작업대…} team={<>…모둠 공유…</>} />;
+ *            go={{ screen: { tab: 'run', spot: 'go-s12-run' } }} mine={…내 작업대…} team={<>…모둠 공유…</>} />;
  */
 import { useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { formatCrista, NOTE_SECTIONS, noteMaxCrista, STEP_META, type BoardResponse, type StepId, type StepView } from '@crista-web/web-contract';

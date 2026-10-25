@@ -65,7 +65,7 @@ const TABS = ['brief', 'meet', 'run', 'shop'] as const;
 type StepTab = (typeof TABS)[number];
 const NO = ['①', '②', '③', '④'];
 /** 띠 '하러 가기' — 남은 일(스크리닝 1회)은 ③ 실행 판으로. */
-const GO = { screen: { tab: 'run', spot: 's12-run' } };
+const GO = { screen: { tab: 'run', spot: 'go-s12-run' } };
 
 /** 이 화면을 다시 읽을 WS 소식 — 회의 칸 · 찜 · 1.2 작업 · 표적. */
 const refetchOn = (m: ServerMessage) =>
@@ -619,7 +619,7 @@ function RunMine({ c }: { c: Ctx }) {
   return (
     <>
       <Scoreboard f={agreedF} title={C.scoreboard.agreed} />
-      <Panel title={C.run.criteria} sub={C.ui.teamShared} id="s12-run">
+      <Panel title={C.run.criteria} sub={C.ui.teamShared} id="go-s12-run">
         <div className="chips">
           {SCREEN_AGENDAS.map((a) => (
             <span key={a} className={`chip ${s.agreed[a] === undefined ? 's12-warn' : ''}`}>{s.agreed[a] === undefined ? `! ${screenFill(C.ui.undecided, { label: C.agenda[a].label })}` : `✓ ${screenRuleText(a, s.agreed[a], gene)}`}</span>
