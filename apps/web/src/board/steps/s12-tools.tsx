@@ -456,7 +456,6 @@ export function ShelfTable({ rows, gene, rankOf, renderAct }: {
           ))}
         </tbody>
       </table>
-      <p className="mini muted">{screenFill(C.shop.rowsNote, { n: rows.length })} · {C.shop.textbookNote}</p>
     </div>
   );
 }

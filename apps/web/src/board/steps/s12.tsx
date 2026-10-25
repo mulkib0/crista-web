@@ -28,7 +28,6 @@ import {
   SCREEN_COPY,
   SHELF_PAGE,
   SHOP_FILTER_LIMITS,
-  screenAgendaHints,
   screenAgendaQuestion,
   screenBiggestCut,
   screenFill,
@@ -56,7 +55,7 @@ import { api, newRequestId } from '../../api.ts';
 import { money } from '../../ink.ts';
 import { Confirm, Panel, ReasonChips, Tabs, useBenchState, useLive, useLocalTab, type TabItem } from '../ui/index.ts';
 import { StepLayout, useAction, type StepProps } from './common.tsx';
-import { AgendaHist, coachVerdict, Drawer, FunnelBars, FunnelStrip, HistLegend, MemberChip, Scoreboard, SmilesBox, type HistFlag } from './s12-parts.tsx';
+import { AgendaHist, coachVerdict, Drawer, FunnelBars, FunnelStrip, MemberChip, Scoreboard, SmilesBox, type HistFlag } from './s12-parts.tsx';
 import { AgendaControl, ChemMap, CriteriaLab, initialMap, JudgeCards, LAB_PRESETS, ShelfTable, type JudgeState, type LabState, type MapState } from './s12-tools.tsx';
 import './s12.css';
 
@@ -270,7 +269,7 @@ function BriefMine({ c }: { c: Ctx }) {
   return (
     <>
       {mission && (
-        <Panel title={C.briefing.missionTitle} sub={C.briefing.missionSub}>
+        <Panel title={C.briefing.missionTitle}>
           <p className="s12-q">{mission.title}</p>
           <p className="s12-p">{mission.story}</p>
           <div className="chips"><span className="chip">{gene}</span><span className="chip">{mission.disease}</span><span className="chip">PDB {mission.pdbId}</span></div>
@@ -288,8 +287,6 @@ function BriefMine({ c }: { c: Ctx }) {
             <div><dt>{C.ind.alert.sym}</dt><dd>{screenValueText('alert', control)}</dd></div>
             <div><dt>QED</dt><dd>{control.qed.toFixed(2)}</dd></div>
           </dl>
-          <p className="mini muted">{C.briefing.refNote}</p>
-          <p className="mini muted">{C.structureNote}</p>
         </Panel>
       )}
       <Panel title={C.ui.dict} sub={C.ui.dictSub}>
@@ -312,7 +309,7 @@ function BriefTeam({ c }: { c: Ctx }) {
   const iRead = readers.has(s.me);
   return (
     <>
-      <Panel title={C.briefing.quizTitle} sub={C.briefing.quizSub}>
+      <Panel title={C.briefing.quizTitle}>
         {(['cns', 'dur', 'route'] as const).map((q) => {
           const Q = C.briefing[q];
           const answers = s.briefing.filter((b) => b.question === q);
@@ -419,15 +416,12 @@ function AgendaBench({ c, agenda }: { c: Ctx; agenda: ScreenAgenda }) {
         <div><dt>{C.ui.agendaWhat}</dt><dd>{C.agenda[agenda].what}</dd></div>
         <div><dt>{C.ui.agendaWhy}</dt><dd>{C.agenda[agenda].why}</dd></div>
       </dl>
-      <ul className="s12-hints">{screenAgendaHints(agenda, mission).map((h) => <li key={h}>{h}</li>)}</ul>
       <details className="s12-expl">
         <summary>{screenFill(C.meeting.whatIs, { sym: I.sym, name: I.name })}</summary>
         <p className="muted">{I.an}</p>
         <p><b>{I.good}</b></p>
       </details>
       <AgendaHist agenda={agenda} compounds={ds.compounds} hidden={ds.hidden} value={v} control={control} flags={flags} label={screenFill(C.ui.dist, { sym: I.sym, n: ds.total })} />
-      <HistLegend controlName={control ? shortName(control.name, 8) : undefined} />
-      {agenda === 'ro5' && ds.hidden > 0 && <p className="mini muted">{screenFill(C.hiddenNote, { n: ds.hidden })}</p>}
       <p className={`mini ${alone.length ? 'bad' : 'good'}`}>
         {alone.length ? `✕ ${screenFill(C.meeting.lostKnown, { list: alone.map((x) => `${shortName(x.name, 10)}(${screenValueText(agenda, x)})`).join(', ') })}` : `✓ ${C.meeting.noLostKnown}`}
       </p>
@@ -465,7 +459,6 @@ function AgendaBench({ c, agenda }: { c: Ctx; agenda: ScreenAgenda }) {
           }}
         />
       )}
-      {mineP && !agreed && <p className="mini muted">{C.meeting.reproposeResetNote}</p>}
     </Panel>
   );
 }
@@ -478,7 +471,7 @@ interface FeedItem {
 }
 
 function MeetTeam({ c }: { c: Ctx }) {
-  const { s, ds, gene, agendaSel, agreedF, act, after, mission, control } = c;
+  const { s, ds, gene, agendaSel, agreedF, act, after, mission } = c;
   const g = s.agendas.find((x) => x.agenda === agendaSel)!;
   const agreed = g.status === 'agreed';
   const voters = new Set(g.proposals.flatMap((pp) => pp.votes.map((v) => v.voter)));
@@ -549,7 +542,6 @@ function MeetTeam({ c }: { c: Ctx }) {
         {!agreed && voters.size >= s.members.length && g.proposals.length > 0 && (
           <p className="verdict warn" role="status"><b aria-hidden="true">!</b> {screenFill(C.meeting.allVotedNoQuorum, { q: s.quorum })}</p>
         )}
-        {!agreed && <p className="mini muted">{C.meeting.proposeHow}</p>}
         <h4 className="lab" style={{ marginTop: 12 }}>{C.meeting.feedTitle}</h4>
         <ol className="s12-feed" aria-label={C.meeting.feedTitle}>
           {feed.map((it, i) => (
@@ -565,7 +557,6 @@ function MeetTeam({ c }: { c: Ctx }) {
           <b aria-hidden="true">✓</b> {C.meeting.allAgreed} <button type="button" className="btn sm pri" onClick={() => c.setTab('run')}>{C.meeting.toRun}</button>
         </p>
       )}
-      {control && <p className="mini muted">{screenFill(C.ui.controlMark, { name: shortName(control.name, 10) })}</p>}
     </>
   );
 }
@@ -612,7 +603,7 @@ function ProposalCard({ c, g, pp, isMine, canVote, open, onOpen, children }: {
 // ── ③ 스크리닝 실행 ──
 
 function RunMine({ c }: { c: Ctx }) {
-  const { s, ds, gene, agreedF, act, after, board } = c;
+  const { s, ds, gene, agreedF, act, after } = c;
   const [ask, setAsk] = useState(false);
   const running = s.runs.find((r) => r.status === 'queued' || r.status === 'running');
   const balance = s.balanceCents;
@@ -671,9 +662,7 @@ function RunMine({ c }: { c: Ctx }) {
             </table>
           </div>
         )}
-        <p className="mini muted">{C.run.snapshotNote}</p>
       </Panel>
-      {board.workerMode === 'fixture' && <p className="mini muted">{C.ui.fixtureNote}</p>}
     </>
   );
 }
@@ -751,7 +740,6 @@ function RunTeam({ c }: { c: Ctx }) {
                 );
               })}
             </ul>
-            <p className="mini muted">{C.run.missedNote}</p>
           </details>
         )}
         <div className="acts">
@@ -881,7 +869,6 @@ function ShopMine({ c }: { c: Ctx }) {
             <button type="button" className="btn sm" onClick={() => setClaimFor(null)}>{C.shop.cancel}</button>
           </div>
         )}
-        {st.view === 'table' && view.length > 0 && <p className="mini muted">{C.shop.tableIntro}</p>}
         {view.length === 0 ? <p className="empty">{C.shop.none}</p> : st.view === 'table' ? (
           <ShelfTable rows={list} gene={gene} rankOf={rankOf} renderAct={actFor} />
         ) : (
@@ -987,7 +974,6 @@ function Cart({ c }: { c: Ctx }) {
         <div><dt>{C.shop.sumMembers}</dt><dd>{people}<small>/{s.members.length}</small></dd></div>
         <div><dt>{C.shop.sumDock}</dt><dd style={{ fontSize: 13 }}>{money(dockQueue(s, control) * s.costs.dockCents)}</dd></div>
       </dl>
-      {control && <p className="mini muted">{screenFill(C.shop.controlNote, { name: shortName(control.name, 10) })}</p>}
     </Panel>
   );
 }
