@@ -89,9 +89,12 @@ describe('판정 재료 — game-rules 와 같은 값', () => {
     for (const d of DOSES) assert.equal(R.doseToxicityAt(d), PIPELINE_RULES.doseToxicity[d]);
     for (const t of [12, 23.6, 30, 35.1, 47, 55, 86.7]) assert.ok(Math.abs(R.doseToxicityAt(R.doseForToxicity(t)) - t) < 1e-9);
   });
-  test('효력 모델 4 표적 — 설계 §5.9 표(고통등급 ACHE C · EGFR D · DPP4 C · PTGS2 D)', () => {
+  test('효력 모델 — 열린 표적마다 하나(고통등급: 종양 이종이식 D · 그 밖 C)', () => {
     assert.deepEqual(Object.keys(PRECLINICAL_MODELS).sort(), DOCKING_TARGETS.map((t) => t.id).sort());
-    assert.deepEqual(Object.values(PRECLINICAL_MODELS).map((m) => `${m.gene}:${m.painGrade}`).sort(), ['ACHE:C', 'DPP4:C', 'EGFR:D', 'PTGS2:D']);
+    assert.deepEqual(
+      Object.values(PRECLINICAL_MODELS).map((m) => `${m.gene}:${m.painGrade}`).sort(),
+      ['ACHE:C', 'ALK:D', 'DPP4:C', 'EGFR:D', 'ERBB2:D', 'GCK:C', 'PTGS2:D'],
+    );
   });
 });
 
@@ -131,7 +134,7 @@ describe('설계 예시 재현(§5.9 ④ — 시안 예시 리드 · 경구)', (
 });
 
 describe("보장 — 'MRSD 이하 용량이면 그 제형에서 S ≥ 35'(game-rules judgeStep('ind'))", () => {
-  test('4 표적 × 후보 2,000(무작위 물성) × 제형 3 × 용량 3 × 수준 3', () => {
+  test('열린 표적 전부 × 후보 500(무작위 물성) × 제형 3 × 용량 3 × 수준 3', () => {
     const r = rng(20261024);
     let checked = 0;
     let allowed = 0;
@@ -157,11 +160,11 @@ describe("보장 — 'MRSD 이하 용량이면 그 제형에서 S ≥ 35'(game-r
         }
       }
     }
-    assert.equal(checked, 4 * 500 * 3 * 3 * 3);
+    assert.equal(checked, DOCKING_TARGETS.length * 500 * 3 * 3 * 3);
     assert.ok(allowed > checked / 4, `허용 조합이 너무 적어요(${allowed}/${checked})`);
   });
 
-  test('신호 9조합 × 표적 4 × 제형 3 × 용량 3 × 수준 3 — 규칙 식으로 직접(S = 100 − Dt × Rk × K)', () => {
+  test('신호 9조합 × 열린 표적 전부 × 제형 3 × 용량 3 × 수준 3 — 규칙 식으로 직접(S = 100 − Dt × Rk × K)', () => {
     for (const target of Object.values(PRECLINICAL_MODELS)) {
       for (const herg of RISKS) for (const hepatotoxicity of RISKS) {
         const input: PreclinicalInput = { targetId: target.targetId, cns: target.targetId === 'ache-4ey7', p: 0.7, herg, hepatotoxicity, oralAbsorption: 'moderate', bbb: 'moderate', seed: `${herg}${hepatotoxicity}` };

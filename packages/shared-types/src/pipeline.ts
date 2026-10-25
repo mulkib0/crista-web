@@ -68,23 +68,35 @@ export const PIPELINE_LIMITS = {
 } as const;
 
 /**
- * 4대 질환(MONDO id) → Stage 3 도킹 표적(`DOCKING_TARGETS[].id`) 기본 매핑(v11). Stage 1 데이터셋(`disease_targets.json`)의
- * `mondoId` · `dockingTargetId` 와 같은 짝이다. ① 선언에서 질환을 고르면 프로그램 표적이 바로 정해진다.
+ * 4대 질환(MONDO id) → 그 질환에서 고를 수 있는 Stage 3 도킹 표적 목록(`DOCKING_TARGETS[].id`).
+ * Stage 1 데이터셋(`disease_targets.json`)의 `mondoId` · `dockingTargetId` 와 같은 짝이고, 재도킹 검증을 통과한 표적만 들어온다.
+ * **첫 값이 그 질환의 기본 표적**(`DISEASE_TO_TARGET` — ① 선언에서 질환만 고르면 이 표적이 정해진다).
  */
-export const DISEASE_TO_TARGET = {
+export const DISEASE_TARGETS = {
+  MONDO_0004975: ['ache-4ey7'],
+  MONDO_0005233: ['egfr-1m17', 'alk-2xp2', 'erbb2-3pp0'],
+  MONDO_0005148: ['dpp4-1x70', 'gck-1v4s'],
+  MONDO_0008383: ['cox2-3ln1'],
+} as const;
+export type DiseaseId = keyof typeof DISEASE_TARGETS;
+/** 도킹 표적 id — `DOCKING_TARGETS[].id` 와 같은 값. */
+export type TargetId = (typeof DISEASE_TARGETS)[DiseaseId][number];
+export const DISEASE_IDS = Object.keys(DISEASE_TARGETS) as DiseaseId[];
+/** 질환 → 기본 도킹 표적(그 질환 목록의 첫 값). */
+export const DISEASE_TO_TARGET: { [D in DiseaseId]: (typeof DISEASE_TARGETS)[D][0] } = {
   MONDO_0004975: 'ache-4ey7',
   MONDO_0005233: 'egfr-1m17',
   MONDO_0005148: 'dpp4-1x70',
   MONDO_0008383: 'cox2-3ln1',
-} as const;
-export type DiseaseId = keyof typeof DISEASE_TO_TARGET;
-/** 도킹 표적 id — `DOCKING_TARGETS[].id` 와 같은 값. */
-export type TargetId = (typeof DISEASE_TO_TARGET)[DiseaseId];
-export const DISEASE_IDS = Object.keys(DISEASE_TO_TARGET) as DiseaseId[];
-/** 표적 → 질환(위 매핑의 역방향 — 1:1 이라 표적만 저장해도 질환을 되찾을 수 있다). */
+};
+/** 표적 → 질환(위 매핑의 역방향 — 표적은 한 질환에만 속하므로 표적만 저장해도 질환을 되찾을 수 있다). */
 export const TARGET_TO_DISEASE = Object.fromEntries(
-  (Object.entries(DISEASE_TO_TARGET) as Array<[DiseaseId, TargetId]>).map(([disease, target]) => [target, disease]),
+  (Object.entries(DISEASE_TARGETS) as Array<[DiseaseId, readonly TargetId[]]>).flatMap(([disease, targets]) =>
+    targets.map((target) => [target, disease] as const),
+  ),
 ) as Record<TargetId, DiseaseId>;
+/** 그 질환에서 고를 수 있는 표적들(첫 값 = 기본). */
+export const targetsOfDisease = (diseaseId: DiseaseId): readonly TargetId[] => DISEASE_TARGETS[diseaseId];
 /** 질환 이름(화면 · Stage 1 데이터셋 키와 같은 말). */
 export const DISEASE_LABEL: Record<DiseaseId, string> = {
   MONDO_0004975: '알츠하이머병',
@@ -129,6 +141,23 @@ export const TRIAL_OPTIONS: Readonly<
     disease: '류마티스 관절염',
     populations: ['중등도~중증 활동성 류마티스 관절염 성인 환자', '기존 NSAID 위장관 부작용 위험군 관절염 환자', '급성 염증성 관절 통증 환자'],
     endpoints: ['ACR20 반응 달성률(24주)', '관절 통증 시각아날로그척도(VAS) 변화', '건강평가설문 장애지수(HAQ-DI) 변화'],
+  },
+  'alk-2xp2': {
+    disease: '비소세포폐암',
+    populations: ['ALK 융합 유전자 양성 국소진행성 · 전이성 비소세포폐암 환자', 'ALK 억제제 치료 후 재발 비소세포폐암 환자', '뇌전이를 동반한 ALK 융합 비소세포폐암 환자'],
+    endpoints: ['무진행 생존기간(PFS)', '객관적 반응률(ORR · RECIST 1.1)', '두개내 반응률(IC-ORR)'],
+    brainPopulations: ['뇌전이를 동반한 ALK 융합 비소세포폐암 환자'],
+  },
+  'erbb2-3pp0': {
+    disease: '비소세포폐암',
+    populations: ['HER2(ERBB2) 변이 양성 비소세포폐암 환자', '백금 기반 화학요법 후 재발 HER2 변이 비소세포폐암 환자', '뇌전이를 동반한 HER2 변이 비소세포폐암 환자'],
+    endpoints: ['객관적 반응률(ORR · RECIST 1.1)', '무진행 생존기간(PFS)', '반응 지속기간(DoR)'],
+    brainPopulations: ['뇌전이를 동반한 HER2 변이 비소세포폐암 환자'],
+  },
+  'gck-1v4s': {
+    disease: '2형 당뇨병',
+    populations: ['메트포르민 단독요법으로 혈당이 조절되지 않는 2형 당뇨병 환자', '인슐린 분비능이 남아 있는 초기 2형 당뇨병 환자', '식이 · 운동요법 중인 2형 당뇨병 환자'],
+    endpoints: ['24주 시점 당화혈색소(HbA1c) 변화량', '공복 혈장 포도당(FPG) 변화량', '저혈당 사건 발생률'],
   },
 };
 

@@ -984,7 +984,8 @@ export async function marketDrawer(db: Queryable, classId: string, teamId: strin
   for (const p of trend) candles = updateCandles(candles, Date.parse(p.t), p.p);
   const n = (k: string) => counts.rows.find((r) => r.kind === k)?.n ?? 0;
   const rating = defaultAnalystRating(row?.lastChangePct ?? 0, null) as AnalystRatingKey;
-  const disease = steps.diseaseId ? diseaseById(steps.diseaseId) : undefined;
+  // 한 질환에 표적이 여럿이라 질환으로 찾으면 기본 표적이 나온다 — 그 모둠이 고른 표적으로 찾는다.
+  const disease = (steps.targetId ? diseaseByTarget(steps.targetId) : undefined) ?? (steps.diseaseId ? diseaseById(steps.diseaseId) : undefined);
   return {
     team: { id: team.id, startupName: team.startupName, ticker: team.ticker, ink: team.ink, hqTier: team.hqTier, slogan: team.slogan },
     priceUsd: price,

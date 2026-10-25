@@ -89,19 +89,34 @@ async function main() {
   }
 
   const board0 = (await a.call<BoardResponse>('GET', API.board)).body;
-  const [alz, nsclc] = [board0.diseases.find((d) => d.gene === 'ACHE')!, board0.diseases.find((d) => d.gene === 'EGFR')!];
+  const [alz, nsclc, alk] = [
+    board0.diseases.find((d) => d.gene === 'ACHE')!,
+    board0.diseases.find((d) => d.gene === 'EGFR')!,
+    board0.diseases.find((d) => d.gene === 'ALK')!,
+  ];
 
   // ── 2. 표적 자료 ──
   const data: Record<string, DiseaseTargetsResponse> = {};
-  await check('표적 자료 4질환 — 표적 8개 안에 도킹 표적 · expressionScore', async () => {
+  await check('질환 4 · 표적 7 — 한 질환에 도킹 표적이 여럿(비소세포폐암 3 · 2형 당뇨 2)', () => {
+    assert.equal(new Set(board0.diseases.map((d) => d.diseaseId)).size, 4);
+    assert.equal(board0.diseases.length, 7);
+    assert.deepEqual(board0.diseases.filter((d) => d.diseaseId === nsclc.diseaseId).map((d) => d.gene), ['EGFR', 'ALK', 'ERBB2']);
+    assert.equal(alk.diseaseId, nsclc.diseaseId);
+    assert.ok(alk.referenceKcal < 0 && alk.referenceLigand.smiles);
+  });
+  await check('표적 자료 4질환 — 표적 8개 안에 그 질환의 도킹 표적 전부 · expressionScore', async () => {
     for (const d of board0.diseases) {
+      if (data[d.diseaseId]) continue;
       const res = await a.call<DiseaseTargetsResponse>('GET', API.diseaseTargets(d.diseaseId));
       assert.equal(res.status, 200, JSON.stringify(res.body));
       data[d.diseaseId] = res.body;
       const list = targetShortlist(res.body.targets);
       assert.equal(list.length, 8);
-      assert.ok(list.some((t) => t.dockingTargetId === d.targetId), `${d.gene} 가 8개 안에 없음`);
       assert.ok(list.every((t) => typeof t.expressionScore === 'number'));
+      // 그 질환에서 고를 수 있는 표적은 8줄 안에 모두 있어야 한다 — 빠지면 1.1 에서 보이지 않는다.
+      for (const open of board0.diseases.filter((x) => x.diseaseId === d.diseaseId)) {
+        assert.ok(list.some((t) => t.dockingTargetId === open.targetId), `${open.gene} 가 8개 안에 없음`);
+      }
     }
     const ache = targetShortlist(data[alz.diseaseId]!.targets);
     assert.equal(ache.at(-1)!.symbol, 'ACHE', '알츠하이머는 ACHE 가 8위(시안과 같음)');
@@ -109,10 +124,14 @@ async function main() {
 
   // ── 3. 올리기 규칙 ──
   const post = (s: Agent, body: TargetPickRequest) => s.call<Partial<ApiErrorBody>>('POST', API.picks, body);
-  await check('도킹 표적이 아닌 targetId → 400', async () => {
+  await check('다른 질환의 표적 · 검증 못 한 표적 → 400(열린 표적을 알려 준다)', async () => {
     const r = await post(a, { diseaseId: alz.diseaseId, targetId: 'egfr-1m17', reasons: ['drug'] });
     assert.equal(r.status, 400);
-    assert.match(r.body.error?.message ?? '', /ACHE 하나/);
+    assert.match(r.body.error?.message ?? '', /ACHE/);
+    // draft(재도킹 검증 탈락) 표적은 질환이 맞아도 받지 않는다.
+    const draft = await post(b, { diseaseId: nsclc.diseaseId, targetId: 'met-2wgj', reasons: ['drug'] });
+    assert.equal(draft.status, 400, JSON.stringify(draft.body));
+    assert.match(draft.body.error?.message ?? '', /EGFR · ALK · ERBB2/);
   });
   await check('모르는 근거 · 겹친 근거 → 400', async () => {
     assert.equal((await post(a, { diseaseId: alz.diseaseId, reasons: ['legacy'] })).status, 400);
@@ -159,6 +178,26 @@ async function main() {
     assert.equal(board.program.targetId, nsclc.targetId);
     assert.equal(board.steps.find((s) => s.id === '1.1')!.state, 'done');
     assert.notEqual(board.steps.find((s) => s.id === '1.2')!.state, 'locked');
+  });
+
+  // ── 5. 같은 질환의 다른 표적(ALK) — 올리고 확정하면 표적 버전이 새로 열린다 ──
+  await check('기본이 아닌 표적(ALK)으로 올리기 → 200 · 카드에 그 표적이 남는다', async () => {
+    const row = targetShortlist(data[nsclc.diseaseId]!.targets).find((t) => t.dockingTargetId === alk.targetId)!;
+    assert.equal(row.symbol, 'ALK');
+    const r = await post(a, { diseaseId: nsclc.diseaseId, targetId: alk.targetId, reasons: ['ready', 'drug'], weights: [1, 2, 1, 0], note: 'ALK 융합 환자군이 또렷해요' });
+    assert.equal(r.status, 200, JSON.stringify(r.body));
+    const picks = (await a.call<BoardResponse>('GET', API.board)).body.picks;
+    const mine = picks.find((x) => x.diseaseId === nsclc.diseaseId && x.byName === '하늘')!;
+    assert.equal(mine.targetId, alk.targetId);
+  });
+  await check('ALK 로 확정 → program.targetId 가 바뀌고 표적 버전이 올라간다', async () => {
+    const before = (await a.call<BoardResponse>('GET', API.board)).body.program;
+    assert.equal((await a.call('POST', API.target, { diseaseId: nsclc.diseaseId, targetId: alk.targetId })).status, 200);
+    const board = (await a.call<BoardResponse>('GET', API.board)).body;
+    assert.equal(board.program.targetId, alk.targetId);
+    assert.equal(board.program.diseaseId, nsclc.diseaseId);
+    assert.equal(board.program.revisionNo, before.revisionNo + 1, '표적을 바꾸면 새 버전이 열린다');
+    assert.equal(board.steps.find((s) => s.id === '1.1')!.state, 'done');
   });
 
   console.log(failed ? `\n${failed}개 실패` : '\n모두 통과');
