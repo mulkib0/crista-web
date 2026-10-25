@@ -40,6 +40,7 @@ import {
   DEFAULT_TRACK,
   STEP_IDS,
   STEP_META,
+  STEP_NEEDS,
   teamChannel,
   type AccountView,
   type ApprovalStatus,
@@ -59,6 +60,8 @@ import {
   type PropertiesResponse,
   type ScreenParams,
   type StepId,
+  type StepNeed,
+  type StepNeedKey,
   type StepView,
   type TargetPickView,
   type TrackId,
@@ -317,6 +320,8 @@ interface StepFacts {
   active: boolean;
   progress: number | null;
   by_name: string | null;
+  /** 처음 성공한 작업을 낸 모둠원(누가 열었나). */
+  done_by_name?: string | null;
 }
 
 /** 지금 표적 버전의 작업만 센다 — 표적을 바꿨다 돌아와도 옛 버전의 결과는 근거가 아니다. */
@@ -328,7 +333,8 @@ export async function stepFacts(db: Queryable, teamId: string, revisionId: strin
             bool_or(j.status = 'succeeded') as done,
             bool_or(j.status in ('queued', 'running')) as active,
             max(j.progress) filter (where j.status in ('queued', 'running')) as progress,
-            (array_agg(a.display_name order by j.created_at desc) filter (where j.status in ('queued', 'running')))[1] as by_name
+            (array_agg(a.display_name order by j.created_at desc) filter (where j.status in ('queued', 'running')))[1] as by_name,
+            (array_agg(a.display_name order by j.created_at) filter (where j.status = 'succeeded'))[1] as done_by_name
        from web.jobs j left join web.accounts a on a.user_id = j.created_by
       where j.team_id = $1 and j.program_revision_id = $2
       group by j.step`,
@@ -355,6 +361,9 @@ export interface StageFacts {
   approval: { status: ApprovalStatus; progressPct?: number } | null;
   /** 4.1 가장 최근 임상 시도(F41 · clinical_trials) · 3상 통과 여부. */
   trial?: { phase: 'phase1' | 'phase2' | 'phase3'; status: 'recruiting' | 'running' | 'completed' | 'held' | 'pending'; attempt: number; progressPct: number; phase3Passed: boolean } | null;
+  /** 누가 열었나 — 2.2 첫 특허 후보를 고른 모둠원 · 3.1 첫 유효 특허의 출원서를 연 모둠원. */
+  leadCandidateBy?: string | null;
+  patentBy?: string | null;
 }
 
 export const NO_STAGE_FACTS: StageFacts = {
@@ -367,6 +376,8 @@ export const NO_STAGE_FACTS: StageFacts = {
   ind: null,
   approval: null,
   trial: null,
+  leadCandidateBy: null,
+  patentBy: null,
 };
 
 const DEFERRED_REASON = '임상 · 허가 상세 설계를 미뤘어요(설계 §6.1). 초안 · 연구 노트는 미리 쓸 수 있어요.';
@@ -382,6 +393,8 @@ export interface StepRulesInput {
   facts: Map<JobStep, StepFacts>;
   balanceCents: number;
   stage?: Partial<StageFacts>;
+  /** 누가 열었나 — 1.1 표적을 확정한 모둠원 · 3.2 주력을 정한 모둠원(program_revisions). */
+  by?: { target?: string | null; lead?: string | null };
 }
 
 /**
@@ -402,19 +415,49 @@ export function computeSteps(input: StepRulesInput & { track?: TrackId }): StepV
   return TRACK_STEP_RULES[input.track ?? DEFAULT_TRACK](input);
 }
 
+/** 4.1 — 통과한 상의 수(0~3). 'completed' 는 그 상 통과, 'held' 는 그 상 보류(설계 §6.1). */
+function trialPassed(t: StageFacts['trial'] | null | undefined): number {
+  if (!t) return 0;
+  if (t.phase3Passed) return 3;
+  const order = { phase1: 1, phase2: 2, phase3: 3 }[t.phase];
+  return t.status === 'completed' ? order : order - 1;
+}
+
+/** 단계마다 다음 단계를 여는 조건(`STEP_NEEDS`)과 채움 여부 — 완료 판정도 이것 하나로 한다(화면 띠 단추와 어긋나지 않게). */
+function stepNeeds(input: StepRulesInput, st: StageFacts): Record<StepId, StepNeed[]> {
+  const passed = trialPassed(st.trial);
+  const met: Record<StepNeedKey, boolean> = {
+    target: !!input.targetId,
+    screen: !!input.facts.get('1.2')?.done,
+    dock: !!input.facts.get('2.1')?.done,
+    lead: st.leadCandidates > 0,
+    patent: st.activePatents > 0,
+    iacuc: st.iacucApproved,
+    animal: st.animalDone,
+    main: st.leadChosen,
+    ind: st.ind?.status === 'approved',
+    phase1: passed >= 1,
+    phase2: passed >= 2,
+    phase3: passed >= 3,
+    approval: st.approval?.status === 'approved',
+  };
+  return Object.fromEntries(STEP_IDS.map((id) => [id, STEP_NEEDS[id].map((n) => ({ ...n, done: met[n.key] }))])) as Record<StepId, StepNeed[]>;
+}
+
 function drugSteps(input: StepRulesInput): StepView[] {
-  const { targetId, facts, balanceCents } = input;
+  const { facts, balanceCents } = input;
   const st: StageFacts = { ...NO_STAGE_FACTS, ...input.stage };
-  const done = new Set<StepId>();
-  if (targetId) done.add('1.1');
-  if (facts.get('1.2')?.done) done.add('1.2');
-  if (facts.get('2.1')?.done) done.add('2.1');
-  if (st.leadCandidates > 0) done.add('2.2');
-  if (st.activePatents > 0) done.add('3.1');
-  if (st.iacucApproved && st.animalDone && st.leadChosen) done.add('3.2');
-  if (st.ind?.status === 'approved') done.add('3.3');
-  if (st.approval?.status === 'approved') done.add('4.2');
-  if (st.trial?.phase3Passed) done.add('4.1');
+  const needs = stepNeeds(input, st);
+  const done = new Set<StepId>(STEP_IDS.filter((id) => needs[id].every((n) => n.done)));
+  // 누가 열었나 — 사람이 끝낸 단계만(3.3 · 4.1 · 4.2 는 심사 · 게임 시계가 끝낸다).
+  const opener: Partial<Record<StepId, string | null | undefined>> = {
+    '1.1': input.by?.target,
+    '1.2': facts.get('1.2')?.done_by_name,
+    '2.1': facts.get('2.1')?.done_by_name,
+    '2.2': st.leadCandidateBy,
+    '3.1': st.patentBy,
+    '3.2': input.by?.lead,
+  };
 
   return STEP_IDS.map((id): StepView => {
     const meta = STEP_META[id];
@@ -428,10 +471,12 @@ function drugSteps(input: StepRulesInput): StepView[] {
       evidence: meta.evidence,
       ...(cost !== undefined ? { costCents: cost } : {}),
       ...(duration !== undefined ? { durationGameDays: duration } : {}),
+      need: needs[id],
     };
     const need = STEP_REQUIRES[id];
+    const by = opener[id];
     if (DEFERRED_STEPS.includes(id)) return { ...base, state: 'locked', reason: DEFERRED_REASON, ...(need ? { unlockBy: need } : {}) };
-    if (done.has(id)) return { ...base, state: 'done' };
+    if (done.has(id)) return { ...base, state: 'done', ...(by ? { doneByName: by } : {}) };
     if (need && !done.has(need)) return { ...base, state: 'locked', unlockBy: need, reason: `${need} ${STEP_META[need].title}을 먼저 마쳐야 해요.` };
 
     const fact = id === '1.2' || id === '2.1' || id === '2.2' || id === '3.2' ? facts.get(id) : undefined;
@@ -480,10 +525,16 @@ export async function loadStageFacts(db: Queryable, revisionId: string, leadChos
     ind: { status: IndStatus; submitted_game_day: number | null; decide_game_day: number | null } | null;
     approval: { status: ApprovalStatus; submitted_game_day: number | null; decide_game_day: number | null } | null;
     trial: { phase: 'phase1' | 'phase2' | 'phase3'; status: 'recruiting' | 'running' | 'completed' | 'held' | 'pending'; attempt: number; enrolled: number; target_n: number; started_game_day: number | null; ends_game_day: number | null; phase3_passed: boolean } | null;
+    lead_candidate_by: string | null;
+    patent_by: string | null;
   }>(
     `select
        (select count(*)::int from web.lead_candidates where program_revision_id = $1) as lead_candidates,
+       (select a.display_name from web.lead_candidates c join web.accounts a on a.user_id = c.picked_by
+         where c.program_revision_id = $1 order by c.created_at limit 1) as lead_candidate_by,
        (select count(*)::int from web.patents where program_revision_id = $1 and status = 'active') as active_patents,
+       (select a.display_name from web.patents p join web.patent_applications pa on pa.id = p.application_id join web.accounts a on a.user_id = pa.created_by
+         where p.program_revision_id = $1 and p.status = 'active' order by p.created_at limit 1) as patent_by,
        (select count(*)::int from web.patent_applications where program_revision_id = $1 and status = 'reviewing') as reviewing_patents,
        exists (select 1 from web.iacuc_protocols where program_revision_id = $1 and approved_version is not null) as iacuc_approved,
        exists (select 1 from web.jobs where program_revision_id = $1 and step = '3.2' and facility = 'animal_study' and status = 'succeeded') as animal_done,
@@ -536,6 +587,8 @@ export async function loadStageFacts(db: Queryable, revisionId: string, leadChos
     leadChosen,
     ind,
     approval,
+    leadCandidateBy: r.lead_candidate_by,
+    patentBy: r.patent_by,
   };
 }
 
@@ -664,7 +717,7 @@ export async function loadBoard(deps: Deps, account: AccountView): Promise<Board
     clock,
     maxPatentsPerTeam: clsRows.rows[0]!.max_patents_per_team,
     track,
-    steps: computeSteps({ track, targetId: program.target_id, facts, balanceCents, stage }),
+    steps: computeSteps({ track, targetId: program.target_id, facts, balanceCents, stage, by: { target: program.target_set_by_name, lead: program.lead_set_by_name } }),
     jobs: jobsRows.rows.map(jobView),
     claims,
     picks,
