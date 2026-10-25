@@ -49,7 +49,7 @@
 ## 4. 남은 위험 · 결정
 
 1. **crista 의 Railway IaC** — crista PR #7(`deploy/railway-keep-crista-web`)이 `crista-web` 을 그 파일에 적어 plan 이 변경 0건이 됐다. **병합 전까지는** crista main 에서 apply 하면 지우는 계획이 그대로 나온다.
-2. 워커는 지금 표적 4종(crista `DOCKING_TARGETS`) — 12대 질환 확장(§6.1.1)은 crista 저장소 변경.
+2. 워커는 지금 표적 7종(crista `DOCKING_TARGETS` — 2026-10-25 에 ALK `2XP2` · ERBB2 `3PP0` · GCK `1V4S` 를 재도킹 검증 통과분으로 열었다, §6.1.1-a). 12대 질환 확장(§6.1.1)은 그대로 crista 저장소 변경이고, 검증에서 떨어진 표적 8종은 draft 로 닫혀 있다.
 3. 로그인은 GoTrue 상한과 무관해졌다(위). 0004 전에 만든 계정만 첫 로그인 한 번 GoTrue 를 거친다.
 4. 호스팅 점검 학급 · 계정(W6 · 로그인 몰림 점검)을 남길지 지울지.
 
