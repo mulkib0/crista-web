@@ -1,0 +1,1266 @@
+{
+  "W": 1440,
+  "tag": "B",
+  "bad": [],
+  "rows": [
+    {
+      "step": "1.1",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 1.2 화합물 스크리닝 →",
+      "clickable": true,
+      "where": "보기 · 질환 지도",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 1.2 화합물 스크리닝 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "●질환 지도 · 질환군 타일 → 근거 열지도 | 관계망 · 질환-유전자 망에서 점 고르기 | 내 점수 · 가중치로 32개 다시 줄 세우기 | 32개 한눈에 · 점수 × 약물 근거 산점도 | 카드 뒤집기 · 점수만 보고 고른 뒤 구조 확인",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null,
+      "stay": true
+    },
+    {
+      "step": "1.1",
+      "tab": "질환 지도 · 질환군 타일 → 근거 열지도",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 1.2 화합물 스크리닝 →",
+      "clickable": true,
+      "where": "보기 · 질환 지도",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 1.2 화합물 스크리닝 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "●질환 지도 · 질환군 타일 → 근거 열지도 | 관계망 · 질환-유전자 망에서 점 고르기 | 내 점수 · 가중치로 32개 다시 줄 세우기 | 32개 한눈에 · 점수 × 약물 근거 산점도 | 카드 뒤집기 · 점수만 보고 고른 뒤 구조 확인",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "1.1",
+      "tab": "관계망 · 질환-유전자 망에서 점 고르기",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 1.2 화합물 스크리닝 →",
+      "clickable": true,
+      "where": "보기 · 관계망",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 1.2 화합물 스크리닝 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "질환 지도 · 질환군 타일 → 근거 열지도 | ●관계망 · 질환-유전자 망에서 점 고르기 | 내 점수 · 가중치로 32개 다시 줄 세우기 | 32개 한눈에 · 점수 × 약물 근거 산점도 | 카드 뒤집기 · 점수만 보고 고른 뒤 구조 확인",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "1.1",
+      "tab": "내 점수 · 가중치로 32개 다시 줄 세우기",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 1.2 화합물 스크리닝 →",
+      "clickable": true,
+      "where": "보기 · 내 점수",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 1.2 화합물 스크리닝 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "질환 지도 · 질환군 타일 → 근거 열지도 | 관계망 · 질환-유전자 망에서 점 고르기 | ●내 점수 · 가중치로 32개 다시 줄 세우기 | 32개 한눈에 · 점수 × 약물 근거 산점도 | 카드 뒤집기 · 점수만 보고 고른 뒤 구조 확인",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "1.1",
+      "tab": "32개 한눈에 · 점수 × 약물 근거 산점도",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 1.2 화합물 스크리닝 →",
+      "clickable": true,
+      "where": "보기 · 32개 한눈에",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 1.2 화합물 스크리닝 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "질환 지도 · 질환군 타일 → 근거 열지도 | 관계망 · 질환-유전자 망에서 점 고르기 | 내 점수 · 가중치로 32개 다시 줄 세우기 | ●32개 한눈에 · 점수 × 약물 근거 산점도 | 카드 뒤집기 · 점수만 보고 고른 뒤 구조 확인",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "1.1",
+      "tab": "카드 뒤집기 · 점수만 보고 고른 뒤 구조 확인",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 1.2 화합물 스크리닝 →",
+      "clickable": true,
+      "where": "보기 · 카드 뒤집기",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 1.2 화합물 스크리닝 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "질환 지도 · 질환군 타일 → 근거 열지도 | 관계망 · 질환-유전자 망에서 점 고르기 | 내 점수 · 가중치로 32개 다시 줄 세우기 | 32개 한눈에 · 점수 × 약물 근거 산점도 | ●카드 뒤집기 · 점수만 보고 고른 뒤 구조 확인",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "1.2",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.1 분자 도킹 →",
+      "clickable": true,
+      "where": "걸음 1/4 · ① 미션 브리핑",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.1 분자 도킹 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "●✓미션 브리핑 · 2/2 읽음 → ✓모둠 기준 회의 · 6/6 합의 → ✓스크리닝 실행 · 1회 · 172개 통과 → ✓분자 쇼핑 · 찜 4개 ⇒ 다음 단계 2.1 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "1.2 화합물 스크리닝에 왔어요 / ‹ 1.1 다시 보기 / ▴ / 1.1에서 가져온 것 / 표적 DPP4 · 2형 당뇨병 / 여기서 열쇠 / 스크리닝 1회 → 2.1 열림",
+      "stay": true
+    },
+    {
+      "step": "1.2",
+      "tab": "✓ 미션 브리핑 · 2/2 읽음",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.1 분자 도킹 →",
+      "clickable": true,
+      "where": "걸음 1/4 · ① 미션 브리핑",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.1 분자 도킹 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "●✓미션 브리핑 · 2/2 읽음 → ✓모둠 기준 회의 · 6/6 합의 → ✓스크리닝 실행 · 1회 · 172개 통과 → ✓분자 쇼핑 · 찜 4개 ⇒ 다음 단계 2.1 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "1.2 화합물 스크리닝에 왔어요 / ‹ 1.1 다시 보기 / ▴ / 1.1에서 가져온 것 / 표적 DPP4 · 2형 당뇨병 / 여기서 열쇠 / 스크리닝 1회 → 2.1 열림"
+    },
+    {
+      "step": "1.2",
+      "tab": "✓ 모둠 기준 회의 · 6/6 합의",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.1 분자 도킹 →",
+      "clickable": true,
+      "where": "걸음 2/4 · ② 모둠 기준 회의",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.1 분자 도킹 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "✓미션 브리핑 · 2/2 읽음 → ●✓모둠 기준 회의 · 6/6 합의 → ✓스크리닝 실행 · 1회 · 172개 통과 → ✓분자 쇼핑 · 찜 4개 ⇒ 다음 단계 2.1 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "1.2 화합물 스크리닝에 왔어요 / ‹ 1.1 다시 보기 / ▴ / 1.1에서 가져온 것 / 표적 DPP4 · 2형 당뇨병 / 여기서 열쇠 / 스크리닝 1회 → 2.1 열림"
+    },
+    {
+      "step": "1.2",
+      "tab": "✓ 스크리닝 실행 · 1회 · 172개 통과",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.1 분자 도킹 →",
+      "clickable": true,
+      "where": "걸음 3/4 · ③ 스크리닝 실행",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.1 분자 도킹 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "✓미션 브리핑 · 2/2 읽음 → ✓모둠 기준 회의 · 6/6 합의 → ●✓스크리닝 실행 · 1회 · 172개 통과 → ✓분자 쇼핑 · 찜 4개 ⇒ 다음 단계 2.1 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "1.2 화합물 스크리닝에 왔어요 / ‹ 1.1 다시 보기 / ▴ / 1.1에서 가져온 것 / 표적 DPP4 · 2형 당뇨병 / 여기서 열쇠 / 스크리닝 1회 → 2.1 열림"
+    },
+    {
+      "step": "1.2",
+      "tab": "✓ 분자 쇼핑 · 찜 4개",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.1 분자 도킹 →",
+      "clickable": true,
+      "where": "걸음 4/4 · ④ 분자 쇼핑",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.1 분자 도킹 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "✓미션 브리핑 · 2/2 읽음 → ✓모둠 기준 회의 · 6/6 합의 → ✓스크리닝 실행 · 1회 · 172개 통과 → ●✓분자 쇼핑 · 찜 4개 ⇒ 다음 단계 2.1 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "1.2 화합물 스크리닝에 왔어요 / ‹ 1.1 다시 보기 / ▴ / 1.1에서 가져온 것 / 표적 DPP4 · 2형 당뇨병 / 여기서 열쇠 / 스크리닝 1회 → 2.1 열림"
+    },
+    {
+      "step": "2.1",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.2 ADMET 예측 · 특허 후보 →",
+      "clickable": true,
+      "where": "보기 · 구조 바꿔 다시 도킹",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.2 ADMET 예측 · 특」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "●구조 바꿔 다시 도킹 | 수심계 눈금 | 점수 카드 | 10배 계단",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.1 분자 도킹에 왔어요 / ‹ 1.2 다시 보기 / ▴ / 1.2에서 가져온 것 / 찜 4개 · 대조군 시타글립틴 / 여기서 열쇠 / 도킹 1건 → 2.2 열림",
+      "stay": true
+    },
+    {
+      "step": "2.1",
+      "tab": "구조 바꿔 다시 도킹",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.2 ADMET 예측 · 특허 후보 →",
+      "clickable": true,
+      "where": "보기 · 구조 바꿔 다시 도킹",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.2 ADMET 예측 · 특」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "●구조 바꿔 다시 도킹 | 수심계 눈금 | 점수 카드 | 10배 계단",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.1 분자 도킹에 왔어요 / ‹ 1.2 다시 보기 / ▴ / 1.2에서 가져온 것 / 찜 4개 · 대조군 시타글립틴 / 여기서 열쇠 / 도킹 1건 → 2.2 열림"
+    },
+    {
+      "step": "2.1",
+      "tab": "수심계 눈금",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.2 ADMET 예측 · 특허 후보 →",
+      "clickable": true,
+      "where": "보기 · 수심계 눈금",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.2 ADMET 예측 · 특」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "구조 바꿔 다시 도킹 | ●수심계 눈금 | 점수 카드 | 10배 계단",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.1 분자 도킹에 왔어요 / ‹ 1.2 다시 보기 / ▴ / 1.2에서 가져온 것 / 찜 4개 · 대조군 시타글립틴 / 여기서 열쇠 / 도킹 1건 → 2.2 열림"
+    },
+    {
+      "step": "2.1",
+      "tab": "점수 카드",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.2 ADMET 예측 · 특허 후보 →",
+      "clickable": true,
+      "where": "보기 · 점수 카드",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.2 ADMET 예측 · 특」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "구조 바꿔 다시 도킹 | 수심계 눈금 | ●점수 카드 | 10배 계단",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.1 분자 도킹에 왔어요 / ‹ 1.2 다시 보기 / ▴ / 1.2에서 가져온 것 / 찜 4개 · 대조군 시타글립틴 / 여기서 열쇠 / 도킹 1건 → 2.2 열림"
+    },
+    {
+      "step": "2.1",
+      "tab": "10배 계단",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "라라온 님이 열었어요 · 2.2 ADMET 예측 · 특허 후보 →",
+      "clickable": true,
+      "where": "보기 · 10배 계단",
+      "lime": [
+        "button.nb-btn「라라온 님이 열었어요 · 2.2 ADMET 예측 · 특」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "구조 바꿔 다시 도킹 | 수심계 눈금 | 점수 카드 | ●10배 계단",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.1 분자 도킹에 왔어요 / ‹ 1.2 다시 보기 / ▴ / 1.2에서 가져온 것 / 찜 4개 · 대조군 시타글립틴 / 여기서 열쇠 / 도킹 1건 → 2.2 열림"
+    },
+    {
+      "step": "2.2",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.1 선언 · 물질특허 →",
+      "clickable": true,
+      "where": "보기 · ADMET 실행",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.1 선언 · 물질특허 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "●ADMET 실행 · 대기열 2 | 물성 레이더 | 신호등 표 | 몸속 여행 지도 | 점수 분해 사슬",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.2 ADMET 예측 · 특허 후보에 왔어요 / ‹ 2.1 다시 보기 / ▴ / 2.1에서 가져온 것 / 도킹 4건 · 최고 ΔG -11.00 kcal/mol / 여기서 열쇠 / 특허 후보 1개 → 3.1 열림",
+      "stay": true
+    },
+    {
+      "step": "2.2",
+      "tab": "ADMET 실행 · 대기열 2",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.1 선언 · 물질특허 →",
+      "clickable": true,
+      "where": "보기 · ADMET 실행",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.1 선언 · 물질특허 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "●ADMET 실행 · 대기열 2 | 물성 레이더 | 신호등 표 | 몸속 여행 지도 | 점수 분해 사슬",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.2 ADMET 예측 · 특허 후보에 왔어요 / ‹ 2.1 다시 보기 / ▴ / 2.1에서 가져온 것 / 도킹 4건 · 최고 ΔG -11.00 kcal/mol / 여기서 열쇠 / 특허 후보 1개 → 3.1 열림"
+    },
+    {
+      "step": "2.2",
+      "tab": "물성 레이더",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.1 선언 · 물질특허 →",
+      "clickable": true,
+      "where": "보기 · 물성 레이더",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.1 선언 · 물질특허 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "ADMET 실행 · 대기열 2 | ●물성 레이더 | 신호등 표 | 몸속 여행 지도 | 점수 분해 사슬",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.2 ADMET 예측 · 특허 후보에 왔어요 / ‹ 2.1 다시 보기 / ▴ / 2.1에서 가져온 것 / 도킹 4건 · 최고 ΔG -11.00 kcal/mol / 여기서 열쇠 / 특허 후보 1개 → 3.1 열림"
+    },
+    {
+      "step": "2.2",
+      "tab": "신호등 표",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.1 선언 · 물질특허 →",
+      "clickable": true,
+      "where": "보기 · 신호등 표",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.1 선언 · 물질특허 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "ADMET 실행 · 대기열 2 | 물성 레이더 | ●신호등 표 | 몸속 여행 지도 | 점수 분해 사슬",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.2 ADMET 예측 · 특허 후보에 왔어요 / ‹ 2.1 다시 보기 / ▴ / 2.1에서 가져온 것 / 도킹 4건 · 최고 ΔG -11.00 kcal/mol / 여기서 열쇠 / 특허 후보 1개 → 3.1 열림"
+    },
+    {
+      "step": "2.2",
+      "tab": "몸속 여행 지도",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.1 선언 · 물질특허 →",
+      "clickable": true,
+      "where": "보기 · 몸속 여행 지도",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.1 선언 · 물질특허 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "ADMET 실행 · 대기열 2 | 물성 레이더 | 신호등 표 | ●몸속 여행 지도 | 점수 분해 사슬",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.2 ADMET 예측 · 특허 후보에 왔어요 / ‹ 2.1 다시 보기 / ▴ / 2.1에서 가져온 것 / 도킹 4건 · 최고 ΔG -11.00 kcal/mol / 여기서 열쇠 / 특허 후보 1개 → 3.1 열림"
+    },
+    {
+      "step": "2.2",
+      "tab": "점수 분해 사슬",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.1 선언 · 물질특허 →",
+      "clickable": true,
+      "where": "보기 · 점수 분해 사슬",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.1 선언 · 물질특허 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "결합력에서1.000.3 + 0.7 × p 1.00 → ×흡수 · 경구1.00A → ×뇌 노출1.00B → ×50 mg0.85De · 용량 효과 · ▼ 가장 끌어내림 → × 100 =효능 E85.0 → 다치지 않은 상태100 → −50 mg 부담30Dt → ×심장 · 간 위험1.00R = 1 + hERG + 간 → ×경구1.00K · 제형 계수 → =30.0 깎임 → 안전 S70.0✓ IND 기준 35 넘어요",
+      "views": "ADMET 실행 · 대기열 2 | 물성 레이더 | 신호등 표 | 몸속 여행 지도 | ●점수 분해 사슬",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "2.2 ADMET 예측 · 특허 후보에 왔어요 / ‹ 2.1 다시 보기 / ▴ / 2.1에서 가져온 것 / 도킹 4건 · 최고 ΔG -11.00 kcal/mol / 여기서 열쇠 / 특허 후보 1개 → 3.1 열림"
+    },
+    {
+      "step": "3.1",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →",
+      "clickable": true,
+      "where": "걸음 1/5 · ① 출원할 후보 고르기",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "●①출원할 후보 고르기 → ②코드명 해부도 · FDBB-101 → ③출원서 쓰기 → ✓심사 요청 · 받아들여짐 → ⑤원장 등재 ⇒ 다음 단계 3.2 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1 선언 · 물질특허에 왔어요 / ‹ 2.2 다시 보기 / ▴ / 2.2에서 가져온 것 / ADMET 2건 · 특허 후보 지정 / 여기서 열쇠 / 유효 특허 1건 → 3.2 열림",
+      "stay": true
+    },
+    {
+      "step": "3.1",
+      "tab": "① 출원할 후보 고르기",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →",
+      "clickable": true,
+      "where": "걸음 1/5 · ① 출원할 후보 고르기",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "●①출원할 후보 고르기 → ②코드명 해부도 · FDBB-101 → ③출원서 쓰기 → ✓심사 요청 · 받아들여짐 → ⑤원장 등재 ⇒ 다음 단계 3.2 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1 선언 · 물질특허에 왔어요 / ‹ 2.2 다시 보기 / ▴ / 2.2에서 가져온 것 / ADMET 2건 · 특허 후보 지정 / 여기서 열쇠 / 유효 특허 1건 → 3.2 열림"
+    },
+    {
+      "step": "3.1",
+      "tab": "② 코드명 해부도 · FDBB-101",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →",
+      "clickable": true,
+      "where": "걸음 2/5 · ② 코드명 해부도",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①출원할 후보 고르기 → ●②코드명 해부도 · FDBB-101 → ③출원서 쓰기 → ✓심사 요청 · 받아들여짐 → ⑤원장 등재 ⇒ 다음 단계 3.2 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1 선언 · 물질특허에 왔어요 / ‹ 2.2 다시 보기 / ▴ / 2.2에서 가져온 것 / ADMET 2건 · 특허 후보 지정 / 여기서 열쇠 / 유효 특허 1건 → 3.2 열림"
+    },
+    {
+      "step": "3.1",
+      "tab": "③ 출원서 쓰기",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →",
+      "clickable": true,
+      "where": "걸음 3/5 · ③ 출원서 쓰기",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①출원할 후보 고르기 → ②코드명 해부도 · FDBB-101 → ●③출원서 쓰기 → ✓심사 요청 · 받아들여짐 → ⑤원장 등재 ⇒ 다음 단계 3.2 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1 선언 · 물질특허에 왔어요 / ‹ 2.2 다시 보기 / ▴ / 2.2에서 가져온 것 / ADMET 2건 · 특허 후보 지정 / 여기서 열쇠 / 유효 특허 1건 → 3.2 열림"
+    },
+    {
+      "step": "3.1",
+      "tab": "✓ 심사 요청 · 받아들여짐",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →",
+      "clickable": true,
+      "where": "걸음 4/5 · ④ 심사 요청",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①출원할 후보 고르기 → ②코드명 해부도 · FDBB-101 → ③출원서 쓰기 → ●✓심사 요청 · 받아들여짐 → ⑤원장 등재 ⇒ 다음 단계 3.2 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1 선언 · 물질특허에 왔어요 / ‹ 2.2 다시 보기 / ▴ / 2.2에서 가져온 것 / ADMET 2건 · 특허 후보 지정 / 여기서 열쇠 / 유효 특허 1건 → 3.2 열림"
+    },
+    {
+      "step": "3.1",
+      "tab": "⑤ 원장 등재",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "go",
+      "text": "다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →",
+      "clickable": true,
+      "where": "걸음 5/5 · ⑤ 원장 등재",
+      "lime": [
+        "button.nb-btn「다다온 님이 열었어요 · 3.2 전임상 · 동물실험 →」"
+      ],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①출원할 후보 고르기 → ②코드명 해부도 · FDBB-101 → ③출원서 쓰기 → ✓심사 요청 · 받아들여짐 → ●⑤원장 등재 ⇒ 다음 단계 3.2 열림",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "3.2",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "todo",
+      "text": "② 계획서 승인부터 · 남은 일 3개 · 하러 가기 ›",
+      "clickable": true,
+      "where": "걸음 1/5 · ① 윤리 배우기",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "●①윤리 배우기 · 이수 전 → ②계획서 심의 → ③대체 시험 · 0건 → ④동물실험 · 0건 → ⑤한 번 더 고르기 · 아직 ⇒ 다음 단계 3.3 🔒",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1에서 가져온 것 · 여기서 열쇠 ▾",
+      "stay": true
+    },
+    {
+      "step": "3.2",
+      "tab": "① 윤리 배우기 · 이수 전",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "todo",
+      "text": "② 계획서 승인부터 · 남은 일 3개 · 하러 가기 ›",
+      "clickable": true,
+      "where": "걸음 1/5 · ① 윤리 배우기",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "●①윤리 배우기 · 이수 전 → ②계획서 심의 → ③대체 시험 · 0건 → ④동물실험 · 0건 → ⑤한 번 더 고르기 · 아직 ⇒ 다음 단계 3.3 🔒",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1에서 가져온 것 · 여기서 열쇠 ▾"
+    },
+    {
+      "step": "3.2",
+      "tab": "② 계획서 심의",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "todo",
+      "text": "② 계획서 승인부터 · 남은 일 3개 · 하러 가기 ›",
+      "clickable": true,
+      "where": "걸음 2/5 · ② 계획서 심의",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①윤리 배우기 · 이수 전 → ●②계획서 심의 → ③대체 시험 · 0건 → ④동물실험 · 0건 → ⑤한 번 더 고르기 · 아직 ⇒ 다음 단계 3.3 🔒",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1에서 가져온 것 · 여기서 열쇠 ▾"
+    },
+    {
+      "step": "3.2",
+      "tab": "③ 대체 시험 · 0건",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "todo",
+      "text": "② 계획서 승인부터 · 남은 일 3개 · 하러 가기 ›",
+      "clickable": true,
+      "where": "걸음 3/5 · ③ 대체 시험",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①윤리 배우기 · 이수 전 → ②계획서 심의 → ●③대체 시험 · 0건 → ④동물실험 · 0건 → ⑤한 번 더 고르기 · 아직 ⇒ 다음 단계 3.3 🔒",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1에서 가져온 것 · 여기서 열쇠 ▾"
+    },
+    {
+      "step": "3.2",
+      "tab": "④ 동물실험 · 0건",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "todo",
+      "text": "② 계획서 승인부터 · 남은 일 3개 · 하러 가기 ›",
+      "clickable": true,
+      "where": "걸음 4/5 · ④ 동물실험",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①윤리 배우기 · 이수 전 → ②계획서 심의 → ③대체 시험 · 0건 → ●④동물실험 · 0건 → ⑤한 번 더 고르기 · 아직 ⇒ 다음 단계 3.3 🔒",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1에서 가져온 것 · 여기서 열쇠 ▾"
+    },
+    {
+      "step": "3.2",
+      "tab": "⑤ 한 번 더 고르기 · 아직",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "todo",
+      "text": "② 계획서 승인부터 · 남은 일 3개 · 하러 가기 ›",
+      "clickable": true,
+      "where": "걸음 5/5 · ⑤ 한 번 더 고르기",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①윤리 배우기 · 이수 전 → ②계획서 심의 → ③대체 시험 · 0건 → ④동물실험 · 0건 → ●⑤한 번 더 고르기 · 아직 ⇒ 다음 단계 3.3 🔒",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": "3.1에서 가져온 것 · 여기서 열쇠 ▾"
+    },
+    {
+      "step": "3.2",
+      "tab": "(띠 단추 누름)",
+      "tone": "todo",
+      "text": "② 계획서 승인부터 · 남은 일 3개 · 하러 가기 ›",
+      "flash": "protocol",
+      "cur": "3.2",
+      "walk": "②계획서 심의"
+    },
+    {
+      "step": "3.3",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "보기 · what-if 실험실",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "●what-if 실험실 · ③ 제형 · ⑤ 용량 초안 | 효능 · 안전 시소 · ⑤ 용량 근거 | 피크 곡선 · ③ 제형 근거 | 용량-반응 3장 · ③ · ⑤ 비교 | E–S 평면 · 조합 고르기 | 공식 폭포 · ⑥ 위험 · 감시",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null,
+      "stay": true
+    },
+    {
+      "step": "3.3",
+      "tab": "what-if 실험실 · ③ 제형 · ⑤ 용량 초안",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "보기 · what-if 실험실",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "●what-if 실험실 · ③ 제형 · ⑤ 용량 초안 | 효능 · 안전 시소 · ⑤ 용량 근거 | 피크 곡선 · ③ 제형 근거 | 용량-반응 3장 · ③ · ⑤ 비교 | E–S 평면 · 조합 고르기 | 공식 폭포 · ⑥ 위험 · 감시",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "3.3",
+      "tab": "효능 · 안전 시소 · ⑤ 용량 근거",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "보기 · 효능 · 안전 시소",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "what-if 실험실 · ③ 제형 · ⑤ 용량 초안 | ●효능 · 안전 시소 · ⑤ 용량 근거 | 피크 곡선 · ③ 제형 근거 | 용량-반응 3장 · ③ · ⑤ 비교 | E–S 평면 · 조합 고르기 | 공식 폭포 · ⑥ 위험 · 감시",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "3.3",
+      "tab": "피크 곡선 · ③ 제형 근거",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "보기 · 피크 곡선",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "what-if 실험실 · ③ 제형 · ⑤ 용량 초안 | 효능 · 안전 시소 · ⑤ 용량 근거 | ●피크 곡선 · ③ 제형 근거 | 용량-반응 3장 · ③ · ⑤ 비교 | E–S 평면 · 조합 고르기 | 공식 폭포 · ⑥ 위험 · 감시",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "3.3",
+      "tab": "용량-반응 3장 · ③ · ⑤ 비교",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "보기 · 용량-반응 3장",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "what-if 실험실 · ③ 제형 · ⑤ 용량 초안 | 효능 · 안전 시소 · ⑤ 용량 근거 | 피크 곡선 · ③ 제형 근거 | ●용량-반응 3장 · ③ · ⑤ 비교 | E–S 평면 · 조합 고르기 | 공식 폭포 · ⑥ 위험 · 감시",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "3.3",
+      "tab": "E–S 평면 · 조합 고르기",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "보기 · E–S 평면",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "what-if 실험실 · ③ 제형 · ⑤ 용량 초안 | 효능 · 안전 시소 · ⑤ 용량 근거 | 피크 곡선 · ③ 제형 근거 | 용량-반응 3장 · ③ · ⑤ 비교 | ●E–S 평면 · 조합 고르기 | 공식 폭포 · ⑥ 위험 · 감시",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "3.3",
+      "tab": "공식 폭포 · ⑥ 위험 · 감시",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "보기 · 공식 폭포",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "what-if 실험실 · ③ 제형 · ⑤ 용량 초안 | 효능 · 안전 시소 · ⑤ 용량 근거 | 피크 곡선 · ③ 제형 근거 | 용량-반응 3장 · ③ · ⑤ 비교 | E–S 평면 · 조합 고르기 | ●공식 폭포 · ⑥ 위험 · 감시",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "3.3",
+      "tab": "(띠 단추 누름)",
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "flash": "",
+      "cur": "3.2",
+      "walk": "②계획서 심의"
+    },
+    {
+      "step": "4.1",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": null,
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null,
+      "stay": true
+    },
+    {
+      "step": "4.1",
+      "tab": "(띠 단추 누름)",
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "flash": "",
+      "cur": "3.2",
+      "walk": "②계획서 심의"
+    },
+    {
+      "step": "4.2",
+      "tab": "(처음)",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "걸음 1/5 · ① 브랜드 이름",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "●①브랜드 이름 → ②포장 꾸미기 → ③허가 신청서 → ④심사 · 접수 · 초안 → ⑤허가증 · 영수증",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null,
+      "stay": true
+    },
+    {
+      "step": "4.2",
+      "tab": "① 브랜드 이름",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "걸음 1/5 · ① 브랜드 이름",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "●①브랜드 이름 → ②포장 꾸미기 → ③허가 신청서 → ④심사 · 접수 · 초안 → ⑤허가증 · 영수증",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "4.2",
+      "tab": "② 포장 꾸미기",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "걸음 2/5 · ② 포장 꾸미기",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①브랜드 이름 → ●②포장 꾸미기 → ③허가 신청서 → ④심사 · 접수 · 초안 → ⑤허가증 · 영수증",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "4.2",
+      "tab": "③ 허가 신청서",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "걸음 3/5 · ③ 허가 신청서",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①브랜드 이름 → ②포장 꾸미기 → ●③허가 신청서 → ④심사 · 접수 · 초안 → ⑤허가증 · 영수증",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "4.2",
+      "tab": "④ 심사 · 접수 · 초안",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "걸음 4/5 · ④ 심사 · 접수",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①브랜드 이름 → ②포장 꾸미기 → ③허가 신청서 → ●④심사 · 접수 · 초안 → ⑤허가증 · 영수증",
+      "views": "",
+      "notes": "연구 노트 · 문항0/3칸 · 최대 +240,000 크리스타▾",
+      "arrive": null
+    },
+    {
+      "step": "4.2",
+      "tab": "⑤ 허가증 · 영수증",
+      "band": {
+        "top": 824,
+        "bottom": 884,
+        "left": 292,
+        "right": 1424,
+        "inView": true
+      },
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "clickable": true,
+      "where": "걸음 5/5 · ⑤ 허가증 · 영수증",
+      "lime": [],
+      "docOverflow": false,
+      "clipped": [],
+      "errs": [],
+      "htabs": 0,
+      "chain": "①브랜드 이름 → ②포장 꾸미기 → ③허가 신청서 → ④심사 · 접수 · 초안 → ●⑤허가증 · 영수증",
+      "views": "",
+      "notes": null,
+      "arrive": null
+    },
+    {
+      "step": "4.2",
+      "tab": "(띠 단추 누름)",
+      "tone": "lock",
+      "text": "‹ 3.2에서 계획서 승인부터",
+      "flash": "",
+      "cur": "3.2",
+      "walk": "②계획서 심의"
+    },
+    {
+      "step": "1.1",
+      "tab": "(라임 단추 누름)",
+      "text": "다다온 님이 열었어요 · 1.2 화합물 스크리닝 →",
+      "cur": "1.2"
+    }
+  ]
+}
