@@ -210,7 +210,6 @@ function EthicsTeam({ d }: BodyProps) {
             </li>
           ))}
         </ul>
-        <p className="hint">{C.ethics.whoNeeds}</p>
       </Panel>
       <Panel title={U.think} tone="hi">
         <p className="s32-dilemma">{C.ethics.dilemma}</p>
@@ -726,7 +725,6 @@ function MrsdChart({ d }: { d: PreclinicalResponse }) {
           );
         })}
       </svg>
-      <p className="mini muted">{U.chartNote}</p>
     </Panel>
   );
 }
@@ -753,7 +751,6 @@ function PickMine({ d, reload }: BodyProps) {
       <Panel title={U.setLead} id="go-s32-lead">
         {studies.length === 0 ? <p className="empty">{U.noStudy}</p> : (
           <>
-            <p className="hint">{U.leadRule}</p>
             <div className="s32-grid2">
               <div className="fld">
                 <label className="lab" htmlFor="s32-lead">{U.lead}</label>
@@ -809,7 +806,6 @@ function PickTeam({ d, reload, myName }: BodyProps) {
       </Panel>
       <Panel title={U.report}>
         <p><b>{U.reportTotal(r.totalAnimals, r.totalHumane, r.totalSaved)}</b></p>
-        <p className="hint">{U.reportNote}</p>
         <div className="tbl-w"><table>
           <thead><tr><th>{U.cols.candidate}</th><th className="num">{U.metrics.animals}</th><th>{U.cols.pain}</th><th className="num">{U.metrics.humane}</th><th className="num">{U.cols.saved}</th></tr></thead>
           <tbody>

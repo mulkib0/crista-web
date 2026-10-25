@@ -284,11 +284,6 @@ export function Step33(props: StepProps) {
   const review = app?.review ?? null;
   const canSubmit = !!app && app.status === 'passed' && review?.verdict === 'pass' && review.docVersion === app.version;
   const fee = money(data?.feeCents ?? 0);
-  const th = data?.rules.thresholds;
-  const pk = data?.rules.formulationPeak;
-  const ruleFill: Record<string, string | number> = th && pk && data
-    ? { ind: th.ind, p1: th.phase1, p2e: th.phase2E, p3e: th.phase3E, p3s: th.phase3S, kOral: pk.oral.toFixed(2), kIv: pk.iv.toFixed(2), kTd: pk.transdermal.toFixed(2), base: data.rules.efficacy.base, w: data.rules.efficacy.affinityWeight }
-    : {};
 
   const mine = (
     <>
@@ -297,9 +292,7 @@ export function Step33(props: StepProps) {
       ) : !cand ? (
         <p className="empty">{data.readyReason ?? D.lockedStep}</p>
       ) : (
-        <Panel title={C.tools[tool].tab} sub={fillIndCopy(C.toolNotes.fills, { what: C.tools[tool].fills })}>
-          <p className="s33-q">{fillIndCopy(C.tools[tool].question, ruleFill)}</p>
-          <p className="hint">{fillIndCopy(C.tools[tool].howTo, ruleFill)}</p>
+        <Panel title={C.tools[tool].tab}>
           <ToolView data={data} cand={cand} knobs={knobs} setKnobs={(fn) => setKnobs((k) => ({ ...k, ...fn(k) }))} brainPop={brainPop} onApply={onApply} applied={app && app.patentId === cand.patentId ? { form: app.form, dose: app.doseMg } : null} busy={applyAct.busy} />
           {applyAct.error && <p className="hint bad" role="alert">{applyAct.error}</p>}
         </Panel>
@@ -313,7 +306,6 @@ export function Step33(props: StepProps) {
     return (
       <section key={part} className="s33-part" aria-labelledby={`s33-p-${part}`}>
         <h4 id={`s33-p-${part}`}><span className="s33-no">{P.no}</span> {P.title}</h4>
-        <p className="hint">{P.guide}</p>
         {data && app && <PartFacts part={part} data={data} app={app} cand={appCand} />}
         {defs.map((def) => {
           const s = sec(def.key);
@@ -375,7 +367,7 @@ export function Step33(props: StepProps) {
           {data.approval && <Approval data={data} />}
           {app.status === 'submitted' && <Waiting app={app} clock={board.clock} reload={live.reload} />}
           <Plan data={data} app={app} editable={editable} reload={live.reload} />
-          <Panel title={D.heading} className="s33-doc"><p className="hint">{C.shareHint}</p>{parts}</Panel>
+          <Panel title={D.heading} className="s33-doc">{parts}</Panel>
           {editable && (
             <Panel title={D.rulesTitle} sub={D.rulesHint}>
               <ul className="s33-rules">

@@ -217,7 +217,6 @@ function Fingerprint({ refSmiles, refName, ours, oursName }: { refSmiles: string
           );
         })}
       </svg>
-      <p className="hint">{same ? C.sameAsRef(refName ?? C.facts.reference) : C.fingerprintNote(refName ?? C.facts.reference)} <span className="s31-leg">{C.ui.legend.c} · <i className="k-n">{C.ui.legend.n}</i> · <i className="k-o">{C.ui.legend.o}</i> · <i className="k-x">{C.ui.legend.x}</i> · {C.ui.legend.hit}</span></p>
     </figure>
   );
 }
@@ -279,11 +278,6 @@ function CodeBench({ data, app, myName, reload }: { data: PatentsResponse; app: 
     <>
       <Panel title={C.tabs.code}>
         <CodeAnatomy ticker={data.ticker} num={num} problems={num ? check.problems : []} />
-        <ul className="s31-pieces mini">
-          <li>{C.pieceDesc.tick(data.ticker)}</li>
-          <li>{C.pieceDesc.dash}</li>
-          <li>{C.pieceDesc.num}</li>
-        </ul>
         <div className="s31-code">
           <label className="lab" htmlFor="s31-num">{C.pieces.num}</label>
           <div className="row">
@@ -299,7 +293,6 @@ function CodeBench({ data, app, myName, reload }: { data: PatentsResponse; app: 
           <p id="s31-num-r" className={`hint${!editable ? '' : num && !check.ok ? ' bad' : num ? ' good' : ''}`} aria-live="polite">
             {!editable ? (app.status === 'reviewing' ? C.codeLockedReviewing(app.codeName ?? code) : C.codeLocked(app.codeName ?? code)) : !num ? codeProblemText('empty', { ticker: data.ticker }) : check.ok ? `✓ ${C.codeOk(code)}` : `✕ ${check.problems.map((p) => codeProblemText(p, { ticker: data.ticker, code })).join(' · ')}`}
           </p>
-          <p className="hint">{C.formatLine}</p>
           {act.error && <p className="hint bad">{act.error}</p>}
         </div>
       </Panel>
@@ -310,7 +303,6 @@ function CodeBench({ data, app, myName, reload }: { data: PatentsResponse; app: 
           staleOf={staleOf} myName={myName} maxLength={PATENT_SECTIONS.code_num.max} rows={2} readOnly={!isEditable(app)} />
       </Panel>
       <Panel title={C.ui.mechHead} sub={app.facts.gene ? C.ui.mechWhat(app.facts.gene) : undefined}>
-        {app.facts.gene && <p className="hint">{C.mechTargetGuide(app.facts.gene)}</p>}
         <ChoiceChips app={app} keyName="mech_how" reload={reload} />
         <ChoiceChips app={app} keyName="mech_action" reload={reload} />
         <DocSectionEditor id="s31-why" label={C.sectionLabel.mech_why} guide={fill(C.sectionGuide.mech_why)} placeholder={fill(C.sectionExample.mech_why)} value={sectionValue(app, 'mech_why')} save={save('mech_why')}
@@ -395,7 +387,6 @@ function CodeSummary({ data, app }: { data: PatentsResponse; app: PatentApplicat
         <dt>{C.facts.applicant}</dt><dd>{data.companyName} ({data.ticker})</dd>
         <dt>{C.facts.target}</dt><dd>{app.facts.gene} {app.facts.targetLabel} · {app.facts.disease}</dd>
       </dl>
-      <p className="hint">{C.ui.codeSummaryNote(data.takenCodes.map((t) => t.codeName).join(' · '))}</p>
     </Panel>
   );
 }
@@ -583,7 +574,6 @@ function LedgerPanel({ rows }: { rows: PatentLedgerRow[] }) {
   const L = C.ui.ledgerCols;
   return (
     <Panel title={C.ledgerTitle} sub={C.ui.ledgerRows(rows.filter((r) => r.kind === 'patent').length)}>
-      {rows.some((r) => r.kind === 'rejected') && <p className="hint bad">{C.redRowNote}</p>}
       {rows.length === 0 ? <p className="empty">{C.ledgerEmpty}</p> : (
         <div className="s31-led">
           <table>
