@@ -9,9 +9,10 @@
  * - 공개 범위: 다른 모둠에게는 이름 · 티커 · 잉크 · 부지만. 후보 · 물성 · 노트는 그 모둠만(설계 §5.3).
  */
 import {
+  DISEASE_IDS,
   DISEASE_LABEL,
-  DISEASE_TO_TARGET,
   DOCKING_TARGETS,
+  targetsOfDisease,
   SMILES_MAX_LENGTH,
   type ExperimentResult,
   type ScreeningCandidate,
@@ -100,24 +101,38 @@ export const STEP_DURATION_GAME_DAYS: Partial<Record<StepId, number>> = {
   '4.2': PIPELINE_RULES.durationDays.final,
 };
 
-/** 질환 → 도킹 표적(crista 사본 값 그대로). */
-export const DISEASES: DiseaseOption[] = (Object.entries(DISEASE_TO_TARGET) as Array<[keyof typeof DISEASE_LABEL, string]>).map(([diseaseId, targetId]) => {
-  const target = DOCKING_TARGETS.find((t) => t.id === targetId);
-  if (!target) throw new Error(`DOCKING_TARGETS 에 ${targetId} 가 없습니다(사본 확인).`);
-  return {
-    diseaseId,
-    label: DISEASE_LABEL[diseaseId],
-    targetId,
-    targetLabel: target.label,
-    gene: target.gene,
-    pdbId: target.pdbId,
-    cns: target.cns,
-    referenceLigand: target.referenceLigand,
-    referenceKcal: target.referenceKcal,
-  };
-});
+/**
+ * 질환 · 표적 선택지 — **한 질환에 표적이 여럿이다**(crista `DISEASE_TARGETS` 사본 값 그대로).
+ * 질환마다 그 질환의 도킹 표적 수만큼 줄이 있고, 첫 줄이 그 질환의 기본 표적(`DISEASE_TO_TARGET`)이다.
+ * 재도킹 검증(RMSD ≤ 2Å)을 통과한 표적만 들어온다 — 1.1 에서 고를 수 있는 표적이 이 목록이다.
+ */
+export const DISEASES: DiseaseOption[] = DISEASE_IDS.flatMap((diseaseId) =>
+  targetsOfDisease(diseaseId).map((targetId) => {
+    const target = DOCKING_TARGETS.find((t) => t.id === targetId);
+    if (!target) throw new Error(`DOCKING_TARGETS 에 ${targetId} 가 없습니다(사본 확인).`);
+    return {
+      diseaseId,
+      label: DISEASE_LABEL[diseaseId],
+      targetId,
+      targetLabel: target.label,
+      gene: target.gene,
+      pdbId: target.pdbId,
+      cns: target.cns,
+      referenceLigand: target.referenceLigand,
+      referenceKcal: target.referenceKcal,
+    };
+  }),
+);
 
+/** 질환의 **기본** 표적 줄(질환 확인용). 표적까지 가려야 하면 `targetOption` 을 쓴다. */
 export const diseaseById = (diseaseId: unknown): DiseaseOption | undefined => DISEASES.find((d) => d.diseaseId === diseaseId);
+/** 질환 + 표적 줄 — 그 질환에서 고를 수 있는 표적이 아니면 undefined. 표적을 안 주면 기본 표적. */
+export const targetOption = (diseaseId: unknown, targetId?: unknown): DiseaseOption | undefined =>
+  targetId === undefined || targetId === null
+    ? diseaseById(diseaseId)
+    : DISEASES.find((d) => d.diseaseId === diseaseId && d.targetId === targetId);
+/** 그 질환에서 고를 수 있는 표적 줄 모두(첫 값 = 기본). */
+export const optionsOfDisease = (diseaseId: unknown): DiseaseOption[] => DISEASES.filter((d) => d.diseaseId === diseaseId);
 
 // ── 모둠 확인 ──
 
@@ -732,17 +747,19 @@ export async function loadBoard(deps: Deps, account: AccountView): Promise<Board
 // ── 1.1 표적 ──
 
 /**
- * '내 추천 표적' 올리기(설계 §5.4.2) — 표적은 질환의 도킹 표적으로 서버가 정한다(`targetId` 를 보내면 같은지만 본다).
+ * '내 추천 표적' 올리기(설계 §5.4.2) — 질환 안에서 **표적을 고를 수 있다**(`targetId`, 안 보내면 그 질환의 기본 표적).
+ * 그 질환의 도킹 표적이 아니면 받지 않는다 — 어떤 표적이 열려 있는지 함께 알려 준다.
  * 근거 칩은 화면과 같은 코치 규칙(`checkTargetPickReasons`)으로 다시 판정해 '막음'이 있으면 받지 않는다 — 주의는 받는다.
  * 근거가 빈 요청(앞 판 화면 · e2e)은 그대로 받는다(`reasons = {}`).
  */
 export async function pickTarget(deps: Deps, account: AccountView, raw: unknown): Promise<{ ok: true }> {
   const who = await teamMember(deps.db, account);
   const body = (raw ?? {}) as Record<string, unknown>;
-  const disease = diseaseById(body.diseaseId);
-  if (!disease) throw badRequest('고를 수 있는 질환이 아니에요.');
-  if (body.targetId !== undefined && body.targetId !== disease.targetId) {
-    throw new ApiError(400, 'invalid_input', `이 질환에서 도킹 준비된 표적은 ${disease.gene} 하나예요.`);
+  if (!diseaseById(body.diseaseId)) throw badRequest('고를 수 있는 질환이 아니에요.');
+  const disease = targetOption(body.diseaseId, body.targetId);
+  if (!disease) {
+    const open = optionsOfDisease(body.diseaseId);
+    throw new ApiError(400, 'invalid_input', `이 질환에서 도킹 준비된 표적은 ${open.map((o) => o.gene).join(' · ')} 예요.`);
   }
   const note = typeof body.note === 'string' ? body.note.normalize('NFC').trim().replace(/\s+/g, ' ') : '';
   if (charLength(note) > PICK_NOTE_MAX) throw badRequest(`메모는 ${PICK_NOTE_MAX}자까지예요.`);
@@ -770,10 +787,16 @@ export async function pickTarget(deps: Deps, account: AccountView, raw: unknown)
   return { ok: true };
 }
 
+/** 모둠 표적 확정 — 질환 + 표적(`targetId` 를 안 보내면 그 질환의 기본 표적). */
 export async function setTarget(deps: Deps, account: AccountView, raw: unknown): Promise<{ ok: true }> {
   const who = await teamMember(deps.db, account);
-  const disease = diseaseById(((raw ?? {}) as Record<string, unknown>).diseaseId);
-  if (!disease) throw badRequest('고를 수 있는 질환이 아니에요.');
+  const body = (raw ?? {}) as Record<string, unknown>;
+  if (!diseaseById(body.diseaseId)) throw badRequest('고를 수 있는 질환이 아니에요.');
+  const disease = targetOption(body.diseaseId, body.targetId);
+  if (!disease) {
+    const open = optionsOfDisease(body.diseaseId);
+    throw new ApiError(400, 'invalid_input', `이 질환에서 도킹 준비된 표적은 ${open.map((o) => o.gene).join(' · ')} 예요.`);
+  }
   await withTx(deps.db, async (tx) => {
     await ensureTeamRows(tx, who.teamId);
     // programs 행을 잠가 표적 바꾸기끼리 · 작업 접수(for share)와 줄 세운다.

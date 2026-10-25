@@ -104,9 +104,14 @@ describe('단계 상태(9단계 — 3판)', () => {
 });
 
 describe('입력 규칙', () => {
-  test('질환 목록은 crista 사본 값 그대로(4종 · 표적 짝)', () => {
-    assert.equal(DISEASES.length, 4);
+  test('질환 · 표적 목록은 crista 사본 값 그대로(질환 4종 · 표적 7종)', () => {
+    assert.equal(new Set(DISEASES.map((d) => d.diseaseId)).size, 4);
+    assert.equal(DISEASES.length, 7);
+    assert.equal(new Set(DISEASES.map((d) => d.targetId)).size, 7);
     assert.ok(DISEASES.every((d) => d.targetId && d.referenceLigand.smiles && d.referenceKcal < 0));
+    // 한 질환에 표적이 여럿이다 — 1.1 에서 고를 수 있는 표적이 그만큼이다.
+    assert.deepEqual(DISEASES.filter((d) => d.diseaseId === 'MONDO_0005233').map((d) => d.gene), ['EGFR', 'ALK', 'ERBB2']);
+    assert.deepEqual(DISEASES.filter((d) => d.diseaseId === 'MONDO_0005148').map((d) => d.gene), ['DPP4', 'GCK']);
   });
   test('컷오프 범위 · SMILES 글자', () => {
     assert.deepEqual(checkScreenParams({ maxMw: '500', maxTpsa: 90, ro5Only: 'true', excludeAlerts: false }), { library: null, maxMw: 500, maxTpsa: 90, ro5Only: true, excludeAlerts: false });
