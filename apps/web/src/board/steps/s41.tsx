@@ -112,11 +112,13 @@ export function Step41(props: StepProps) {
 /** 결과 탭의 '볼 시험' 고르기는 두 섬(그림 · 표)이 같이 쓴다. */
 function Step41Body({ board, step, data, view, tabs, setTab, reload }: StepProps & { data: ClinicalResponse; view: Tab; tabs: Array<{ id: string; no: string; label: string; sub?: string; mark?: string; disabled?: boolean }>; setTab: (t: Tab) => void; reload: () => void }) {
   const pick = useResultPick(data);
-  // 띠 — 남은 상은 지금 시험의 걸음으로(보류면 ⑤ 재도전), 기다림은 모집 n/목표 · 진행 D+n / 기간 · 판정 대기.
+  // 띠 — 남은 상은 지금 시험의 걸음으로(보류면 ⑤ 재도전). 실행 단추(모집 · 시작 · 재도전)는 공유 자료에 있어 그 판을 가리킨다
+  // (접혀 있으면 StepLayout 이 편다). 기다림은 모집 n/목표 · 진행 D+n / 기간 · 판정 대기.
   const cur = data.current;
   const held = data.trials[0]?.status === 'held';
   const at: Tab = held ? 'retry' : !cur ? 'protocol' : cur.status === 'recruiting' ? 'recruit' : cur.status === 'completed' ? 'result' : 'start';
-  const go: GoMap = { phase1: { tab: at }, phase2: { tab: at }, phase3: { tab: at } };
+  const to = { tab: at, spot: 'go-s41-team' };
+  const go: GoMap = { phase1: to, phase2: to, phase3: to };
   const w = cur ? PHASE_LABEL[cur.phase] : '';
   const wait: Wait | undefined = !cur
     ? undefined
@@ -139,7 +141,7 @@ function Step41Body({ board, step, data, view, tabs, setTab, reload }: StepProps
       ratio="even"
       mine={<div className="s41">{view === 'protocol' ? <ProtocolTools data={data} /> : view === 'recruit' ? <RecruitTools data={data} /> : view === 'start' ? <StartTools data={data} /> : view === 'result' ? <ResultTools pick={pick} /> : <RetryTools data={data} />}</div>}
       team={
-        <div className="s41">
+        <div className="s41" id="go-s41-team">
           {view === 'protocol' && <ProtocolTeam data={data} reload={reload} />}
           {view === 'recruit' && <RecruitTeam data={data} reload={reload} />}
           {view === 'start' && <StartTeam data={data} reload={reload} />}
