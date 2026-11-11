@@ -95,6 +95,22 @@ export function Login({ onDone }: { onDone: (me: MeResponse) => void }) {
     }
   }
 
+  /** 게스트 — 임시 아이디 · 무작위 비밀번호로 보통 학생 가입을 대신 한다. 비밀번호는 저장하지 않아 세션이 끝나면 다시 들어올 수 없다. */
+  async function enterAsGuest() {
+    if (busy) return;
+    setMsg(null);
+    setBusy(true);
+    try {
+      const hex = (bytes: number) => Array.from(crypto.getRandomValues(new Uint8Array(bytes)), (b) => b.toString(16).padStart(2, '0')).join('');
+      const tag = hex(6);
+      onDone(await api.post<MeResponse>(API.signup, { loginId: `guest${tag}`, displayName: `게스트 ${tag.slice(0, 4)}`, password: hex(24) }));
+    } catch (err) {
+      setMsg({ kind: 'bad', title: message(err) });
+    } finally {
+      setBusy(false);
+    }
+  }
+
   const state = locked ? 'lock' : msg?.kind;
   return (
     <div className="auth" ref={stage}>
@@ -163,6 +179,11 @@ export function Login({ onDone }: { onDone: (me: MeResponse) => void }) {
             <button className="auth-go" type="submit" disabled={busy || locked}>
               {busy ? '확인 중…' : tab === 'login' ? '들어가기' : '가입하고 들어가기'}
             </button>
+            {tab === 'login' && (
+              <button className="auth-guest" type="button" disabled={busy} onClick={enterAsGuest}>
+                학생 게스트로 로그인
+              </button>
+            )}
             <p className="auth-hint">
               {tab === 'login'
                 ? '처음이면 회원가입에서 계정을 만들어 주세요.'
