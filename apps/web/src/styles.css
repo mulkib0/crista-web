@@ -192,6 +192,9 @@ td .row { flex-wrap: nowrap; }
 .auth-go { min-height: 52px; padding: 0 20px; border: 0; background: var(--fg); color: var(--bg); font-size: 15.5px; font-weight: 700; border-radius: 0; }
 .auth-go:hover:not(:disabled) { box-shadow: inset 0 0 0 999px rgba(241, 241, 233, 0.12); }
 .auth-go:disabled { opacity: 0.45; }
+.auth-guest { min-height: 48px; padding: 0 20px; border: 1px solid var(--fg); background: transparent; color: var(--fg); font-size: 15px; font-weight: 700; border-radius: 0; }
+.auth-guest:hover:not(:disabled) { background: rgba(8, 10, 8, 0.06); }
+.auth-guest:disabled { opacity: 0.45; }
 .auth-hint { margin: 0; font-size: 12.5px; color: #3d443b; }
 /* 학급 고르기(Enroll) */
 .auth-enroll-hd { display: grid; gap: 6px; }
